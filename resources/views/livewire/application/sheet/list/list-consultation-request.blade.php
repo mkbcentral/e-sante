@@ -38,11 +38,14 @@
                             <td class="text-center">{{$consultationRequest->created_at->format('d/m/Y h:i')}}</td>
                             <td class="text-center">{{$consultationRequest->consultationSheet->number_sheet}}</td>
                             <td class="text-uppercase">{{$consultationRequest->consultationSheet->name}}</td>
-                            <td class="text-center">{{$consultationRequest->consultationSheet->gender}}</td>
+                            <td class="text-center fa fadoc">{{$consultationRequest->consultationSheet->gender}}</td>
                             <td class="text-center">{{$consultationRequest->consultationSheet->getPatientAge()}}</td>
                             <td class="text-center text-bold text-uppercase">{{$consultationRequest->consultationSheet->subscription->name}}</td>
                             <td class="text-center">
-                                <x-form.icon-button :icon="'fa fa-user-plus text-info'" wire:click="openVitalSignForm({{$consultationRequest}})"  class="btn-sm"/>
+                                <x-form.icon-button :icon="'fa fa-user-plus text-primary'"
+                                                        wire:click="openVitalSignForm({{$consultationRequest}})"  class="btn-sm"/>
+                                <x-navigation.link-icon href="{{route('consultation.consult.patient',$consultationRequest->id)}}"
+                                                        wire:navigate :icon="'fas fa-notes-medical text-primary'"/>
                             </td>
                         </tr>
                     @endforeach

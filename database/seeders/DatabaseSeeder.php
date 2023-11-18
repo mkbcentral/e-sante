@@ -8,6 +8,7 @@ use App\Models\BloodGoup;
 use App\Models\CategoryTarif;
 use App\Models\Consultation;
 use App\Models\ConsultationSheet;
+use App\Models\Diagnostic;
 use App\Models\Gender;
 use App\Models\Hospital;
 use App\Models\MedicalOffice;
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
 
         // ]);
+        /*
         $hospital=Hospital::create(['name'=>'Test hospital']);
         $municipalities=[
             ['name'=>'LUBUMBASSHI','hospital_id'=>1],
@@ -193,7 +195,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         MedicalOffice::insert([
-            ['name'=>"CAB 4",'hospital_id'=>1]
+            ['name'=>"CAB 1",'hospital_id'=>1],
+            ['name'=>"CAB 2",'hospital_id'=>1],
+            ['name'=>"CAB 3",'hospital_id'=>1]
+        ]);
+        */
+        Diagnostic::insert([
+            ['name'=>'Maux de tête','hospital_id'=>1],
+            ['name'=>'Bullure estomac','hospital_id'=>1],
+            ['name'=>'Courbature','hospital_id'=>1],
+            ['name'=>'Nausé','hospital_id'=>1],
+            ['name'=>'','hospital_id'=>1],
         ]);
     }
 }

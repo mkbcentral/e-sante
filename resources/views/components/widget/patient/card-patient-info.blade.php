@@ -1,13 +1,12 @@
 @props(['consultationSheet'])
 <div class="card">
-
     <div class="card-header bg-primary"><h5><i class="fa fa-user-circle"></i> INDENTITE DU PATIENT</h5></div>
     <div class="card-body">
         <div class="row invoice-info">
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
-                <h3 class="text-uppercase"><b>N° Fiche: {{$consultationSheet->number_sheet.'/'.$consultationSheet->subscription->name}}</b></h3>
-                <div class="h5">
+                <h3 class="text-uppercase text-primary"><b>N° Fiche: {{$consultationSheet->number_sheet.'/'.$consultationSheet->subscription->name}}</b></h3>
+                <div class="h6">
                     <b>Noms:</b> <span class="text-uppercase">{{$consultationSheet->name}}</span><br>
                     <b>Genre:</b> {{$consultationSheet->gender}}<br>
                     <b>Age:</b> {{$consultationSheet->getPatientAge($consultationSheet->date_of_birth)}}<br>
@@ -15,7 +14,7 @@
                 </div>
             </div>
             <!-- /.col -->
-            <div class="col-sm-4 invoice-col h5">
+            <div class="col-sm-4 invoice-col h6">
                 <address>
                     <span>{{$consultationSheet->municipality}}</span>,
                     <span>{{$consultationSheet->rural_area}}</span><br>
