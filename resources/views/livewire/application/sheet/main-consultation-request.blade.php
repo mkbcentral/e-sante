@@ -1,6 +1,6 @@
 <div>
     <div>
-        <x-navigation.bread-crumb icon='fa fa-folder' label='LISTE DE DEMANDE DE CONSULTATION'>
+        <x-navigation.bread-crumb icon='fa fa-folder' label='DEMANDES DE CONSULTATION'>
             <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
             <x-navigation.bread-crumb-item label='Demande de consultation' />
         </x-navigation.bread-crumb>

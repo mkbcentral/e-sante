@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
 
         // ]);
+        /*
         $hospital=Hospital::create(['name'=>'Test hospital']);
         $municipalities=[
             ['name'=>'LUBUMBASSHI','hospital_id'=>1],
@@ -191,9 +192,11 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Taille','unit'=>'m','hospital_id'=>1],
             ['name'=>'Tension','unit'=>'md','hospital_id'=>1],
         ]);
-
+        */
         MedicalOffice::insert([
-            ['name'=>"CAB 4",'hospital_id'=>1]
+            ['name'=>"CAB 1",'hospital_id'=>1],
+            ['name'=>"CAB 2",'hospital_id'=>1],
+            ['name'=>"CAB 3",'hospital_id'=>1],
         ]);
     }
 }
