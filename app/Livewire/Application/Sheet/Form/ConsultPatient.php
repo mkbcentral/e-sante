@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet\Form;
 
 use App\Models\ConsultationRequest;
+use App\Models\Diagnostic;
 use App\Models\Tarif;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -12,7 +13,7 @@ class ConsultPatient extends Component
     protected $listeners=[
         'selectedIndex'=>'getSelectedIndex',
     ];
-    public array $itemsSelected=[];
+    public array $itemsSelected=[],$diagnosticsSelected=[];
 
     #[Url(as: 'q')]
     public $q = '';
@@ -55,7 +56,8 @@ class ConsultPatient extends Component
                 ->select('tarifs.*')
                 ->where('tarifs.is_changed',false)
                 ->where('category_tarifs.hospital_id',1)
-                ->get()
+                ->get(),
+            'diagnostics'=>Diagnostic::where('hospital_id',1)->get()
         ]);
     }
 }

@@ -1,7 +1,8 @@
 @props(['consultationSheet'])
 <div class="card">
-    <div class="card-header bg-primary"><h5><i class="fa fa-user-circle"></i> INDENTITE DU PATIENT</h5></div>
     <div class="card-body">
+        <h5 class="text-bold">INDENTITES</h5>
+        <hr>
         <div class="row invoice-info">
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
