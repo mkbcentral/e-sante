@@ -7,6 +7,7 @@ use App\Livewire\Application\Patient\FolderPatient;
 use App\Livewire\Application\Tarification\TarifView;
 use App\Livewire\Application\Tarification\PriceList;
 use App\Livewire\Application\Sheet\MainConsultationRequest;
+use App\Livewire\Application\Sheet\MainConsultPatient;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::get('/patient/folder/{sheetId}',FolderPatient::class)->name('patient.fold
 Route::get('tarification',TarifView::class)->name('tarification');
 Route::get('tarification/prices',PriceList::class)->name('tarification.prices');
 Route::get('consultation/req',MainConsultationRequest::class)->name('consultation.req');
+Route::get('consultation/consult-patient/{consultationRequestId}',MainConsultPatient::class)->name('consultation.consult.patient');
+

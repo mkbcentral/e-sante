@@ -8,6 +8,7 @@ use App\Models\BloodGoup;
 use App\Models\CategoryTarif;
 use App\Models\Consultation;
 use App\Models\ConsultationSheet;
+use App\Models\Diagnostic;
 use App\Models\Gender;
 use App\Models\Hospital;
 use App\Models\MedicalOffice;
@@ -192,11 +193,21 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Taille','unit'=>'m','hospital_id'=>1],
             ['name'=>'Tension','unit'=>'md','hospital_id'=>1],
         ]);
-        */
+
         MedicalOffice::insert([
             ['name'=>"CAB 1",'hospital_id'=>1],
             ['name'=>"CAB 2",'hospital_id'=>1],
             ['name'=>"CAB 3",'hospital_id'=>1],
+
+            ['name'=>"CAB 3",'hospital_id'=>1]
+        ]);
+        */
+        Diagnostic::insert([
+            ['name'=>'Maux de tête','hospital_id'=>1],
+            ['name'=>'Bullure estomac','hospital_id'=>1],
+            ['name'=>'Courbature','hospital_id'=>1],
+            ['name'=>'Nausé','hospital_id'=>1],
+            ['name'=>'','hospital_id'=>1],
         ]);
     }
 }

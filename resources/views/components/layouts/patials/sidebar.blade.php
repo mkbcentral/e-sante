@@ -23,7 +23,7 @@
                      <i class="fa fa-folder" aria-hidden="true"></i>
                      <p>Grille tarifaire</p>
                  </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate :active="request()->routeIs(['consultation.req'])">
+                 <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate :active="request()->routeIs(['consultation.req','consultation.consult.patient'])">
                      <i class="fa fa-user-plus" aria-hidden="true"></i>
                      <p>List consulation</p>
                  </x-navigation.nav-link>
