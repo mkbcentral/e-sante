@@ -21,8 +21,9 @@ class ConsultPatient extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
-
     public int $selectedIndex;
+
+    public ?ConsultationRequest $consultationRequest;
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
@@ -30,6 +31,7 @@ class ConsultPatient extends Component
     public function mount(ConsultationRequest $consultationRequest, int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
+        $this->consultationRequest=$consultationRequest;
     }
     public function sortTarif($value): void
     {
@@ -56,8 +58,7 @@ class ConsultPatient extends Component
                 ->select('tarifs.*')
                 ->where('tarifs.is_changed',false)
                 ->where('category_tarifs.hospital_id',1)
-                ->get(),
-            'diagnostics'=>Diagnostic::where('hospital_id',1)->get()
+                ->get()
         ]);
     }
 }
