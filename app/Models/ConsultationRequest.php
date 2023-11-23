@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ConsultationRequest extends Model
 {
@@ -32,6 +33,15 @@ class ConsultationRequest extends Model
     }
     public function medicalOffices():BelongsToMany{
         return $this->belongsToMany(MedicalOffice::class);
+    }
+    public function tarifs():BelongsToMany{
+        return $this->belongsToMany(Tarif::class,)->withPivot(['id','qty']);
+    }
+    public function diagnostics():BelongsToMany{
+        return $this->belongsToMany(Diagnostic::class,)->withPivot(['id']);
+    }
+    public function consultationComment():HasOne{
+        return  $this->hasOne(ConsultationComment::class);
     }
 
 }

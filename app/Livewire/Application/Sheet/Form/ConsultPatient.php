@@ -13,7 +13,7 @@ class ConsultPatient extends Component
     protected $listeners=[
         'selectedIndex'=>'getSelectedIndex',
     ];
-    public array $itemsSelected=[],$diagnosticsSelected=[];
+    public array $tarifsSelected=[];
 
     #[Url(as: 'q')]
     public $q = '';
@@ -43,7 +43,22 @@ class ConsultPatient extends Component
 
     public function addItemsToConsultation(): void
     {
-        dd($this->itemsSelected);
+        try {
+            if ($this->tarifsSelected==[]){
+                $this->dispatch('error', ['message' => 'Aucun élément selectionner SVP !']);
+            }else{
+                $this->consultationRequest->tarifs()->sync($this->tarifsSelected);
+                $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            }
+          ;
+        }catch (\Exception $exception){
+            $this->dispatch('error', ['message' => $exception->getMessage()]);
+        }
+    }
+    public function addNewComment(): void
+    {
+        $this->dispatch('open-form-consultation-comment');
+        $this->dispatch('consultationRequest',$this->consultationRequest);
     }
     public function render()
     {

@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{config('app.name')}}</title>
-    <script src="{{ asset('moment/moment.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="hold-transition sidebar-mini">
@@ -16,6 +15,8 @@
         </div>
         @include('components.layouts.patials.footer')
     </div>
+    <script src="{{ asset('moment/moment.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
     @stack('js')
 </body>
 </html>
