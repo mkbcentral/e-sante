@@ -1,7 +1,10 @@
 @props(['consultationSheet'])
 <div class="card">
     <div class="card-body">
-        <h5 class="text-bold">INDENTITES</h5>
+      <div class="d-flex justify-content-between">
+          <h5 class="text-bold">INDENTITES</h5>
+          <h5 class="text-bold text-primary"><i class="fa fa-calendar"></i> Date: {{$consultationSheet->created_at->format('d/M/Y')}}</h5>
+      </div>
         <hr>
         <div class="row invoice-info">
             <!-- /.col -->
@@ -11,7 +14,7 @@
                     <b>Noms:</b> <span class="text-uppercase">{{$consultationSheet->name}}</span><br>
                     <b>Genre:</b> {{$consultationSheet->gender}}<br>
                     <b>Age:</b> {{$consultationSheet->getPatientAge($consultationSheet->date_of_birth)}}<br>
-                    <b>Age:</b> {{$consultationSheet->typePatient->name}}
+                    <b>Type:</b> {{$consultationSheet->typePatient->name}}
                 </div>
             </div>
             <!-- /.col -->
@@ -25,6 +28,28 @@
                     Email: {{$consultationSheet->email}}
                 </address>
             </div>
+            <div class="col-sm-4 invoice-col h6">
+               @if($consultationSheet != null)
+                    @if(!$consultationSheet->getFreshConsultation()->vitalSigns->isEmpty())
+                        <address>
+                            @foreach($consultationSheet->getFreshConsultation()->vitalSigns as $vitalSigne)
+                                <span><span class="text-bold">{{$vitalSigne->name}}:</span> {{$vitalSigne->pivot->value}}/{{$vitalSigne->unit}}</span><br>
+                            @endforeach
+                        </address>
+                    @endif
+                        <h6 class="text-uppercase text-primary"><b>Antecedents</b></h6>
+                        @if(!$consultationSheet->getFreshConsultation()->diagnostics->isEmpty())
+                            <address>
+                                <div class="h6">
+                                @foreach($consultationSheet->getFreshConsultation()->diagnostics as $diagnostic)
+                                        <span class="">{{$diagnostic->name}}</span>,
+                                @endforeach
+                                </div>
+                            </address>
+                        @endif
+               @endif
+            </div>
+
         </div>
 
     </div>

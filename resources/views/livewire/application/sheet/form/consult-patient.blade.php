@@ -3,11 +3,7 @@
         <div class="card-header bg-primary ">
             <div class="d-flex  justify-content-between  align-items-center">
                 <h4>LISTE DES EXAMENS PARACLINIQUES</h4>
-                <x-form.button class="btn-danger">
-                    <i class="fa fa-capsules"></i> Nouvelle ordonnance
-                </x-form.button>
             </div>
-
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center">
@@ -26,7 +22,7 @@
                         <div class="form-group clearfix">
                             <div  class="icheck-primary d-inline">
                                 <input type="checkbox" id="{{str_replace(' ', '',$tarif->name)}}"
-                                       wire:model="tarifsSelected" value="{{$tarif->id}}">
+                                       wire:model.live="tarifsSelected" value="{{$tarif->id}}">
                                 <label for="{{str_replace(' ', '',$tarif->name)}}"
                                        class="">
                                     {{$tarif->name}}
@@ -36,11 +32,6 @@
                     </div>
                 @endforeach
             </div>
-        </div>
-        <div class="card-footer d-flex justify-content-end">
-            <x-form.button class="btn-dark ml-2" wire:click="addItemsToConsultation">
-                <x-icons.icon-plus-circle/> Ajouter à la consultation
-            </x-form.button>
         </div>
     </div>
     @push('js')

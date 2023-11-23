@@ -16,7 +16,7 @@ class ListSheet extends Component
         'listSheetRefreshed'=>'$refresh'
     ];
     public int $selectedIndex;
-    public ConsultationSheet $sheet;
+    public ?ConsultationSheet $sheet=null;
     #[Url(as: 'q')]
     public $q = '';
     #[Url(as: 'sortBy')]
@@ -33,6 +33,7 @@ class ListSheet extends Component
     public  function newSheet(): void
     {
         $this->dispatch('selectedIndex',$this->selectedIndex);
+        $this->dispatch('sheetInfo');
         $this->dispatch('open-form-new');
     }
     public  function  newRequestForm(ConsultationSheet $consultationSheet): void
@@ -42,7 +43,7 @@ class ListSheet extends Component
     }
     public  function  edit(ConsultationSheet $sheet): void
     {
-        $this->dispatch('open-form');
+        $this->dispatch('open-form-new');
         $this->dispatch('sheetInfo',$sheet);
         $this->dispatch('selectedIndex',$this->selectedIndex);
     }
@@ -71,6 +72,7 @@ class ListSheet extends Component
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
+
     }
 
     public function render()

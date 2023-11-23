@@ -1,23 +1,17 @@
 <?php
 
 namespace App\View\Components\Widget\Patient;
-
-use App\Models\ConsultationSheet;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 class CardPatientInfo extends Component
 {
-    //public ?ConsultationSheet $consultationSheet;
     /**
      * Create a new component instance.
      */
-    public function __construct(public ?ConsultationSheet $sheet)
-
+    public function __construct()
     {
-
     }
 
     /**

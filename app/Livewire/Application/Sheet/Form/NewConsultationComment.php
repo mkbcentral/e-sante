@@ -15,6 +15,17 @@ class NewConsultationComment extends Component
 
     #[Rule('required|min:3|string',message: 'Champs est obligatoire SVP',onUpdate: false)]
     public $body = '';
+
+    public function updatedBody($val){
+        $this->body=$val;
+
+    }
+
+    public function addNewDiagnostic(): void
+    {
+        $this->dispatch('open-diagnostic-items');
+        $this->dispatch('consultationRequest',$this->consultationRequest);
+    }
     public function store(){
         $fields= $this->validate();
         try {
@@ -38,6 +49,7 @@ class NewConsultationComment extends Component
 
     public function handlerSubmit(): void
     {
+        dd($this->body);
         if ($this->consultationRequest->consultationComment == null){
             $this->store();
         }else{
