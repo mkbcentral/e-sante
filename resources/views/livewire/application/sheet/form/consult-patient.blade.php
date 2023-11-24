@@ -1,7 +1,7 @@
 <div>
     <div class="card">
         <div class="card-header bg-primary ">
-            <div class="d-flex  justify-content-between  align-items-center">
+            <div class="d-flex  justify-content-between  align-items-centersq">
                 <h4>LISTE DES EXAMENS PARACLINIQUES</h4>
                 <x-form.button class="btn-danger">
                     <i class="fa fa-capsules"></i> Nouvelle ordonnance
