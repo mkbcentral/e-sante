@@ -1,18 +1,28 @@
 <div>
-    <div class="card p-2" wire:ignore>
-        <div class="card-body">
-            <div class="form-group " >
-                <x-form.input-editor wire:ignore  :id="'body'" wire:model="body" />
-                <x-errors.validation-error value='body' />
-            </div>
-            <div class=" d-flex justify-content-end">
-                @if($consultationRequest != null)
-                    <x-form.button wire:click="handlerSubmit"
-                                   class="btn-dark" type='button'>
-                        <i class="fa fa-plus-circle"></i> Ajouter à la consultation</x-form.button>
-                @endif
-            </div>
+    <div wire:ignore>
+        <div class="form-group " >
+            <x-form.input-editor  wire:ignore  :id="'body'" wire:model="body" />
+            <x-errors.validation-error value='body' />
         </div>
-
+        <div class=" d-flex justify-content-between">
+            <x-form.button wire:click="addNewDiagnostic"
+                           class="btn-secondary" type='button'>
+                <i class="fa fa-file"></i> Autres</x-form.button>
+            @if($consultationRequest != null)
+                <x-form.button wire:click="handlerSubmit"
+                               class="btn-dark" type='button'>
+                    <i class="fa fa-plus-circle"></i>
+                    Ajouter à la consultation
+                </x-form.button>
+            @endif
+        </div>
     </div>
+    @push('js')
+        <script type="module">
+            //Open edit sheet modal
+            window.addEventListener('open-diagnostic-items',e=>{
+                $('#diagnostic-items').modal('show')
+            });
+        </script>
+    @endpush
 </div>

@@ -1,6 +1,5 @@
 <div>
     @livewire('application.sheet.form.new-consultation-sheet')
-    @livewire('application.sheet.form.edit-consultation-sheet')
     @livewire('application.sheet.form.new-consultation-request')
     <div class="card mt-2">
         <div class="card-body">
@@ -69,13 +68,9 @@
     </div>
     @push('js')
         <script type="module">
-            //Open create new sheet modal
+            //Open  new sheet form modal
             window.addEventListener('open-form-new',e=>{
                 $('#new-sheet-form').modal('show')
-            });
-            //Open edit sheet modal
-            window.addEventListener('open-form',e=>{
-                $('#form-edit-sheet').modal('show')
             });
             //Open edit sheet modal
             window.addEventListener('open-new-request-form',e=>{

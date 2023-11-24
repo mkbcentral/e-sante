@@ -14,7 +14,6 @@ class ConsultPatient extends Component
         'selectedIndex'=>'getSelectedIndex',
     ];
     public array $tarifsSelected=[];
-
     #[Url(as: 'q')]
     public $q = '';
     #[Url(as: 'sortBy')]
@@ -22,8 +21,16 @@ class ConsultPatient extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
     public int $selectedIndex;
-
     public ?ConsultationRequest $consultationRequest;
+
+    public function updatedTarifsSelected($val){
+        try {
+            $this->consultationRequest->tarifs()->sync($this->tarifsSelected);
+            $this->dispatch('added', ['message' => 'Action bien réalisée']);
+        }catch (\Exception $exception){
+            $this->dispatch('error', ['message' => $exception->getMessage()]);
+        }
+    }
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
@@ -39,21 +46,6 @@ class ConsultPatient extends Component
             $this->sortAsc=!$this->sortAsc;
         }
         $this->sortBy = $value;
-    }
-
-    public function addItemsToConsultation(): void
-    {
-        try {
-            if ($this->tarifsSelected==[]){
-                $this->dispatch('error', ['message' => 'Aucun élément selectionner SVP !']);
-            }else{
-                $this->consultationRequest->tarifs()->sync($this->tarifsSelected);
-                $this->dispatch('added', ['message' => 'Action bien réalisée']);
-            }
-          ;
-        }catch (\Exception $exception){
-            $this->dispatch('error', ['message' => $exception->getMessage()]);
-        }
     }
     public function addNewComment(): void
     {

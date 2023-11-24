@@ -1,9 +1,9 @@
 <div>
     <x-modal.build-modal-fixed
         idModal='new-sheet-form'
-        size='xl' headerLabel="CREER UNE NOUVELLE FICHE DE CONSULTATION "
+        size='xl' headerLabel="{{$sheet==null?'CREER UNE NOUVELLE FICHE DE CONSULTATION':'METTRE A JOUR FICHE DE CONSULTATION'}}"
         headerLabelIcon='fa fa-folder-plus'>
-        <form wire:submit='store'>
+        <form wire:submit='handlerSubmit'>
             <div class="card">
                 <div class="card-body">
                     <div class="card p-2">
