@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\TypePatient;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -17,7 +18,7 @@ class ListTypePatientWidget extends Component
     public function __construct()
     {
         $this->listType=TypePatient::orderBy('name','ASC')
-            ->where('hospital_id',1)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
             ->get();
     }
 

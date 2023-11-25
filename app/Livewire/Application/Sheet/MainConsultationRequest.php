@@ -2,11 +2,15 @@
 
 namespace App\Livewire\Application\Sheet;
 
+use App\Models\Hospital;
 use App\Models\Subscription;
 use Livewire\Component;
 
 class MainConsultationRequest extends Component
 {
+    protected $listeners=[
+        'refreshConsulting'=>'$refresh'
+    ];
     public int $selectedIndex=1;
     public  function changeIndex(Subscription $subscription): void
     {
@@ -16,7 +20,7 @@ class MainConsultationRequest extends Component
     public function render()
     {
         return view('livewire.application.sheet.main-consultation-request',[
-            'subscriptions'=>Subscription::where('hospital_id',1)->get(),
+            'subscriptions'=>Subscription::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get(),
         ]);
     }
 }

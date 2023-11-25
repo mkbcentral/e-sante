@@ -9,7 +9,8 @@ class FolderPatient extends Component
 {
     public int $sheetId;
     public ?ConsultationSheet $consultationSheet;
-    public function mount(){
+    public function mount(): void
+    {
        $this->consultationSheet=ConsultationSheet::find($this->sheetId);
     }
     public function render()

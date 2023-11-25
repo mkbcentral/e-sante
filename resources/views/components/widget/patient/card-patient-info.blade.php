@@ -9,7 +9,7 @@
         <div class="row invoice-info">
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
-                <h3 class="text-uppercase text-primary"><b>N° Fiche: {{$consultationSheet->number_sheet.'/'.$consultationSheet->subscription->name}}</b></h3>
+                <h4 class="text-uppercase text-primary"><b>N° Fiche: {{$consultationSheet->number_sheet.'/'.$consultationSheet->subscription->name}}</b></h4>
                 <div class="h6">
                     <b>Noms:</b> <span class="text-uppercase">{{$consultationSheet->name}}</span><br>
                     <b>Genre:</b> {{$consultationSheet->gender}}<br>

@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\RuralArea;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -18,7 +19,7 @@ class ListRuralAreaWidget extends Component
     {
         $this->listRuralArea=RuralArea::join('municipalities','municipalities.id','=','rural_areas.municipality_id')
             ->where('municipalities.name',$this->municipalityName)
-            ->where('municipalities.hospital_id',1)
+            ->where('municipalities.hospital_id',Hospital::DEFAULT_HOSPITAL)
             ->select('rural_areas.*')->get();
     }
 

@@ -1,5 +1,7 @@
 <div>
     @livewire('application.diagnostic.diagnostic-for-consultation')
+    @livewire('application.sheet.widget.consultation-request-detail')
+    @livewire('application.sheet.widget.antecedent-medical')
     <div>
         <x-navigation.bread-crumb icon='fas fa-notes-medical' label='CONSULTER UN PATIENT'>
             <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
@@ -13,10 +15,15 @@
                 <div class="card p-2" >
                     <div class="card-body">
                        <div class="d-flex justify-content-end">
-                           <x-form.button wire:click="handlerSubmit"
-                                          class="btn-danger btn-sm mr-2" type='button'>
+                           <x-form.button wire:click="openAntecedentMedicalModal"
+                                          class="btn-danger btn-sm mr-1" type='button'>
                                <i class="fa fa-file"></i>
                                Antecedents médicaux
+                           </x-form.button>
+                           <x-form.button wire:click="openDetailConsultationModal"
+                                          class="btn-secondary btn-sm mr-1" type='button'>
+                               <i class="fa fa-eye"></i>
+                               Viesualiser
                            </x-form.button>
                            <x-form.button wire:click="handlerSubmit"
                                           class="btn-primary btn-sm" type='button'>
@@ -48,4 +55,16 @@
             </div>
         </x-content.main-content-page>
     </div>
+    @push('js')
+        <script type="module">
+            //Open detail consultation  modal
+            window.addEventListener('open-details-consultation',e=>{
+                $('#consultation-detail').modal('show')
+            });
+            //Open antecedent medical  modal
+            window.addEventListener('open-antecedent-medical',e=>{
+                $('#antecedent-medical').modal('show')
+            });
+        </script>
+    @endpush
 </div>

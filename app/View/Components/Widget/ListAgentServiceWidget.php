@@ -3,6 +3,7 @@
 namespace App\View\Components\Widget;
 
 use App\Models\AgentService;
+use App\Models\Hospital;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ class ListAgentServiceWidget extends Component
      */
     public function __construct()
     {
-        $this->listServices=AgentService::where('hospital_id',1)
+        $this->listServices=AgentService::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
             ->get();
     }
 

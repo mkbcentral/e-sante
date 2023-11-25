@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet\Form;
 
 use App\Models\ConsultationRequest;
+use App\Models\Hospital;
 use App\Models\MedicalOffice;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -90,7 +91,9 @@ class AddViatlSign extends Component
     public function render()
     {
         return view('livewire.application.sheet.form.add-viatl-sign',[
-            'medicalOffices'=>MedicalOffice::where('medical_offices.hospital_id',1)->get()
+            'medicalOffices'=>MedicalOffice::where('medical_offices.hospital_id',1)
+                ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+                ->get()
         ]);
     }
 }

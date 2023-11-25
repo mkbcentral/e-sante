@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\Municipality;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class ListMunicipalityWidget extends Component
      */
     public function __construct()
     {
-        $this->listMunicipalities=Municipality::where('hospital_id',1)
+        $this->listMunicipalities=Municipality::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
             ->get();
     }
 

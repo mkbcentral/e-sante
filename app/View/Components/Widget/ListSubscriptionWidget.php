@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\Subscription;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -17,7 +18,7 @@ class ListSubscriptionWidget extends Component
     public function __construct()
     {
         $this->listSubscription=Subscription::orderBy('name','ASC')
-            ->where('hospital_id',1)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
             ->get();
     }
 

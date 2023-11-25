@@ -3,6 +3,7 @@
 namespace App\View\Components\Widget;
 
 use App\Models\Consultation;
+use App\Models\Hospital;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -15,7 +16,7 @@ class ListConsultationWidget extends Component
      */
     public function __construct()
     {
-        $this->listConsultation=Consultation::where('hospital_id',1)->get();
+        $this->listConsultation=Consultation::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get();
     }
 
     /**

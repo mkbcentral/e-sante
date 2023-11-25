@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationSheet;
+use App\Models\Hospital;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -90,7 +91,7 @@ class ListSheet extends Component
                     });
                 })->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
                 ->select('consultation_sheets.*','subscriptions.name as subscription')
-                ->where('consultation_sheets.hospital_id',1)
+                ->where('consultation_sheets.hospital_id',Hospital::DEFAULT_HOSPITAL)
                 ->paginate(10)
         ]);
     }

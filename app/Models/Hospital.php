@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Hospital extends Model
 {
     use HasFactory;
-
+    const DEFAULT_HOSPITAL=1;
     /**
      * Get all of the consultationSheets for the Subscription
      *

@@ -13,13 +13,8 @@ class NewConsultationComment extends Component
     protected $listeners=['consultationRequest'=>'getConsultationRequest'];
     public ?ConsultationRequest $consultationRequest;
 
-    #[Rule('required|min:3|string',message: 'Champs est obligatoire SVP',onUpdate: false)]
-    public $body = '';
-
-    public function updatedBody($val){
-        $this->body=$val;
-
-    }
+    #[Rule('required|min:3|string',message: 'Champs est obligatoire SVP')]
+    public $note = '';
 
     public function addNewDiagnostic(): void
     {
@@ -30,6 +25,7 @@ class NewConsultationComment extends Component
         $fields= $this->validate();
         try {
             $fields['consultation_request_id']=$this->consultationRequest->id;
+            $fields['body']=$this->note;
             ConsultationComment::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         }catch (Exception $exception){
@@ -40,6 +36,7 @@ class NewConsultationComment extends Component
     public function update(){
         $fields= $this->validate();
         try {
+            $fields['body']=$this->note;
             $this->consultationRequest->consultationComment->update($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         }catch (Exception $exception){
@@ -49,18 +46,17 @@ class NewConsultationComment extends Component
 
     public function handlerSubmit(): void
     {
-        dd($this->body);
         if ($this->consultationRequest->consultationComment == null){
             $this->store();
         }else{
             $this->update();
         }
     }
-
-    public function mount(ConsultationRequest $consultationRequest){
+    public function mount(ConsultationRequest $consultationRequest): void
+    {
         $this->consultationRequest=$consultationRequest;
         if ($this->consultationRequest?->consultationComment != null){
-            $this->body=$this->consultationRequest->consultationComment->body;
+            $this->note=$this->consultationRequest->consultationComment->body;
         }
 ;    }
     public function render()

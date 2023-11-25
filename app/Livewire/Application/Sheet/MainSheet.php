@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet;
 
 use App\Models\ConsultationSheet;
+use App\Models\Hospital;
 use App\Models\Subscription;
 use Livewire\Component;
 
@@ -18,7 +19,7 @@ class MainSheet extends Component
     public function render()
     {
         return view('livewire.application.sheet.main-sheet',[
-            'subscriptions'=>Subscription::where('hospital_id',1)->get(),
+            'subscriptions'=>Subscription::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get(),
         ]);
     }
 }

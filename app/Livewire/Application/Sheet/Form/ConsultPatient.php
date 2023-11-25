@@ -3,7 +3,7 @@
 namespace App\Livewire\Application\Sheet\Form;
 
 use App\Models\ConsultationRequest;
-use App\Models\Diagnostic;
+use App\Models\Hospital;
 use App\Models\Tarif;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -12,6 +12,7 @@ class ConsultPatient extends Component
 {
     protected $listeners=[
         'selectedIndex'=>'getSelectedIndex',
+        'refreshConsulting'=>'$refresh'
     ];
     public array $tarifsSelected=[];
     #[Url(as: 'q')]
@@ -23,7 +24,8 @@ class ConsultPatient extends Component
     public int $selectedIndex;
     public ?ConsultationRequest $consultationRequest;
 
-    public function updatedTarifsSelected($val){
+    public function updatedTarifsSelected($val): void
+    {
         try {
             $this->consultationRequest->tarifs()->sync($this->tarifsSelected);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -64,7 +66,7 @@ class ConsultPatient extends Component
                 })->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
                 ->select('tarifs.*')
                 ->where('tarifs.is_changed',false)
-                ->where('category_tarifs.hospital_id',1)
+                ->where('category_tarifs.hospital_id',Hospital::DEFAULT_HOSPITAL)
                 ->get()
         ]);
     }

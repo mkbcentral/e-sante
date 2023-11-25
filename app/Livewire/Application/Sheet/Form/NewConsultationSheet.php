@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Sheet\Form;
 
 use App\Livewire\Forms\SheetForm;
 use App\Models\ConsultationSheet;
+use App\Models\Hospital;
 use App\Models\Subscription;
 use Livewire\Component;
 
@@ -36,7 +37,7 @@ class NewConsultationSheet extends Component
         $this->validate();
         try {
             $fields = $this->form->all();
-            $fields['hospital_id'] = 1;
+            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL;
             $fields['subscription_id'] = $this->selectedIndex;
             ConsultationSheet::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -70,7 +71,9 @@ class NewConsultationSheet extends Component
 
     public function mount()
     {
-        $last_number_sheet = ConsultationSheet::orderBy('created_at', 'DESC')->first()->number_sheet;
+        $last_number_sheet = ConsultationSheet::orderBy('created_at', 'DESC')
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->first()->number_sheet;
         $this->form->number_sheet = $last_number_sheet;
     }
 

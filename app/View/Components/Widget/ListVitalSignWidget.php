@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\VitalSign;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class ListVitalSignWidget extends Component
      */
     public function __construct()
     {
-        $this->listVitalSign=VitalSign::where('hospital_id',1)->get();
+        $this->listVitalSign=VitalSign::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get();
     }
 
     /**
