@@ -1,7 +1,7 @@
 <div>
     <x-modal.build-modal-fixed
         idModal='new-sheet-form'
-        size='xl' headerLabel="{{$sheet==null?'CREER UNE NOUVELLE FICHE DE CONSULTATION':'METTRE A JOUR FICHE DE CONSULTATION'}}"
+        size='xl' headerLabel="{!!$sheet==null?'CREER UNE NOUVELLE FICHE DE CONSULTATION':'METTRE A JOUR FICHE DE CONSULTATION' !!}"
         headerLabelIcon='fa fa-folder-plus'>
         <form wire:submit='handlerSubmit'>
             <div class="card">
@@ -101,19 +101,41 @@
                     </div>
                     <div class="row">
                         @if($subscription?->is_personnel)
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <x-form.label value="{{ __('Service') }}" />
                                     <x-widget.list-agent-service-widget wire:model.blur='form.agent_service_id' :error="'form.agent_service_id'" />
                                     <x-errors.validation-error value='form.agent_service_id' />
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <x-form.label value="{{ __('Type consultation') }}" />
+                                    <x-widget.list-consultation-widget wire:model.blur='form.consultation_id' :error="'consultation_id'" />
+                                    <x-errors.validation-error value='consultation_id' />
+                                </div>
+                            </div>
                         @elseif($subscription?->is_subscriber)
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <x-form.label value="{{ __('N° matricule') }}" />
                                     <x-form.input type='text' wire:model.blur='form.registration_number' :error="'form.registration_number'" />
                                     <x-errors.validation-error value='form.registration_number' />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <x-form.label value="{{ __('Type consultation') }}" />
+                                    <x-widget.list-consultation-widget wire:model.blur='form.consultation_id' :error="'consultation_id'" />
+                                    <x-errors.validation-error value='consultation_id' />
+                                </div>
+                            </div>
+                        @else
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <x-form.label value="{{ __('Type consultation') }}" />
+                                    <x-widget.list-consultation-widget wire:model.blur='form.consultation_id' :error="'consultation_id'" />
+                                    <x-errors.validation-error value='consultation_id' />
                                 </div>
                             </div>
                         @endif

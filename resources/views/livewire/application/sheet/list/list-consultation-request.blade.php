@@ -38,7 +38,7 @@
                             <td class="text-center">{{$consultationRequest->created_at->format('d/m/Y h:i')}}</td>
                             <td class="text-center">{{$consultationRequest->consultationSheet->number_sheet}}</td>
                             <td class="text-uppercase">{{$consultationRequest->consultationSheet->name}}</td>
-                            <td class="text-center fa fadoc">{{$consultationRequest->consultationSheet->gender}}</td>
+                            <td class="text-center">{{$consultationRequest->consultationSheet->gender}}</td>
                             <td class="text-center">{{$consultationRequest->consultationSheet->getPatientAge()}}</td>
                             <td class="text-center text-bold text-uppercase">{{$consultationRequest->consultationSheet->subscription->name}}</td>
                             <td class="text-center">

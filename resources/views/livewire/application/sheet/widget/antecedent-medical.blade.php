@@ -7,7 +7,7 @@
             @if($consultationRequest != null)
                 <x-widget.patient.card-patient-info
                     :consultationSheet='$consultationRequest->consultationSheet' />
-                <div>{!! htmlspecialchars_decode($consultationRequest->consultationComment->body)!!}</div>
+                <div>{!! htmlspecialchars_decode($consultationRequest?->consultationComment?->body)!!}</div>
             @endif
         </div>
     </x-modal.build-modal-fixed>

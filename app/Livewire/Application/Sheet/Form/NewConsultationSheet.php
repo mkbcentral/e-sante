@@ -6,6 +6,8 @@ use App\Livewire\Forms\SheetForm;
 use App\Models\ConsultationSheet;
 use App\Models\Hospital;
 use App\Models\Subscription;
+use App\Repositories\Sheet\Creation\CreateNewConsultationRequestRepository;
+use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
 use Livewire\Component;
 
 class NewConsultationSheet extends Component
@@ -17,11 +19,22 @@ class NewConsultationSheet extends Component
     public string $municipality_name = '';
     public ?ConsultationSheet $sheet=null;
 
+    /**
+     * Get subscription selected in parent component
+     * @param int $selectedIndex
+     * @return void
+     */
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;
         $this->subscription = Subscription::find($this->selectedIndex);
     }
+
+    /**
+     * Get sheet selected in parent component
+     * @param ConsultationSheet|null $sheet
+     * @return void
+     */
     public function getSheet(?ConsultationSheet $sheet): void
     {
         $this->sheet = $sheet;
@@ -32,6 +45,10 @@ class NewConsultationSheet extends Component
         }
     }
 
+    /**
+     * Create new Consultation Sheet
+     * @return void
+     */
     public function store(): void
     {
         $this->validate();
@@ -39,17 +56,34 @@ class NewConsultationSheet extends Component
             $fields = $this->form->all();
             $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL;
             $fields['subscription_id'] = $this->selectedIndex;
-            ConsultationSheet::create($fields);
-            $this->dispatch('added', ['message' => 'Action bien réalisée']);
-            $this->dispatch('listSheetRefreshed');
-            $this->dispatch('close-form-new');
+            $existingSheet=GetConsultationSheetRepository::getExistingConsultationSheet(
+                $this->form->name,
+                $this->form->gender
+            );
+            if ($existingSheet==null){
+                $sheet=ConsultationSheet::create($fields);
+                CreateNewConsultationRequestRepository::create([
+                    'consultation_sheet_id' => $sheet->id,
+                    'consultation_id' => $this->form->consultation_id
+                ]);
+                $this->dispatch('added', ['message' => 'Action bien réalisée']);
+                $this->dispatch('listSheetRefreshed');
+                $this->dispatch('close-form-new');
+            }else{
+                $this->dispatch('error', ['message' => 'Action impossible, Ce patient existe déjà']);
+            }
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
 
+    /**
+     * Update Consultation Sheet
+     * @return void
+     */
     public function update(): void
     {
+        $this->validate();
         try {
             $this->sheet->update($this->form->all());
             $this->dispatch('close-form-new');
@@ -60,7 +94,11 @@ class NewConsultationSheet extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-    public function handlerSubmit()
+    /**
+     * Handler specific action
+     * @return void
+     */
+    public function handlerSubmit(): void
     {
         if ($this->sheet == null) {
             $this->store();
@@ -68,13 +106,14 @@ class NewConsultationSheet extends Component
             $this->update();
         }
     }
-
+    /**
+     * Mounted component
+     * @return void
+     */
     public function mount()
     {
-        $last_number_sheet = ConsultationSheet::orderBy('created_at', 'DESC')
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
-            ->first()->number_sheet;
-        $this->form->number_sheet = $last_number_sheet;
+        //Initialize sheet number
+        $this->form->number_sheet = GetConsultationSheetRepository::getLastConsultationSheetNumber();
     }
 
     public function render()

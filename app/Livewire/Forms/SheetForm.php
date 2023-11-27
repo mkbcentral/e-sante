@@ -51,4 +51,7 @@ class SheetForm extends Form
 
     #[Rule('required|numeric',message: 'Type patient obligatoire')]
     public $type_patient_id;
+
+    #[Rule('required|numeric',message: 'Type consultation obligatoire')]
+    public $consultation_id='';
 }

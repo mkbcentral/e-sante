@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ConsultationSheet extends Model
@@ -67,8 +68,8 @@ class ConsultationSheet extends Model
         return $this->belongsTo(TypePatient::class, 'type_patient_id');
     }
 
-    public function consultationRequest():HasOne{
-        return $this->hasOne(ConsultationRequest::class);
+    public function consultationRequests():HasMany{
+        return $this->hasMany(ConsultationRequest::class);
     }
 
     public function  getFreshConsultation():ConsultationRequest{

@@ -5,7 +5,7 @@
             <x-errors.validation-error value='note' />
         </div>
         <div class=" d-flex justify-content-between">
-            <x-form.button wire:click="addNewDiagnostic"
+            <x-form.button wire:click="openModalToAddDiagnosticItems"
                            class="btn-secondary" type='button'>
                 <i class="fa fa-file"></i> Autres</x-form.button>
             @if($consultationRequest != null && $note != '')

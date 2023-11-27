@@ -12,29 +12,23 @@
             @if($consultationSheet != null)
                 <x-widget.patient.card-patient-info :consultationSheet='$consultationSheet' />
             @endif
-                <div class="card p-2" >
-                    <div class="card-body">
-                       <div class="d-flex justify-content-end">
-                           <x-form.button wire:click="openAntecedentMedicalModal"
-                                          class="btn-danger btn-sm mr-1" type='button'>
-                               <i class="fa fa-file"></i>
-                               Antecedents médicaux
-                           </x-form.button>
-                           <x-form.button wire:click="openDetailConsultationModal"
-                                          class="btn-secondary btn-sm mr-1" type='button'>
-                               <i class="fa fa-eye"></i>
-                               Viesualiser
-                           </x-form.button>
-                           <x-form.button wire:click="handlerSubmit"
-                                          class="btn-primary btn-sm" type='button'>
-                               <i class="fa fa-capsules"></i>
-                               Nouvelle ordonnance
-                           </x-form.button>
-                       </div>
-                        @livewire('application.sheet.form.new-consultation-comment',['consultationRequest'=>$consultationRequest])
-                    </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <x-form.button wire:click="openAntecedentMedicalModal"
+                                   class="btn-danger btn-sm mr-1" type='button'>
+                        <i class="fa fa-file"></i>
+                        Antecedents médicaux
+                    </x-form.button>
+                    <x-form.button wire:click="openDetailConsultationModal"
+                                   class="btn-secondary btn-sm mr-1" type='button'>
+                        <i class="fa fa-eye"></i>
+                        Viesualiser
+                    </x-form.button>
+                    <x-form.button wire:click="handlerSubmit"
+                                   class="btn-primary btn-sm" type='button'>
+                        <i class="fa fa-capsules"></i>
+                        Nouvelle ordonnance
+                    </x-form.button>
                 </div>
-
             <div class="card">
                 <div class="card-header p-2" >
                     <ul class="nav nav-pills">
@@ -51,6 +45,9 @@
                 </div>
                 <div class="card-body">
                     @livewire('application.sheet.form.consult-patient',['consultationRequest'=>$consultationRequest,'selectedIndex'=>$selectedIndex])
+                    <div>
+                        @livewire('application.sheet.form.new-consultation-comment',['consultationRequest'=>$consultationRequest])
+                    </div>
                 </div>
             </div>
         </x-content.main-content-page>

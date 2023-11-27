@@ -17,8 +17,14 @@
                             </a>
                         </li>
                     @endforeach
-                        <x-form.button class="btn-dark ml-2" wire:click="showCategoryTarifPage"><x-icons.icon-plus-circle/> Nouvelle categorie</x-form.button>
+
                 </ul>
+                <div class="d-flex justify-content-end">
+                    <x-form.button class="btn-dark ml-2" wire:click="showCategoryTarifPage">
+                        <x-icons.icon-plus-circle/>
+                        Nouvelle categorie
+                    </x-form.button>
+                </div>
             </div>
             <div CLASS="row">
                 <div class="col-md-8">

@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Tarification\List;
 
 use App\Models\Tarif;
+use App\Repositories\Tarif\GetListTarifRepository;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -37,17 +38,35 @@ class ListTarif extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
+    /**
+     * Get Category Tarif id on selected id in parent view
+     * @param int $selectedIndex
+     * @return void
+     */
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
         $this->resetPage();
     }
+
+    /**
+     * Show delete Tarif dialog
+     * @param Tarif $tarif
+     * @return void
+     */
     public function showDeleteDialog(Tarif $tarif): void
     {
         $this->tarif=$tarif;
         $this->dispatch('delete-tarif-dialog');
     }
-    public  function edit(Tarif $tarif){
+
+    /**
+     * Get Tarif to update
+     * @param Tarif $tarif
+     * @return void
+     */
+    public  function edit(Tarif $tarif): void
+    {
         $this->isEditing=true;
         $this->tarif=$tarif;
         $this->idSelected=$tarif->id;
@@ -56,7 +75,10 @@ class ListTarif extends Component
         $this->price_private=$tarif->price_private;
         $this->subscriber_price=$tarif->subscriber_price;
     }
-
+    /**
+     * Update tarif
+     * @return void
+     */
     public function update(): void
     {
        $fields= $this->validate();
@@ -70,16 +92,27 @@ class ListTarif extends Component
         }
     }
 
+    /**
+     * Make deleted tarif to change is_changed value to true or false
+     * Disable en enable state of tarif
+     * @return void
+     */
     public function delete(): void
     {
         try {
             $this->tarif->is_changed=true;
             $this->tarif->update();
-            $this->dispatch('tarif-deleted', ['message' => "Fiche de consultation bien rétiré !"]);
+            $this->dispatch('tarif-deleted', ['message' => "Tarif bien rétiré !"]);
         }catch (\Exception $ex){
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
+
+    /**
+     * Sort tarif (Asc or Desc
+     * @param $value
+     * @return void
+     */
     public function sortTarif($value): void
     {
         if($value==$this->sortBy){
@@ -95,19 +128,13 @@ class ListTarif extends Component
     public function render()
     {
         return view('livewire.application.tarification.list.list-tarif',[
-            'tarifs'=>Tarif::join('category_tarifs','category_tarifs.id','tarifs.category_tarif_id')
-            ->where('tarifs.category_tarif_id',$this->selectedIndex)
-                ->when($this->q, function ($query) {
-                    return $query->where(function ($query) {
-                        return $query->where('tarifs.name', 'like', '%' . $this->q . '%')
-                            ->orWhere('tarifs.price_private', 'like', '%' . $this->q . '%')
-                            ->orWhere('tarifs.subscriber_price', 'like', '%' . $this->q . '%');
-                    });
-                })->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
-                ->select('tarifs.*','category_tarifs.name as category')
-                ->where('tarifs.is_changed',false)
-                ->where('category_tarifs.hospital_id',1)
-                ->paginate(5)
+            'tarifs'=> GetListTarifRepository::getListTarif(
+                $this->q,
+                $this->sortBy,
+                $this->sortAsc,
+                $this->selectedIndex,
+                5
+            )
         ]);
     }
 }

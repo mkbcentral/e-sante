@@ -4,6 +4,10 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
+use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -25,18 +29,33 @@ class ListConsultationRequest extends Component
     public $sortAsc = true;
 
 
+    /**
+     * Get Consultation Sheet if listener emitted in parent veiew
+     * @param int $selectedIndex
+     * @return void
+     */
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex=$selectedIndex;
         $this->resetPage();
     }
 
+    /**
+     * Open vital sign modal
+     * @param ConsultationRequest $consultationRequest
+     * @return void
+     */
     public  function openVitalSignForm(ConsultationRequest $consultationRequest): void
     {
         $this->dispatch('open-vital-sign-form');
         $this->dispatch('consultationRequest',$consultationRequest);
     }
 
+    /**
+     * Sort data (ASC or DESC)
+     * @param $value
+     * @return void
+     */
     public function sortSheet($value): void
     {
         if($value==$this->sortBy){
@@ -49,22 +68,19 @@ class ListConsultationRequest extends Component
         $this->selectedIndex=$selectedIndex;
     }
 
+    /**
+     * Render component
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('livewire.application.sheet.list.list-consultation-request',[
-            'listConsultationRequest'=>ConsultationRequest::
-                join('consultation_sheets','consultation_sheets.id','consultation_requests.consultation_sheet_id')
-                ->where('consultation_sheets.subscription_id',$this->selectedIndex)
-                ->when($this->q, function ($query) {
-                    return $query->where(function ($query) {
-                        return $query->where('consultation_sheets.name', 'like', '%' . $this->q . '%')
-                            ->orWhere('consultation_sheets.number_sheet', 'like', '%' . $this->q . '%');
-                    });
-                })->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
-                ->select('consultation_requests.*')
-                ->with(['consultationSheet.subscription'])
-                ->where('consultation_sheets.hospital_id',Hospital::DEFAULT_HOSPITAL)
-                ->paginate(15)
+            'listConsultationRequest'=>GetConsultationRequestRepository::getConsultationRequest(
+                $this->selectedIndex,
+                $this->q,
+                $this->sortBy,
+                $this->sortAsc
+            )
         ]);
     }
 }

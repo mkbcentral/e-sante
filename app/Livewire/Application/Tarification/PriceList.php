@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Application\Tarification;
 
-use App\Models\CategoryTarif;
-use App\Models\Tarif;
+use App\Repositories\Tarif\GetListTarifRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -19,11 +21,22 @@ class PriceList extends Component
     public $sortAsc = true;
 
 
+    /**
+     * Pass key to search when ketToSearch listener emitted
+     * Change state of Q property
+     * @param $val
+     * @return void
+     */
     public function updatedQ($val): void
     {
         $this->dispatch('ketToSearch',$val);
     }
 
+    /**
+     * Sort Tarif
+     * @param $value
+     * @return void
+     */
     public function sortTarif($value): void
     {
         if($value==$this->sortBy){
@@ -32,22 +45,20 @@ class PriceList extends Component
         $this->sortBy = $value;
     }
 
+    /**
+     * Render component
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('livewire.application.tarification.price-list',[
-            'tarifs'=>Tarif::join('category_tarifs','category_tarifs.id','tarifs.category_tarif_id')
-                ->when($this->q, function ($query) {
-                    return $query->where(function ($query) {
-                        return $query->where('tarifs.name', 'like', '%' . $this->q . '%')
-                            ->orWhere('tarifs.price_private', 'like', '%' . $this->q . '%')
-                            ->orWhere('tarifs.subscriber_price', 'like', '%' . $this->q . '%');
-                    });
-                })->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
-                ->where('tarifs.is_changed',false)
-                ->select('tarifs.*','category_tarifs.name as category')
-                ->where('tarifs.category_tarif_id','like','%'.$this->category.'%')
-                ->where('category_tarifs.hospital_id',1)
-            ->paginate(15)
+            'tarifs'=>GetListTarifRepository::getListTarif(
+                $this->q,
+                $this->sortBy,
+                $this->sortAsc,
+                $this->category,
+                15
+            )
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <div class="mt-2 pr-3">
     <div class="card">
-        <div class="card-header bg-primary"><h5><x-icons.icon-plus-circle/> CREATION D'UN NOUVEAU TARIF</h5></div>
+        <div class="card-header bg-primary"><h6><x-icons.icon-plus-circle/> CREATION D'UN NOUVEAU TARIF</h6></div>
        <form wire:submit='store'>
            <div class="card-body">
                <div class="form-group">
