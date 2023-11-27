@@ -42,7 +42,7 @@ class ListSheet extends Component
     public  function newSheet(): void
     {
         $this->dispatch('selectedIndex',$this->selectedIndex);
-        $this->dispatch('sheetInfo');
+        $this->dispatch('emptySheet');
         $this->dispatch('open-form-new');
     }
     /**

@@ -7,7 +7,7 @@ use Livewire\Form;
 
 class SheetForm extends Form
 {
-    #[Rule('required|min:3|string',message: 'Numéro fiche obligation',onUpdate: false)]
+    #[Rule('required|numeric',message: 'Numéro fiche obligation',onUpdate: false)]
     public $number_sheet = '';
 
     #[Rule('required|min:3|string',message: 'Nom patient obligatoire')]

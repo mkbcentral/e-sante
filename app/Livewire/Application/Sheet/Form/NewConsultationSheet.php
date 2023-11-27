@@ -12,7 +12,11 @@ use Livewire\Component;
 
 class NewConsultationSheet extends Component
 {
-    protected $listeners = ['selectedIndex' => 'getSelectedIndex', 'sheetInfo' => 'getSheet'];
+    protected $listeners = [
+        'selectedIndex' => 'getSelectedIndex',
+        'emptySheet'=>'getEmptySheet',
+        'sheetInfo' => 'getSheet'
+    ];
     public SheetForm $form;
     public int $selectedIndex = 0;
     public ?Subscription $subscription;
@@ -30,6 +34,13 @@ class NewConsultationSheet extends Component
         $this->subscription = Subscription::find($this->selectedIndex);
     }
 
+    public  function getEmptySheet(): void
+    {
+        $this->sheet=null;
+        $this->form->reset();
+        $this->form->number_sheet = GetConsultationSheetRepository::getLastConsultationSheetNumber();
+    }
+
     /**
      * Get sheet selected in parent component
      * @param ConsultationSheet|null $sheet
@@ -38,11 +49,7 @@ class NewConsultationSheet extends Component
     public function getSheet(?ConsultationSheet $sheet): void
     {
         $this->sheet = $sheet;
-        if ($this->sheet == null) {
-            $this->form->reset();
-        }else{
-            $this->form->fill($sheet->toArray());
-        }
+        $this->form->fill($sheet->toArray());
     }
 
     /**
@@ -83,13 +90,13 @@ class NewConsultationSheet extends Component
      */
     public function update(): void
     {
-        $this->validate();
         try {
             $this->sheet->update($this->form->all());
             $this->dispatch('close-form-new');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('listSheetRefreshed');
             $this->form->reset();
+            $this->sheet=null;
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

@@ -13,6 +13,8 @@ use App\Models\Gender;
 use App\Models\Hospital;
 use App\Models\MedicalOffice;
 use App\Models\Municipality;
+use App\Models\ProductCategory;
+use App\Models\ProductFamily;
 use App\Models\Rate;
 use App\Models\RuralArea;
 use App\Models\Subscription;
@@ -28,6 +30,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        ProductFamily::insert([
+            'name'=>'ANTI TOUSSIF',
+            'name'=>'ANTI PALU',
+            'name'=>'ANTI BIOTIQUE',
+        ]);
+
+        ProductCategory::insert([
+            [
+                'name'=>'Comrimé',
+                'abbreviation'=>'CE'
+            ],
+            [
+                'name'=>'INJECTABLE',
+                'abbreviation'=>'INJ'
+            ],
+            [
+                'name'=>'SIROP',
+                'abbreviation'=>'SP'
+            ],
+        ]);
 
         // \App\Models\User::factory(10)->create();
 
@@ -201,7 +224,7 @@ class DatabaseSeeder extends Seeder
 
             ['name'=>"CAB 3",'hospital_id'=>1]
         ]);
-        */
+
         Diagnostic::insert([
             ['name'=>'Maux de tête','hospital_id'=>1],
             ['name'=>'Bullure estomac','hospital_id'=>1],
@@ -209,5 +232,7 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Nausé','hospital_id'=>1],
             ['name'=>'','hospital_id'=>1],
         ]);
+        */
+
     }
 }
