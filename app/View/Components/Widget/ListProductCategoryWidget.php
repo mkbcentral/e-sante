@@ -14,7 +14,7 @@ class ListProductCategoryWidget extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(bool $isInForm=false)
     {
         $this->listCategory=ProductCategory::orderBy('name','ASC')->get();
     }

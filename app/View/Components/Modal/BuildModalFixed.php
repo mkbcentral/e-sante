@@ -15,7 +15,8 @@ class BuildModalFixed extends Component
         public string $idModal = '',
         public string $size = '',
         public string $headerLabel = '',
-        public string $headerLabelIcon
+        public string $headerLabelIcon,
+        public string $bg='bg-primary',
     ) {
         //
     }

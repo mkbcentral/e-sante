@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
+
         ProductFamily::insert([
             ['name' => 'ANTI TOUSSIF'],
             ['name' => 'ANTI PALU'],
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                 'abbreviation' => 'SP'
             ],
         ]);
-        */
+
         Product::factory(300)->create();
         // \App\Models\User::factory(10)->create();
 

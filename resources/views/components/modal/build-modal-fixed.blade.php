@@ -3,7 +3,7 @@
     aria-labelledby="{{ $idModal }}Label" data-backdrop="static" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-{{ $size }}" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
+            <div class="modal-header {{$bg}}">
                 <h5 class="modal-title" id="{{ $idModal }}Label">
                     <i class="{{ $headerLabelIcon }}"></i> {{ $headerLabel }}
                 </h5>
