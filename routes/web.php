@@ -8,6 +8,7 @@ use App\Livewire\Application\Tarification\TarifView;
 use App\Livewire\Application\Tarification\PriceList;
 use App\Livewire\Application\Sheet\MainConsultationRequest;
 use App\Livewire\Application\Sheet\MainConsultPatient;
+use App\Livewire\Application\Product\List\ListProduct;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::get('tarification',TarifView::class)->name('tarification');
 Route::get('tarification/prices',PriceList::class)->name('tarification.prices');
 Route::get('consultation/req',MainConsultationRequest::class)->name('consultation.req');
 Route::get('consultation/consult-patient/{consultationRequestId}',MainConsultPatient::class)->name('consultation.consult.patient');
+Route::get('product/list',ListProduct::class)->name('product.list');
 

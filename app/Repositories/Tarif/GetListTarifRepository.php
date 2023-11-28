@@ -51,7 +51,7 @@ class GetListTarifRepository
             ->where('tarifs.is_changed', false)
             ->select('tarifs.*', 'category_tarifs.name as category')
             ->where('tarifs.category_tarif_id', 'like', '%' . $category . '%')
-            ->where('category_tarifs.hospital_id', 1)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL)
             ->paginate($perPage);
     }
 

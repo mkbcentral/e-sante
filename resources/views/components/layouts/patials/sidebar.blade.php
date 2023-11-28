@@ -25,7 +25,11 @@
                  </x-navigation.nav-link>
                  <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate :active="request()->routeIs(['consultation.req','consultation.consult.patient'])">
                      <i class="fa fa-user-plus" aria-hidden="true"></i>
-                     <p>List consulation</p>
+                     <p>Liste consulation</p>
+                 </x-navigation.nav-link>
+                 <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate :active="request()->routeIs(['product.list'])">
+                     <i class="fa fa-capsules" aria-hidden="true"></i>
+                     <p>Liste Produits</p>
                  </x-navigation.nav-link>
              </ul>
 

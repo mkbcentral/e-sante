@@ -11,7 +11,7 @@ class BreadCrumb extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $icon='',public string $label='')
+    public function __construct(public string $icon='',public string $label='',public string $color='text-primary')
     {
         //
     }
