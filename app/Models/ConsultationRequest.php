@@ -40,6 +40,9 @@ class ConsultationRequest extends Model
     public function diagnostics():BelongsToMany{
         return $this->belongsToMany(Diagnostic::class,)->withPivot(['id']);
     }
+    public function products():BelongsToMany{
+        return $this->belongsToMany(Product::class)->withPivot('id','qty','dosage');
+    }
     public function consultationComment():HasOne{
         return  $this->hasOne(ConsultationComment::class);
     }

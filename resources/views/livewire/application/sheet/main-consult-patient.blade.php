@@ -2,6 +2,7 @@
     @livewire('application.diagnostic.diagnostic-for-consultation')
     @livewire('application.sheet.widget.consultation-request-detail')
     @livewire('application.sheet.widget.antecedent-medical')
+    @livewire('application.sheet.form.medical-prescription')
     <div>
         <x-navigation.bread-crumb icon='fas fa-notes-medical' label='CONSULTER UN PATIENT'>
             <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
@@ -14,20 +15,29 @@
             @endif
                 <div class="d-flex justify-content-end align-items-center">
                     <x-form.button wire:click="openAntecedentMedicalModal"
-                                   class="btn-danger btn-sm mr-1" type='button'>
+                                   class="btn-danger  mr-1" type='button'>
                         <i class="fa fa-file"></i>
                         Antecedents médicaux
                     </x-form.button>
                     <x-form.button wire:click="openDetailConsultationModal"
-                                   class="btn-secondary btn-sm mr-1" type='button'>
+                                   class="btn-secondary  mr-1" type='button'>
                         <i class="fa fa-eye"></i>
                         Viesualiser
                     </x-form.button>
-                    <x-form.button wire:click="handlerSubmit"
-                                   class="btn-primary btn-sm" type='button'>
-                        <i class="fa fa-capsules"></i>
-                        Nouvelle ordonnance
-                    </x-form.button>
+                    @if($consultationRequest->products->isEmpty())
+                        <x-form.button wire:click="openPrescriptionMedicalModal"
+                                       class="btn-primary " type='button'>
+                            <i class="fa fa-capsules"></i>
+                            Nouvelle ordonnance
+                        </x-form.button>
+                    @else
+                        <x-form.button wire:click="openPrescriptionMedicalModal"
+                                       class="btn-info " type='button'>
+                            <i class="fa fa-capsules"></i>
+                            Modfier ordonnace
+                        </x-form.button>
+                    @endif
+
                 </div>
             <div class="card">
                 <div class="card-header p-2" >
@@ -61,6 +71,10 @@
             //Open antecedent medical  modal
             window.addEventListener('open-antecedent-medical',e=>{
                 $('#antecedent-medical').modal('show')
+            });
+            //Open medical prescription modal
+            window.addEventListener('open-medical-prescription',e=>{
+                $('#form-medical-prescription').modal('show')
             });
         </script>
     @endpush

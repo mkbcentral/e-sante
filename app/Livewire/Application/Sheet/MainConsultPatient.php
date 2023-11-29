@@ -40,6 +40,12 @@ class MainConsultPatient extends Component
         $this->dispatch('open-antecedent-medical');
         $this->dispatch('consultationRequest',$this->consultationRequest);
     }
+
+    public function openPrescriptionMedicalModal(): void
+    {
+        $this->dispatch('open-medical-prescription');
+        $this->dispatch('consultationRequest',$this->consultationRequest);
+    }
     /**
      * Change index item selection on category tarif
      * @param CategoryTarif $category

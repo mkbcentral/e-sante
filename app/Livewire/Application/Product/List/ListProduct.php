@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Application\Product\List;
 
-use App\Models\Hospital;
 use App\Models\Product;
 use App\Repositories\Product\Get\GetProductRepository;
 use JetBrains\PhpStorm\NoReturn;
@@ -52,7 +51,7 @@ class ListProduct extends Component
         try {
             $this->product->delete();
             $this->dispatch('product-deleted', ['message' => "Produit bien supprimé !"]);
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }

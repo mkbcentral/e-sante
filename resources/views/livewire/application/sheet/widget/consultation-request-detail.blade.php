@@ -9,7 +9,7 @@
                     :consultationSheet='$consultationRequest->consultationSheet' />
                 @foreach($categoriesTarif as $index => $category)
                     @if(!$category->getConsultationTarifItemls($consultationRequest,$category)->isEmpty())
-                        <h4>{{$index+1}}.{{$category->name}}</h4>
+                        <h4>{{$category->name}}</h4>
                         <table class="table table-striped table-sm">
                             <thead class="bg-primary">
                             <tr>
@@ -54,6 +54,9 @@
                         </table>
                     @endif
                 @endforeach
+                <h4>MEDICATION</h4>
+                @livewire('application.product.widget.products-with-consultation-item-widget',
+                ['consultationRequest'=>$consultationRequest])
             @endif
         </div>
 
