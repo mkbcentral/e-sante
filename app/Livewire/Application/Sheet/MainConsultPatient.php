@@ -55,6 +55,7 @@ class MainConsultPatient extends Component
     {
         $this->selectedIndex=$category->id;
         $this->dispatch('selectedIndex',$this->selectedIndex);
+        $this->dispatch('refreshItemsTarifWidget',$category->id);
     }
 
     /**

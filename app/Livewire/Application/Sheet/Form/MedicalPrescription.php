@@ -24,6 +24,7 @@ class MedicalPrescription extends Component
 
     public function getConsultationRequest(?ConsultationRequest $consultationRequest): void
     {
+        $this->productsForm=[];
         $this->consultationRequest = $consultationRequest;
         $this->productsForm[] = $this->getDefaultArrayData();
     }

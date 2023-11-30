@@ -20,11 +20,10 @@
                     <div class="col-sm-3">
                         <!-- checkbox -->
                         <div class="form-group clearfix">
-                            <div  class="icheck-primary d-inline">
-                                <input type="checkbox" id="{{str_replace(' ', '',$tarif->name)}}"
-                                       wire:model.live="tarifsSelected" value="{{$tarif->id}}">
-                                <label for="{{str_replace(' ', '',$tarif->name)}}"
-                                       class="">
+                            <div class="icheck-primary d-inline">
+                                <input  wire:model.live="tarifsSelected" type="radio" value="{{$tarif->id}}"
+                                       id="{{str_replace(' ', '',$tarif->name)}}" >
+                                <label for="{{str_replace(' ', '',$tarif->name)}}">
                                     {{$tarif->name}}
                                 </label>
                             </div>

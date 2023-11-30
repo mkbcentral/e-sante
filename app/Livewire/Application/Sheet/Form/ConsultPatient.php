@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Application\Sheet\Form;
 
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ConsultationRequest;
-use App\Models\Hospital;
 use App\Models\Tarif;
 use App\Repositories\Tarif\GetListTarifRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -18,7 +19,7 @@ class ConsultPatient extends Component
         'selectedIndex' => 'getSelectedIndex',
         'refreshConsulting' => '$refresh'
     ];
-    public array $tarifsSelected = [];
+    public int $tarifsSelected;
     #[Url(as: 'q')]
     public $q = '';
     #[Url(as: 'sortBy')]
@@ -37,8 +38,30 @@ class ConsultPatient extends Component
     public function updatedTarifsSelected($val): void
     {
         try {
-            $this->consultationRequest->tarifs()->sync($this->tarifsSelected);
-            $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            $data= DB::table('consultation_request_tarif')
+                ->where('consultation_request_id',$this->consultationRequest->id)
+                ->where('tarif_id',$this->tarifsSelected)
+                ->first();
+            if ($data){
+                if ($data->tarif_id == $this->tarifsSelected and $data->consultation_request_id == $this->consultationRequest->id) {
+                    $tarif=Tarif::find($this->tarifsSelected);
+                    $this->dispatch('error', ['message' => $tarif->name.' déjà administré']);
+                }else{
+                    MakeQueryBuilderHelper::create('consultation_request_tarif', [
+                        'consultation_request_id' => $this->consultationRequest->id,
+                        'tarif_id' => $this->tarifsSelected,
+                    ]);
+                    $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
+                    $this->dispatch('added', ['message' => 'Action bien réalisée']);
+                }
+            }else{
+                MakeQueryBuilderHelper::create('consultation_request_tarif', [
+                    'consultation_request_id' => $this->consultationRequest->id,
+                    'tarif_id' => $this->tarifsSelected,
+                ]);
+                $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
+                $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            }
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
