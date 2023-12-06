@@ -8,9 +8,10 @@
                 <div class="row">
                     @foreach($diagnostics as $diagnostic)
                         <div class="col-sm-3">
+
                             <div class="form-group clearfix">
                                 <div  class="icheck-primary d-inline">
-                                    <input type="checkbox" id="{{str_replace(' ', '',$diagnostic->name)}}"
+                                    <input type="radio" id="{{str_replace(' ', '',$diagnostic->name)}}"
                                            wire:model.live="diagnosticsSelected" value="{{$diagnostic->id}}">
                                     <label for="{{str_replace(' ', '',$diagnostic->name)}}"
                                            class="">

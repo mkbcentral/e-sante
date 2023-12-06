@@ -6,6 +6,12 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
+        <li class="nav-item mr-4">
+            <div class="form-group d-flex align-items-center">
+                <label class="mr-2">Devise</label>
+                @livewire('application.finance.widget.currency-widget')
+            </div>
+        </li>
         <li class="nav-item dropdown user-menu text-white">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset('defautl-user.jpg') }}"

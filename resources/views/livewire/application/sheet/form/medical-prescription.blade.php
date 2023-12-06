@@ -16,49 +16,63 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-6">
-                            @livewire('application.product.widget.products-with-consultation-item-widget',
+                            <div class="card card-primary">
+                                <div class="card-header"><span><i class="fas fa-list"></i> DETAILS PROESCRIPTION MEDICAL</span></div>
+                                <div class="card-body">
+                                    @livewire('application.product.widget.products-with-consultation-item-widget',
                             ['consultationRequest'=>$consultationRequest])
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            @foreach($productsForm as $index => $vital)
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <x-form.label value="{{ __('Produits') }}"/>
-                                            <x-widget.list-product-widget
-                                                wire:model.blur='productsForm.{{$index}}.product_id'
-                                                :error="'productsForm.{{$index}}.product_id'"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <x-form.label value="{{ __('Quantité') }}"/>
-                                            <x-form.input type='text'
-                                                          wire:model.blur='productsForm.{{$index}}.qty'
-                                                          wire:keydown.escape='removeProductToForm({{ $index }})'
-                                                          wire:keydown.enter='addProductItems'
-                                                          wire:keydown.shift='addNewProductToForm'
-                                                          :error="'productsForm.{{$index}}.value'"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="form-group">
-                                                <x-form.label value="{{ __('Posologie') }}"/>
-                                                <x-form.input type='text' placeholder="1x 1ce/jour"
-                                                              wire:model.blur='productsForm.{{$index}}.dosage'
-                                                              wire:keydown.escape='removeProductToForm({{ $index }})'
-                                                              wire:keydown.enter='addProductItems'
-                                                              wire:keydown.shift='addNewProductToForm'
-                                                              :error="'productsForm.{{$index}}.dosage'"/>
+                            <div class="card card-primary">
+                                <div class="card-header"><span><i class="fas fa-pen"></i>PRESCRIR UN PRODUIT</span></div>
+                                <div CLASS="card-body">
+                                    @foreach($productsForm as $index => $vital)
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <x-form.label value="{{ __('Produits') }}"/>
+                                                    <x-widget.list-product-widget
+                                                        wire:model.blur='productsForm.{{$index}}.product_id'
+                                                        :error="'productsForm.{{$index}}.product_id'"/>
+                                                </div>
                                             </div>
-                                            <x-form.icon-button :icon="'fa fa-times '"
-                                                                wire:click="removeProductToForm({{ $index }})"
-                                                                class="btn-danger mt-3 ml-2"/>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <x-form.label value="{{ __('Quantité') }}"/>
+                                                    <x-form.input type='text'
+                                                                  wire:model.blur='productsForm.{{$index}}.qty'
+                                                                  wire:keydown.escape='removeProductToForm({{ $index }})'
+                                                                  wire:keydown.enter='addProductItems'
+                                                                  wire:keydown.shift='addNewProductToForm'
+                                                                  :error="'productsForm.{{$index}}.value'"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="form-group">
+                                                        <x-form.label value="{{ __('Posologie') }}"/>
+                                                        <x-form.input type='text' placeholder="1x 1ce/jour"
+                                                                      wire:model.blur='productsForm.{{$index}}.dosage'
+                                                                      wire:keydown.escape='removeProductToForm({{ $index }})'
+                                                                      wire:keydown.enter='addProductItems'
+                                                                      wire:keydown.shift='addNewProductToForm'
+                                                                      :error="'productsForm.{{$index}}.dosage'"/>
+                                                    </div>
+                                                    <x-form.icon-button :icon="'fa fa-times '"
+                                                                        wire:click="removeProductToForm({{ $index }})"
+                                                                        class="btn-danger mt-3 ml-2"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endforeach
+                                    <x-form.icon-button :icon="'fa fa-plus '"
+                                                        wire:click="addNewProductToForm"
+                                                        class="btn-primary"/>
                                 </div>
-                            @endforeach
+                            </div>
+
                         </div>
                     </div>
 

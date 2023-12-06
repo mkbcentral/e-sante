@@ -37,15 +37,9 @@
                             @endforeach
                         </address>
                     @endif
-                        <h6 class="text-uppercase text-primary"><b>Antecedents</b></h6>
                         @if(!$consultationSheet->getFreshConsultation()->diagnostics->isEmpty())
-                            <address>
-                                <div class="h6">
-                                @foreach($consultationSheet->getFreshConsultation()->diagnostics as $diagnostic)
-                                        <span class="">{{$diagnostic->name}}</span>,
-                                @endforeach
-                                </div>
-                            </address>
+                            <h6 class="text-uppercase text-primary"><b>Antecedents</b></h6>
+                            @livewire('application.sheet.widget.fresh-diagnostic-info-widget',['consultationSheet'=>$consultationSheet])
                         @endif
                @endif
             </div>

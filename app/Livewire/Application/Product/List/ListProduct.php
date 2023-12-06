@@ -4,6 +4,9 @@ namespace App\Livewire\Application\Product\List;
 
 use App\Models\Product;
 use App\Repositories\Product\Get\GetProductRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use JetBrains\PhpStorm\NoReturn;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -27,18 +30,32 @@ class ListProduct extends Component
     public string $family_id = '';
     public ?Product $product;
 
+    /**
+     * Open creation mode modal
+     * @return void
+     */
     public function openCreationModal(): void
     {
         $this->dispatch('emptyProduct');
         $this->dispatch('open-form-product');
     }
 
+    /**
+     * Show delete dialog
+     * @param Product|null $product
+     * @return void
+     */
     public function showDeleteDialog(?Product $product): void
     {
         $this->dispatch('delete-product-dialog');
         $this->product = $product;
     }
 
+    /**
+     * Ope, edition mode modal
+     * @param Product $product
+     * @return void
+     */
     public function edit(Product $product): void
     {
         $this->product = $product;
@@ -46,6 +63,10 @@ class ListProduct extends Component
         $this->dispatch('open-form-product');
     }
 
+    /**
+     * Delete product in DB
+     * @return void
+     */
     #[NoReturn] public function delete(): void
     {
         try {
@@ -56,6 +77,11 @@ class ListProduct extends Component
         }
     }
 
+    /**
+     * sort product ASC or DESC
+     * @param $value
+     * @return void
+     */
     public function sortProduct($value): void
     {
         if ($value == $this->sortBy) {
@@ -64,6 +90,10 @@ class ListProduct extends Component
         $this->sortBy = $value;
     }
 
+    /**
+     * Render compoent
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('livewire.application.product.list.list-product', [

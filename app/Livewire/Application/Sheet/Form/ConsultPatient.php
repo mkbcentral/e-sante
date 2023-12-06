@@ -47,24 +47,25 @@ class ConsultPatient extends Component
                     $tarif=Tarif::find($this->tarifsSelected);
                     $this->dispatch('error', ['message' => $tarif->name.' déjà administré']);
                 }else{
-                    MakeQueryBuilderHelper::create('consultation_request_tarif', [
-                        'consultation_request_id' => $this->consultationRequest->id,
-                        'tarif_id' => $this->tarifsSelected,
-                    ]);
+                    $this->saveData();
                     $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
                     $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 }
             }else{
-                MakeQueryBuilderHelper::create('consultation_request_tarif', [
-                    'consultation_request_id' => $this->consultationRequest->id,
-                    'tarif_id' => $this->tarifsSelected,
-                ]);
+               $this->saveData();
                 $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
+    }
+
+    public function saveData(){
+        MakeQueryBuilderHelper::create('consultation_request_tarif', [
+            'consultation_request_id' => $this->consultationRequest->id,
+            'tarif_id' => $this->tarifsSelected,
+        ]);
     }
 
     /**

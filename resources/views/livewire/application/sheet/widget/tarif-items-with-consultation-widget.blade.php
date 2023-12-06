@@ -3,7 +3,7 @@
     <div class="card-body p-0">
         @if($tarifs->isEmpty())
            <span class=" text-danger">
-               <h6 class="text-center"> Aucun examen adminstré</h6>
+               <h6 class="text-center"> Aucun examen</h6>
            </span>
         @else
             <ul>

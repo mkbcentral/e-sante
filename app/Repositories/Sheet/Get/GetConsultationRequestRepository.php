@@ -4,10 +4,13 @@ namespace App\Repositories\Sheet\Get;
 
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class GetConsultationRequestRepository
 {
     private static string $keytoSearch;
+
     /**
      * Get all consultation request
      * @param int $idSubscription
@@ -39,5 +42,21 @@ class GetConsultationRequestRepository
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL)
             ->paginate($per_page);
+    }
+    /**
+     * Get consultationRequest tarif items by category tarif id
+     * @param int $consultationRequestId
+     * @param int $categoryTarifId
+     * @return Collection
+     */
+    public static function getConsultationTarifItemByCategoryTarif(int $consultationRequestId, int $categoryTarifId): \Illuminate\Support\Collection
+    {
+        return DB::table('consultation_request_tarif')
+            ->join('tarifs', 'tarifs.id', 'consultation_request_tarif.tarif_id')
+            ->join('category_tarifs', 'category_tarifs.id', 'tarifs.category_tarif_id')
+            ->where('consultation_request_tarif.consultation_request_id', $consultationRequestId)
+            ->where('category_tarifs.id', $categoryTarifId)
+            ->select('consultation_request_tarif.*', 'tarifs.name', 'tarifs.abbreviation')
+            ->get();
     }
 }
