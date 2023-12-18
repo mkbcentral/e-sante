@@ -15,9 +15,9 @@ use Livewire\WithPagination;
 class ListConsultationRequest extends Component
 {
     use WithPagination;
-    protected $listeners=[
-        'selectedIndex'=>'getSelectedIndex',
-        'listSheetRefreshed'=>'$refresh'
+    protected $listeners = [
+        'selectedIndex' => 'getSelectedIndex',
+        'listSheetRefreshed' => '$refresh'
     ];
     public int $selectedIndex;
 
@@ -36,7 +36,7 @@ class ListConsultationRequest extends Component
      */
     public function getSelectedIndex(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
 
@@ -48,7 +48,7 @@ class ListConsultationRequest extends Component
     public  function openVitalSignForm(ConsultationRequest $consultationRequest): void
     {
         $this->dispatch('open-vital-sign-form');
-        $this->dispatch('consultationRequest',$consultationRequest);
+        $this->dispatch('consultationRequest', $consultationRequest);
     }
 
     /**
@@ -58,14 +58,14 @@ class ListConsultationRequest extends Component
      */
     public function sortSheet($value): void
     {
-        if($value==$this->sortBy){
-            $this->sortAsc=!$this->sortAsc;
+        if ($value == $this->sortBy) {
+            $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $value;
     }
     public  function mount(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
     }
 
     /**
@@ -74,8 +74,8 @@ class ListConsultationRequest extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.list.list-consultation-request',[
-            'listConsultationRequest'=>GetConsultationRequestRepository::getConsultationRequest(
+        return view('livewire.application.sheet.list.list-consultation-request', [
+            'listConsultationRequest' => GetConsultationRequestRepository::getConsultationRequest(
                 $this->selectedIndex,
                 $this->q,
                 $this->sortBy,

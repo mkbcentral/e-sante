@@ -11,8 +11,8 @@ use Livewire\Component;
 
 class TarifFormView extends Component
 {
-    protected $listeners=[
-        'selectedIndex'=>'getSelectedIndex',
+    protected $listeners = [
+        'selectedIndex' => 'getSelectedIndex',
     ];
     public int $selectedIndex;
 
@@ -25,6 +25,7 @@ class TarifFormView extends Component
     #[Rule('required|numeric')]
     public $subscriber_price;
 
+    public Tarif $tarif;
     /**
      * Get Category Tarif id on selected id in parent view
      * @param int $selectedIndex
@@ -32,7 +33,7 @@ class TarifFormView extends Component
      */
     public function getSelectedIndex(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
     }
 
     /**
@@ -41,16 +42,16 @@ class TarifFormView extends Component
      */
     public  function store(): void
     {
-        $fields=$this->validate();
+        $fields = $this->validate();
         try {
-            $fields['category_tarif_id']=$this->selectedIndex;
+            $fields['category_tarif_id'] = $this->selectedIndex;
             Tarif::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('listTarifRefreshed');
-            $this->name='';
-            $this->price_private='';
-            $this->subscriber_price='';
-        }catch (\Exception $ex){
+            $this->name = '';
+            $this->price_private = '';
+            $this->subscriber_price = '';
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
@@ -64,8 +65,8 @@ class TarifFormView extends Component
      */
     public  function mount(int $selectedIndex, ?Tarif $tarif): void
     {
-        $this->selectedIndex=$selectedIndex;
-        $this->tarif=$tarif;
+        $this->selectedIndex = $selectedIndex;
+        $this->tarif = $tarif;
     }
 
     /**

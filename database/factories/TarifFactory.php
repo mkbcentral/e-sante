@@ -19,8 +19,8 @@ class TarifFactory extends Factory
     {
         return [
             'name'=>fake()->firstName(),
-            'price_private'=>fake()->numberBetween(10-1000),
-            'subscriber_price'=>fake()->numberBetween(10-1000),
+            'price_private'=>rand(10,1000),
+            'subscriber_price'=>rand(10,100),
             'category_tarif_id'=>CategoryTarif::all()->random()->id,
         ];
     }

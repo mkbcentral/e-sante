@@ -15,13 +15,13 @@ use Livewire\WithPagination;
 class ListSheet extends Component
 {
     use WithPagination;
-    protected $listeners=[
-        'selectedIndex'=>'getSelectedIndex',
-        'deleteSheetListener'=>'delete',
-        'listSheetRefreshed'=>'$refresh'
+    protected $listeners = [
+        'selectedIndex' => 'getSelectedIndex',
+        'deleteSheetListener' => 'delete',
+        'listSheetRefreshed' => '$refresh'
     ];
     public int $selectedIndex;
-    public ?ConsultationSheet $sheet=null;
+    public ?ConsultationSheet $sheet = null;
     #[Url(as: 'q')]
     public $q = '';
     #[Url(as: 'sortBy')]
@@ -36,12 +36,12 @@ class ListSheet extends Component
      */
     public function getSelectedIndex(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
     public  function newSheet(): void
     {
-        $this->dispatch('selectedIndex',$this->selectedIndex);
+        $this->dispatch('selectedIndex', $this->selectedIndex);
         $this->dispatch('emptySheet');
         $this->dispatch('open-form-new');
     }
@@ -53,7 +53,7 @@ class ListSheet extends Component
     public  function  newRequestForm(ConsultationSheet $consultationSheet): void
     {
         $this->dispatch('open-new-request-form');
-        $this->dispatch('consultationSheet',$consultationSheet);
+        $this->dispatch('consultationSheet', $consultationSheet);
     }
     /**
      * Open form Sheet modal in editable mode
@@ -63,8 +63,8 @@ class ListSheet extends Component
     public  function  edit(ConsultationSheet $sheet): void
     {
         $this->dispatch('open-form-new');
-        $this->dispatch('sheetInfo',$sheet);
-        $this->dispatch('selectedIndex',$this->selectedIndex);
+        $this->dispatch('sheetInfo', $sheet);
+        $this->dispatch('selectedIndex', $this->selectedIndex);
     }
     /**
      * Show delete sheet dialog
@@ -73,7 +73,7 @@ class ListSheet extends Component
      */
     public function showDeleteDialog(ConsultationSheet $sheet): void
     {
-        $this->sheet=$sheet;
+        $this->sheet = $sheet;
         $this->dispatch('delete-sheet-dialog');
     }
     /**
@@ -83,13 +83,13 @@ class ListSheet extends Component
     public function delete(): void
     {
         try {
-            if ($this->sheet->consultationRequests->isEmpty()){
+            if ($this->sheet->consultationRequests->isEmpty()) {
                 $this->sheet->delete();
                 $this->dispatch('sheet-deleted', ['message' => "Fiche de consultation bien rétiré !"]);
-            }else{
+            } else {
                 $this->dispatch('error', ['message' => 'Action impossible, SVP, Cette fiche contient pluesieus données']);
             }
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
@@ -100,8 +100,8 @@ class ListSheet extends Component
      */
     public function sortSheet($value): void
     {
-        if($value==$this->sortBy){
-            $this->sortAsc=!$this->sortAsc;
+        if ($value == $this->sortBy) {
+            $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $value;
     }
@@ -112,7 +112,7 @@ class ListSheet extends Component
      */
     public  function mount(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
     }
     /**
      * Render component
@@ -120,8 +120,8 @@ class ListSheet extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.list.list-sheet',[
-            'sheets'=>GetConsultationSheetRepository::getConsultationSheetList(
+        return view('livewire.application.sheet.list.list-sheet', [
+            'sheets' => GetConsultationSheetRepository::getConsultationSheetList(
                 $this->selectedIndex,
                 $this->q,
                 $this->sortBy,

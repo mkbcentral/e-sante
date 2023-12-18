@@ -63,7 +63,7 @@ class ConsultationRequest extends Model
         return $this->hasOne(ConsultationComment::class);
     }
 
-    public function getTotalProduct(): float|int
+    public function getTotalProductCDF(): float|int
     {
         $total = 0;
         foreach ($this->products as $product) {
@@ -75,40 +75,60 @@ class ConsultationRequest extends Model
     {
         $total = 0;
         foreach ($this->products as $product) {
-            $total += $product->price * $product->pivot->qty/$this->rate->rate;
+            $total += $product->price * $product->pivot->qty / $this->rate->rate;
         }
         return $total;
     }
 
-    public function getConsultationPrice(): int|float
+    public function getConsultationPriceCDF(): int|float
     {
         $price = 0;
         if ($this->consultationSheet->subscription->is_subscriber) {
-            $price = Currency::DEFAULT_CURRENCY == 'CDF' ?
-                $this->consultation->subscriber_price*$this->rate->rate
-                :$this->consultation->subscriber_price;
+            $price =   $this->consultation->subscriber_price * $this->rate->rate;
         } else {
-            $price = Currency::DEFAULT_CURRENCY == 'CDF' ?
-                $this->consultation->price_private * $this->rate->rate
-                : $this->consultation->price_private;
+            $price = $this->consultation->price_private * $this->rate->rate;
         }
         return $price;
     }
 
-    public function getTotalInvoice()
+    public function getConsultationPriceUSD(): int|float
+    {
+        $price = 0;
+        if ($this->consultationSheet->subscription->is_subscriber) {
+            $price =  $this->consultation->subscriber_price;
+        } else {
+            $price =  $this->consultation->price_private;
+        }
+        return $price;
+    }
+
+    public function getTotalInvoiceCDF()
+    {
+        $total = 0;
+        foreach ($this->tarifs as $tarif) {
+            if ($this->consultationSheet->subscription->is_subscriber) {
+                $total += $tarif->subscriber_price * $tarif->pivot->qty * $this->rate->rate;
+            } else {
+                $total += $tarif->price_private * $tarif->pivot->qty * $this->rate->rate;
+            }
+        }
+        return $this->consultation->is_consultation_paid == false ?
+            ($this->getConsultationPriceCDF() + $total) + $this->getTotalProductCDF() :
+            $total + $this->getTotalProductCDF();
+    }
+
+    public function getTotalInvoiceUSD()
     {
         $total = 0;
         foreach ($this->tarifs as $tarif) {
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $total += $tarif->subscriber_price * $tarif->pivot->qty;
             } else {
-                $total += $total += Currency::DEFAULT_CURRENCY =='CDF' ?
-                    $tarif->price_private * $tarif->pivot->qty * $this->rate->rate :
-                    $tarif->price_private * $tarif->pivot->qty;
+                $total += $tarif->price_private * $tarif->pivot->qty;
             }
         }
-        return Currency::DEFAULT_CURRENCY =='CDF'?
-            ($this->getConsultationPrice() + $total* $this->rate->rate)+$this->getTotalProduct():
-            ($this->getConsultationPrice() + $total)+$this->getTotalProductUSD();
+        return $this->consultation->is_consultation_paid == false ?
+            ($this->getConsultationPriceUSD() + $total) + $this->getTotalProductCDF() :
+            $total + $this->getTotalProductUSD();
     }
 }

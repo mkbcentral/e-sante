@@ -12,9 +12,9 @@ use Livewire\Component;
 class PriceList extends Component
 {
     #[Url(as: 'category')]
-    public string $category='';
+    public string $category = '';
     #[Url(as: 'q')]
-    public string $q='';
+    public string $q = '';
     #[Url(as: 'sortBy')]
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
@@ -29,7 +29,7 @@ class PriceList extends Component
      */
     public function updatedQ($val): void
     {
-        $this->dispatch('ketToSearch',$val);
+        $this->dispatch('ketToSearch', $val);
     }
 
     /**
@@ -39,8 +39,8 @@ class PriceList extends Component
      */
     public function sortTarif($value): void
     {
-        if($value==$this->sortBy){
-            $this->sortAsc=!$this->sortAsc;
+        if ($value == $this->sortBy) {
+            $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $value;
     }
@@ -51,8 +51,8 @@ class PriceList extends Component
      */
     public function render()
     {
-        return view('livewire.application.tarification.price-list',[
-            'tarifs'=>GetListTarifRepository::getListTarif(
+        return view('livewire.application.tarification.price-list', [
+            'tarifs' => GetListTarifRepository::getListTarif(
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,

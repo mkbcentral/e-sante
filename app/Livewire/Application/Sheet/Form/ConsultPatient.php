@@ -38,22 +38,22 @@ class ConsultPatient extends Component
     public function updatedTarifsSelected($val): void
     {
         try {
-            $data= DB::table('consultation_request_tarif')
-                ->where('consultation_request_id',$this->consultationRequest->id)
-                ->where('tarif_id',$this->tarifsSelected)
+            $data = DB::table('consultation_request_tarif')
+                ->where('consultation_request_id', $this->consultationRequest->id)
+                ->where('tarif_id', $this->tarifsSelected)
                 ->first();
-            if ($data){
+            if ($data) {
                 if ($data->tarif_id == $this->tarifsSelected and $data->consultation_request_id == $this->consultationRequest->id) {
-                    $tarif=Tarif::find($this->tarifsSelected);
-                    $this->dispatch('error', ['message' => $tarif->name.' déjà administré']);
-                }else{
+                    $tarif = Tarif::find($this->tarifsSelected);
+                    $this->dispatch('error', ['message' => $tarif->name . ' déjà administré']);
+                } else {
                     $this->saveData();
-                    $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
+                    $this->dispatch('refreshItemsTarifWidget', $this->selectedIndex);
                     $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 }
-            }else{
-               $this->saveData();
-                $this->dispatch('refreshItemsTarifWidget',$this->selectedIndex);
+            } else {
+                $this->saveData();
+                $this->dispatch('refreshItemsTarifWidget', $this->selectedIndex);
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
         } catch (\Exception $exception) {
@@ -61,7 +61,8 @@ class ConsultPatient extends Component
         }
     }
 
-    public function saveData(){
+    public function saveData()
+    {
         MakeQueryBuilderHelper::create('consultation_request_tarif', [
             'consultation_request_id' => $this->consultationRequest->id,
             'tarif_id' => $this->tarifsSelected,

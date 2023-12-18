@@ -12,15 +12,15 @@ use Livewire\WithPagination;
 class ListTarif extends Component
 {
     use WithPagination;
-    protected $listeners=[
-        'selectedIndex'=>'getSelectedIndex',
-        'deleteTarifListener'=>'delete',
-        'listTarifRefreshed'=>'$refresh'
+    protected $listeners = [
+        'selectedIndex' => 'getSelectedIndex',
+        'deleteTarifListener' => 'delete',
+        'listTarifRefreshed' => '$refresh'
     ];
     public int $selectedIndex;
     public ?Tarif $tarif;
-    public bool $isEditing=false;
-    public int $idSelected=0;
+    public bool $isEditing = false;
+    public int $idSelected = 0;
 
     #[Rule('required|min:3|string')]
     public $name;
@@ -45,7 +45,7 @@ class ListTarif extends Component
      */
     public function getSelectedIndex(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
 
@@ -56,7 +56,7 @@ class ListTarif extends Component
      */
     public function showDeleteDialog(Tarif $tarif): void
     {
-        $this->tarif=$tarif;
+        $this->tarif = $tarif;
         $this->dispatch('delete-tarif-dialog');
     }
 
@@ -67,13 +67,13 @@ class ListTarif extends Component
      */
     public  function edit(Tarif $tarif): void
     {
-        $this->isEditing=true;
-        $this->tarif=$tarif;
-        $this->idSelected=$tarif->id;
-        $this->name=$tarif->name;
-        $this->abbreviation=$tarif->abbreviation;
-        $this->price_private=$tarif->price_private;
-        $this->subscriber_price=$tarif->subscriber_price;
+        $this->isEditing = true;
+        $this->tarif = $tarif;
+        $this->idSelected = $tarif->id;
+        $this->name = $tarif->name;
+        $this->abbreviation = $tarif->abbreviation;
+        $this->price_private = $tarif->price_private;
+        $this->subscriber_price = $tarif->subscriber_price;
     }
     /**
      * Update tarif
@@ -81,13 +81,13 @@ class ListTarif extends Component
      */
     public function update(): void
     {
-       $fields= $this->validate();
+        $fields = $this->validate();
         try {
             $this->tarif->update($fields);
-            $this->isEditing=false;
-            $this->idSelected=0;
+            $this->isEditing = false;
+            $this->idSelected = 0;
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
@@ -100,10 +100,10 @@ class ListTarif extends Component
     public function delete(): void
     {
         try {
-            $this->tarif->is_changed=true;
+            $this->tarif->is_changed = true;
             $this->tarif->update();
             $this->dispatch('tarif-deleted', ['message' => "Tarif bien rétiré !"]);
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
@@ -115,20 +115,20 @@ class ListTarif extends Component
      */
     public function sortTarif($value): void
     {
-        if($value==$this->sortBy){
-            $this->sortAsc=!$this->sortAsc;
+        if ($value == $this->sortBy) {
+            $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $value;
     }
 
     public  function mount(int $selectedIndex): void
     {
-        $this->selectedIndex=$selectedIndex;
+        $this->selectedIndex = $selectedIndex;
     }
     public function render()
     {
-        return view('livewire.application.tarification.list.list-tarif',[
-            'tarifs'=> GetListTarifRepository::getListTarif(
+        return view('livewire.application.tarification.list.list-tarif', [
+            'tarifs' => GetListTarifRepository::getListTarif(
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,

@@ -10,14 +10,14 @@ class CurrencyWidget extends Component
 {
     public string $currencyName;
 
-    #[NoReturn] public function updatedCurrencyName($val): void
+    public function updatedCurrencyName($val): void
     {
-       $this->dispatch('currencyName',$val);
+        $this->dispatch('currencyName', $val);
     }
     public function render()
     {
-        return view('livewire.application.finance.widget.currency-widget',[
-            'currencies'=>Currency::orderBy('name','ASC')->get()
+        return view('livewire.application.finance.widget.currency-widget', [
+            'currencies' => Currency::orderBy('name', 'ASC')->get()
         ]);
     }
 }

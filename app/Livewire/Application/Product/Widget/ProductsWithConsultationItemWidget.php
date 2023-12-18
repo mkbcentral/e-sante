@@ -15,16 +15,16 @@ class ProductsWithConsultationItemWidget extends Component
 {
     protected $listeners = [
         'refreshProductItems' => '$refresh',
-        'currencyName'=>'getCurrencyName'
+        'currencyName' => 'getCurrencyName'
     ];
     public ?ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idProduct = 0;
     public bool $isEditing = false;
     public string $currency;
 
-    #[NoReturn] public function getCurrencyName(string $currency): void
+    public function getCurrencyName(string $currency): void
     {
-        $this->currency=$currency;
+        $this->currency = $currency;
     }
 
     /**
@@ -63,7 +63,9 @@ class ProductsWithConsultationItemWidget extends Component
                 'consultation_request_product',
                 'id',
                 $this->idSelected,
-                ['qty' => $this->qty], '');
+                ['qty' => $this->qty],
+                ''
+            );
             $this->isEditing = false;
             $this->idSelected = 0;
         } catch (\Exception $exception) {
@@ -81,7 +83,9 @@ class ProductsWithConsultationItemWidget extends Component
         try {
             MakeQueryBuilderHelper::delete(
                 'consultation_request_product',
-                'id',$id);
+                'id',
+                $id
+            );
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
@@ -94,7 +98,7 @@ class ProductsWithConsultationItemWidget extends Component
      */
     public function render()
     {
-        $this->currency=Currency::DEFAULT_CURRENCY;
+        $this->currency = Currency::DEFAULT_CURRENCY;
         return view('livewire.application.product.widget.products-with-consultation-item-widget');
     }
 }

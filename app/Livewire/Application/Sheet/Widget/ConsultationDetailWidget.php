@@ -4,16 +4,25 @@ namespace App\Livewire\Application\Sheet\Widget;
 
 use App\Models\Consultation;
 use App\Models\ConsultationRequest;
+use App\Models\Currency;
 use App\Models\Hospital;
 use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class ConsultationDetailWidget extends Component
 {
+    protected $listeners = ['currencyName' => 'getCurrencyName'];
     public ?ConsultationRequest $consultationRequest;
     public bool $isEditing = false;
-    public int $idConsultation=0;
-    #[NoReturn] public function updatedIdConsultation($val): void
+    public int $idConsultation = 0;
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
+
+    public function getCurrencyName(string $currency)
+    {
+        $this->currencyName = $currency;
+    }
+
+    public function updatedIdConsultation($val): void
     {
         try {
             $this->consultationRequest->consultation_id = $val;
@@ -39,6 +48,7 @@ class ConsultationDetailWidget extends Component
                 $this->consultationRequest->is_consultation_paid = true;
             }
             $this->consultationRequest->update();
+            $this->dispatch('refreshTotal');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

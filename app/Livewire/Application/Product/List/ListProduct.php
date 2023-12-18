@@ -67,7 +67,7 @@ class ListProduct extends Component
      * Delete product in DB
      * @return void
      */
-    #[NoReturn] public function delete(): void
+    public function delete(): void
     {
         try {
             $this->product->delete();

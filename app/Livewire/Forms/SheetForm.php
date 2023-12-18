@@ -7,19 +7,19 @@ use Livewire\Form;
 
 class SheetForm extends Form
 {
-    #[Rule('required|numeric',message: 'Numéro fiche obligation',onUpdate: false)]
+    #[Rule('required|numeric', message: 'Numéro fiche obligation', onUpdate: false)]
     public $number_sheet = '';
 
-    #[Rule('required|min:3|string',message: 'Nom patient obligatoire')]
+    #[Rule('required|min:3|string', message: 'Nom patient obligatoire')]
     public $name = '';
 
-    #[Rule('required|date',message: 'Date de naissance obligatoire')]
+    #[Rule('required|date', message: 'Date de naissance obligatoire')]
     public $date_of_birth = '';
 
-    #[Rule('required|string',message: 'Genre obligatoire')]
+    #[Rule('required|string', message: 'Genre obligatoire')]
     public $gender = '';
 
-    #[Rule('required|string',message: 'Nom patient obligatoire')]
+    #[Rule('required|string', message: 'Nom patient obligatoire')]
     public $phone = '';
 
     #[Rule('nullable|string')]
@@ -28,10 +28,10 @@ class SheetForm extends Form
     #[Rule('nullable|string')]
     public $email = '';
 
-    #[Rule('required|string',message: 'Commune obligatoire')]
+    #[Rule('required|string', message: 'Commune obligatoire')]
     public $municipality = '';
 
-    #[Rule('required|string',message: 'Champ obligatoire')]
+    #[Rule('required|string', message: 'Champ obligatoire')]
     public $rural_area = '';
 
     #[Rule('nullable|string')]
@@ -44,14 +44,14 @@ class SheetForm extends Form
     public $blood_group = 'Aucun';
 
     #[Rule('nullable|numeric')]
-    public $agent_service_id ='';
+    public $agent_service_id = '';
 
     #[Rule('nullable|string')]
-    public $registration_number ='';
+    public $registration_number = '';
 
-    #[Rule('required|numeric',message: 'Type patient obligatoire')]
+    #[Rule('required|numeric', message: 'Type patient obligatoire')]
     public $type_patient_id;
 
-    #[Rule('required|numeric',message: 'Type consultation obligatoire')]
-    public $consultation_id='';
+    #[Rule('required|numeric', message: 'Type consultation obligatoire')]
+    public $consultation_id = '';
 }

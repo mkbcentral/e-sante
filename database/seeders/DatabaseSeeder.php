@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
 
         // ]);
-        /*
+
         $hospital=Hospital::create(['name'=>'Test hospital']);
         $municipalities=[
             ['name'=>'LUBUMBASSHI','hospital_id'=>1],
@@ -186,14 +186,10 @@ class DatabaseSeeder extends Seeder
         ConsultationSheet::factory(7000)->create();
         ConsultationSheet::factory(7000)->create();
         CategoryTarif::insert([
-            ['name'=>'CONSULTATION','hospital_id'=>1],
+            ['name'=>'ACTES','hospital_id'=>1],
             ['name'=>'LABORATOIRE','hospital_id'=>1],
-            ['name'=>'ECHOGRAPHIE','hospital_id'=>1]
-        ]);
-        CategoryTarif::insert([
-            ['name'=>'CONSULTATION','hospital_id'=>1],
-            ['name'=>'LABORATOIRE','hospital_id'=>1],
-            ['name'=>'ECHOGRAPHIE','hospital_id'=>1]
+            ['name'=>'ECHOGRAPHIE','hospital_id'=>1],
+            ['name'=>'AUTRES','hospital_id'=>1]
         ]);
         Tarif::factory(50)->create();
 
@@ -223,8 +219,6 @@ class DatabaseSeeder extends Seeder
             ['name'=>"CAB 1",'hospital_id'=>1],
             ['name'=>"CAB 2",'hospital_id'=>1],
             ['name'=>"CAB 3",'hospital_id'=>1],
-
-            ['name'=>"CAB 3",'hospital_id'=>1]
         ]);
 
         Diagnostic::insert([
@@ -234,7 +228,5 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Nausé','hospital_id'=>1],
             ['name'=>'','hospital_id'=>1],
         ]);
-        */
-
     }
 }

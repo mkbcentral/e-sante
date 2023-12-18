@@ -5,6 +5,7 @@ namespace App\Livewire\Application\Sheet\Widget;
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
+use App\Models\Currency;
 use App\Models\Tarif;
 use App\Repositories\Tarif\GetListTarifRepository;
 use Illuminate\Support\Collection;
@@ -13,12 +14,20 @@ use Livewire\Component;
 
 class ItemTarifByCategoryWidget extends Component
 {
+    protected $listeners = ['currencyName' => 'getCurrencyName'];
     public ?CategoryTarif $categoryTarif;
     public ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idTarif = 0;
     public bool $isEditing = false;
     public ?Collection $tarifs;
     public ?Tarif $tarif;
+
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
+
+    public function getCurrencyName(string $currency)
+    {
+        $this->currencyName = $currency;
+    }
 
     /**
      * Call update function if IdTarif updated (Clicked)
@@ -58,7 +67,8 @@ class ItemTarifByCategoryWidget extends Component
                     'consultation_request_tarif',
                     'id',
                     $this->idSelected,
-                    ['qty' => $this->qty]);
+                    ['qty' => $this->qty]
+                );
             } else {
                 MakeQueryBuilderHelper::update(
                     'consultation_request_tarif',
@@ -83,7 +93,7 @@ class ItemTarifByCategoryWidget extends Component
     public function delete(int $id): void
     {
         try {
-            MakeQueryBuilderHelper::delete('consultation_request_tarif','id',$id, );
+            MakeQueryBuilderHelper::delete('consultation_request_tarif', 'id', $id,);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('refreshTarifItems');
         } catch (\Exception $exception) {
@@ -91,11 +101,11 @@ class ItemTarifByCategoryWidget extends Component
         }
     }
 
-    #[NoReturn] public function mount(?CategoryTarif $categoryTarif, ConsultationRequest $consultationRequest): void
+    public function mount(?CategoryTarif $categoryTarif, ConsultationRequest $consultationRequest): void
     {
 
-        $this->categoryTarif=$categoryTarif;
-        $this->consultationRequest=$consultationRequest;
+        $this->categoryTarif = $categoryTarif;
+        $this->consultationRequest = $consultationRequest;
     }
     public function render()
     {
