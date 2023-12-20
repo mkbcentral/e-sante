@@ -45,12 +45,12 @@ class ConsultationRequest extends Model
 
     public function tarifs(): BelongsToMany
     {
-        return $this->belongsToMany(Tarif::class,)->withPivot(['id', 'qty']);
+        return $this->belongsToMany(Tarif::class)->withPivot(['id', 'qty']);
     }
 
     public function diagnostics(): BelongsToMany
     {
-        return $this->belongsToMany(Diagnostic::class,)->withPivot(['id']);
+        return $this->belongsToMany(Diagnostic::class)->withPivot(['id']);
     }
 
     public function products(): BelongsToMany

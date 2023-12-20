@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Application\Dashboard\MainDashboard;
+use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Sheet\MainSheet;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Application\Patient\FolderPatient;
@@ -29,4 +30,5 @@ Route::get('tarification/prices',PriceList::class)->name('tarification.prices');
 Route::get('consultation/req',MainConsultationRequest::class)->name('consultation.req');
 Route::get('consultation/consult-patient/{consultationRequestId}',MainConsultPatient::class)->name('consultation.consult.patient');
 Route::get('product/list',ListProduct::class)->name('product.list');
+Route::get('billing/outpatient',OutpatientBillView::class)->name('bill.outpatient');
 

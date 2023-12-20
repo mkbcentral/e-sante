@@ -1,0 +1,1 @@
+<span>{{ app_format_number($outpatientBill->getTotalOutpatientBillCDF(), 1) }}</span>

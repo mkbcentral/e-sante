@@ -21,17 +21,18 @@ use App\Models\RuralArea;
 use App\Models\Subscription;
 use App\Models\Tarif;
 use App\Models\TypePatient;
+use App\Models\User;
 use App\Models\VitalSign;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
+
     public function run(): void
     {
-
+        User::factory(10)->create();
+        /*
         ProductFamily::insert([
             ['name' => 'ANTI TOUSSIF'],
             ['name' => 'ANTI PALU'],
@@ -228,5 +229,7 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Nausé','hospital_id'=>1],
             ['name'=>'','hospital_id'=>1],
         ]);
+        */
     }
+
 }
