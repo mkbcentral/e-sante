@@ -8,11 +8,18 @@ use Livewire\Component;
 class CdfAmountOutpatientBillWidget extends Component
 {
     protected $listeners = [
-        'refreshCdfAmount' => '$refresh'
+        'refreshCdfAmount' => '$refresh',
+        'outpatientSelected' => 'getSelectedOutpatient'
     ];
     public ?OutpatientBill $outpatientBill;
-    public function mount(?OutpatientBill $outpatientBill){
-        $this->outpatientBill=$outpatientBill;
+
+    public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
+    }
+    public function mount(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
     }
     public function render()
     {

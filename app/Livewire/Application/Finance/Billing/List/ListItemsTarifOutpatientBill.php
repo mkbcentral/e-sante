@@ -9,11 +9,17 @@ use Livewire\Component;
 class ListItemsTarifOutpatientBill extends Component
 {
     protected $listeners = [
-        'refreshListItemsOupatient'=>'$refresh'
+        'refreshListItemsOupatient'=>'$refresh',
+        'outpatientSelected' => 'getSelectedOutpatient'
     ];
     public ?OutpatientBill $outpatientBill;
     public int $idSelected = 0, $qty = 1;
     public bool $isEditing = false;
+
+    public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
+    }
 
     public function edit(int $id, int $qty): void
     {

@@ -32,7 +32,7 @@
                      <p>Liste Produits</p>
                  </x-navigation.nav-link>
                  <x-navigation.nav-link class="nav-link" href="{{ route('bill.outpatient') }}" wire:navigate :active="request()->routeIs(['bill.outpatient'])">
-                    <i class="fa fa-capsules" aria-hidden="true"></i>
+                    <i class="fas fa-file-invoice-dollar"></i>
                     <p>Facturation abulantoire</p>
                 </x-navigation.nav-link>
              </ul>

@@ -14,7 +14,8 @@ class TarifItemsWithOutpatientBill extends Component
 {
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
-        'refreshConsulting' => '$refresh'
+        'refreshConsulting' => '$refresh',
+        'outpatientSelected' => 'getSelectedOutpatient'
     ];
     public int $tarifsSelected;
     #[Url(as: 'q')]
@@ -25,6 +26,11 @@ class TarifItemsWithOutpatientBill extends Component
     public $sortAsc = true;
     public int $selectedIndex;
     public ?OutpatientBill $outpatientBill;
+
+    public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
+    }
 
     /**
      * Execute this function if Category tarif Selected and listener emitted

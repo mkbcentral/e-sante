@@ -9,8 +9,17 @@ use Livewire\Component;
 
 class CreateOutpatientItems extends Component
 {
+    protected $listeners = [
+        'outpatientSelected' => 'getSelectedOutpatient'
+    ];
     public ?OutpatientBill $outpatientBill;
     public int $selectedIndex = 1;
+
+    public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
+    }
+
 
     public  function changeIndex(CategoryTarif $category): void
     {
@@ -18,9 +27,10 @@ class CreateOutpatientItems extends Component
         $this->dispatch('selectedIndex', $this->selectedIndex);
         $this->dispatch('refreshItemsTarifWidget', $category->id);
     }
-    
-    public function mount(?OutpatientBill $outpatientBill){
-        $this->outpatientBill=$outpatientBill;
+
+    public function mount(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
     }
 
     public function render()

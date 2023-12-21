@@ -3,11 +3,11 @@
         <div class="card-body bg-dark">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h4 class=""><span class="text-bold">Client name: </span> {{$outpatientBill->client_name}}</h4>
+                    <h4 class=""><span class="text-bold">Client: </span> {{$outpatientBill->client_name}}</h4>
                     <p class=""><span class="text-bold">Date: </span> {{$outpatientBill->created_at}}</p>
                 </div>
                 <div>
-                   
+                    <h4>N° Fact: <span>{{$outpatientBill->bill_number}}</span></h4>
                 </div>
             </div>
         </div>

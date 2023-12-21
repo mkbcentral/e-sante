@@ -8,9 +8,15 @@ use Livewire\Component;
 class UsdAmountOutpatientBillWidget extends Component
 {
     protected $listeners = [
-        'refreshUsdAmount' => '$refresh'
+        'refreshUsdAmount' => '$refresh',
+        'outpatientSelected'=>'getSelectedOutpatient'
     ];
     public ?OutpatientBill $outpatientBill;
+
+    public function getSelectedOutpatient(?OutpatientBill $outpatientBill){
+        $this->outpatientBill=$outpatientBill;
+    }
+
     public function mount(?OutpatientBill $outpatientBill){
         $this->outpatientBill=$outpatientBill;
     }
