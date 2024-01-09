@@ -5,12 +5,10 @@ namespace App\Livewire\Application\Sheet;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\ConsultationSheet;
-use App\Models\Hospital;
 use App\Repositories\Tarif\GetCategoryTarifRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class MainConsultPatient extends Component

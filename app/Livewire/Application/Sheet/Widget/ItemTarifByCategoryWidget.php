@@ -9,7 +9,6 @@ use App\Models\Currency;
 use App\Models\Tarif;
 use App\Repositories\Tarif\GetListTarifRepository;
 use Illuminate\Support\Collection;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class ItemTarifByCategoryWidget extends Component
@@ -24,6 +23,12 @@ class ItemTarifByCategoryWidget extends Component
 
     public string $currencyName = Currency::DEFAULT_CURRENCY;
 
+    /**
+     * getCurrencyName
+     * Get currency name
+     * @param  mixed $currency
+     * @return void
+     */
     public function getCurrencyName(string $currency)
     {
         $this->currencyName = $currency;

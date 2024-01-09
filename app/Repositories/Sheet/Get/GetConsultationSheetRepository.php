@@ -17,7 +17,7 @@ class GetConsultationSheetRepository
     {
         return ConsultationSheet::orderBy('created_at', 'DESC')
                 ->where('hospital_id', Hospital::DEFAULT_HOSPITAL)
-                ->first()->number_sheet + 1;
+                ->first()?->number_sheet + 1;
     }
 
     /**

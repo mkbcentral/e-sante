@@ -28,6 +28,7 @@ class ConsultationRequestDetail extends Component
     public function getCurrencyName(string $currency)
     {
         $this->currencyName = $currency;
+
     }
 
     /**

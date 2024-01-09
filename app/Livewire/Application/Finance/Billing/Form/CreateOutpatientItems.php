@@ -10,14 +10,26 @@ use Livewire\Component;
 class CreateOutpatientItems extends Component
 {
     protected $listeners = [
-        'outpatientSelected' => 'getSelectedOutpatient'
+        'outpatientSelected' => 'getSelectedOutpatient',
+        'outpatientFreshinfo' => '$refresh'
     ];
     public ?OutpatientBill $outpatientBill;
     public int $selectedIndex = 1;
 
+
+    /**
+     * getSelectedOutpatient
+     *Get OutpatientBill to edit
+     * @param  mixed $outpatientBill
+     * @return void
+     */
     public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
     {
         $this->outpatientBill = $outpatientBill;
+    }
+
+    public function openEditBillFormModal(){
+        $this->dispatch('open-new-outpatient-bill');
     }
 
 

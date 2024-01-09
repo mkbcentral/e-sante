@@ -3,7 +3,6 @@
 namespace App\Livewire\Application\Tarification;
 
 use App\Models\CategoryTarif;
-use App\Models\Tarif;
 use App\Repositories\Tarif\GetCategoryTarifRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -14,6 +13,16 @@ class TarifView extends Component
 {
     protected $listeners = ['refreshCategory' => '$refresh'];
     public int $selectedIndex = 1;
+    /**
+     * Open CategoryTarif modal view
+     * @return void
+     * Ben MWILA
+     */
+    public function showTarifConsultationPage(): void
+    {
+        $this->dispatch('open-tarif-conusultation-page');
+    }
+
     /**
      * Open CategoryTarif modal view
      * @return void

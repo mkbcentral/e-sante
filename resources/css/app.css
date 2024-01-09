@@ -5,3 +5,13 @@
 @import 'admin-lte/plugins/select2/css/select2.min.css';
 @import 'admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css';
 @import "bootstrap4-toggle/css/bootstrap4-toggle.min.css";
+
+.table-hover thead tr:hover th,
+.table-hover tbody tr:hover td {
+    background-color: #5b4bd3;
+    color: wheat;
+}
+
+.cursor-hand{
+    cursor: pointer;
+}

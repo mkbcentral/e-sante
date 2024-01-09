@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{config('app.name')}}</title>
+    <title>{{ config('app.name') }}</title>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="hold-transition sidebar-mini">
+
+<body
+    class="hold-transition sidebar-mini {{ theme_setting('is_dark_mode') ? 'dark-mode' : '' }}
+        {{ theme_setting('is_sidebar_collapse') ? 'sidebar-collapse' : '' }}">
     <div class="wrapper">
         @include('components.layouts.patials.navbar')
         @include('components.layouts.patials.sidebar')
         <div class="content-wrapper">
-            {{$slot}}
+            {{ $slot }}
         </div>
         @include('components.layouts.patials.footer')
     </div>
@@ -19,4 +24,5 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
     @stack('js')
 </body>
+
 </html>

@@ -31,7 +31,10 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        User::factory(10)->create();
+
+        Hospital::create(['name' => 'SHUKRANI']);
+        //$this->call(ProductUpdateSpecilityColumnSeeder::class);
+        //User::factory(10)->create();
         /*
         ProductFamily::insert([
             ['name' => 'ANTI TOUSSIF'],

@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Finance\Billing\List;
 
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
+use App\Models\Currency;
 use App\Models\OutpatientBill;
 use Livewire\Component;
 
@@ -10,12 +11,32 @@ class ListItemsTarifOutpatientBill extends Component
 {
     protected $listeners = [
         'refreshListItemsOupatient'=>'$refresh',
-        'outpatientSelected' => 'getSelectedOutpatient'
+        'outpatientSelected' => 'getSelectedOutpatient',
+        'currencyName' => 'getCurrencyName'
     ];
     public ?OutpatientBill $outpatientBill;
     public int $idSelected = 0, $qty = 1;
     public bool $isEditing = false;
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
 
+    /**
+     * getCurrencyName
+     * Get currency name
+     * @param  mixed $currency
+     * @return void
+     */
+    public function getCurrencyName(string $currency)
+    {
+        $this->currencyName = $currency;
+    }
+
+
+    /**
+     * getSelectedOutpatient
+     *
+     * @param  mixed $outpatientBill
+     * @return void
+     */
     public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
     {
         $this->outpatientBill = $outpatientBill;

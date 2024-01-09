@@ -1,5 +1,6 @@
 <div>
     @livewire('application.tarification.categoty-tarif-view')
+    @livewire('application.tarification.tarif-consultation-view')
     <div>
         <x-navigation.bread-crumb icon='fa fa-folder' label='TARIFICATION'>
             <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
@@ -20,6 +21,10 @@
 
                 </ul>
                 <div class="d-flex justify-content-end">
+                    <x-form.button class="btn-secondary ml-2" wire:click="showTarifConsultationPage">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        Tarif consultation
+                    </x-form.button>
                     <x-form.button class="btn-dark ml-2" wire:click="showCategoryTarifPage">
                         <x-icons.icon-plus-circle/>
                         Nouvelle categorie
@@ -42,6 +47,10 @@
             //Open create category tarif page
             window.addEventListener('open-category-tarif-page',e=>{
                 $('#category-tarif-page').modal('show')
+            });
+            //Open  tarif consultation page
+            window.addEventListener('open-tarif-conusultation-page',e=>{
+                $('#tarif-consultation-page').modal('show')
             });
         </script>
     @endpush

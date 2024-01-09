@@ -7,32 +7,67 @@ use Livewire\Component;
 
 class OutpatientBillView extends Component
 {
+    /**
+     * listeners
+     *Array of listeners
+     * @var array
+     */
     protected $listeners = [
         'outpatientBill' => 'getOutpatient',
         'outpatientBillToEdit' => 'getOutpatientToEdit',
+        'outpatientBillRefreshedMainView'=>'$refresh'
     ];
     public ?OutpatientBill $outpatientBill = null;
+    public bool $isEditing = false;
 
-    public function getOutpatient()
+    /**
+     * Get OutpatientBill if outpatientBillListener is emitted
+     * getOutpatient
+     * @return void
+     */
+    public function getOutpatient(): void
     {
         $this->outpatientBill = OutpatientBill::latest()->first();
     }
-
-    public function getOutpatientToEdit(?OutpatientBill $outpatientBill)
+    /**
+     * Get OutpatientBill if outpatientBillToEditListener is emitted with edition mode
+     * getOutpatientToEdit
+     * @param  mixed $outpatientBill
+     * @return void
+     */
+    public function getOutpatientToEdit(?OutpatientBill $outpatientBill): void
     {
-        $this->outpatientBill =$outpatientBill;
+        $this->outpatientBill = $outpatientBill;
+        $this->isEditing = true;
+        $this->dispatch('outpatientBillToFrom',$outpatientBill);
     }
-    public function openNewOutpatientBillModal()
+
+    /**
+     * openNewOutpatientBillModal
+     *Open modal to create new bill
+     * @return void
+     */
+    public function openNewOutpatientBillModal(): void
     {
         $this->dispatch('open-new-outpatient-bill');
     }
-    public function openListListOutpatientBillModal()
+    /**
+     * openListListOutpatientBillModal
+     *Open modal to show list bills
+     * @return void
+     */
+    public function openListListOutpatientBillModal(): void
     {
         $this->dispatch('open-list-outpatient-bill-by-date-modal');
+        $this->dispatch('refreshListBill');
     }
+
+    /**
+     * @return void
+     */
     public function mount()
     {
-        $this->outpatientBill = OutpatientBill::find(25);
+        //$this->outpatientBill = OutpatientBill::find(1);
     }
 
     public function render()

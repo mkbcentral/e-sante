@@ -3,22 +3,20 @@
 namespace App\Livewire\Application\Sheet\Widget;
 
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\ConsultationRequest;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class TarifItemsWithConsultationWidget extends Component
 {
-    protected $listeners=[
-        'refreshItemsTarifWidget'=>'getSelectedCategoryTarif',
-        'refreshTarifItems'=>'$refresh',
-        'deleteItemListener'=>'delete'
+    protected $listeners = [
+        'refreshItemsTarifWidget' => 'getSelectedCategoryTarif',
+        'refreshTarifItems' => '$refresh',
+        'deleteItemListener' => 'delete'
     ];
-    public int $tarifId,$consultationRequestId,$idItem;
+    public int $tarifId, $consultationRequestId, $idItem;
 
     /**
      * Get category tarif id if refreshItemsTarifWidget emitted
@@ -38,8 +36,8 @@ class TarifItemsWithConsultationWidget extends Component
      */
     public function mount(int $tarifId, int $consultationRequestId): void
     {
-       $this->tarifId=$tarifId;
-       $this->consultationRequestId=$consultationRequestId;
+        $this->tarifId = $tarifId;
+        $this->consultationRequestId = $consultationRequestId;
     }
 
     /**
@@ -49,7 +47,7 @@ class TarifItemsWithConsultationWidget extends Component
      */
     public function showDeleteDialog($id): void
     {
-        $this->idItem=$id;
+        $this->idItem = $id;
         $this->dispatch('delete-item-dialog');
     }
     /**
@@ -59,7 +57,7 @@ class TarifItemsWithConsultationWidget extends Component
     public function delete(): void
     {
         try {
-            MakeQueryBuilderHelper::delete('consultation_request_tarif','id',$this->idItem, );
+            MakeQueryBuilderHelper::delete('consultation_request_tarif', 'id', $this->idItem,);
             $this->dispatch('item-deleted', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
@@ -72,8 +70,8 @@ class TarifItemsWithConsultationWidget extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.widget.tarif-items-with-consultation-widget',[
-            'tarifs'=>GetConsultationRequestRepository::getConsultationTarifItemByCategoryTarif($this->consultationRequestId,$this->tarifId)
+        return view('livewire.application.sheet.widget.tarif-items-with-consultation-widget', [
+            'tarifs' => GetConsultationRequestRepository::getConsultationTarifItemByCategoryTarif($this->consultationRequestId, $this->tarifId)
         ]);
     }
 }

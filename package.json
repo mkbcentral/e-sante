@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "admin-lte": "3.2",
+        "bootstrap-contextmenu": "^1.0.0",
         "bootstrap4-toggle": "^3.6.1",
         "ckeditor5": "^40.1.0",
         "sass": "^1.69.5",

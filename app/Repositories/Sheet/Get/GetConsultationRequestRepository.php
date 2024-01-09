@@ -44,6 +44,107 @@ class GetConsultationRequestRepository
             ->paginate($per_page);
     }
     /**
+     * Get all consultation request by date
+     * @param int $idSubscription
+     * @param string $q
+     * @param string $sortBy
+     * @param bool $sortAsc
+     * @param int $per_page
+     * @return mixed
+     */
+    public static function getConsultationRequestByDate(
+        int    $idSubscription,
+        string $q,
+        string $sortBy,
+        bool   $sortAsc,
+        int    $per_page = 10,
+        string $date,
+        string $year
+    ): mixed {
+        SELF::$keytoSearch = $q;
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->when($q, function ($query) {
+                return $query->where(function ($query) {
+                    return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
+                        ->orWhere('consultation_sheets.number_sheet', 'like', '%' . SELF::$keytoSearch . '%');
+                });
+            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription'])
+            -> where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            -> whereDate('consultation_requests.created_at', $date)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->paginate($per_page);
+    }
+    /**
+     * Get all consultation request by date
+     * @param int $idSubscription
+     * @param string $q
+     * @param string $sortBy
+     * @param bool $sortAsc
+     * @param int $per_page
+     * @return mixed
+     */
+    public static function getConsultationRequestByPeriod(
+        int    $idSubscription,
+        string $q,
+        string $sortBy,
+        bool   $sortAsc,
+        int    $per_page = 10,
+        string $startDate,
+        string $endDate,
+    ): mixed {
+        SELF::$keytoSearch = $q;
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->when($q, function ($query) {
+                return $query->where(function ($query) {
+                    return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
+                        ->orWhere('consultation_sheets.number_sheet', 'like', '%' . SELF::$keytoSearch . '%');
+                });
+            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription'])
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
+            ->paginate($per_page);
+    }
+    /**
+     * Get all consultation request by month
+     * @param int $idSubscription
+     * @param string $q
+     * @param string $sortBy
+     * @param bool $sortAsc
+     * @param int $per_page
+     * @return mixed
+     */
+    public static function getConsultationRequestByDateMonth(
+        int    $idSubscription,
+        string $q,
+        string $sortBy,
+        bool   $sortAsc,
+        int    $per_page = 10,
+        string $month,
+        string $year
+    ): mixed {
+        SELF::$keytoSearch = $q;
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->when($q, function ($query) {
+                return $query->where(function ($query) {
+                    return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
+                        ->orWhere('consultation_sheets.number_sheet', 'like', '%' . SELF::$keytoSearch . '%');
+                });
+            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription'])
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            -> whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->paginate($per_page);
+    }
+    /**
      * Get consultationRequest tarif items by category tarif id
      * @param int $consultationRequestId
      * @param int $categoryTarifId

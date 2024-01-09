@@ -7,7 +7,6 @@ use App\Repositories\Product\Get\GetProductRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -29,6 +28,7 @@ class ListProduct extends Component
     public string $category_id = '';
     public string $family_id = '';
     public ?Product $product;
+    public bool $isSpecialty=false;
 
     /**
      * Open creation mode modal

@@ -8,7 +8,6 @@ use App\Models\Currency;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class ProductsWithConsultationItemWidget extends Component
@@ -68,6 +67,7 @@ class ProductsWithConsultationItemWidget extends Component
             );
             $this->isEditing = false;
             $this->idSelected = 0;
+            $this->dispatch('listSheetRefreshed');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
@@ -87,6 +87,7 @@ class ProductsWithConsultationItemWidget extends Component
                 $id
             );
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
+            $this->dispatch('listSheetRefreshed');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }

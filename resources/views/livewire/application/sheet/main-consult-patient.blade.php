@@ -22,7 +22,7 @@
                 <x-form.button wire:click="openDetailConsultationModal"
                                class="btn-secondary  mr-1" type='button'>
                     <i class="fa fa-eye"></i>
-                    Viesualiser
+                    Visualiser
                 </x-form.button>
                 @if($consultationRequest->products->isEmpty())
                     <x-form.button wire:click="openPrescriptionMedicalModal"

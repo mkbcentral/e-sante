@@ -10,7 +10,7 @@
                     @foreach ($subscriptions as $subscription)
                         <li class="nav-item">
                             <a wire:click='changeIndex({{ $subscription }})'
-                               class="nav-link {{ $selectedIndex == $subscription->id ? 'active' : '' }} "
+                               class="nav-link text-uppercase {{ $selectedIndex == $subscription->id ? 'active' : '' }} "
                                href="#inscription" data-toggle="tab">
                                 &#x1F4C2; {{ $subscription->name }}
                             </a>

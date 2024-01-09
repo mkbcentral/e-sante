@@ -3,7 +3,6 @@
 namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationSheet;
-use App\Models\Hospital;
 use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;

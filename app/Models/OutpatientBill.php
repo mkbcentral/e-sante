@@ -46,6 +46,17 @@ class OutpatientBill extends Model
         return $this->belongsTo(Consultation::class, 'consultation_id');
     }
 
+    /**
+     * Get the user that owns the OutpatientBill
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
     public function getConsultationPriceUSD(): int|float
     {
         return $this->consultation->price_private;

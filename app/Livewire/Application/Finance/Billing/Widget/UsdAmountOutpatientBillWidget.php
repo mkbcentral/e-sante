@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Application\Finance\Billing\Form\Widget;
+namespace App\Livewire\Application\Finance\Billing\Widget;
 
 use App\Models\OutpatientBill;
 use Livewire\Component;
@@ -22,6 +22,6 @@ class UsdAmountOutpatientBillWidget extends Component
     }
     public function render()
     {
-        return view('livewire.application.finance.billing.form.widget.usd-amount-outpatient-bill-widget');
+        return view('livewire.application.finance.billing.widget.usd-amount-outpatient-bill-widget');
     }
 }

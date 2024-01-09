@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Application\Sheet;
 
-use App\Models\Hospital;
 use App\Models\Subscription;
 use App\Repositories\Subscription\Get\GetSubscriptionRepository;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,10 +11,30 @@ use Livewire\Component;
 
 class MainConsultationRequest extends Component
 {
-    protected $listeners=[
-        'refreshConsulting'=>'$refresh'
+    protected $listeners = [
+        'refreshConsulting' => '$refresh'
     ];
-    public int $selectedIndex=1;
+    public int $selectedIndex = 1;
+    public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
+
+    public function makeIsByDate()
+    {
+        $this->isByDate = true;
+        $this->isByMonth = false;
+        $this->isByPeriod = false;
+    }
+    public function makeIsByMonth()
+    {
+        $this->isByDate = false;
+        $this->isByMonth = true;
+        $this->isByPeriod = false;
+    }
+    public function makeIsByPeriod()
+    {
+        $this->isByDate = false;
+        $this->isByMonth = false;
+        $this->isByPeriod = true;
+    }
 
     /**
      * Change Subscription Selected
@@ -24,8 +43,8 @@ class MainConsultationRequest extends Component
      */
     public  function changeIndex(Subscription $subscription): void
     {
-        $this->selectedIndex=$subscription->id;
-        $this->dispatch('selectedIndex',$this->selectedIndex);
+        $this->selectedIndex = $subscription->id;
+        $this->dispatch('selectedIndex', $this->selectedIndex);
     }
 
     /**
@@ -34,8 +53,8 @@ class MainConsultationRequest extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.main-consultation-request',[
-            'subscriptions'=>GetSubscriptionRepository::getAllSubscriptionList(),
+        return view('livewire.application.sheet.main-consultation-request', [
+            'subscriptions' => GetSubscriptionRepository::getAllSubscriptionList(),
         ]);
     }
 }

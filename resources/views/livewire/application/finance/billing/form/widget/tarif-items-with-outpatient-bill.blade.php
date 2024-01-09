@@ -1,5 +1,5 @@
 <div>
-    <div class="card card-pink">
+    <div class="card card-indigo">
         <div class="card-header ">
             <div class="d-flex  justify-content-between  align-items-centersq">
                 <h4>LISTE DES EXAMENS PARACLINIQUES</h4>
@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <x-form.input-search wire:model.live.debounce.500ms="q" />
+                <x-form.input-search wire:model.live.debounce.500ms="q" :bg="'bg-indigo'" />
                 <x-form.button class="btn btn-secondary btn-sm" wire:click="sortTarif('name')">Trier
                     <x-form.sort-icon sortField="name"  :sortAsc="$sortAsc"  :sortBy="$sortBy" />
                 </x-form.button>
@@ -24,7 +24,7 @@
                                 <input  wire:model.live="tarifsSelected" type="radio" value="{{$tarif->id}}"
                                        id="{{str_replace(' ', '',$tarif->name)}}" >
                                 <label for="{{str_replace(' ', '',$tarif->name)}}">
-                                    {{$tarif->name}}
+                                    {{$tarif->getNameOrAbbreviation()}}
                                 </label>
                             </div>
                         </div>

@@ -1,16 +1,20 @@
-<nav class="main-header navbar navbar-expand bg-color-secondary navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand {{theme_setting('is_dark_mode')?'navbar-dark':'navbar-white'}} navbar-light">
     <ul class="navbar-nav">
-        <li class="nav-item ">
-            <a class="nav-link " data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
+        @livewire('application.setting.change-collapse-state')
     </ul>
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-4">
+           <h3 class="text-bold text-indigo">Taux 1$=  @livewire('application.finance.widget.rate-info-widget')</h3>
+        </li>
+        <li class="nav-item mr-4">
             <div class="form-group d-flex align-items-center">
                 <label class="mr-2">Devise</label>
-                @livewire('application.finance.widget.currency-widget')
+                @livewire('application.finance.widget.currency-widget')''
             </div>
+        </li>
+        <li class="nav-item mr-4">
+           @livewire('application.setting.switch-theme-widget')
         </li>
         <li class="nav-item dropdown user-menu text-white">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">

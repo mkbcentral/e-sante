@@ -1,20 +1,15 @@
 <div>
-    <x-modal.build-modal-fixed idModal='consultation-detail' size='lg' headerLabel="DETAILS DE LA CONSULTATION"
+    <x-modal.build-modal-fixed
+        idModal='consultation-detail'
+        size='lg'
+        headerLabel="DETAILS DE LA CONSULTATION"
         headerLabelIcon='fa fa-folder-plus'>
-        <div class="d-flex justify-content-center pb-2">
+        <div class="d-flex justify-content-center">
             <x-widget.loading-circular-md />
         </div>
         <div class="card-primary" wire:loading.class='d-none'>
-
             @if($consultationRequest != null)
             <div class="card-body">
-                <div class="d-flex justify-content-end">
-                    <div class="form-group d-flex align-items-center w-25">
-                        <label class="mr-2">Devise</label>
-                        @livewire('application.finance.widget.currency-widget')
-                    </div>
-                </div>
-
                 <x-widget.patient.card-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
                 <h5 class="text-danger text-bold">CONSULTATION</h5>
                 @livewire('application.sheet.widget.consultation-detail-widget',['consultationRequest'=>$consultationRequest])
@@ -32,11 +27,19 @@
                 @endif
 
             </div>
-            <div class="card-footer">
-                <h4 class="text-bold text-right">Total: @livewire('application.finance.widget.total-invoice-wiget',[
-                    'consultationRequest'=>$consultationRequest
-                    ])
-                </h4>
+            <div class="card-footer d-flex  justify-content-end">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="h4 text-bold text-danger">Total:</td>
+                            <td class="h4 text-bold"> {{app_format_number($consultationRequest->getTotalInvoiceCDF(),1) }} FC</td>
+                        </tr>
+                        <tr>
+                            <td class="h4 text-bold"></td>
+                            <td class="h4 text-bold"> {{ app_format_number($consultationRequest->getTotalInvoiceUSD(),1) }} $</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             @endif
         </div>

@@ -19,7 +19,7 @@
                         </th>
                         <th class="text-center">
                             <x-form.button class="text-white"  wire:click="sortTarif('abbreviation')">ABBREVIATION</x-form.button>
-                            <x-form.sort-icon sortField="name"  :sortAsc="$sortAsc"  :sortBy="$sortBy" />
+                            <x-form.sort-icon sortField="abbreviation"  :sortAsc="$sortAsc"  :sortBy="$sortBy" />
                         </th>
                         <th class="text-center">PRIX PRIVES</th>
                         <th class="text-center">PRIX ABONNES</th>

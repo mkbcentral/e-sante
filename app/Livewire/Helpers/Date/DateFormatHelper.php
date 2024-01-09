@@ -65,7 +65,7 @@ class DateFormatHelper
     }
 
     //Get months of year
-    public function getFrMonths():array{
+    public static function getFrMonths():array{
         return [
             ['name'=>'JANVIER','number'=>'01'],
             ['name'=>'FEVRIER','number'=>'02'],

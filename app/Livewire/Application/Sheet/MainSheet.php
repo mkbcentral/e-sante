@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Application\Sheet;
 
-use App\Models\ConsultationSheet;
-use App\Models\Hospital;
 use App\Models\Subscription;
 use App\Repositories\Subscription\Get\GetSubscriptionRepository;
 use Illuminate\Contracts\Foundation\Application;
@@ -13,7 +11,7 @@ use Livewire\Component;
 
 class MainSheet extends Component
 {
-    public int $selectedIndex=1;
+    public int $selectedIndex=4;
 
     /**
      * Change index item selected

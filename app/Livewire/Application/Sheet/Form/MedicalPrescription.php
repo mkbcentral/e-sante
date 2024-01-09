@@ -90,14 +90,10 @@ class MedicalPrescription extends Component
                             $this->dispatch('error', ['message' => $product->name . ' déjà prescrit']);
                         } else {
                             $this->saveData($item);
-                            $this->dispatch('refreshProductItems');
-                            $this->dispatch('added', ['message' => 'Action bien réalisée']);
                         }
                     } else {
                         //Save items data in DB
                         $this->saveData($item);
-                        $this->dispatch('refreshProductItems');
-                        $this->dispatch('added', ['message' => 'Action bien réalisée']);
                     }
                 }
             }
@@ -116,6 +112,9 @@ class MedicalPrescription extends Component
             'qty' => $item['qty'],
             'dosage' => $item['dosage']
         ]);
+        $this->dispatch('refreshProductItems');
+        $this->dispatch('listSheetRefreshed');
+        $this->dispatch('added', ['message' => 'Action bien réalisée']);
     }
 
     /**
