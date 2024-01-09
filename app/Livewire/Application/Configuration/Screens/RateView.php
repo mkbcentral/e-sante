@@ -54,10 +54,10 @@ class RateView extends Component
         }
         $this->rate = '';
     }
-    public function delete(Rate $Rate)
+    public function delete(Rate $rate)
     {
         try {
-            $Rate->delete();
+            $rate->delete();
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

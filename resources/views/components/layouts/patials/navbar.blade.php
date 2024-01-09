@@ -1,7 +1,9 @@
 <nav class="main-header navbar navbar-expand {{theme_setting('is_dark_mode')?'navbar-dark':'navbar-white'}} navbar-light">
+    @auth
     <ul class="navbar-nav">
         @livewire('application.setting.change-collapse-state')
     </ul>
+    @endauth
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-4">
@@ -13,9 +15,11 @@
                 @livewire('application.finance.widget.currency-widget')''
             </div>
         </li>
+        @auth
         <li class="nav-item mr-4">
-           @livewire('application.setting.switch-theme-widget')
-        </li>
+            @livewire('application.setting.switch-theme-widget')
+         </li>
+        @endauth
         <li class="nav-item dropdown user-menu text-white">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset('defautl-user.jpg') }}"

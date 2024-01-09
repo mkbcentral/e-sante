@@ -22,6 +22,7 @@ use App\Models\Subscription;
 use App\Models\Tarif;
 use App\Models\TypePatient;
 use App\Models\User;
+use App\Models\UserSetting;
 use App\Models\VitalSign;
 use Illuminate\Database\Seeder;
 
@@ -33,6 +34,9 @@ class DatabaseSeeder extends Seeder
     {
 
         Hospital::create(['name' => 'SHUKRANI']);
+        UserSetting::create([
+            'user_id'=>1
+        ]);
         //$this->call(ProductUpdateSpecilityColumnSeeder::class);
         //User::factory(10)->create();
         /*

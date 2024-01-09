@@ -5,7 +5,7 @@
         <x-navigation.bread-crumb-item label='Produits pharmaceutique' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="card card-pink">
+        <div class="card$ card-pink">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6><i class="fas fa-list"></i> LISTE DES PRODUITS</h6>
@@ -25,17 +25,6 @@
                         <div class="form-group">
                             <x-form.label value="{{ __('Famille') }}" class="text-pink" />
                             <x-widget.list-product-family-widget wire:model.live="family_id" :error="'family_id'" />
-                        </div>
-                        <div>
-                            <!-- radio -->
-                            <div class="form-group clearfix">
-                                <div class="icheck-primary d-inline">
-                                    <input type="radio" value="{{ $isSpecialty }}" id="{{ $isSpecialty }}">
-                                    <label for="{{ $isSpecialty }}">
-                                        Spécialité
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <x-form.button class="btn-secondary" wire:click="openCreationModal"><x-icons.icon-plus-circle />
@@ -75,7 +64,6 @@
                                 </x-form.button>
                                 <x-form.sort-icon sortField="expiration_date" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
-                            <th class="text-right">FAMILLE</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -95,7 +83,6 @@
                                     <td class="text-center">{{ $product->initial_quantity }}</td>
                                     <td class="text-right">{{ $product->price }}</td>
                                     <td class="text-right">{{ $product->expiration_date->format('d/M/y') }}</td>
-                                    <td class="text-right text-bold text-uppercase">{{ $product->family }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $product }})"
                                             class="btn-sm" />

@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Hospital;
+use App\Models\ProductCategory;
+use App\Models\ProductFamily;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,9 +20,9 @@ return new class extends Migration {
             $table->double('price')->default(0);
             $table->integer('initial_quantity');
             $table->date('expiration_date');
-            $table->foreignIdFor(\App\Models\ProductCategory::class);
-            $table->foreignIdFor(\App\Models\ProductFamily::class);
-            $table->foreignIdFor(\App\Models\Hospital::class);
+            $table->foreignIdFor(ProductCategory::class)->nullable();
+            $table->foreignIdFor(ProductFamily::class)->nullable();
+            $table->foreignIdFor(Hospital::class)->nullable();
             $table->timestamps();
         });
     }

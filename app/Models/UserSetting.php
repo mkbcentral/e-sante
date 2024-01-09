@@ -10,7 +10,7 @@ class UserSetting extends Model
 {
     use HasFactory;
 
-    protected $fillable=['user_id','',''];
+    protected $fillable=['user_id','is_sidebar_collapse','is_dark_mode'];
     /**
      * Get the user that owns the UserSetting
      *

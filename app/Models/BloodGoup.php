@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BloodGoup extends Model
 {
     use HasFactory;
+
+    protected $fillable=['name','hospital_id'];
 }

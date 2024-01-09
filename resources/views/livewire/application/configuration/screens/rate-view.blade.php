@@ -35,15 +35,14 @@
                                 <x-form.button type="button" class="btn-link "
                                     wire:confirm="Etes-vous sûre de réaliser l'opération ?"
                                     wire:click='changeStatus({{ $rate }})'>
-                                    <i class="{{
-                                    $rate->is_current == true ?
-                                    'fa fa-times text-danger ' : 'fa fa-check-circle text-info ' }}"
+                                    <i class="{{ $rate->is_current == true ? 'fa fa-times text-danger ' : 'fa fa-check-circle text-info ' }}"
                                         aria-hidden="true"></i>
                                 </x-form.button>
                                 <x-form.edit-button-icon wire:click="edit({{ $rate }})" class="btn-sm" />
                                 <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
                                     wire:click="delete({{ $rate }})" class="btn-sm" />
                             </td>
+                        </tr>
                     @endforeach
                 @endif
             </tbody>

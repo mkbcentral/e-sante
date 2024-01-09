@@ -3,6 +3,7 @@
 use App\Livewire\Application\Admin\MainAdmin;
 use App\Livewire\Application\Configuration\MainConfiguration;
 use App\Livewire\Application\Dashboard\MainDashboard;
+use App\Livewire\Application\Files\FileManagerView;
 use App\Livewire\Application\Finance\Billing\MainOutPatientBillReport;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Localization\MainLocalization;
@@ -33,6 +34,7 @@ use App\Livewire\Application\Product\List\ListProduct;
 Route::get('/administration', MainAdmin::class)->name('admin');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/configuration', MainConfiguration::class)->name('configuration');
+    Route::get('/files', FileManagerView::class)->name('files');
     Route::get('/localization', MainLocalization::class)->name('localization');
     Route::get('/', MainDashboard::class)->name('dashboard');
     Route::get('/sheet', MainSheet::class)->name('sheet');
