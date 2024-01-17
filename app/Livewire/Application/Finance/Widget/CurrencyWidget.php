@@ -3,7 +3,6 @@
 namespace App\Livewire\Application\Finance\Widget;
 
 use App\Models\Currency;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class CurrencyWidget extends Component

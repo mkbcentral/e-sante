@@ -12,7 +12,7 @@ class AppLayout extends Component
      *
      * @return void
      */
-    public function __construct(AppLink $appLink)
+    public function __construct()
     {
 
     }

@@ -28,7 +28,8 @@ class CategotyTarifView extends Component
     {
         $fields = $this->validate();
         try {
-            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL;
+            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
+            $fields['source_id'] = auth()->user()->source->id;
             CategoryTarif::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('refreshCategory');
@@ -57,6 +58,7 @@ class CategotyTarifView extends Component
     {
         $fields = $this->validate();
         try {
+            $fields['source_id'] = auth()->user()->source->id;
             $this->categoryTarif->update($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('refreshCategory');
@@ -102,7 +104,10 @@ class CategotyTarifView extends Component
     public function render()
     {
         return view('livewire.application.tarification.categoty-tarif-view', [
-            'categories' => CategoryTarif::orderBy('name', 'ASC')->get()
+            'categories' => CategoryTarif::orderBy('name', 'ASC')
+                ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+                ->where('source_id', auth()->user()->source->id)
+                ->get()
         ]);
     }
 }

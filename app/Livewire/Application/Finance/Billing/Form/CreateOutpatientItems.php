@@ -14,7 +14,7 @@ class CreateOutpatientItems extends Component
         'outpatientFreshinfo' => '$refresh'
     ];
     public ?OutpatientBill $outpatientBill;
-    public int $selectedIndex = 1;
+    public int $selectedIndex ;
 
 
     /**
@@ -43,6 +43,7 @@ class CreateOutpatientItems extends Component
     public function mount(?OutpatientBill $outpatientBill)
     {
         $this->outpatientBill = $outpatientBill;
+        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
     }
 
     public function render()

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Finance\Billing;
 
+use App\Models\Currency;
 use App\Models\OutpatientBill;
 use Livewire\Component;
 
@@ -15,10 +16,26 @@ class OutpatientBillView extends Component
     protected $listeners = [
         'outpatientBill' => 'getOutpatient',
         'outpatientBillToEdit' => 'getOutpatientToEdit',
-        'outpatientBillRefreshedMainView'=>'$refresh'
+        'outpatientBillRefreshedMainView' => '$refresh',
+        'currencyName' => 'getCurrencyName',
     ];
     public ?OutpatientBill $outpatientBill = null;
     public bool $isEditing = false;
+    /**
+     * @var string
+     */
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
+
+    /**
+     * getCurrencyName
+     * Get currency name
+     * @param  mixed $currency
+     * @return void
+     */
+    public function getCurrencyName(string $currency)
+    {
+        $this->currencyName = $currency;
+    }
 
     /**
      * Get OutpatientBill if outpatientBillListener is emitted
@@ -27,7 +44,7 @@ class OutpatientBillView extends Component
      */
     public function getOutpatient(): void
     {
-        $this->outpatientBill = OutpatientBill::latest()->first();
+        $this->outpatientBill = OutpatientBill::orderBy('id','desc')->first();
     }
     /**
      * Get OutpatientBill if outpatientBillToEditListener is emitted with edition mode
@@ -39,7 +56,7 @@ class OutpatientBillView extends Component
     {
         $this->outpatientBill = $outpatientBill;
         $this->isEditing = true;
-        $this->dispatch('outpatientBillToFrom',$outpatientBill);
+        $this->dispatch('outpatientBillToFrom', $outpatientBill);
     }
 
     /**
@@ -62,12 +79,18 @@ class OutpatientBillView extends Component
         $this->dispatch('refreshListBill');
     }
 
+    public function printBill(OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill=null;
+        $this->isEditing=false;
+    }
+
     /**
      * @return void
      */
     public function mount()
     {
-        //$this->outpatientBill = OutpatientBill::find(1);
+
     }
 
     public function render()

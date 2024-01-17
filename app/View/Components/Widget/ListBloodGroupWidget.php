@@ -17,7 +17,7 @@ class ListBloodGroupWidget extends Component
      */
     public function __construct()
     {
-        $this->bloodGroups=BloodGoup::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+        $this->bloodGroups=BloodGoup::where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();;
     }
 

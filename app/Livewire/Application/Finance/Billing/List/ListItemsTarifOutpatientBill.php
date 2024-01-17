@@ -3,21 +3,25 @@
 namespace App\Livewire\Application\Finance\Billing\List;
 
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
+use App\Models\CategoryTarif;
 use App\Models\Currency;
 use App\Models\OutpatientBill;
+use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use Livewire\Component;
 
 class ListItemsTarifOutpatientBill extends Component
 {
     protected $listeners = [
-        'refreshListItemsOupatient'=>'$refresh',
+        'refreshListItemsOupatient' => '$refresh',
         'outpatientSelected' => 'getSelectedOutpatient',
-        'currencyName' => 'getCurrencyName'
+        'currencyName' => 'getCurrencyName',
+        'selectedIndex' => 'getSelectedIndex'
     ];
     public ?OutpatientBill $outpatientBill;
     public int $idSelected = 0, $qty = 1;
     public bool $isEditing = false;
     public string $currencyName = Currency::DEFAULT_CURRENCY;
+    public int $selectedIndex = 0;
 
     /**
      * getCurrencyName
@@ -40,6 +44,11 @@ class ListItemsTarifOutpatientBill extends Component
     public function getSelectedOutpatient(?OutpatientBill $outpatientBill)
     {
         $this->outpatientBill = $outpatientBill;
+    }
+    public function getSelectedIndex(int $selectedIndex)
+    {
+        $this->selectedIndex = $selectedIndex;
+
     }
 
     public function edit(int $id, int $qty): void
@@ -90,11 +99,18 @@ class ListItemsTarifOutpatientBill extends Component
         }
     }
 
-    public function mount(?OutpatientBill $outpatientBill){
-        $this->outpatientBill=$outpatientBill;
+    public function mount(?OutpatientBill $outpatientBill)
+    {
+        $this->outpatientBill = $outpatientBill;
+        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
     }
     public function render()
     {
-        return view('livewire.application.finance.billing.list.list-items-tarif-outpatient-bill');
+        return view('livewire.application.finance.billing.list.list-items-tarif-outpatient-bill', [
+            'tarifs' => GetOutpatientRepository::getOutpatientBillTarifItemByCategoryTarif(
+                $this->outpatientBill->id,
+                $this->selectedIndex
+            )
+        ]);
     }
 }

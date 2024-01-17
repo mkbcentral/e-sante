@@ -16,7 +16,7 @@ class ConsultationSheet extends Model
         'number_sheet','name','date_of_birth','phone','other_phone','email',
         'blood_group','gender','type_patient_id','municipality','rural_area',
         'street','street_number', 'subscription_id','hospital_id','agent_service_id',
-        'registration_number'
+        'registration_number', 'source_id'
     ];
 
     protected $casts=[
@@ -69,6 +69,16 @@ class ConsultationSheet extends Model
 
     public function consultationRequests():HasMany{
         return $this->hasMany(ConsultationRequest::class);
+    }
+
+    /**
+     * Get the source that owns the ConsultationSheet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class, 'source_id');
     }
 
     public function  getFreshConsultation():ConsultationRequest{

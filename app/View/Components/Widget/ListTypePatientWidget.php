@@ -18,7 +18,7 @@ class ListTypePatientWidget extends Component
     public function __construct()
     {
         $this->listType=TypePatient::orderBy('name','ASC')
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 

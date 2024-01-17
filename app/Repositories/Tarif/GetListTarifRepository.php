@@ -13,7 +13,8 @@ class GetListTarifRepository
     public static function getSimpleTarifByCategory(int $cateryId): Collection
     {
         return Tarif::join('category_tarifs', 'category_tarifs.id', '=', 'tarifs.category_tarif_id')
-            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('category_tarifs.source_id', auth()->user()->source->id)
             ->where('tarifs.category_tarif_id', $cateryId)
             ->select('tarifs.*')
             ->get();
@@ -33,7 +34,8 @@ class GetListTarifRepository
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('tarifs.*')
             ->where('tarifs.is_changed', false)
-            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('category_tarifs.source_id', auth()->user()->source->id)
             ->get();
     }
 
@@ -51,7 +53,8 @@ class GetListTarifRepository
             ->where('tarifs.is_changed', false)
             ->select('tarifs.*', 'category_tarifs.name as category')
             ->where('tarifs.category_tarif_id', 'like', '%' . $category . '%')
-            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('category_tarifs.source_id', auth()->user()->source->id)
             ->paginate($perPage);
     }
 

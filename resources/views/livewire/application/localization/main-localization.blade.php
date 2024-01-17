@@ -16,7 +16,7 @@
                         @livewire('application.localization.screens.municipality-view')
                     </div>
                     <div class="tab-pane" id="rural">
-                        Quartier
+                        @livewire('application.localization.screens.area-rural-view')
                     </div>
                 </div>
             </div>

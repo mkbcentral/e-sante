@@ -17,7 +17,7 @@ class ListVitalSignWidget extends Component
      */
     public function __construct()
     {
-        $this->listVitalSign=VitalSign::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get();
+        $this->listVitalSign=VitalSign::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get();
     }
 
     /**

@@ -21,7 +21,7 @@ class RateView extends Component
         try {
             Rate::create([
                 'rate' => $this->rate,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -81,7 +81,9 @@ class RateView extends Component
     public function render()
     {
         return view('livewire.application.configuration.screens.rate-view', [
-            'rates' => Rate::orderBy('created_at', 'DESC')->get()
+            'rates' => Rate::orderBy('created_at', 'DESC')
+                ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->get()
         ]);
     }
 }

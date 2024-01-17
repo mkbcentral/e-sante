@@ -17,7 +17,7 @@ class ListAgentServiceWidget extends Component
      */
     public function __construct()
     {
-        $this->listServices=AgentService::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+        $this->listServices=AgentService::where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 

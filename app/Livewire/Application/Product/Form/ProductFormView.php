@@ -49,7 +49,8 @@ class ProductFormView extends Component
         $this->validate();
         try {
             $fields=$this->form->all();
-            $fields['hospital_id']=Hospital::DEFAULT_HOSPITAL;
+            $fields['hospital_id']=Hospital::DEFAULT_HOSPITAL();
+            $fields['source_id']=auth()->user()->source->id;
             Product::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');
@@ -66,7 +67,9 @@ class ProductFormView extends Component
     {
         $this->validate();
         try {
-            $this->product->update($this->form->all());
+            $fields = $this->form->all();
+            $fields['source_id'] = auth()->user()->source->id;
+            $this->product->update($fields);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');
         }catch (\Exception $exception){
@@ -85,6 +88,7 @@ class ProductFormView extends Component
         }else{
             $this->update();
         }
+        $this->dispatch('refreshListProducr');
     }
 
     /**

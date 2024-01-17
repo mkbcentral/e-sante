@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Application\Sheet\Widget;
 
-use App\Models\ConsultationSheet;
-use App\Models\Hospital;
 use App\Repositories\Sheet\Countig\CountConsultationSheetRepository;
 use Livewire\Component;
 
 class CountSheetBySubscription extends Component
 {
-    protected $listeners=['subscriptionId'=>'getSubscriptionId'];
+    protected $listeners=[
+        'subscriptionId'=>'getSubscriptionId',
+        'refreshSheetCounter'=>'$refresh'
+    ];
     public int $subscriptionId;
 
     /**

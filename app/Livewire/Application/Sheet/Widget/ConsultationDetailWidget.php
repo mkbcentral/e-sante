@@ -64,7 +64,7 @@ class ConsultationDetailWidget extends Component
     public function render()
     {
         return view('livewire.application.sheet.widget.consultation-detail-widget', [
-            'consultations' => Consultation::where('hospital_id', Hospital::DEFAULT_HOSPITAL)->get()
+            'consultations' => Consultation::where('hospital_id', Hospital::DEFAULT_HOSPITAL())->get()
         ]);
     }
 }

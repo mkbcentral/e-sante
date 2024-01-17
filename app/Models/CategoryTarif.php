@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,14 +13,14 @@ class CategoryTarif extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'hospital_id'];
+    protected $fillable = ['name', 'hospital_id', 'source_id'];
 
     public function tarifs(): HasMany
     {
         return $this->hasMany(Tarif::class,);
     }
 
-    public function getConsultationTarifItemls(ConsultationRequest $consultationRequest, CategoryTarif $categoryTarif): Collection
+    public function getConsultationTarifItems(ConsultationRequest $consultationRequest, CategoryTarif $categoryTarif): Collection
     {
 
         return DB::table('consultation_request_tarif')
@@ -35,7 +36,7 @@ class CategoryTarif extends Model
             )
             ->where('consultation_request_tarif.consultation_request_id', $consultationRequest->id)
             ->where('category_tarifs.id', $categoryTarif->id)
-            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 
@@ -90,7 +91,7 @@ class CategoryTarif extends Model
     public function getTotalTarifInvoiceByCategoryCDF(ConsultationRequest $consultationRequest, CategoryTarif $categoryTarif): float|int
     {
         $total = 0;
-        foreach ($categoryTarif->getConsultationTarifItemls($consultationRequest, $categoryTarif) as $item) {
+        foreach ($categoryTarif->getConsultationTarifItems($consultationRequest, $categoryTarif) as $item) {
             $total += $categoryTarif->getTotalPriceCDF($consultationRequest, $item->qty, $item->id_tarif);
         }
         return $total;
@@ -98,8 +99,38 @@ class CategoryTarif extends Model
     public function getTotalTarifInvoiceByCategoryUSD(ConsultationRequest $consultationRequest, CategoryTarif $categoryTarif): float|int
     {
         $total = 0;
-        foreach ($categoryTarif->getConsultationTarifItemls($consultationRequest, $categoryTarif) as $item) {
+        foreach ($categoryTarif->getConsultationTarifItems($consultationRequest, $categoryTarif) as $item) {
             $total += $categoryTarif->getTotalPriceUSD($consultationRequest, $item->qty, $item->id_tarif);
+        }
+        return $total;
+    }
+
+    public function getOutpatientBillTarifItems(OutpatientBill $outpatientBill, CategoryTarif $categoryTarif): Collection
+    {
+
+        return DB::table('outpatient_bill_tarif')
+        ->join('tarifs', 'tarifs.id', '=', 'outpatient_bill_tarif.tarif_id')
+        ->join('category_tarifs', 'category_tarifs.id', '=', 'tarifs.category_tarif_id')
+        ->select(
+            'outpatient_bill_tarif.*',
+            'tarifs.name',
+            'tarifs.abbreviation',
+            'tarifs.price_private',
+            'tarifs.id as id_tarif',
+            'category_tarifs.id as category_id'
+        )
+            ->where('outpatient_bill_tarif.outpatient_bill_id', $outpatientBill->id)
+            ->where('category_tarifs.id', $categoryTarif->id)
+            ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->get();
+    }
+
+    public function getAmountOutpatientBillByCategory(int $outpatientBillId):int|float{
+        $total=0;
+        $tarifs=GetOutpatientRepository::
+        getOutpatientBillTarifItemByCategoryTarif($outpatientBillId,$this->id);
+        foreach ($tarifs as $tarif) {
+           $total+=$tarif->price_private*$tarif->qty;
         }
         return $total;
     }

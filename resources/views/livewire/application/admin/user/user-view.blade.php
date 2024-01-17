@@ -26,6 +26,7 @@
                             <x-form.button class="text-white" wire:click="sortUser('email')">Email</x-form.button>
                             <x-form.sort-icon sortField="email" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                         </th>
+                        <th class="text-right ">Source</th>
                         <th class="text-center ">Avatr</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -43,6 +44,7 @@
                                 <td class="text-center">{{ $index + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td class="text-right">{{ $user?->source?->name }}</td>
                                 <td class="text-center">
                                     <img src="{{ asset('defautl-user.jpg') }}" width="30px" alt="Avatar" class="img-circle">
                                 </td>

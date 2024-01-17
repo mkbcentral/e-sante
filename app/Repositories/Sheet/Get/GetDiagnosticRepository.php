@@ -12,6 +12,6 @@ class GetDiagnosticRepository
      * @return Collection
      */
     public static function getDiagnosticList():Collection{
-        return Diagnostic::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get();
+        return Diagnostic::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get();
     }
 }

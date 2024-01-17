@@ -57,6 +57,7 @@ class CategoryProductView extends Component
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         }
         $this->name = '';
+        $this->abbreviation = '';
     }
     public function delete(ProductCategory $productCategory)
     {
@@ -67,7 +68,7 @@ class CategoryProductView extends Component
             }else{
                 $this->dispatch('error', ['message' =>'Action impossible']);
             }
-          
+
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

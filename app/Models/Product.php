@@ -14,13 +14,16 @@ class Product extends Model
     protected $fillable=[
         'butch_number','initial_quantity','name',
         'price','expiration_date','product_family_id','product_category_id',
-        'hospital_id', 'is_specialty'
+        'hospital_id', 'is_specialty', 'source_id'
     ];
-    public function getExpirationDate($value): string
+
+    protected $casts = [
+        'expiration_date' => 'datetime'
+    ];
+    public function getExpirationDateAttribute($value): string
     {
         return Carbon::parse($value)->toFormattedDate();
     }
-    protected $casts=['expiration_date'=>'datetime'];
 
     public function productInvoices(): BelongsToMany
     {

@@ -9,7 +9,8 @@ class CountConsultationSheetRepository
 {
     public static function countAllConsultationBySubscription(string $subscriptionId):float{
         return ConsultationSheet::whereSubscriptionId($subscriptionId)
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+            ->where('source_id', auth()->user()->source->id)
             ->count();
     }
 }

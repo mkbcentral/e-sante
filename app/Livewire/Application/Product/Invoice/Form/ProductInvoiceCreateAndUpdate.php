@@ -44,7 +44,7 @@ class ProductInvoiceCreateAndUpdate extends Component
             $productInvoice=ProductInvoice::create([
                 'number'=>rand(1000,10000),
                 'client'=>$this->client,
-                'hospital_id'=>Hospital::DEFAULT_HOSPITAL,
+                'hospital_id'=>Hospital::DEFAULT_HOSPITAL(),
                 'user_id'=>1
             ]);
             $this->dispatch('productInvoice');

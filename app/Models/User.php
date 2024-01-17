@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -63,5 +64,25 @@ class User extends Authenticatable
     public function setting(): HasOne
     {
         return $this->hasOne(UserSetting::class);
+    }
+
+    /**
+     * Get the hospital that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hospital(): BelongsTo
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id');
+    }
+
+    /**
+     * Get the source that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class, 'source_id');
     }
 }

@@ -12,7 +12,7 @@ use Livewire\Component;
 class TarifView extends Component
 {
     protected $listeners = ['refreshCategory' => '$refresh'];
-    public int $selectedIndex = 1;
+    public int $selectedIndex;
     /**
      * Open CategoryTarif modal view
      * @return void
@@ -43,6 +43,12 @@ class TarifView extends Component
         $this->selectedIndex = $category->id;
         $this->dispatch('selectedIndex', $this->selectedIndex);
     }
+
+    public function mount()
+    {
+        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
+    }
+
 
     /**
      * Render component

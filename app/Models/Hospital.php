@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Repositories\User\GetUserRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Hospital extends Model
 {
     use HasFactory;
-    const DEFAULT_HOSPITAL=1;
+    protected $fillable=['name','email','phone','logo'];
     /**
      * Get all of the consultationSheets for the Subscription
      *
@@ -18,15 +19,29 @@ class Hospital extends Model
      */
     public function consultationSheets(): HasMany
     {
-        return $this->hasMany(ConsultationSheet::class, 'consultation_sheet_id', 'local_key');
+        return $this->hasMany(ConsultationSheet::class);
     }
     /**
-     * Get the hospital that owns the Hospital
+     * Get all of the users for the Hospital
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function hospital(): BelongsTo
+    public function users(): HasMany
     {
-        return $this->belongsTo(Hospital::class, 'hospital_id');
+        return $this->hasMany(User::class);
+    }
+
+    /**
+     * Get the source associated with the Hospital
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function source(): HasOne
+    {
+        return $this->hasOne(Source::class);
+    }
+
+    public static function DEFAULT_HOSPITAL():int{
+        return auth()->user()->id;
     }
 }

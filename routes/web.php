@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
 use App\Livewire\Application\Admin\MainAdmin;
 use App\Livewire\Application\Configuration\MainConfiguration;
 use App\Livewire\Application\Dashboard\MainDashboard;
@@ -10,16 +11,13 @@ use App\Livewire\Application\Localization\MainLocalization;
 use App\Livewire\Application\Sheet\MainSheet;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Application\Patient\FolderPatient;
-use App\Livewire\Application\Product\Invoice\List\ListInvoiceByMonth;
 use App\Livewire\Application\Product\Invoice\MainProductInvoice;
 use App\Livewire\Application\Product\Invoice\MainProductInvoiceReport;
-use App\Livewire\Application\Product\Invoice\MainReport;
 use App\Livewire\Application\Tarification\TarifView;
 use App\Livewire\Application\Tarification\PriceList;
 use App\Livewire\Application\Sheet\MainConsultationRequest;
 use App\Livewire\Application\Sheet\MainConsultPatient;
 use App\Livewire\Application\Product\List\ListProduct;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,4 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
+
+    Route::prefix('print')->group(function () {
+        Route::controller(OutpatientBillPrinterController::class)->group(function () {
+            Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
+        });
+    });
 });

@@ -16,7 +16,8 @@ class ListProduct extends Component
     use WithPagination;
 
     protected $listeners = [
-        'deleteProductListener' => 'delete'
+        'deleteProductListener' => 'delete',
+        'refreshListProducr' => '$refresh'
     ];
     #[Url(as: 'q')]
     public $q = '';

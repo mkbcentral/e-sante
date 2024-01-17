@@ -20,7 +20,7 @@ class BloodGroupView extends Component
         try {
             BloodGoup::create([
                 'name' => $this->name,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -67,7 +67,7 @@ class BloodGroupView extends Component
     public function render()
     {
         return view('livewire.application.configuration.screens.blood-group-view',[
-            'bloodGroups'=>BloodGoup::all()
+            'bloodGroups'=>BloodGoup::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get()
         ]);
     }
 }

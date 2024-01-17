@@ -18,7 +18,7 @@ class ListCategoryTarifWidget extends Component
     public function __construct()
     {
         $this->listCategories=CategoryTarif::orderBy('name','ASC')
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 

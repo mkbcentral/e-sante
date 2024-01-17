@@ -22,7 +22,6 @@
                         </div>
                     </div>
                 @endif
-
                 <div class=" bg-dark rounded bg-secondary p-1 mt-1" style="cursor: pointer"
                     wire:click='openListListOutpatientBillModal'>
                     <div class="text-center">
@@ -30,12 +29,14 @@
                     </div>
                 </div>
                 @if ($outpatientBill != null)
-                    <div class=" bg-indigo rounded bg-secondary p-1 mt-1" style="cursor: pointer"
-                        wire:click='openListListOutpatientBillModal'>
-                        <div class="text-center">
-                            <h4><i class="fa fa-print"></i> Imprimer</h4>
+                    <a wire:click='printBill' href="{{ route('outPatientBill.print', [$outpatientBill,$currencyName]) }}"
+                        target="_blanck">
+                        <div class=" bg-indigo rounded bg-secondary p-1 mt-1" style="cursor: pointer">
+                            <div class="text-center">
+                                <h4><i class="fa fa-print"></i> Imprimer</h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 @endif
                 <a class="mt-2" href="{{ route('bill.outpatient.rapport') }}" wire:navigate>
                     <div class=" bg-danger rounded bg-secondary p-1 mt-2">
@@ -50,7 +51,7 @@
                     @livewire('application.finance.billing.form.create-outpatient-items', [
                         'outpatientBill' => $outpatientBill,
                     ])
-                    @else
+                @else
                     <div class="d-flex justify-content-center">
                         <h3 class="mt-4 text-success"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                             Veuillez créer

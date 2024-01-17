@@ -22,7 +22,7 @@ class GenderView extends Component
             Gender::create([
                 'name' => $this->name,
                 'slug' => $this->slug,
-                'hospital_id'=>Hospital::DEFAULT_HOSPITAL
+                'hospital_id'=>Hospital::DEFAULT_HOSPITAL()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -71,7 +71,7 @@ class GenderView extends Component
     public function render()
     {
         return view('livewire.application.configuration.screens.gender-view',[
-            'genders'=>Gender::all()
+            'genders'=>Gender::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get()
         ]);
     }
 }

@@ -4,12 +4,13 @@ namespace App\Repositories\OutpatientBill;
 
 use App\Models\OutpatientBill;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class GetOutpatientRepository
 {
 
 
-    public static function getOutpatientPatientByDate(string $date):Collection
+    public static function getOutpatientPatientByDate(string $date): Collection
     {
         return OutpatientBill::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
@@ -102,5 +103,16 @@ class GetOutpatientRepository
             $cons_total += $outpatientBill->consultation->price_private * $outpatientBill->rate->rate;
         }
         return $total + $cons_total;
+    }
+
+    public static function getOutpatientBillTarifItemByCategoryTarif(int $outpatientBillId, int $categoryTarifId): Collection
+    {
+        return DB::table('outpatient_bill_tarif')
+            ->join('tarifs', 'tarifs.id', 'outpatient_bill_tarif.tarif_id')
+            ->join('category_tarifs', 'category_tarifs.id', 'tarifs.category_tarif_id')
+            ->where('outpatient_bill_tarif.outpatient_bill_id', $outpatientBillId)
+            ->where('category_tarifs.id', $categoryTarifId)
+            ->select('outpatient_bill_tarif.*', 'tarifs.name', 'tarifs.abbreviation', 'tarifs.price_private')
+            ->get();
     }
 }

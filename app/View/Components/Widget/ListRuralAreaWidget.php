@@ -19,7 +19,7 @@ class ListRuralAreaWidget extends Component
     {
         $this->listRuralArea=RuralArea::join('municipalities','municipalities.id','=','rural_areas.municipality_id')
             ->where('municipalities.name',$this->municipalityName)
-            ->where('municipalities.hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('municipalities.hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->select('rural_areas.*')->get();
     }
 

@@ -15,7 +15,7 @@ class ConsultationRequest extends Model
     protected $fillable = [
         'request_number', 'consultation_sheet_id',
         'consultation_id', 'rate_id', 'consulted_by',
-        'printed_by', 'validated_by'
+        'printed_by', 'validated_by', 'has_a_shipping_ticket'
     ];
 
     public function rate(): BelongsTo

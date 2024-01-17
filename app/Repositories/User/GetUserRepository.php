@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\Hospital;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -16,6 +17,11 @@ class GetUserRepository
                 return $query->where('name', 'like', '%' . SELF::$query . '%')
                     ->orWhere('email', 'like', '%' . SELF::$query . '%');
             });
-        })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')->get();
+        })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+        ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+        ->get();
+    }
+    public static function getIdUserDefault():int{
+        return auth()->user()->id;
     }
 }

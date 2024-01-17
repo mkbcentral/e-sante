@@ -17,7 +17,7 @@ class ListMunicipalityWidget extends Component
      */
     public function __construct()
     {
-        $this->listMunicipalities=Municipality::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+        $this->listMunicipalities=Municipality::where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 

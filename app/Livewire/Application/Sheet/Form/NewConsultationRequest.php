@@ -2,9 +2,7 @@
 
 namespace App\Livewire\Application\Sheet\Form;
 
-use App\Models\ConsultationRequest;
 use App\Models\ConsultationSheet;
-use App\Repositories\Rate\RateRepository;
 use App\Repositories\Sheet\Creation\CreateNewConsultationRequestRepository;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -15,6 +13,7 @@ class NewConsultationRequest extends Component
     public ?ConsultationSheet $consultationSheet;
     #[Rule('required|numeric', message: 'Type de consultation obligatoire')]
     public $consultation_id;
+    public bool  $has_a_shipping_ticket = false;
 
     /**
      * This function get ConsultationSheet if listener is emitted
@@ -31,11 +30,13 @@ class NewConsultationRequest extends Component
      */
     public function store(): void
     {
+
         $this->validate();
         try {
             CreateNewConsultationRequestRepository::create([
                 'consultation_sheet_id' => $this->consultationSheet->id,
-                'consultation_id' => $this->consultation_id
+                'consultation_id' => $this->consultation_id,
+                'has_a_shipping_ticket' => $this->has_a_shipping_ticket
             ]);
             $this->dispatch('close-request-form');
             $this->dispatch('added', ['message' => 'Action bien réalisée']);

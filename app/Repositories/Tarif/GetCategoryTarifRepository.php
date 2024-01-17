@@ -13,7 +13,8 @@ class GetCategoryTarifRepository
      */
     public static function getListCategories():Collection{
         return CategoryTarif::orderBy('name','ASC')
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+            ->where('category_tarifs.source_id', auth()->user()->source->id)
             ->get();
     }
 }

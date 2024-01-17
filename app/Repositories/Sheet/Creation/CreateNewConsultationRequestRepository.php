@@ -12,7 +12,8 @@ class CreateNewConsultationRequestRepository
             'request_number'=>rand(10,100),
             'consultation_sheet_id'=>$inputs['consultation_sheet_id'],
             'consultation_id'=>$inputs['consultation_id'],
-            'rate_id'=>RateRepository::getCurrentRate()->id
+            'rate_id'=>RateRepository::getCurrentRate()->id,
+            'has_a_shipping_ticket'=>$inputs['has_a_shipping_ticket']
         ]);
     }
 }

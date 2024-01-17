@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($categoryTarif->getConsultationTarifItemls($consultationRequest, $categoryTarif) as $item)
+            @foreach ($categoryTarif->getConsultationTarifItems($consultationRequest, $categoryTarif) as $item)
             <tr style="cursor: pointer;" wire:key="{{ $item->id }}">
                 <td class="text-uppercase">
                     @if ($isEditing && $idSelected == $item->id)

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Application\Admin\User;
 
+use App\Models\Hospital;
+use App\Models\Source;
 use App\Models\User;
 use Exception;
 use Livewire\Attributes\Rule;
@@ -20,6 +22,8 @@ class CreateAndUpdateUser extends Component
 
     #[Rule('required', message: 'Username obligatoire', onUpdate: false)]
     public $name = '';
+    #[Rule('required', message: 'Source obligatoire', onUpdate: false)]
+    public $source_id = '';
 
     public ?User $user=null;
     public string $formLabel = 'CREATION UTILISATEUR';
@@ -32,6 +36,7 @@ class CreateAndUpdateUser extends Component
         $this->formLabel = 'EDITION UTILISATEUR';
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->source_id = $user?->source?->id;
     }
 
     public function store()
@@ -42,6 +47,8 @@ class CreateAndUpdateUser extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => bcrypt('password'),
+                'source_id' => $this->source_id,
+                'hospital_id'=>Hospital::DEFAULT_HOSPITAL()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -54,6 +61,8 @@ class CreateAndUpdateUser extends Component
         try {
             $this->user->name = $this->name;
             $this->user->email = $this->email;
+            $this->user->source_id = $this->source_id;
+            $this->user->hospital_id = Hospital::DEFAULT_HOSPITAL();
             $this->user->update();
             $this->user = null;
             $this->isEditing = false;
@@ -83,6 +92,8 @@ class CreateAndUpdateUser extends Component
     public function render()
     {
 
-        return view('livewire.application.admin.user.create-and-update-user');
+        return view('livewire.application.admin.user.create-and-update-user',[
+            'sources'=>Source::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get()
+        ]);
     }
 }

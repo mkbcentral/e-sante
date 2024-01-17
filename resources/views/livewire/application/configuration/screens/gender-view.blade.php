@@ -8,6 +8,7 @@
                         <tr>
                             <th>#</th>
                             <th>Designation</th>
+                            <th class="text-center">Slug</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -23,6 +24,7 @@
                                 <tr style="cursor: pointer;" id="row1">
                                     <td class="text-center">{{ $index + 1 }}</td>
                                     <td>{{ $gender->name }}</td>
+                                    <td class="text-center">{{ $gender->slug }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $gender }})"
                                             class="btn-sm" />
@@ -60,7 +62,7 @@
                             wire:model='name' :error="'name'" />
                         <x-errors.validation-error value='name' />
                     </div>
-                    
+
                     <div class="card-footer d-flex justify-content-end">
                         <x-form.button class="btn-primary" type='submit'><i class="fa fa-save"></i> Sauvegarder</x-form.button>
                     </div>

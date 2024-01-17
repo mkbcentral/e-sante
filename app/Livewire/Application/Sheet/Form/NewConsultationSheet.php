@@ -22,6 +22,8 @@ class NewConsultationSheet extends Component
     public ?Subscription $subscription;
     public string $municipality_name = '';
     public ?ConsultationSheet $sheet=null;
+    public $formatedSheetNumber='';
+    public bool  $has_a_shipping_ticket =false;
 
     /**
      * Get subscription selected in parent component
@@ -61,8 +63,9 @@ class NewConsultationSheet extends Component
         $this->validate();
         try {
             $fields = $this->form->all();
-            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL;
+            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
             $fields['subscription_id'] = $this->selectedIndex;
+            $fields['source_id'] = auth()->user()->source->id;
             $existingSheet=GetConsultationSheetRepository::getExistingConsultationSheet(
                 $this->form->name,
                 $this->form->gender
@@ -71,10 +74,12 @@ class NewConsultationSheet extends Component
                 $sheet=ConsultationSheet::create($fields);
                 CreateNewConsultationRequestRepository::create([
                     'consultation_sheet_id' => $sheet->id,
-                    'consultation_id' => $this->form->consultation_id
+                    'consultation_id' => $this->form->consultation_id,
+                    'has_a_shipping_ticket'=>$this->has_a_shipping_ticket
                 ]);
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 $this->dispatch('listSheetRefreshed');
+                $this->dispatch('refreshSheetCounter');
                 $this->dispatch('close-form-new');
             }else{
                 $this->dispatch('error', ['message' => 'Action impossible, Ce patient existe déjà']);
@@ -90,8 +95,10 @@ class NewConsultationSheet extends Component
      */
     public function update(): void
     {
+        $fields = $this->form->all();
         try {
-            $this->sheet->update($this->form->all());
+            $fields['source_id'] = auth()->user()->source->id;
+            $this->sheet->update($fields);
             $this->dispatch('close-form-new');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('listSheetRefreshed');
@@ -107,6 +114,7 @@ class NewConsultationSheet extends Component
      */
     public function handlerSubmit(): void
     {
+
         if ($this->sheet == null) {
             $this->store();
         } else {
@@ -121,6 +129,7 @@ class NewConsultationSheet extends Component
     {
         //Initialize sheet number
         $this->form->number_sheet = GetConsultationSheetRepository::getLastConsultationSheetNumber();
+
     }
 
     public function render()

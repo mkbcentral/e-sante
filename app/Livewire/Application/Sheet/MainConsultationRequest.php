@@ -14,7 +14,7 @@ class MainConsultationRequest extends Component
     protected $listeners = [
         'refreshConsulting' => '$refresh'
     ];
-    public int $selectedIndex = 1;
+    public int $selectedIndex;
     public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
 
     public function makeIsByDate()
@@ -46,6 +46,12 @@ class MainConsultationRequest extends Component
         $this->selectedIndex = $subscription->id;
         $this->dispatch('selectedIndex', $this->selectedIndex);
     }
+
+    public function mount()
+    {
+        $this->selectedIndex = Subscription::where('name', 'like', 'PRIVE')->first()->id;
+    }
+
 
     /**
      * Render component

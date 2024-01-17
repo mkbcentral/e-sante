@@ -6,6 +6,7 @@
         <div class="row">
             <div class="col-md-8">
                 @if($categories->isEmpty())
+                 <x-errors.data-empty />
                 @else
                     <table class="table table-striped table-sm">
                         <thead class="bg-primary">

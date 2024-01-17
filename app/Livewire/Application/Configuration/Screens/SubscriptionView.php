@@ -20,7 +20,7 @@ class SubscriptionView extends Component
     ];
     public $type = 'pv';
     public ?Subscription $subscriptionToEdit = null;
-    public string $formLabel='CREATION';
+    public string $formLabel = 'CREATION';
 
     public function store()
     {
@@ -30,19 +30,19 @@ class SubscriptionView extends Component
                 Subscription::create([
                     'name' => $this->name,
                     'is_private' => 1,
-                    'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                    'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
                 ]);
             } elseif ($this->type == 'ab') {
                 Subscription::create([
                     'name' => $this->name,
                     'is_subscriber' => 1,
-                    'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                    'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
                 ]);
             } else {
                 Subscription::create([
                     'name' => $this->name,
                     'is_personnel' => 1,
-                    'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                    'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
                 ]);
             }
         } catch (Exception $ex) {
@@ -60,7 +60,7 @@ class SubscriptionView extends Component
         } else {
             $this->type = 'ps';
         }
-        $this->formLabel='EDITION';
+        $this->formLabel = 'EDITION';
     }
     public function update()
     {
@@ -121,7 +121,9 @@ class SubscriptionView extends Component
     public function render()
     {
         return view('livewire.application.configuration.screens.subscription-view', [
-            'subscriptions' => Subscription::orderBy('name', 'ASC')->get()
+            'subscriptions' => Subscription::orderBy('name', 'ASC')
+                ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->get()
         ]);
     }
 }

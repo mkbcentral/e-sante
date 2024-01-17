@@ -5,7 +5,7 @@
         <x-navigation.bread-crumb-item label='Produits pharmaceutique' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="card$ card-pink">
+        <div class="card card-pink">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6><i class="fas fa-list"></i> LISTE DES PRODUITS</h6>
@@ -77,12 +77,13 @@
                         @else
                             @foreach ($products as $product)
                                 <tr style="cursor: pointer;">
-                                    <td class="text-center">{{ $product->butch_number }}</td>
+                                    <td class="">{{ $product->butch_number == null ? '-' : $product->butch_number }}
+                                    </td>
                                     <td class="text-uppercase">{{ $product->name }} <span
                                             class="text-bold text-pink">{{ $product->abbreviation }}</span></td>
                                     <td class="text-center">{{ $product->initial_quantity }}</td>
                                     <td class="text-right">{{ $product->price }}</td>
-                                    <td class="text-right">{{ $product->expiration_date->format('d/M/y') }}</td>
+                                    <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $product }})"
                                             class="btn-sm" />

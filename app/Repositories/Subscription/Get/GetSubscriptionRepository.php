@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class GetSubscriptionRepository
 {
     public static function getAllSubscriptionList():Collection{
-        return Subscription::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+        return Subscription::where('hospital_id',Hospital::DEFAULT_HOSPITAL())
                 ->where('is_activated',true)
                 ->get();
     }

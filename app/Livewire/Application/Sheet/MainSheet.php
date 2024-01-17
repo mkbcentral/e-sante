@@ -8,10 +8,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use PhpParser\Builder\Function_;
 
 class MainSheet extends Component
 {
-    public int $selectedIndex=4;
+    public int $selectedIndex;
 
     /**
      * Change index item selected
@@ -23,6 +24,10 @@ class MainSheet extends Component
         $this->selectedIndex=$subscription->id;
         $this->dispatch('selectedIndex',$this->selectedIndex);
         $this->dispatch('subscriptionId',$this->selectedIndex);
+    }
+
+    public function mount(){
+        $this->selectedIndex=Subscription::where('name','like','PRIVE')->first()->id;
     }
 
     /**

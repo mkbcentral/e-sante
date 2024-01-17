@@ -31,7 +31,7 @@ class TarifConsultationView extends Component
     {
         $fields = $this->validate();
         try {
-            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL;
+            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
             Consultation::create($fields);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

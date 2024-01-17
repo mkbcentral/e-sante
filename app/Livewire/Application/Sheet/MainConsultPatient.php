@@ -16,7 +16,7 @@ class MainConsultPatient extends Component
     public int $consultationRequestId;
     public ?ConsultationRequest $consultationRequest;
     public ?ConsultationSheet $consultationSheet;
-    public int $selectedIndex = 1;
+    public int $selectedIndex;
 
     /**
      * Open detail consultation model view
@@ -64,6 +64,7 @@ class MainConsultPatient extends Component
     {
         $this->consultationRequest = ConsultationRequest::find($this->consultationRequestId);
         $this->consultationSheet = $this->consultationRequest->consultationSheet;
+        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
     }
 
     /**

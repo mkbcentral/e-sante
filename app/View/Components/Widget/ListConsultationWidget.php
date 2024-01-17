@@ -16,7 +16,7 @@ class ListConsultationWidget extends Component
      */
     public function __construct()
     {
-        $this->listConsultation=Consultation::where('hospital_id',Hospital::DEFAULT_HOSPITAL)->get();
+        $this->listConsultation=Consultation::where('hospital_id',Hospital::DEFAULT_HOSPITAL())->get();
     }
 
     /**

@@ -17,7 +17,7 @@ class ListGenderWidget extends Component
      */
     public function __construct()
     {
-        $this->listGenders=Gender::where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+        $this->listGenders=Gender::where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();;
     }
 

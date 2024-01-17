@@ -10,6 +10,8 @@ class TypePatient extends Model
 {
     use HasFactory;
 
+    protected $fillable=['name','hospital_id'];
+
     /**
      * Get all of the consultationSheets for the TypePatient
      *
@@ -17,6 +19,6 @@ class TypePatient extends Model
      */
     public function consultationSheets(): HasMany
     {
-        return $this->hasMany(ConsultationSheet::class, 'consultation_sheet_id');
+        return $this->hasMany(ConsultationSheet::class);
     }
 }

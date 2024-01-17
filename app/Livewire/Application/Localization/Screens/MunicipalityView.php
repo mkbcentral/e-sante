@@ -20,7 +20,7 @@ class MunicipalityView extends Component
         try {
             Municipality::create([
                 'name' => $this->name,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);

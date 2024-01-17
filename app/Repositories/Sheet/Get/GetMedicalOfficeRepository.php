@@ -14,7 +14,7 @@ class GetMedicalOfficeRepository
      */
     public static  function getMedicalOfficeList():Collection{
        return MedicalOffice::where('hospital_id',1)
-            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL)
+            ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 }

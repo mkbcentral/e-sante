@@ -16,8 +16,9 @@ class GetConsultationSheetRepository
     public static function getLastConsultationSheetNumber(): int
     {
         return ConsultationSheet::orderBy('created_at', 'DESC')
-                ->where('hospital_id', Hospital::DEFAULT_HOSPITAL)
-                ->first()?->number_sheet + 1;
+            ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->first()?->number_sheet + 1;
     }
 
     /**
@@ -36,8 +37,8 @@ class GetConsultationSheetRepository
         string $q,
         string $sortBy,
         bool   $sortAsc,
-        int    $per_page = 10): mixed
-    {
+        int    $per_page = 10
+    ): mixed {
         SELF::$keyToSearch = $q;
         return ConsultationSheet::join('subscriptions', 'subscriptions.id', 'consultation_sheets.subscription_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
@@ -51,13 +52,15 @@ class GetConsultationSheetRepository
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_sheets.*', 'subscriptions.name as subscription')
-            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 
     public static function getExistingConsultationSheet(
-        string $name, string $gender): ?ConsultationSheet
-    {
+        string $name,
+        string $gender
+    ): ?ConsultationSheet {
         return ConsultationSheet::where('name', $name)->where('gender', $gender)->first();
     }
 }

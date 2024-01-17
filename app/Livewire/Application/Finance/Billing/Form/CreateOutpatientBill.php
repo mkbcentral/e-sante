@@ -63,7 +63,7 @@ class CreateOutpatientBill extends Component
                 'client_name' => $this->client_name,
                 'consultation_id' => $this->consultation_id,
                 'user_id' => 1,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL,
+                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
                 'rate_id' => RateRepository::getCurrentRate()->id,
             ]);
             $this->dispatch('outpatientBill', $outpatientBill);
@@ -90,6 +90,7 @@ class CreateOutpatientBill extends Component
             $this->dispatch('close-form-new-outpatient-bill');
             $this->dispatch('outpatientFreshinfo');
             $this->dispatch('outpatientBillRefreshedMainView');
+            $this->dispatch('refreshListItemsOupatient');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception  $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);

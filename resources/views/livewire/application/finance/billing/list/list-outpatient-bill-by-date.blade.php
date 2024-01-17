@@ -3,8 +3,9 @@
         headerLabel="LISTE DES FACTURES" headerLabelIcon='fa fa-file'>
         <div>
             <div class="d-flex justify-content-between align-content-center">
-                <div >
-                    <h3 wire:loading.class="d-none">Total: {{ app_format_number($totalBills, 1) }} {{ $currencyName }}</h3>
+                <div>
+                    <h3 wire:loading.class="d-none">Total: {{ app_format_number($totalBills, 1) }} {{ $currencyName }}
+                    </h3>
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="d-flex align-items-center mr-2">
@@ -39,7 +40,7 @@
                             </tr>
                         @else
                             @foreach ($listBill as $index => $bill)
-                                <tr style="cursor: pointer;" id="row1" wire:click="edit({{ $bill }})">
+                                <tr style="cursor: pointer;" id="row1" >
                                     <td class="text-center">{{ $index + 1 }}</td>
                                     <td>{{ $bill->bill_number }}</td>
                                     <td>{{ $bill->client_name }}</td>
@@ -49,9 +50,11 @@
                                             : app_format_number($bill->getTotalOutpatientBillUSD(), 0) . '$' }}
                                     </td>
                                     <td class="text-center">
+                                        <x-form.edit-button-icon wire:click="edit({{ $bill }})" class="btn-sm"/>
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
                                             wire:click="delete({{ $bill }})" class="btn-sm" />
-                                        <a href="#"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                        <a href="{{ route('outPatientBill.print', [$bill,$currencyName]) }}"
+                                            target="_blanck"><i class="fa fa-print text-secondary  " aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

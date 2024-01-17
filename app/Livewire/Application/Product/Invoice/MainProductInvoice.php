@@ -70,7 +70,7 @@ class MainProductInvoice extends Component
     }
 
     public function mount(){
-        //$this->productInvoice = ProductInvoice::latest()->first();
+        $this->productInvoice = ProductInvoice::latest()->first();
     }
     public function render()
     {

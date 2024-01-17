@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'expiration_date'=>fake()->date(),
             'product_category_id'=>ProductCategory::all()->random()->id,
             'product_family_id'=>ProductFamily::all()->random()->id,
-            'hospital_id'=>Hospital::DEFAULT_HOSPITAL
+            'hospital_id'=>Hospital::DEFAULT_HOSPITAL()
         ];
     }
 }

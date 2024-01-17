@@ -2,7 +2,7 @@
     <div class="card card-indigo">
         <div class="card-header ">
             <div class="d-flex  justify-content-between  align-items-centersq">
-                <h4>LISTE DES EXAMENS PARACLINIQUES</h4>
+                <h4><i class="fa fa-list" aria-hidden="true"></i> LISTE DES EXAMENS PARACLINIQUES</h4>
             </div>
         </div>
         <div class="card-body">

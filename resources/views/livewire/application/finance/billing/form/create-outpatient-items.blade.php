@@ -19,7 +19,7 @@
                     <span class="text-bold">
                         <i class="fa fa-user-check" aria-hidden="true"></i>
                         User: </span>
-                    {{$outpatientBill?->user?->name}}
+                      {{Auth::user()?->name}}
                 </div>
             </div>
         </div>

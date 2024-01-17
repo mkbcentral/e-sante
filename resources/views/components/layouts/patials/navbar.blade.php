@@ -7,7 +7,7 @@
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-4">
-           <h3 class="text-bold text-indigo">Taux 1$=  @livewire('application.finance.widget.rate-info-widget')</h3>
+           <h3 class="text-bold text-indigo">Taux 1$=  @livewire('application.finance.widget.rate-info-widget') CDF</h3>
         </li>
         <li class="nav-item mr-4">
             <div class="form-group d-flex align-items-center">

@@ -12,6 +12,12 @@
                 <x-navigation.tab-link :icon="'fa fa-pills'" :name="'Famille Produits'" :link="'familyProduct'" :active="''" />
                 <x-navigation.tab-link :icon="'fas fa-user-check'" :name="'Goupe sanguin'" :link="'bloodGroup'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-user-circle'" :name="'Genre'" :link="'gender'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-user'" :name="'Type patient'" :link="'typePatient'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-home'" :name="'Cabinet des médecins'" :link="'meidcalOffice'" :active="''" />
+                <x-navigation.tab-link :icon="'fas fa-file-medical'" :name="'Signe vitaux'" :link="'vitalSign'" :active="''" />
+                <x-navigation.tab-link :icon="'fas fa-list'" :name="'Services'" :link="'service'" :active="''" />
+                <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Hospital'" :link="'hospital'" :active="''" />
+                <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Source'" :link="'source'" :active="''" />
             </x-navigation.tab-header>
             <div class="card-body">
                 <div class="tab-content">
@@ -32,6 +38,24 @@
                     </div>
                     <div class="tab-pane" id="gender">
                         @livewire('application.configuration.screens.gender-view')
+                    </div>
+                    <div class="tab-pane" id="typePatient">
+                        @livewire('application.configuration.screens.type-patient-view')
+                    </div>
+                    <div class="tab-pane" id="meidcalOffice">
+                        @livewire('application.configuration.screens.medical-office-view')
+                    </div>
+                    <div class="tab-pane" id="vitalSign">
+                        @livewire('application.configuration.screens.vital-sign-view')
+                    </div>
+                    <div class="tab-pane" id="service">
+                       @livewire('application.configuration.screens.agent-service-view')
+                    </div>
+                    <div class="tab-pane" id="hospital">
+                      @livewire('application.configuration.screens.hospital-view')
+                    </div>
+                    <div class="tab-pane" id="source">
+                     @livewire('application.configuration.screens.source-view')
                     </div>
                 </div>
             </div>
