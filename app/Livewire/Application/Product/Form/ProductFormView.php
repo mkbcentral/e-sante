@@ -54,7 +54,7 @@ class ProductFormView extends Component
             $fields['source_id']=auth()->user()->source->id;
             if
             ($fields['product_family_id']==null) {
-                $fields['product_family_id']=null;
+                $fields['product_family_id']=1;
             }
             $fields['product_family_id'] = null;
             Product::create($fields);
