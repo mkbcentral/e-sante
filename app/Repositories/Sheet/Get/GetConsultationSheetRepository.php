@@ -37,7 +37,7 @@ class GetConsultationSheetRepository
         string $q,
         string $sortBy,
         bool   $sortAsc,
-        int    $per_page = 10
+        int    $per_page = 50
     ): mixed {
         SELF::$keyToSearch = $q;
         return ConsultationSheet::join('subscriptions', 'subscriptions.id', 'consultation_sheets.subscription_id')

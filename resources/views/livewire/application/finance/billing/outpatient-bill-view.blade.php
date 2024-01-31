@@ -1,6 +1,7 @@
 <div class="mx-2">
     @livewire('application.finance.billing.form.create-outpatient-bill')
     @livewire('application.finance.billing.list.list-outpatient-bill-by-date')
+    @livewire('application.finance.billing.form.create-detail-outpatient-bill')
     <x-navigation.bread-crumb icon='fas fa-file-invoice-dollar' label='FACTURATION AMBULATOIRE' color='text-secondary'>
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Facturation ambulatoire' />
@@ -28,9 +29,16 @@
                         <h4><i class="far fa-folder-open"></i> Mes factures</h4>
                     </div>
                 </div>
+                @if ($outpatientBill && $outpatientBill->currency == null)
+                    <div wire:click='openAddDetailFormModal' class=" bg-navy rounded  p-1 mt-1" style="cursor: pointer">
+                        <div class="text-center">
+                            <h4><i class="fas fa-funnel-dollar"></i> Regler M.T</h4>
+                        </div>
+                    </div>
+                @endif
                 @if ($outpatientBill != null)
-                    <a wire:click='printBill' href="{{ route('outPatientBill.print', [$outpatientBill,$currencyName]) }}"
-                        target="_blanck">
+                    <a wire:click='printBill'
+                        href="{{ route('outPatientBill.print', [$outpatientBill, $currencyName]) }}" target="_blanck">
                         <div class=" bg-indigo rounded bg-secondary p-1 mt-1" style="cursor: pointer">
                             <div class="text-center">
                                 <h4><i class="fa fa-print"></i> Imprimer</h4>

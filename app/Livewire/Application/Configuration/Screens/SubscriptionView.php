@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Configuration\Screens;
 
 use App\Models\Hospital;
+use App\Models\Source;
 use App\Models\Subscription;
 use Exception;
 use Livewire\Attributes\Rule;
@@ -10,6 +11,9 @@ use Livewire\Component;
 
 class SubscriptionView extends Component
 {
+    protected $listeners = [
+        'refreshAll' => '$refresh',
+    ];
     #[Rule('required', message: 'Descripption obligatoire', onUpdate: false)]
     public string $name = '';
 
@@ -31,20 +35,24 @@ class SubscriptionView extends Component
                     'name' => $this->name,
                     'is_private' => 1,
                     'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
+                    'source_id' => Source::DEFAULT_SOURCE(),
                 ]);
             } elseif ($this->type == 'ab') {
                 Subscription::create([
                     'name' => $this->name,
                     'is_subscriber' => 1,
                     'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
+                    'source_id' => Source::DEFAULT_SOURCE(),
                 ]);
             } else {
                 Subscription::create([
                     'name' => $this->name,
                     'is_personnel' => 1,
                     'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
+                    'source_id' => Source::DEFAULT_SOURCE(),
                 ]);
             }
+            $this->dispatch('refreshAll');
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -68,15 +76,19 @@ class SubscriptionView extends Component
         try {
             if ($this->type == 'pv') {
                 $this->subscriptionToEdit->name = $this->name;
+                $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
                 $this->subscriptionToEdit->is_private = 1;
             } elseif ($this->type == 'ab') {
                 $this->subscriptionToEdit->name = $this->name;
+                $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
                 $this->subscriptionToEdit->is_subscriber = 1;
             } else {
                 $this->subscriptionToEdit->name = $this->name;
+                $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
                 $this->subscriptionToEdit->is_personnel = 1;
             }
             $this->subscriptionToEdit->update();
+            $this->dispatch('refreshAll');
             $this->subscriptionToEdit = null;
             $this->formLabel = 'CREATION';
         } catch (Exception $ex) {
@@ -123,6 +135,7 @@ class SubscriptionView extends Component
         return view('livewire.application.configuration.screens.subscription-view', [
             'subscriptions' => Subscription::orderBy('name', 'ASC')
                 ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('source_id', Source::DEFAULT_SOURCE())
                 ->get()
         ]);
     }

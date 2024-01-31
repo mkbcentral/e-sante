@@ -34,7 +34,7 @@
                     <thead class="bg-pink text-white">
                         <tr class="">
                             <th>
-                                <x-form.button class="text-bold text-white" wire:click="sortProduct('butch_number')">N°
+                                <x-form.button class="text-bold  text-center text-white" wire:click="sortProduct('butch_number')">N°
                                     LOT
                                 </x-form.button>
                                 <x-form.sort-icon sortField="butch_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
@@ -77,7 +77,8 @@
                         @else
                             @foreach ($products as $product)
                                 <tr style="cursor: pointer;">
-                                    <td class="">{{ $product->butch_number == null ? '-' : $product->butch_number }}
+                                    <td class="text-center">
+                                        {{ $product->butch_number == null ? '-' : $product->butch_number }}
                                     </td>
                                     <td class="text-uppercase">{{ $product->name }} <span
                                             class="text-bold text-pink">{{ $product->abbreviation }}</span></td>

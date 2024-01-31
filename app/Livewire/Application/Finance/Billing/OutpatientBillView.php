@@ -73,6 +73,13 @@ class OutpatientBillView extends Component
      *Open modal to show list bills
      * @return void
      */
+
+    public function openAddDetailFormModal()
+    {
+        $this->dispatch('open-form-detail-outpatient-bill');
+        $this->dispatch('outpatientBillToDetail', $this->outpatientBill);
+    }
+
     public function openListListOutpatientBillModal(): void
     {
         $this->dispatch('open-list-outpatient-bill-by-date-modal');
@@ -90,7 +97,7 @@ class OutpatientBillView extends Component
      */
     public function mount()
     {
-
+        //$this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
     }
 
     public function render()

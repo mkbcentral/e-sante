@@ -3,21 +3,28 @@
 namespace App\Livewire\Application\Sheet\Form;
 
 use App\Models\ConsultationRequest;
-use App\Models\Hospital;
 use App\Models\MedicalOffice;
 use App\Repositories\Sheet\Get\GetMedicalOfficeRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
+
 class AddViatlSign extends Component
 {
-    protected $listeners=['consultationRequest'=>'getConsultationRequest'];
-    public ?ConsultationRequest $consultationRequest;
-    public array $vitalSignForm=[];
-    public int $selectedMedicalOfficeIndex=0;
-    public bool $itemsVitalSignSend=false;
+    protected $listeners = ['consultationRequest' => 'getConsultationRequest'];
+    public ?ConsultationRequest $consultationRequest = null;
+    public array $vitalSignForm = [];
+    public int $selectedMedicalOfficeIndex = 0;
+    public bool $itemsVitalSignSend = false;
+    public bool $is_hospitalized = false;
+
+    public function updatedIsHospitalized($val)
+    {
+        $this->consultationRequest->is_hospitalized = $val;
+        $this->consultationRequest->update();
+        $this->dispatch('updated', ['message' => 'Patient marqué hospitalisé']);
+    }
 
     /**
      * Creted new line in form  vital sign array
@@ -25,9 +32,9 @@ class AddViatlSign extends Component
      */
     public function addNewVitalSignToForm(): void
     {
-        $this->vitalSignForm[]=[
-            'vital_sign_id'=>0,
-            'value'=>0
+        $this->vitalSignForm[] = [
+            'vital_sign_id' => 0,
+            'value' => 0
         ];
     }
     /**
@@ -37,10 +44,10 @@ class AddViatlSign extends Component
      */
     public function removeVitalSignToForm($index): void
     {
-       if (count($this->vitalSignForm) > 1){
-           unset($this->vitalSignForm[$index]);
-           array_values($this->vitalSignForm);
-       }
+        if (count($this->vitalSignForm) > 1) {
+            unset($this->vitalSignForm[$index]);
+            array_values($this->vitalSignForm);
+        }
     }
     /**
      * Save items vital sign in DB after completed
@@ -49,29 +56,29 @@ class AddViatlSign extends Component
     public function addVitalSignItems(): void
     {
         try {
-            foreach ($this->vitalSignForm as $item){
+            foreach ($this->vitalSignForm as $item) {
                 //Check in array data is empty to retun a error message
-                if($item['vital_sign_id']==0 && $item['value']==0 ){
+                if ($item['vital_sign_id'] == 0 && $item['value'] == 0) {
                     $this->dispatch('error', ['message' => 'Valeur saisie invalide']);
-                }else{
+                } else {
                     $this->consultationRequest->vitalSigns()->attach(
-                        $item['vital_sign_id'],['value' => $item['value']]
+                        $item['vital_sign_id'],
+                        ['value' => $item['value']]
                     );
                     $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 }
             }
-            $this->itemsVitalSignSend=true;
+            $this->itemsVitalSignSend = true;
             //Reset form array values after saving completed successfully
-            $this->vitalSignForm=[
+            $this->vitalSignForm = [
                 [
-                    'vital_sign_id'=>0,
-                    'value'=>0
+                    'vital_sign_id' => 0,
+                    'value' => 0
                 ]
             ];
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => 'Une erreur se produite']);
         }
-
     }
     /**
      * Select a Medical Office to affect patient to consult
@@ -80,7 +87,7 @@ class AddViatlSign extends Component
      */
     public function selectedMedicalOffice(MedicalOffice $medicalOffice): void
     {
-        $this->selectedMedicalOfficeIndex=$medicalOffice->id;
+        $this->selectedMedicalOfficeIndex = $medicalOffice->id;
     }
     /**
      * Send ConsultationRequest to Medical Office for consulting
@@ -90,24 +97,26 @@ class AddViatlSign extends Component
     {
         try {
             //Check in Medical Office is selected
-            if($this->selectedMedicalOfficeIndex==0){
+            if ($this->selectedMedicalOfficeIndex == 0) {
                 $this->dispatch('error', ['message' => 'Selection un médecin SVP !']);
-            }else{
+            } else {
                 $this->consultationRequest->medicalOffices()->attach($this->selectedMedicalOfficeIndex);
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
-        }catch (\Exception $exception){}
+        } catch (\Exception $exception) {
+        }
     }
     /**
      * Mounted Component
      * Set default values on vatal signs arry
      * @return void
      */
-    public function mount(){
-        $this->vitalSignForm=[
+    public function mount()
+    {
+        $this->vitalSignForm = [
             [
-                'vital_sign_id'=>0,
-                'value'=>0
+                'vital_sign_id' => 0,
+                'value' => 0
             ]
         ];
     }
@@ -118,7 +127,7 @@ class AddViatlSign extends Component
      */
     public function getConsultationRequest(ConsultationRequest $consultationRequest): void
     {
-        $this->consultationRequest=$consultationRequest;
+        $this->consultationRequest = $consultationRequest;
     }
     /**
      * Render view
@@ -126,8 +135,11 @@ class AddViatlSign extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.form.add-viatl-sign',[
-            'medicalOffices'=>GetMedicalOfficeRepository::getMedicalOfficeList()
+        if ($this->consultationRequest != null) {
+            $this->is_hospitalized = $this->consultationRequest->is_hospitalized;
+        }
+        return view('livewire.application.sheet.form.add-viatl-sign', [
+            'medicalOffices' => GetMedicalOfficeRepository::getMedicalOfficeList()
         ]);
     }
 }

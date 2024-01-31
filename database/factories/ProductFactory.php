@@ -21,13 +21,13 @@ class ProductFactory extends Factory
     {
         return [
             'butch_number'=>fake()->numberBetween(10,100),
-            'name'=>fake()->firstName(),
+            'name'=>fake()->lastName(),
             'price'=>fake()->numberBetween(500,10000),
             'initial_quantity'=>fake()->numberBetween(10,100),
             'expiration_date'=>fake()->date(),
             'product_category_id'=>ProductCategory::all()->random()->id,
             'product_family_id'=>ProductFamily::all()->random()->id,
-            'hospital_id'=>Hospital::DEFAULT_HOSPITAL()
+            'hospital_id'=>1
         ];
     }
 }

@@ -19,6 +19,7 @@ class GetUserRepository
             });
         })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
         ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+        ->with(['hospital', 'source', 'agentService'])
         ->get();
     }
     public static function getIdUserDefault():int{

@@ -6,7 +6,6 @@ use App\Models\Consultation;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
 use App\Models\Hospital;
-use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 
 class ConsultationDetailWidget extends Component

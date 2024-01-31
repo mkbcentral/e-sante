@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -28,5 +29,15 @@ class Product extends Model
     public function productInvoices(): BelongsToMany
     {
         return $this->belongsToMany(ProductInvoice::class)->withPivot('id', 'qty');
+    }
+
+    /**
+     * Get all of the productSupplyProducts for the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productSupplyProducts(): HasMany
+    {
+        return $this->hasMany(productSupplyProduct::class);
     }
 }

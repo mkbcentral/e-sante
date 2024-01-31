@@ -44,7 +44,7 @@
                     <tbody>
                     @foreach($sheets as $sheet)
                         <tr style="cursor: pointer;">
-                            <td class="text-center">{{sprintf("%03d", $sheet->number_sheet)}}</td>
+                            <td class="text-center">{{sprintf("%04d", $sheet->number_sheet)}}</td>
                             <td class="text-uppercase">{{$sheet->name}}</td>
                             <td class="text-center">{{$sheet->gender}}</td>
                             <td class="text-center">{{$sheet->getPatientAge()}}</td>

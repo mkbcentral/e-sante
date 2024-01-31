@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ConsultationSheet extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'number_sheet','name','date_of_birth','phone','other_phone','email',
-        'blood_group','gender','type_patient_id','municipality','rural_area',
-        'street','street_number', 'subscription_id','hospital_id','agent_service_id',
+    protected $fillable = [
+        'number_sheet', 'name', 'date_of_birth', 'phone', 'other_phone', 'email',
+        'blood_group', 'gender', 'type_patient_id', 'municipality', 'rural_area',
+        'street', 'street_number', 'subscription_id', 'hospital_id', 'agent_service_id',
         'registration_number', 'source_id'
     ];
 
-    protected $casts=[
-        'date_of_birth'=>'datetime'
+    protected $casts = [
+        'date_of_birth' => 'datetime'
     ];
 
     public function getDateOfBirthAttribute($value): string
@@ -67,7 +67,8 @@ class ConsultationSheet extends Model
         return $this->belongsTo(TypePatient::class, 'type_patient_id');
     }
 
-    public function consultationRequests():HasMany{
+    public function consultationRequests(): HasMany
+    {
         return $this->hasMany(ConsultationRequest::class);
     }
 
@@ -81,9 +82,9 @@ class ConsultationSheet extends Model
         return $this->belongsTo(Source::class, 'source_id');
     }
 
-    public function  getFreshConsultation():ConsultationRequest{
-        return ConsultationRequest::where('consultation_sheet_id',$this->id)
-            ->orderBy('created_at','DESC')->first();
+    public function  getFreshConsultation(): ConsultationRequest
+    {
+        return ConsultationRequest::where('consultation_sheet_id', $this->id)
+            ->orderBy('created_at', 'DESC')->first();
     }
-
 }

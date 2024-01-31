@@ -56,6 +56,7 @@ class ConsultPatient extends Component
                 $this->dispatch('refreshItemsTarifWidget', $this->selectedIndex);
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
+            $this->dispatch('refreshConultPatient');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }

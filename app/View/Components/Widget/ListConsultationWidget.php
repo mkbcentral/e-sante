@@ -6,11 +6,12 @@ use App\Models\Consultation;
 use App\Models\Hospital;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 class ListConsultationWidget extends Component
 {
-    public $listConsultation;
+    public ?Collection $listConsultation;
     /**
      * Create a new component instance.
      */

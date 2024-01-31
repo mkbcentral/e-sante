@@ -12,7 +12,7 @@ use Livewire\Component;
 class TarifView extends Component
 {
     protected $listeners = ['refreshCategory' => '$refresh'];
-    public int $selectedIndex;
+    public int $selectedIndex=0;
     /**
      * Open CategoryTarif modal view
      * @return void
@@ -34,6 +34,16 @@ class TarifView extends Component
     }
 
     /**
+     * Open CategoryTarif modal view
+     * @return void
+     * Ben MWILA
+     */
+    public function showHospitalizationPage(): void
+    {
+        $this->dispatch('open-tarif-hospitalization-page');
+    }
+
+    /**
      * Change CategoryId
      * @param CategoryTarif $category
      * @return void
@@ -46,7 +56,11 @@ class TarifView extends Component
 
     public function mount()
     {
-        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
+        $category= CategoryTarif::where('name', 'like', '%LABO%')?->first();
+        if ($category) {
+           $this->selectedIndex = $category->id;
+        }
+
     }
 
 

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class MedicalOffice extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'hospital_id'];
+    protected $fillable = ['name', 'hospital_id','source_id'];
 }

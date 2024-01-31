@@ -33,6 +33,7 @@ class CreateOutpatientItems extends Component
     }
 
 
+
     public  function changeIndex(CategoryTarif $category): void
     {
         $this->selectedIndex = $category->id;

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use PhpParser\Builder\Function_;
+
 
 class MainSheet extends Component
 {
@@ -21,13 +21,19 @@ class MainSheet extends Component
      */
     public  function changeIndex(Subscription $subscription): void
     {
-        $this->selectedIndex=$subscription->id;
-        $this->dispatch('selectedIndex',$this->selectedIndex);
-        $this->dispatch('subscriptionId',$this->selectedIndex);
+        $this->selectedIndex = $subscription->id;
+        $this->dispatch('selectedIndex', $this->selectedIndex);
+        $this->dispatch('subscriptionId', $this->selectedIndex);
     }
 
-    public function mount(){
-        $this->selectedIndex=Subscription::where('name','like','PRIVE')->first()->id;
+    public function mount()
+    {
+        $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
+        if ($subscription) {
+            $this->selectedIndex = $subscription->id;
+        } else {
+            $this->selectedIndex = 0;
+        }
     }
 
     /**
@@ -36,8 +42,8 @@ class MainSheet extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.main-sheet',[
-            'subscriptions'=>GetSubscriptionRepository::getAllSubscriptionList(),
+        return view('livewire.application.sheet.main-sheet', [
+            'subscriptions' => GetSubscriptionRepository::getAllSubscriptionList(),
         ]);
     }
 }

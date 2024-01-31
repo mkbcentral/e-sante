@@ -7,51 +7,58 @@ use Livewire\Form;
 
 class SheetForm extends Form
 {
-    #[Rule('required|numeric', message: 'Numéro fiche obligation', onUpdate: false)]
+    #[Rule('required', message: 'Numéro fiche obligation', onUpdate: false)]
+    #[Rule('numeric', message: 'Format numerique invalide', onUpdate: false)]
     public $number_sheet = '';
 
-    #[Rule('required|min:3|string', message: 'Nom patient obligatoire')]
+    #[Rule('required', message: 'Nom patient obligatoire')]
+    #[Rule('min:3', message: 'Taille caractère faible')]
     public $name = '';
 
-    #[Rule('required|date', message: 'Date de naissance obligatoire')]
+    #[Rule('required', message: 'Date de naissance obligatoire')]
+    #[Rule('date', message: 'Format date invalide')]
     public $date_of_birth = '';
 
-    #[Rule('required|string', message: 'Genre obligatoire')]
+    #[Rule('required', message: 'Genre obligatoire')]
     public $gender = '';
 
-    #[Rule('required|string', message: 'Nom patient obligatoire')]
+    #[Rule('required', message: 'N° tél patient obligatoire')]
     public $phone = '';
 
-    #[Rule('nullable|string')]
+    #[Rule('nullable')]
     public $other_phone = '';
 
-    #[Rule('nullable|string')]
+    #[Rule('nullable')]
     public $email = '';
 
-    #[Rule('required|string', message: 'Commune obligatoire')]
+    #[Rule('required', message: 'Commune obligatoire')]
     public $municipality = '';
 
-    #[Rule('required|string', message: 'Champ obligatoire')]
+    #[Rule('required', message: 'Champ obligatoire')]
     public $rural_area = '';
 
-    #[Rule('nullable|string')]
+    #[Rule('nullable')]
     public $street = '';
 
-    #[Rule('nullable|numeric')]
+    #[Rule('nullable')]
+    #[Rule('numeric', message: 'Format numérique invalide')]
     public $street_number = '';
 
-    #[Rule('nullable|string')]
+    #[Rule('nullable')]
     public $blood_group = 'Aucun';
 
-    #[Rule('nullable|numeric')]
-    public $agent_service_id = '';
+    #[Rule('nullable')]
+    #[Rule('numeric', message: 'Format numérique invalide')]
+    public $agent_service_id;
 
-    #[Rule('nullable|string')]
-    public $registration_number = '';
+    #[Rule('nullable')]
+    public $registration_number;
 
-    #[Rule('required|numeric', message: 'Type patient obligatoire')]
+    #[Rule('required', message: 'Type patient obligatoire')]
+    #[Rule('numeric', message: 'Format numérique invalide')]
     public $type_patient_id;
 
-    #[Rule('required|numeric', message: 'Type consultation obligatoire')]
-    public $consultation_id = '';
+    #[Rule('required', message: 'Type consultation obligatoire')]
+    #[Rule('numeric', message: 'Format numérique invalide')]
+    public $consultation_id ;
 }

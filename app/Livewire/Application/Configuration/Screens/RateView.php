@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Configuration\Screens;
 
 use App\Models\Hospital;
 use App\Models\Rate;
+use App\Models\Source;
 use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -22,6 +23,7 @@ class RateView extends Component
             Rate::create([
                 'rate' => $this->rate,
                 'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
+                'source_id' => Source::DEFAULT_SOURCE(),
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -37,6 +39,7 @@ class RateView extends Component
         $this->validate();
         try {
             $this->rateToEdit->rate = $this->rate;
+            $this->rateToEdit->source_id = Source::DEFAULT_SOURCE();
             $this->rateToEdit->update();
             $this->rateToEdit = null;
         } catch (Exception $ex) {
@@ -83,6 +86,7 @@ class RateView extends Component
         return view('livewire.application.configuration.screens.rate-view', [
             'rates' => Rate::orderBy('created_at', 'DESC')
                 ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('source_id', Source::DEFAULT_SOURCE())
                 ->get()
         ]);
     }

@@ -20,7 +20,15 @@
                         <h5 class="text-danger text-bold">MEDICATION</h5>
                         @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
                     @endif
-
+                     @if (!$consultationRequest->consultationRequestNursings->isEmpty())
+                         <h5 class="text-danger text-bold">NURSING & AUTRES</h5>
+                         @livewire('application.sheet.widget.consultation-request-nursing-widget',
+                          ['consultationRequest' => $consultationRequest,'currency'=>$currencyName])
+                    @endif
+                    @if (!$consultationRequest->consultationRequestHospitalizations->isEmpty())
+                         <h5 class="text-danger text-bold">SEJOUR</h5>
+                         @livewire('application.sheet.widget.hospitalization-item-widget', ['consultationRequest' => $consultationRequest])
+                    @endif
                 </div>
                 <div class="card-footer d-flex  justify-content-end">
                     <table>

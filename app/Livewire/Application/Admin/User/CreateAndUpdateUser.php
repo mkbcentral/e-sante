@@ -18,12 +18,15 @@ class CreateAndUpdateUser extends Component
     #[Rule('required', message: 'Adresse mail obligatoire', onUpdate: false)]
     #[Rule('email', message: 'Adresse mail invalide', onUpdate: false)]
     #[Rule('min:6', message: 'Taille Adresse faible', onUpdate: false)]
-    public string $email = '';
+    public string $email;
 
     #[Rule('required', message: 'Username obligatoire', onUpdate: false)]
-    public $name = '';
+    public $name;
     #[Rule('required', message: 'Source obligatoire', onUpdate: false)]
-    public $source_id = '';
+    public $source_id ;
+
+    #[Rule('required', message: 'Service obligatoire', onUpdate: false)]
+    public $agent_service_id;
 
     public ?User $user=null;
     public string $formLabel = 'CREATION UTILISATEUR';
@@ -37,6 +40,7 @@ class CreateAndUpdateUser extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->source_id = $user?->source?->id;
+        $this->agent_service_id = $user?->agentService?->id;
     }
 
     public function store()
@@ -48,7 +52,8 @@ class CreateAndUpdateUser extends Component
                 'email' => $this->email,
                 'password' => bcrypt('password'),
                 'source_id' => $this->source_id,
-                'hospital_id'=>Hospital::DEFAULT_HOSPITAL()
+                'hospital_id'=>Hospital::DEFAULT_HOSPITAL(),
+                'agent_service_id'=>$this->agent_service_id
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -63,6 +68,7 @@ class CreateAndUpdateUser extends Component
             $this->user->email = $this->email;
             $this->user->source_id = $this->source_id;
             $this->user->hospital_id = Hospital::DEFAULT_HOSPITAL();
+            $this->user->agent_service_id = $this->agent_service_id;;
             $this->user->update();
             $this->user = null;
             $this->isEditing = false;

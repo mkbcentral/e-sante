@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Repositories\User\GetUserRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,6 +41,6 @@ class Hospital extends Model
     }
 
     public static function DEFAULT_HOSPITAL():int{
-        return auth()->user()->id;
+        return auth()->user()->hospital->id;
     }
 }

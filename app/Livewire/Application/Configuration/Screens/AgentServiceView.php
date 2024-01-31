@@ -13,7 +13,7 @@ class AgentServiceView extends Component
     #[Rule('required', message: 'Désignation obligatoire', onUpdate: false)]
     public $name = '';
     public ?AgentService $agentServiceToEdit = null;
-    public string $formLabel = 'CREATION CABINET MEDICAL';
+    public string $formLabel = 'CREATION SERVICE';
     public function store()
     {
         $this->validate();
@@ -30,7 +30,7 @@ class AgentServiceView extends Component
     {
         $this->agentServiceToEdit = $agentService;
         $this->name = $this->agentServiceToEdit->name;
-        $this->formLabel = 'EDITION CABINET MEDICAL';
+        $this->formLabel = 'EDITION SERVICE';
     }
     public function update()
     {
@@ -39,7 +39,7 @@ class AgentServiceView extends Component
             $this->agentServiceToEdit->name = $this->name;
             $this->agentServiceToEdit->update();
             $this->agentServiceToEdit = null;
-            $this->formLabel = 'CREATION CABINET MEDICAL';
+            $this->formLabel = 'CREATION SERVICE';
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

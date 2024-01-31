@@ -13,14 +13,15 @@
                             <x-errors.validation-error value='sheet_id' />
                         </div>
                         @if ($consultationSheet->subscription?->is_subscriber)
-                             <div class="my-2">                            <span class="text-bold text-md text-info mr-2">Avec bon ?</span>
-                            <div class="icheck-primary d-inline">
-                                <input wire:model.live='has_a_shipping_ticket' type="checkbox" id="checkboxPrimary2">
-                                <label for="checkboxPrimary2">
-                                    {{ $has_a_shipping_ticket == false ? 'Oui' : 'Non' }}
-                                </label>
+                            <div class="my-2"> <span class="text-bold text-md text-info mr-2">Avec bon ?</span>
+                                <div class="icheck-primary d-inline">
+                                    <input wire:model.live='has_a_shipping_ticket' type="checkbox"
+                                        id="checkboxPrimary2">
+                                    <label for="checkboxPrimary2">
+                                        {{ $has_a_shipping_ticket == false ? 'Oui' : 'Non' }}
+                                    </label>
+                                </div>
                             </div>
-                        </div>
                         @endif
 
                     </div>

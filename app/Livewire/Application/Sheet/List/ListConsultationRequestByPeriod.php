@@ -3,6 +3,8 @@
 namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
+use App\Models\Currency;
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -13,11 +15,13 @@ class ListConsultationRequestByPeriod extends Component
     use WithPagination;
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
-        'listSheetRefreshed' => '$refresh'
+        'listSheetRefreshed' => '$refresh',
+        'currencyName' => 'getCurrencyName',
     ];
     public int $selectedIndex;
     public string $start_date = '';
     public string $end_date = '';
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
 
     #[Url(as: 'q')]
     public string $q = '';
@@ -25,6 +29,18 @@ class ListConsultationRequestByPeriod extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
+
+    /**
+     * getCurrencyName
+     * Get currency name
+     * @param  mixed $currency
+     * @return void
+     */
+    public function getCurrencyName(string $currency): void
+    {
+        $this->currencyName = $currency;
+    }
+
 
     /**
      * Get Consultation Sheet if listener emitted in parent veiew
@@ -36,6 +52,13 @@ class ListConsultationRequestByPeriod extends Component
         $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
+
+    public function openPrescriptionMedicalModal(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-medical-prescription');
+        $this->dispatch('consultationRequest', $consultationRequest);
+    }
+
 
     /**
      * Open vital sign modal
@@ -80,7 +103,10 @@ class ListConsultationRequestByPeriod extends Component
                 10,
                 $this->start_date,
                 $this->end_date,
-            )
+
+            ),
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date,$this->end_date, $this->selectedIndex),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalPeriodUSD($this->start_date, $this->end_date, $this->selectedIndex),
         ]);
     }
 }

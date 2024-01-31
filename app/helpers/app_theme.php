@@ -10,6 +10,8 @@ function theme_setting($key)
         $setting = Cache::rememberForever('theme_setting', function () {
             return UserSetting::where('user_id', Auth::user()->id)->first();
         });
-        return $setting->{$key};
+        if ($setting != null) {
+            return $setting->{$key};
+        }
     }
 }

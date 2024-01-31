@@ -27,6 +27,7 @@
                             <x-form.sort-icon sortField="email" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                         </th>
                         <th class="text-right ">Source</th>
+                        <th class="text-right ">Service</th>
                         <th class="text-center ">Avatr</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -45,6 +46,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td class="text-right">{{ $user?->source?->name }}</td>
+                                <td class="text-right">{{ $user?->agentService?->name }}</td>
                                 <td class="text-center">
                                     <img src="{{ asset('defautl-user.jpg') }}" width="30px" alt="Avatar" class="img-circle">
                                 </td>

@@ -11,7 +11,7 @@ class NewConsultationRequest extends Component
 {
     protected $listeners = ['consultationSheet' => 'getConsultationSheet'];
     public ?ConsultationSheet $consultationSheet;
-    #[Rule('required|numeric', message: 'Type de consultation obligatoire')]
+    #[Rule('required', message: 'Type de consultation obligatoire')]
     public $consultation_id;
     public bool  $has_a_shipping_ticket = false;
 

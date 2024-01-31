@@ -32,4 +32,10 @@ class Source extends Model
         return $this->hasMany(User::class);
     }
 
+
+    public static function DEFAULT_SOURCE(): int
+    {
+        return auth()?->user()->source->id;
+    }
+
 }

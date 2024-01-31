@@ -13,10 +13,21 @@ use Livewire\Component;
 
 class MainConsultPatient extends Component
 {
+    protected $listeners = [
+        'refreshConultPatient' => '$refresh',
+    ];
     public int $consultationRequestId;
     public ?ConsultationRequest $consultationRequest;
     public ?ConsultationSheet $consultationSheet;
     public int $selectedIndex;
+    public bool $is_hospitalized=false;
+
+    public function updatedIsHospitalized($val)
+    {
+        $this->consultationRequest->is_hospitalized = $val;
+        $this->consultationRequest->update();
+        $this->dispatch('updated', ['message' => 'Patient marqué hospitalisé']);
+    }
 
     /**
      * Open detail consultation model view
@@ -44,6 +55,13 @@ class MainConsultPatient extends Component
         $this->dispatch('open-medical-prescription');
         $this->dispatch('consultationRequest', $this->consultationRequest);
     }
+
+    public function openNursingModal(): void
+    {
+        $this->dispatch('open-consultation-request-nursing');
+        $this->dispatch('consultationRequestNursing', $this->consultationRequest);
+    }
+
     /**
      * Change index item selection on category tarif
      * @param CategoryTarif $category
@@ -64,15 +82,19 @@ class MainConsultPatient extends Component
     {
         $this->consultationRequest = ConsultationRequest::find($this->consultationRequestId);
         $this->consultationSheet = $this->consultationRequest->consultationSheet;
-        $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
-    }
+        $category = CategoryTarif::where('name', 'like', '%LABO%')->first();
+        if ($category) {
+            $this->selectedIndex = $category->id;
+        }
 
+    }
     /**
      * Render component
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
     public function render()
     {
+        $this->is_hospitalized = $this->consultationRequest->is_hospitalized;
         return view('livewire.application.sheet.main-consult-patient', [
             'categories' => GetCategoryTarifRepository::getListCategories()
         ]);

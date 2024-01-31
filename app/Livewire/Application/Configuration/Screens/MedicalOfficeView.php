@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Configuration\Screens;
 
 use App\Models\Hospital;
 use App\Models\MedicalOffice;
+use App\Models\Source;
 use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -20,7 +21,8 @@ class MedicalOfficeView extends Component
         try {
             MedicalOffice::create([
                 'name' => $this->name,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL()
+                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
+                'source_id' => Source::DEFAULT_SOURCE(),
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -37,6 +39,7 @@ class MedicalOfficeView extends Component
         $this->validate();
         try {
             $this->medicalOfficeToEdit->name = $this->name;
+            $this->medicalOfficeToEdit->source_id = Source::DEFAULT_SOURCE();
             $this->medicalOfficeToEdit->update();
             $this->medicalOfficeToEdit = null;
             $this->formLabel = 'CREATION CABINET MEDICAL';
@@ -69,6 +72,7 @@ class MedicalOfficeView extends Component
         return view('livewire.application.configuration.screens.medical-office-view', [
             'medicalOffices' => MedicalOffice::orderBy('name', 'asc')
                 ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('source_id', Source::DEFAULT_SOURCE())
                 ->get()
         ]);
     }

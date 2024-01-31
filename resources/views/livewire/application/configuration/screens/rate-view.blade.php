@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-6">
-        <h4>GESTION DU TAUX D'ECHANGE</h4>
+        <h4 class="text-navy">TAUX D'ECHANGE</h4>
         <div class="card p-2">
             <form wire:submit='handlerSubmit'>
                 <div class="form-group">

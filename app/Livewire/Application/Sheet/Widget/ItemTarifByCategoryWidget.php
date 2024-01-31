@@ -85,6 +85,8 @@ class ItemTarifByCategoryWidget extends Component
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->isEditing = false;
             $this->idSelected = 0;
+            $this->dispatch('listSheetRefreshed');
+            $this->dispatch('refreshDetail');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
@@ -101,6 +103,8 @@ class ItemTarifByCategoryWidget extends Component
             MakeQueryBuilderHelper::delete('consultation_request_tarif', 'id', $id,);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('refreshTarifItems');
+            $this->dispatch('listSheetRefreshed');
+            $this->dispatch('refreshDetail');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ConsultationRequest extends Model
@@ -15,7 +16,7 @@ class ConsultationRequest extends Model
     protected $fillable = [
         'request_number', 'consultation_sheet_id',
         'consultation_id', 'rate_id', 'consulted_by',
-        'printed_by', 'validated_by', 'has_a_shipping_ticket'
+        'printed_by', 'validated_by', 'has_a_shipping_ticket', 'is_hospitalized'
     ];
 
     public function rate(): BelongsTo
@@ -62,6 +63,25 @@ class ConsultationRequest extends Model
     {
         return $this->hasOne(ConsultationComment::class);
     }
+    /**
+     * Get all of the ConsultationRequestHospitalization for the ConsultationRequest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consultationRequestHospitalizations(): HasMany
+    {
+        return $this->hasMany(ConsultationRequestHospitalization::class);
+    }
+
+    /**
+     * Get all of the consultationRequestNursings for the ConsultationRequest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consultationRequestNursings(): HasMany
+    {
+        return $this->hasMany(ConsultationRequestNersing::class);
+    }
 
     public function getTotalProductCDF(): float|int
     {
@@ -71,6 +91,7 @@ class ConsultationRequest extends Model
         }
         return $total;
     }
+
     public function getTotalProductUSD(): float|int
     {
         $total = 0;
@@ -89,6 +110,32 @@ class ConsultationRequest extends Model
             $price = $this->consultation->price_private * $this->rate->rate;
         }
         return $price;
+    }
+
+    public function getHospitalizationAmountCDF(): int|float
+    {
+        $amount = 0;
+        foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
+            if ($this->consultationSheet->subscription->is_subscriber) {
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
+            } else {
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price
+                    * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
+            }
+        }
+        return $amount;
+    }
+    public function getHospitalizationAmountUSD(): int|float
+    {
+        $amount = 0;
+        foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
+            if ($this->consultationSheet->subscription->is_subscriber) {
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private * $consultationRequestHospitalization->number_of_day;
+            } else {
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price * $consultationRequestHospitalization->number_of_day;
+            }
+        }
+        return $amount;
     }
 
     public function getConsultationPriceUSD(): int|float
@@ -113,8 +160,8 @@ class ConsultationRequest extends Model
             }
         }
         return $this->consultation->is_consultation_paid == false ?
-            ($this->getConsultationPriceCDF() + $total) + $this->getTotalProductCDF() :
-            $total + $this->getTotalProductCDF();
+            ($this->getConsultationPriceCDF() + $total) + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() :
+            $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF();
     }
 
     public function getTotalInvoiceUSD()
@@ -128,7 +175,20 @@ class ConsultationRequest extends Model
             }
         }
         return $this->consultation->is_consultation_paid == false ?
-            ($this->getConsultationPriceUSD() + $total) + $this->getTotalProductCDF() :
-            $total + $this->getTotalProductUSD();
+            ($this->getConsultationPriceUSD() + $total) + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() :
+            $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD();
+    }
+
+    public function getRequestNumberFormatted(): string
+    {
+        $number = '';
+        $mounth = $this->created_at->format('m');
+        if ($this->consultationSheet->subscription->is_subscriber) {
+            $number = $this->request_number . '/' . $mounth . '/' . $this->consultationSheet->subscription->name;
+        } else {
+            $$number = $this->request_number . '/' . $mounth;
+        }
+
+        return $number;
     }
 }

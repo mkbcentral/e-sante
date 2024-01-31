@@ -68,9 +68,8 @@ class ListOutpatientBillByMonth extends Component
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-month', [
             'listBill' => GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
-            'totalBills' => $this->currencyName == 'USD'
-                ? GetOutpatientRepository::getTotalBillByMonthUSD($this->month)
-                : GetOutpatientRepository::getTotalBillByMonthCDF($this->month)
+            'tota_cdf' => GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month),
+            'tota_usd' => GetOutpatientRepository::getTotalBillByMonthGroupByUSD($this->month)
         ]);
     }
 }

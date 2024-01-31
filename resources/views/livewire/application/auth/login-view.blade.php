@@ -19,8 +19,9 @@
                     <x-errors.validation-error value='password' />
                 </div>
                 <div class="mt-4">
-                    <x-form.button class="btn-success w-100" type='submit'> Se
-                        connecter</x-form.button>
+                    <x-form.button class="btn-success w-100" type='submit'>
+                         <x-widget.loading-circular-md wire:loading wire:target='loginUser'/> <span wire:loading.class='d-none'>Se connecter</span>
+                    </x-form.button>
                 </div>
             </form>
         </div>

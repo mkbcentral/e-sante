@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -105,7 +106,9 @@ class ListConsultationRequest extends Component
                 10,
                 $this->date_filter,
                 $this->year
-            )
+            ),
+            'total_cdf'=>GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter,$this->selectedIndex),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter,$this->selectedIndex),
         ]);
     }
 }

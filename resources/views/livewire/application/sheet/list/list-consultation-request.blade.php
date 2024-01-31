@@ -12,7 +12,12 @@
                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                     </div>
                 </div>
-
+                <div class="bg-navy p-1 rounded-lg pr-2">
+                    <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                        <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                        <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+                    </h3>
+                </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
@@ -20,6 +25,17 @@
             @if ($listConsultationRequest->isEmpty())
                 <x-errors.data-empty />
             @else
+                <div class="d-flex justify-content-start align-content-center ">
+                    <div class="h5 text-secondary">
+                        ({{ $listConsultationRequest->count() > 1 ? $listConsultationRequest->count() . ' Factures réalisées' : $listConsultationRequest->count() . ' Facture réalisée' }})
+                    </div>
+
+                    <div class="ml-2">
+                        <x-form.button-group-link>
+                            <x-form.link-group target="_blanck" herf="#" :icon="'fa fa-print'" :label="'Imprimer rélévlé'" />
+                        </x-form.button-group-link>
+                    </div>
+                </div>
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
@@ -65,14 +81,18 @@
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td class="text-center">
-                                    <x-form.icon-button :icon="'fas fa-capsules text-primary'"
+                                    <x-form.icon-button :icon="'fas fa-capsules'"
                                         wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                        class="btn-sm" />
-                                    <x-form.icon-button :icon="'fa fa-user-plus text-primary'"
-                                        wire:click="openVitalSignForm({{ $consultationRequest }})" class="btn-sm" />
+                                        class="btn-primary btn-sm" />
+                                    <x-form.icon-button :icon="'fa fa-user-plus '"
+                                        wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                        class="btn-sm btn-info " />
                                     <x-navigation.link-icon
                                         href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                        wire:navigate :icon="'fas fa-notes-medical text-primary'" />
+                                        wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    <x-navigation.link-icon
+                                        href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                        wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                                 </td>
                             </tr>
                         @endforeach

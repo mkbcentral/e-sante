@@ -12,12 +12,17 @@ class ChangeCollapseState extends Component
     public function updateCollapsedState()
     {
         $setting = UserSetting::where('user_id', Auth::user()->id)->first();
-        if ($setting->is_sidebar_collapse == true) {
-            $setting->is_sidebar_collapse = false;
-        } else {
-            $setting->is_sidebar_collapse = true;
+        if($setting){
+            if ($setting->is_sidebar_collapse == true) {
+                $setting->is_sidebar_collapse = false;
+            } else {
+                $setting->is_sidebar_collapse = true;
+            }
+            $setting->update();
+        }else{
+            UserSetting::create(['user_id'=>auth()->user()->id]);
         }
-        $setting->update();
+
         Cache::forget('theme_setting');
     }
     public function render()

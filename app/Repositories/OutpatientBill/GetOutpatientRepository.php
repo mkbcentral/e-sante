@@ -63,7 +63,6 @@ class GetOutpatientRepository
         }
         return $total + $cons_total;
     }
-
     /**
      * getTotalBillByMonthUSD
      * @param mixed $$month
@@ -115,4 +114,97 @@ class GetOutpatientRepository
             ->select('outpatient_bill_tarif.*', 'tarifs.name', 'tarifs.abbreviation', 'tarifs.price_private')
             ->get();
     }
+
+
+    /**
+     * getTotalBillByDate group by currency CDF
+     * @param mixed $date
+     * @return int|float
+     */
+    public static function getTotalBillByDateGroupByCDF(string $date): int|float
+    {
+        $total = 0;
+        $cons_total = 0;
+        $total_detail=0;
+        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+            ->with(['consultation'])
+            ->get();
+        foreach ($outpatientBills as $outpatientBill) {
+            if ($outpatientBill->currency && $outpatientBill->currency->name=='CDF') {
+                $total += $outpatientBill->getTotalOutpatientBillCDF();
+            }else{
+                $total_detail+=$outpatientBill?->detailOutpatientBill?->amount_cdf;
+            }
+        }
+        return $total + $total_detail;
+    }
+    /**
+     * getTotalBillByDate group by currency USD
+     * @param mixed $date
+     * @return int|float
+     */
+    public static function getTotalBillByDateGroupByUSD(string $date): int|float
+    {
+        $total = 0;
+        $cons_total = 0;
+        $total_detail = 0;
+        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+            ->with(['consultation'])
+            ->get();
+        foreach ($outpatientBills as $outpatientBill) {
+            if ($outpatientBill->currency && $outpatientBill->currency->name == 'USD') {
+                $total += $outpatientBill->getTotalOutpatientBillUSD();
+            } else {
+                $total_detail += $outpatientBill?->detailOutpatientBill?->amount_usd;
+            }
+        }
+        return $total + $total_detail;
+    }
+
+    /**
+     * getTotalBillByMonth group by currency CDF
+     * @param mixed $month
+     * @return int|float
+     */
+    public static function getTotalBillByMonthGroupByCDF(string $month): int|float
+    {
+        $total = 0;
+        $cons_total = 0;
+        $total_detail = 0;
+        $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+            ->with(['consultation'])
+            ->get();
+        foreach ($outpatientBills as $outpatientBill) {
+            if ($outpatientBill->currency && $outpatientBill->currency->name == 'CDF') {
+                $total += $outpatientBill->getTotalOutpatientBillCDF();
+            } else {
+                $total_detail += $outpatientBill?->detailOutpatientBill?->amount_cdf;
+            }
+        }
+        return $total + $total_detail;
+    }
+
+    /**
+     * getTotalBillByMonth group by currency USD
+     * @param mixed $month
+     * @return int|float
+     */
+    public static function getTotalBillByMonthGroupByUSD(string $month): int|float
+    {
+        $total = 0;
+        $cons_total = 0;
+        $total_detail = 0;
+        $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+            ->with(['consultation'])
+            ->get();
+        foreach ($outpatientBills as $outpatientBill) {
+            if ($outpatientBill->currency && $outpatientBill->currency->name == 'USD') {
+                $total += $outpatientBill->getTotalOutpatientBillUSD();
+            } else {
+                $total_detail += $outpatientBill?->detailOutpatientBill?->amount_usd;
+            }
+        }
+        return $total + $total_detail;
+    }
+
 }

@@ -49,7 +49,12 @@ class MainConsultationRequest extends Component
 
     public function mount()
     {
-        $this->selectedIndex = Subscription::where('name', 'like', 'PRIVE')->first()->id;
+        $subscription= Subscription::where('name', 'like', 'PRIVE')->first();
+        if ($subscription) {
+            $this->selectedIndex = $subscription->id;
+        }else{
+            $this->selectedIndex=0;
+        }
     }
 
 

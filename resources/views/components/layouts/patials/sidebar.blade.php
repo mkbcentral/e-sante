@@ -12,59 +12,75 @@
                      &#x1F4C8;
                      <p>Dashboard</p>
                  </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate :active="request()->routeIs(['sheet', 'patient.folder'])">
-                     <i class="fa fa-folder" aria-hidden="true"></i>
-                     <p>Fiche de consultation</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('tarification') }}" wire:navigate
-                     :active="request()->routeIs(['tarification'])">
-                     <i class="fa fa-folder" aria-hidden="true"></i>
-                     <p>Tarification</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('tarification.prices') }}" wire:navigate
-                     :active="request()->routeIs(['tarification.prices'])">
-                     <i class="fa fa-folder" aria-hidden="true"></i>
-                     <p>Grille tarifaire</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
-                     :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
-                     <i class="fa fa-user-plus" aria-hidden="true"></i>
-                     <p>Liste consulation</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate
-                     :active="request()->routeIs(['product.list'])">
-                     <i class="fa fa-capsules" aria-hidden="true"></i>
-                     <p>Liste Produits</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('bill.outpatient') }}" wire:navigate
-                     :active="request()->routeIs(['bill.outpatient', 'bill.outpatient.rapport'])">
-                     <i class="fas fa-file-invoice-dollar"></i>
-                     <p>Factures abulantoire</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('product.invoice') }}" wire:navigate
-                     :active="request()->routeIs(['product.invoice', 'product.invoice.report'])">
-                     <i class="fas fa-file-invoice-dollar"></i>
-                     <p>Factures pharmacie</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('admin') }}" wire:navigate :active="request()->routeIs(['admin'])">
-                     <i class="fa fa-user-cog" aria-hidden="true"></i>
-                     <p>Administration</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('configuration') }}" wire:navigate
-                     :active="request()->routeIs(['configuration'])">
-                     <i class="fa fa-cog" aria-hidden="true"></i>
-                     <p>Configuration</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('localization') }}" wire:navigate
-                     :active="request()->routeIs(['localization'])">
-                     <i class="fa fa-globe" aria-hidden="true"></i>
-                     <p>Localisation</p>
-                 </x-navigation.nav-link>
-                 <x-navigation.nav-link class="nav-link" href="{{ route('files') }}" wire:navigate
-                     :active="request()->routeIs(['files'])">
-                    <i class="fas fa-file    "></i>
-                     <p>Gestion des fichiers</p>
-                 </x-navigation.nav-link>
+                 @if (Auth::user()->roles->pluck('name')->contains('Caisse'))
+                     <x-navigation.nav-link class="nav-link" href="{{ route('bill.outpatient') }}" wire:navigate
+                         :active="request()->routeIs(['bill.outpatient', 'bill.outpatient.rapport'])">
+                         <i class="fas fa-file-invoice-dollar"></i>
+                         <p>Factures abulantoire</p>
+                     </x-navigation.nav-link>
+                 @else
+                     <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate
+                         :active="request()->routeIs(['sheet', 'patient.folder'])">
+                         <i class="fa fa-folder" aria-hidden="true"></i>
+                         <p>Fiche de consultation</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('tarification') }}" wire:navigate
+                         :active="request()->routeIs(['tarification'])">
+                         <i class="fa fa-folder" aria-hidden="true"></i>
+                         <p>Tarification</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('tarification.prices') }}" wire:navigate
+                         :active="request()->routeIs(['tarification.prices'])">
+                         <i class="fa fa-folder" aria-hidden="true"></i>
+                         <p>Grille tarifaire</p>
+                     </x-navigation.nav-link>
+
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
+                         :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
+                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                         <p>Liste consulation</p>
+                     </x-navigation.nav-link>
+                      <x-navigation.nav-link class="nav-link" href="{{ route('consultation.hospitalize') }}"
+                         wire:navigate :active="request()->routeIs(['consultation.hospitalize'])">
+                         <i class="fa fa-bed" aria-hidden="true"></i>
+                         <p>Patients hospitalisés</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate
+                         :active="request()->routeIs(['product.list'])">
+                         <i class="fa fa-capsules" aria-hidden="true"></i>
+                         <p>Liste Produits</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.supplies') }}" wire:navigate
+                         :active="request()->routeIs(['product.supplies'])">
+                         <i class="fa fa-capsules" aria-hidden="true"></i>
+                         <p>Appro Médicament</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.invoice') }}" wire:navigate
+                         :active="request()->routeIs(['product.invoice', 'product.invoice.report'])">
+                         <i class="fas fa-file-invoice-dollar"></i>
+                         <p>Factures pharmacie</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('admin') }}" wire:navigate
+                         :active="request()->routeIs(['admin'])">
+                         <i class="fa fa-user-cog" aria-hidden="true"></i>
+                         <p>Administration</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('configuration') }}" wire:navigate
+                         :active="request()->routeIs(['configuration'])">
+                         <i class="fa fa-cog" aria-hidden="true"></i>
+                         <p>Configuration</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('localization') }}" wire:navigate
+                         :active="request()->routeIs(['localization'])">
+                         <i class="fa fa-globe" aria-hidden="true"></i>
+                         <p>Localisation</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('files') }}" wire:navigate
+                         :active="request()->routeIs(['files'])">
+                         <i class="fas fa-file    "></i>
+                         <p>Gestion des fichiers</p>
+                     </x-navigation.nav-link>
+                 @endif
              </ul>
 
          </nav>

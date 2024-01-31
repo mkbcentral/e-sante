@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('category_tarifs', function (Blueprint $table) {
-            $table->foreignIdFor(Source::class)->nullable()->after('registration_number');
+            $table->foreignIdFor(Source::class)->nullable()->after('name');
         });
     }
 

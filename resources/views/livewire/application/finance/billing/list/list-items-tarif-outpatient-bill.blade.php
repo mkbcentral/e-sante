@@ -48,12 +48,12 @@
                                     @endif
                                 </td>
                                 <td class="text-right">
-                                    {{ $currencyName != 'CDF'
+                                    {{ $currencyName == 'USD'
                                         ? app_format_number($tarif->price_private, 0)
                                         : app_format_number($tarif->price_private * $outpatientBill->rate->rate, 1) }}
                                 </td>
                                 <td class="text-right">
-                                    {{ $currencyName != 'CDF'
+                                    {{ $currencyName == 'USD'
                                         ? app_format_number($tarif->price_private * $tarif->qty,0)
                                         : app_format_number($tarif->price_private * $tarif->qty * $outpatientBill->rate->rate, 1) }}
                                 </td>

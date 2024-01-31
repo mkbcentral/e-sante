@@ -3,21 +3,26 @@
 namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
+use App\Models\Currency;
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\FlareClient\Flare;
 
 class ListConsultationRequestByMonth extends Component
 {
     use WithPagination;
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
-        'listSheetRefreshed' => '$refresh'
+        'listSheetRefreshed' => '$refresh',
+        'currencyName' => 'getCurrencyName',
     ];
     public int $selectedIndex;
     public string $month_name = '';
     public string $year = '';
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
 
     #[Url(as: 'q')]
     public string $q = '';
@@ -25,6 +30,17 @@ class ListConsultationRequestByMonth extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
+
+    /**
+     * getCurrencyName
+     * Get currency name
+     * @param  mixed $currency
+     * @return void
+     */
+    public function getCurrencyName(string $currency): void
+    {
+        $this->currencyName = $currency;
+    }
 
     /**
      * Get Consultation Sheet if listener emitted in parent veiew
@@ -35,6 +51,12 @@ class ListConsultationRequestByMonth extends Component
     {
         $this->selectedIndex = $selectedIndex;
         $this->resetPage();
+    }
+
+    public function openPrescriptionMedicalModal(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-medical-prescription');
+        $this->dispatch('consultationRequest', $consultationRequest);
     }
 
     /**
@@ -77,8 +99,10 @@ class ListConsultationRequestByMonth extends Component
                 $this->sortAsc,
                 10,
                 $this->month_name,
-                $this->year
-            )
+                $this->year,
+            ),
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name,$this->year, $this->selectedIndex),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name,$this->year, $this->selectedIndex),
         ]);
     }
 }

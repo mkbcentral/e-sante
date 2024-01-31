@@ -42,6 +42,7 @@ class ListOutpatientBillByDate extends Component
     {
         $this->dispatch('outpatientSelected',$outpatientBill);
         $this->dispatch('outpatientBillToEdit',$outpatientBill);
+        $this->dispatch('outpatientBillToEdit',$outpatientBill);
         $this->dispatch('close-list-outpatient-bill-by-date-modal');
     }
     /**
@@ -59,6 +60,7 @@ class ListOutpatientBillByDate extends Component
         }
     }
 
+
     public function mount(): void
     {
         $this->date_filter=date('Y-m-d');
@@ -67,9 +69,8 @@ class ListOutpatientBillByDate extends Component
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-date',[
             'listBill'=>GetOutpatientRepository::getOutpatientPatientByDate($this->date_filter),
-            'totalBills'=>$this->currencyName=='USD'
-                ? GetOutpatientRepository::getTotalBillByDateUSD($this->date_filter)
-                : GetOutpatientRepository::getTotalBillByDateCDF($this->date_filter)
+            'tota_cdf'=>GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date_filter),
+            'tota_usd'=>GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date_filter)
         ]);
     }
 }

@@ -29,6 +29,7 @@ class CategoryTarif extends Model
             ->select(
                 'consultation_request_tarif.*',
                 'tarifs.name',
+                'tarifs.abbreviation',
                 'tarifs.price_private',
                 'tarifs.subscriber_price',
                 'tarifs.id as id_tarif',
@@ -109,28 +110,28 @@ class CategoryTarif extends Model
     {
 
         return DB::table('outpatient_bill_tarif')
-        ->join('tarifs', 'tarifs.id', '=', 'outpatient_bill_tarif.tarif_id')
-        ->join('category_tarifs', 'category_tarifs.id', '=', 'tarifs.category_tarif_id')
-        ->select(
-            'outpatient_bill_tarif.*',
-            'tarifs.name',
-            'tarifs.abbreviation',
-            'tarifs.price_private',
-            'tarifs.id as id_tarif',
-            'category_tarifs.id as category_id'
-        )
+            ->join('tarifs', 'tarifs.id', '=', 'outpatient_bill_tarif.tarif_id')
+            ->join('category_tarifs', 'category_tarifs.id', '=', 'tarifs.category_tarif_id')
+            ->select(
+                'outpatient_bill_tarif.*',
+                'tarifs.name',
+                'tarifs.abbreviation',
+                'tarifs.price_private',
+                'tarifs.id as id_tarif',
+                'category_tarifs.id as category_id'
+            )
             ->where('outpatient_bill_tarif.outpatient_bill_id', $outpatientBill->id)
             ->where('category_tarifs.id', $categoryTarif->id)
             ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
 
-    public function getAmountOutpatientBillByCategory(int $outpatientBillId):int|float{
-        $total=0;
-        $tarifs=GetOutpatientRepository::
-        getOutpatientBillTarifItemByCategoryTarif($outpatientBillId,$this->id);
+    public function getAmountOutpatientBillByCategory(int $outpatientBillId): int|float
+    {
+        $total = 0;
+        $tarifs = GetOutpatientRepository::getOutpatientBillTarifItemByCategoryTarif($outpatientBillId, $this->id);
         foreach ($tarifs as $tarif) {
-           $total+=$tarif->price_private*$tarif->qty;
+            $total += $tarif->price_private * $tarif->qty;
         }
         return $total;
     }

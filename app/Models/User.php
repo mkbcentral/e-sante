@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'hospital_id',
+        'source_id',
+        'agent_service_id'
     ];
 
     /**
@@ -84,5 +88,25 @@ class User extends Authenticatable
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class, 'source_id');
+    }
+
+    /**
+     * Get the agentService that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function agentService(): BelongsTo
+    {
+        return $this->belongsTo(AgentService::class, 'agent_service_id');
+    }
+
+    /**
+     * Get all of the productSpplies for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productSpplies(): HasMany
+    {
+        return $this->hasMany(ProductSupply::class);
     }
 }

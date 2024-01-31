@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('currencies', function (Blueprint $table) {
+            $table->id();
             $table->enum('name',['USD','CDF'])->default('USD');
         });
         \App\Models\Currency::insert([

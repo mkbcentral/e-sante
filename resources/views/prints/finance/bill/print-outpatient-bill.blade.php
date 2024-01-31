@@ -1,128 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title> {{ config('app.name') }} </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <style>
-        body {
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            text-align: center;
-        }
-
-        body h1 {
-            margin-bottom: 0px;
-            padding-bottom: 0px;
-            color: #000;
-        }
-
-        body h3 {
-            font-weight: 300;
-            margin-bottom: 20px;
-            font-style: italic;
-            color: #555;
-        }
-
-        body a {
-            color: #06f;
-        }
-
-        .invoice-box {
-            padding: 0px;
-            font-size: 16px;
-            line-height: 24px;
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;
-        }
-
-        .invoice-box table {
-            width: 100%;
-            line-height: inherit;
-            text-align: left;
-            border-collapse: collapse;
-        }
-
-        .invoice-box table td {
-            padding: 5px;
-            vertical-align: top;
-        }
-
-        .invoice-box table tr td:nth-child(2) {
-            text-align: right;
-        }
-
-        .invoice-box table tr.top table td {
-            padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.top table td.title {
-            font-size: 45px;
-            line-height: 45px;
-            color: #333;
-        }
-
-        .invoice-box table tr.information table td {
-            padding-bottom: 40px;
-        }
-
-        .invoice-box table tr.heading td {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-        }
-
-        .invoice-box table tr.details td {
-            padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.item td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .invoice-box table tr.item.last td {
-            border-bottom: none;
-        }
-
-        .invoice-box table tr.total td:nth-child(2) {
-            border-top: 2px solid #eee;
-            font-weight: bold;
-        }
-    </style>
-</head>
-
-<body>
+<x-print-layout>
     <div class="invoice-box">
         @if ($outpatientBill)
             <table>
-                <tr class="top">
-                    <td colspan="3">
-                        <table>
-                            <tr>
-                                <td class="">
-                                    <b>POLYCLINIQUE SHUKRANI (SARL)<br /></b>
-                                    N° 12,Av. CHRISTIAN KUNDA<br />
-                                    Q. GOLF TSHAMALALE/LUBUMBASHI<br />
-                                    RCCM:CD/LUBUMBASHI/RCCM/19-B-00658 <br>
-                                    N° IMPOT A2029032E
-                                </td>
-                                <td></td>
-                                <td>
-                                    <b>Invoice</b> #: {{ $outpatientBill->bill_number }}<br />
-                                    <b>Client</b>: {{ $outpatientBill->client_name }} <br>
-                                    <b>Cash-ID</b>:{{ Auth::user()->name }} <br>
-                                    <b>At:</b> {{ $outpatientBill->created_at->format('d-m-Y H:i:s') }}<br />
-                                </td>
-                            </tr>
-                        </table>
+                <tr>
+                    <td class="">
+                        <b>POLYCLINIQUE SHUKRANI (SARL)<br /></b>
+                        N° 12,Av. CHRISTIAN KUNDA<br />
+                        Q. GOLF TSHAMALALE/LUBUMBASHI<br />
+                        RCCM:CD/LUBUMBASHI/RCCM/19-B-00658 <br>
+                        N° IMPOT A2029032E
+                    </td>
+                    <td>
+                        <b>Invoice</b> #: {{ $outpatientBill->bill_number }}<br />
+                        <b>Client</b>: {{ $outpatientBill->client_name }} <br>
+                        <b>Cash-ID</b>:{{ Auth::user()->name }} <br>
+                        <b>At:</b> {{ $outpatientBill->created_at->format('d-m-Y H:i:s') }}<br />
                     </td>
                 </tr>
             </table>
-            <table class="table table-bordered table-sm">
+            <table>
+                <tr style="border: d-none ">
+                    <td class="text-center h4" style="border-top: d-none;border-bottom: none ">Details invoice</td>
+                </tr>
+            </table>
+            <table class="">
                 @if ($outpatientBill->consultation->price_private > 0)
-                    <tr>
+                    <tr class="">
                         <td colspan="3"><b>{{ $outpatientBill->consultation->name }}</b></td>
                         <td class="text-right">
                             {{ $currency == 'CDF'
@@ -133,7 +36,7 @@
                 @endif
                 @foreach ($categories as $category)
                     @if (!$category->getOutpatientBillTarifItems($outpatientBill, $category)->isEmpty())
-                        <tr class="">
+                        <tr class="bg-secondary text-white">
                             <td colspan=""><b>{{ $category->name }}</b></td>
                             <th class="text-right" scope="col">Qt</th>
                             <th class="text-right" scope="col">P.U</th>
@@ -168,6 +71,9 @@
                         </tbody>
                     @endif
                 @endforeach
+                <tr class="bg-secondary">
+                    <td colspan="4" class="text-right text-white">Payment infos</td>
+                </tr>
                 <tr class="total " class="w-25">
                     <td colspan="4" class="text-right">
                         Payment infos <br>
@@ -182,14 +88,14 @@
             </table>
             <table>
                 <tr>
-                    <td colspan="3">
-                        <table>
-                            <tr>
-                                <td class="text-bold text-left">
+                    <td colspan="3" style="border: none">
+                        <table style="border: none">
+                            <tr style="border: none">
+                                <td style="border: none" class="text-bold text-left">
                                     Client
                                 </td>
-                                <td></td>
-                                <td class="text-right ">
+
+                                <td style="border: none" class="text-right ">
                                     CashId
                                 </td>
                             </tr>
@@ -199,7 +105,4 @@
             </table>
         @endif
     </div>
-
-</body>
-
-</html>
+</x-print-layout>

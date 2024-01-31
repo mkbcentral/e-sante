@@ -18,6 +18,8 @@
                 <x-navigation.tab-link :icon="'fas fa-list'" :name="'Services'" :link="'service'" :active="''" />
                 <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Hospital'" :link="'hospital'" :active="''" />
                 <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Source'" :link="'source'" :active="''" />
+                <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Chambre'" :link="'room'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-bed'" :name="'Lit'" :link="'bed'" :active="''" />
             </x-navigation.tab-header>
             <div class="card-body">
                 <div class="tab-content">
@@ -49,13 +51,19 @@
                         @livewire('application.configuration.screens.vital-sign-view')
                     </div>
                     <div class="tab-pane" id="service">
-                       @livewire('application.configuration.screens.agent-service-view')
+                        @livewire('application.configuration.screens.agent-service-view')
                     </div>
                     <div class="tab-pane" id="hospital">
-                      @livewire('application.configuration.screens.hospital-view')
+                        @livewire('application.configuration.screens.hospital-view')
                     </div>
                     <div class="tab-pane" id="source">
-                     @livewire('application.configuration.screens.source-view')
+                        @livewire('application.configuration.screens.source-view')
+                    </div>
+                    <div class="tab-pane" id="room">
+                        @livewire('application.configuration.screens.room-view')
+                    </div>
+                    <div class="tab-pane" id="bed">
+                        @livewire('application.configuration.screens.bed-view')
                     </div>
                 </div>
             </div>
