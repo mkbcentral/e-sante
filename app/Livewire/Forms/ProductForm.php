@@ -21,6 +21,6 @@ class ProductForm extends Form
     public $expiration_date = '';
     #[Rule('required', message: 'Categorie obligation', onUpdate: false)]
     public $product_category_id = '';
-    #[Rule('required', message: 'Famille obligation', onUpdate: false)]
+    #[Rule('nullable')]
     public $product_family_id = '';
 }

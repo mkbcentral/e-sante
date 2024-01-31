@@ -49,8 +49,14 @@ class ProductFormView extends Component
         $this->validate();
         try {
             $fields=$this->form->all();
+
             $fields['hospital_id']=Hospital::DEFAULT_HOSPITAL();
             $fields['source_id']=auth()->user()->source->id;
+            if
+            ($fields['product_family_id']==null) {
+                $fields['product_family_id']=null;
+            }
+            $fields['product_family_id'] = null;
             Product::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');
