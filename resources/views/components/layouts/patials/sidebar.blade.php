@@ -18,6 +18,17 @@
                          <i class="fas fa-file-invoice-dollar"></i>
                          <p>Factures abulantoire</p>
                      </x-navigation.nav-link>
+                 @elseif (Auth::user()->roles->pluck('name')->contains('Pharmacie'))
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate
+                         :active="request()->routeIs(['product.list'])">
+                         <i class="fa fa-capsules" aria-hidden="true"></i>
+                         <p>Liste Produits</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.supplies') }}" wire:navigate
+                         :active="request()->routeIs(['product.supplies'])">
+                         <i class="fa fa-capsules" aria-hidden="true"></i>
+                         <p>Appro Médicament</p>
+                     </x-navigation.nav-link>
                  @else
                      <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate
                          :active="request()->routeIs(['sheet', 'patient.folder'])">
@@ -40,7 +51,7 @@
                          <i class="fa fa-user-plus" aria-hidden="true"></i>
                          <p>Liste consulation</p>
                      </x-navigation.nav-link>
-                      <x-navigation.nav-link class="nav-link" href="{{ route('consultation.hospitalize') }}"
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.hospitalize') }}"
                          wire:navigate :active="request()->routeIs(['consultation.hospitalize'])">
                          <i class="fa fa-bed" aria-hidden="true"></i>
                          <p>Patients hospitalisés</p>
