@@ -28,8 +28,8 @@ class GetProductRepository
             ->select('products.*', 'product_families.name as family', 'product_categories.abbreviation')
             ->where('products.product_category_id', 'like', '%' . $categoryId . '%')
             ->where('products.product_family_id', 'like', '%' . $familyId . '%')
-            ->where( 'products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.source_id', auth()->user()->source->id)
+            //->where( 'products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            //->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 
