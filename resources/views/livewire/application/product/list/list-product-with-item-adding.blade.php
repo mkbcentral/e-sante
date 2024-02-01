@@ -15,15 +15,10 @@
                     <tr class="">
 
                         <th class="">
-                            <x-form.button class="text-bold text-white" wire:click="sortProduct('name')">DEISIGNATION
-                            </x-form.button>
-                            <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                           DEISIGNATION
                         </th>
                         <th class="text-right">
-                            <x-form.button class="text-bold text-white" wire:click="sortProduct('expiration_date')">DATE
-                                EXP.
-                            </x-form.button>
-                            <x-form.sort-icon sortField="expiration_date" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                           EXP.
                         </th>
                         <th class="text-center">Actions</th>
                     </tr>

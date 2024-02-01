@@ -17,7 +17,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($productProductSupplies as $index => $productProductSupply)
+                    @if ($productProductSupplies->isEmpty())
+                         <tr>
+                                <td colspan="7" class="text-center"> <x-errors.data-empty/></td>
+                            </tr>
+                    @else
+                         @foreach ($productProductSupplies as $index => $productProductSupply)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $productProductSupply->product->name }}</td>
@@ -33,6 +38,8 @@
                             </td>
                         </tr>
                     @endforeach
+                    @endif
+
                 </tbody>
             </table>
         </div>

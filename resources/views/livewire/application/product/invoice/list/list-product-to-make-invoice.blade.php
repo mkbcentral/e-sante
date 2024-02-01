@@ -30,7 +30,7 @@
                         wire:click='addproductProductSupplieToInvoice({{ $productProductSupplie->product }})'
                         ({{ $productProductSupplie->product }})>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $productProductSupplie->name }}</td>
+                        <td>{{ $productProductSupplie->product_name }}</td>
                         <td class="text-center">0</td>
                         <td class="text-right">{{ $productProductSupplie->created_at->format('d/M/Y') }}</td>
                     </tr>
@@ -38,6 +38,6 @@
             </tbody>
         </table>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            {{ $listProducts->links('livewire::bootstrap') }}</div>
+            {{ $productProductSupplies->links('livewire::bootstrap') }}</div>
     </div>
 </div>

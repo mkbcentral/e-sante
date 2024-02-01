@@ -40,27 +40,25 @@ class GetProductRepository
         int $per_page = 25
     ) {
         SELF::$keyToSear = $q;
-        return  Product::join('product_families', 'product_families.id', 'products.product_family_id')
-            ->join('product_categories', 'product_categories.id', 'products.product_category_id')
-            ->when($q, function ($query) {
+        return  Product::when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
                         ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->select('products.*', 'product_families.name as family', 'product_categories.abbreviation')
-            ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.source_id', auth()->user()->source->id)
+            ->select('products.*')
+            //->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            //->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 
-    public static function getListProductByService():Collection{
+    public static function getListProductByService(){
         return ProductSupplyProduct::join('products', 'products.id', 'product_supply_products.product_id')
             ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
             ->join('users', 'users.id', 'product_supplies.user_id')
             ->select('product_supply_products.*', 'products.name as product_name')
             ->with(['product'])
             ->where('users.agent_service_id', Auth::user()->agentService->id)
-            ->get();
+            ->paginate(50);
     }
 }

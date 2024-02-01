@@ -37,6 +37,7 @@ class ListProductSupplyItem extends Component
                 ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
                 ->join('users', 'users.id', 'product_supplies.user_id')
                 ->select('product_supply_products.*')
+                ->where('product_supply_products.product_supply_id',$this->productSupply->id)
                 ->with(['product'])
                 ->get()
         ]);
