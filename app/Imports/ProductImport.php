@@ -20,6 +20,7 @@ class ProductImport implements ToModel
             'initial_quantity'=>$row[2],
             'expiration_date'=>'2026-05-25',
             'source_id' => 1,
+            'source_id' => 1,
             'product_category_id' => null,
             'product_family_id' =>null,
         ]);

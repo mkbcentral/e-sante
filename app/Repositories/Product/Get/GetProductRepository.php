@@ -20,19 +20,16 @@ class GetProductRepository
         int $per_page = 25
     ) {
         SELF::$keyToSear = $q;
-        return  Product::join('product_families', 'product_families.id', 'products.product_family_id')
-            ->join('product_categories', 'product_categories.id', 'products.product_category_id')
-            ->when($q, function ($query) {
+        return  Product::when($q, function ($query) {
                 return $query->where(function ($query) {
-                    return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
-                        ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
+                    return $query->where('name', 'like', '%' . SELF::$keyToSear . '%')
+                        ->orWhere('price', 'like', '%' . SELF::$keyToSear . '%');
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->select('products.*', 'product_families.name as family', 'product_categories.abbreviation')
-            ->where('products.product_category_id', 'like', '%' . $categoryId . '%')
-            ->where('products.product_family_id', 'like', '%' . $familyId . '%')
-            //->where( 'products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('products.source_id', auth()->user()->source->id)
+            //->where('products.product_category_id', 'like', '%' . $categoryId . '%')
+            //->where('products.product_family_id', 'like', '%' . $familyId . '%')
+            ->where( 'products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 
