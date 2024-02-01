@@ -24,15 +24,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($listProducts as $index => $product)
-                <tr wire:key='{{ $product->id }}' class="cursor-hand" wire:confirm="Etes-vous d'ajouter à la facure?"
-                     wire:click='addProductToInvoice({{ $product }})' ({{ $product
-                    }})>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $product->name }}</td>
-                    <td class="text-center">0</td>
-                    <td class="text-right">{{ $product->created_at->format('d/M/Y') }}</td>
-                </tr>
+                @foreach ($productProductSupplies as $index => $productProductSupplie)
+                    <tr wire:key='{{ $productProductSupplie->id }}' class="cursor-hand"
+                        wire:confirm="Etes-vous d'ajouter à la facure?"
+                        wire:click='addproductProductSupplieToInvoice({{ $productProductSupplie->product }})'
+                        ({{ $productProductSupplie->product }})>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $productProductSupplie->name }}</td>
+                        <td class="text-center">0</td>
+                        <td class="text-right">{{ $productProductSupplie->created_at->format('d/M/Y') }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

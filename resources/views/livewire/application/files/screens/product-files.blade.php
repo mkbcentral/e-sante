@@ -1,5 +1,5 @@
 <div>
-    <div class="w-25">
+    <div class="w-100">
         <div class="input-group">
             <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
                 aria-label="Upload" wire:model='file'>

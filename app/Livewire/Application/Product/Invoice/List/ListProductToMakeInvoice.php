@@ -67,12 +67,7 @@ class ListProductToMakeInvoice extends Component
     public function render()
     {
         return view('livewire.application.product.invoice.list.list-product-to-make-invoice',[
-            'listProducts'=> GetProductRepository::getProductListExceptFamilyAndCategory(
-                $this->q,
-                $this->sortBy,
-                $this->sortAsc,
-                50
-            )
+            'productProductSupplies'=> GetProductRepository::getListProductByService()
         ]);
     }
 }

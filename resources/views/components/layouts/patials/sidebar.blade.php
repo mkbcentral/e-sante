@@ -18,7 +18,12 @@
                          <i class="fas fa-file-invoice-dollar"></i>
                          <p>Factures abulantoire</p>
                      </x-navigation.nav-link>
-                 @elseif (Auth::user()->roles->pluck('name')->contains('Pharmacie'))
+                 @elseif (Auth::user()->roles->pluck('name')->contains('Pharamacie'))
+                     <x-navigation.nav-link class="nav-link" href="{{ route('product.invoice') }}" wire:navigate
+                         :active="request()->routeIs(['product.invoice', 'product.invoice.report'])">
+                         <i class="fas fa-file-invoice-dollar"></i>
+                         <p>Factures pharmacie</p>
+                     </x-navigation.nav-link>
                      <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate
                          :active="request()->routeIs(['product.list'])">
                          <i class="fa fa-capsules" aria-hidden="true"></i>

@@ -1,17 +1,16 @@
 <div>
-    @livewire('application.product.form.product-form-view')
-    <div class="card card-cyan">
+    <div class="card card-indigo">
         <div class="card-header">
-            LISTE PRODUITS DEMANDES
+            <i class="fas fa-pills"></i> MON STOCK
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-sm mt-2">
+            <table class="table table-bordered table-sm">
                 <thead class="thead-light">
                     <tr>
                         <th>#</th>
                         <th>DESIGNATION</th>
-                        <th class="text-center">Q.T DMD</th>
-                        <th class="text-center">Q.T RECU</th>
+                        <th class="text-center">ENTRE</th>
+                        <th class="text-center">SORTIES</th>
                         <th class="text-center">OBS</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -20,9 +19,11 @@
                     @foreach ($productProductSupplies as $index => $productProductSupply)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $productProductSupply->product->name }}</td>
-                            <td class="text-center">{{ $productProductSupply->quantity }}</td>
-                            <td class="text-center">{{ $productProductSupply->quantity }}</td>
+                            <td>{{ $productProductSupply->product_name }}</td>
+                            <td class="text-center">
+                                {{ $productProductSupply->product->getTotalInputsByService($productProductSupply->product->id) }}
+                            </td>
+                            <td class="text-center">0</td>
                             <td class="text-center">0</td>
                             <td class="text-center">
                                 <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"

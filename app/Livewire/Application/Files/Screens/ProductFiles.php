@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Files\Screens;
 
 use App\Imports\ProductCategoryImport;
+use App\Imports\ProductImport;
 use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -20,7 +21,7 @@ class ProductFiles extends Component
     public function importFile(){
         $this->validate();
         try {
-            Excel::import(new ProductCategoryImport,$this->file);
+            Excel::import(new ProductImport,$this->file);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);

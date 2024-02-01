@@ -4,6 +4,9 @@ namespace App\Repositories\Product\Get;
 
 use App\Models\Hospital;
 use App\Models\Product;
+use App\Models\ProductSupplyProduct;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class GetProductRepository
 {
@@ -52,5 +55,15 @@ class GetProductRepository
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
+    }
+
+    public static function getListProductByService():Collection{
+        return ProductSupplyProduct::join('products', 'products.id', 'product_supply_products.product_id')
+            ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
+            ->join('users', 'users.id', 'product_supplies.user_id')
+            ->select('product_supply_products.*', 'products.name as product_name')
+            ->with(['product'])
+            ->where('users.agent_service_id', Auth::user()->agentService->id)
+            ->get();
     }
 }

@@ -9,7 +9,7 @@
             <div class="col-md-6">
                 <div class="card card-indigo">
                     <div class="card-header">
-                       <i class="fa fa-list" aria-hidden="true"></i> LISTTE DE DEMANDE
+                        <i class="fa fa-list" aria-hidden="true"></i> LISTTE DE DEMANDE
                     </div>
                     <div class="card-body">
                         @livewire('application.product.supply.list-supplies-view')
@@ -17,14 +17,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card card-indigo">
-                    <div class="card-header">
-                       <i class="fas fa-pills"></i> MON STOCK
-                    </div>
-                    <div class="card-body">
-
-                    </div>
-                </div>
+                @livewire('application.product.list.list-stock-by-service')
             </div>
         </div>
     </x-content.main-content-page>
