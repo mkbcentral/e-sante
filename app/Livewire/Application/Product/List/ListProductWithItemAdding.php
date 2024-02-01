@@ -42,8 +42,7 @@ class ListProductWithItemAdding extends Component
 
     public function render()
     {
-        return view(
-            'livewire.application.product.list.list-product-with-item-adding',
+        return view('livewire.application.product.list.list-product-with-item-adding',
             [
                 'products' => GetProductRepository::getProductListExceptFamilyAndCategory(
                     $this->q,
