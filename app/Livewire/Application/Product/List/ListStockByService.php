@@ -2,23 +2,26 @@
 
 namespace App\Livewire\Application\Product\List;
 
-use App\Models\ProductSupplyProduct;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\Product\Get\GetProductRepository;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListStockByService extends Component
 {
+    use WithPagination;
+    #[Url(as: 'q')]
+    public $q = '';
+    #[Url(as: 'sortBy')]
+    public $sortBy = 'name';
+    #[Url(as: 'sortAsc')]
+    public $sortAsc = true;
     public function render()
     {
         return view('livewire.application.product.list.list-stock-by-service',
-         [
-            'productProductSupplies' => ProductSupplyProduct::join('products', 'products.id', 'product_supply_products.product_id')
-                ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
-                ->join('users', 'users.id', 'product_supplies.user_id')
-                ->select('product_supply_products.*', 'products.name as product_name')
-                ->with(['product'])
-                ->where('users.agent_service_id',Auth::user()->agentService->id)
-                ->get()
-        ]);
+            [
+                'products' => GetProductRepository::getProductListExceptFamilyAndCategory($this->q, $this->sortBy, $this->sortAsc, 10)
+            ]
+        );
     }
 }

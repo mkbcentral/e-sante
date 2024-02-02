@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
@@ -107,6 +108,8 @@ class ListConsultationRequestByPeriod extends Component
             ),
             'total_cdf' => GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date,$this->end_date, $this->selectedIndex),
             'total_usd' => GetConsultationRequestionAmountRepository::getTotalPeriodUSD($this->start_date, $this->end_date, $this->selectedIndex),
+            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'CDF'),
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'USD')
         ]);
     }
 }

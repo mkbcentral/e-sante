@@ -4,6 +4,8 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -97,7 +99,11 @@ class ListConsultationRequestHospitalize extends Component
                 10,
                 $this->month_name,
                 $this->year,
-            )
+            ),
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex,'CDF'),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex, 'USD'),
+            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountHospitalize($this->month_name,$this->year, $this->selectedIndex, 'CDF'),
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountHospitalize($this->month_name, $this->year, $this->selectedIndex, 'USD')
         ]);
     }
 }

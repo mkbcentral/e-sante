@@ -4,12 +4,12 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\FlareClient\Flare;
 
 class ListConsultationRequestByMonth extends Component
 {
@@ -91,7 +91,7 @@ class ListConsultationRequestByMonth extends Component
 
     public function render()
     {
-        return view('livewire.application.sheet.list.list-consultation-request-by-month',[
+        return view('livewire.application.sheet.list.list-consultation-request-by-month', [
             'listConsultationRequest' => GetConsultationRequestRepository::getConsultationRequestByDateMonth(
                 $this->selectedIndex,
                 $this->q,
@@ -101,8 +101,10 @@ class ListConsultationRequestByMonth extends Component
                 $this->month_name,
                 $this->year,
             ),
-            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name,$this->year, $this->selectedIndex),
-            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name,$this->year, $this->selectedIndex),
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex),
+            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD')
         ]);
     }
 }

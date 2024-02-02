@@ -4,6 +4,7 @@
             <i class="fas fa-pills"></i> MON STOCK
         </div>
         <div class="card-body">
+            <x-form.input-search wire:model.live.debounce.500ms="q" />
             <table class="table table-bordered table-sm">
                 <thead class="thead-light">
                     <tr>
@@ -16,26 +17,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($productProductSupplies as $index => $productProductSupply)
+                    @foreach ($products as $index => $product)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $productProductSupply->product_name }}</td>
+                            <td>{{ $product->name }}</td>
                             <td class="text-center">
-                                {{ $productProductSupply->product->getTotalInputsByService($productProductSupply->product->id) }}
+                                {{ $product->getTotalInputsByService($product->id) }}
                             </td>
                             <td class="text-center">0</td>
                             <td class="text-center">0</td>
                             <td class="text-center">
                                 <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
-                                    wire:click='edit({{ $productProductSupply->product }})' />
+                                    wire:click='edit({{ $product->product }})' />
                                 <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
                                     wire:confirm="Etes-vous sûre de supprimer ?"
-                                    wire:click='delete({{ $productProductSupply }})' />
+                                    wire:click='delete({{ $product }})' />
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-4 d-flex justify-content-center align-items-center">
+                {{ $products->links('livewire::bootstrap') }}</div>
         </div>
     </div>
 </div>

@@ -22,7 +22,6 @@ class LoginView extends Component
      */
     public function loginUser()
     {
-
         $data = $this->validate();
         try {
             if (AuthUserRepository::login($data)) {

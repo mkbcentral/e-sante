@@ -1,10 +1,11 @@
 <div>
-    @livewire('application.product.form.product-form-view')
     <div class="card card-cyan">
         <div class="card-header">
             LISTE PRODUITS DEMANDES
         </div>
         <div class="card-body">
+            <x-form.input-search wire:model.live.debounce.500ms="q" />
+
             <table class="table table-bordered table-sm mt-2">
                 <thead class="thead-light">
                     <tr>
@@ -39,9 +40,9 @@
                         </tr>
                     @endforeach
                     @endif
-
                 </tbody>
             </table>
+             <div  class="mt-4 d-flex justify-content-center align-items-center">{{$productProductSupplies->links('livewire::bootstrap')}}</div>
         </div>
     </div>
 </div>

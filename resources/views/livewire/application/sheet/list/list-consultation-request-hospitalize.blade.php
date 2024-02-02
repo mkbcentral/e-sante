@@ -4,13 +4,26 @@
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <div class="d-flex align-items-center">
+                <div class="d-flex  align-items-center">
                     <div class="mr-2 w-100">
-                        <x-form.input-search wire:model.live.debounce.500ms="q" />
-                    </div>
+                            <x-form.input-search wire:model.live.debounce.500ms="q" />
+                        </div>
                     <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
                 </div>
-
+                <div class="bg-navy p-1 rounded-lg pr-2">
+                    <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                            <span class="money_format">CDF:
+                                {{ app_format_number($total_product_amount_cdf, 1) }}</span>
+                            |
+                            <span class="money_format">USD:
+                                {{ app_format_number($total_product_amount_usd, 1) }}</span>
+                        @else
+                            <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                            <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+                        @endif
+                    </h3>
+                </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
@@ -53,28 +66,40 @@
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
                                 <td class="text-right">
-                                    {{ app_format_number(
-                                        $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
-                                        1,
-                                    ) .
-                                        ' ' .
-                                        $currencyName }}
+                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        {{ app_format_number(
+                                            $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
+                                            1,
+                                        ) .
+                                            ' ' .
+                                            $currencyName }}
+                                    @else
+                                        {{ app_format_number(
+                                            $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                            1,
+                                        ) .
+                                            ' ' .
+                                            $currencyName }}
+                                    @endif
                                 </td>
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td class="text-center">
-                                    <x-form.icon-button :icon="'fas fa-capsules'"
-                                        wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                        class="btn-primary btn-sm" />
-                                    <x-form.icon-button :icon="'fa fa-user-plus '"
-                                        wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                        class="btn-sm btn-info " />
-                                    <x-navigation.link-icon
-                                        href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                        wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                    <x-navigation.link-icon
-                                        href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                        wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        <x-form.icon-button :icon="'fas fa-capsules'"
+                                            wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                            class="btn-primary btn-sm" />
+                                    @else
+                                        <x-form.icon-button :icon="'fa fa-user-plus '"
+                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                            class="btn-sm btn-info " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

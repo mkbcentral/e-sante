@@ -33,12 +33,7 @@
                 <table class="table table-bordered table-sm mt-0">
                     <thead class="bg-pink text-white">
                         <tr class="">
-                            <th>
-                                <x-form.button class="text-bold  text-center text-white" wire:click="sortProduct('butch_number')">N°
-                                    LOT
-                                </x-form.button>
-                                <x-form.sort-icon sortField="butch_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
-                            </th>
+                            <th>#</th>
                             <th class="">
                                 <x-form.button class="text-bold text-white"
                                     wire:click="sortProduct('name')">DEISIGNATION
@@ -75,10 +70,10 @@
                                 </td>
                             </tr>
                         @else
-                            @foreach ($products as $product)
-                                <tr style="cursor: pointer;">
+                            @foreach ($products as $index => $product)
+                                <tr style="cursor: pointer;" class="{{ $product->price == 0 ? 'bg-danger' : '' }}">
                                     <td class="text-center">
-                                        {{ $product->butch_number == null ? '-' : $product->butch_number }}
+                                        {{ $index + 1 }}
                                     </td>
                                     <td class="text-uppercase">{{ $product->name }} <span
                                             class="text-bold text-pink">{{ $product->abbreviation }}</span></td>
@@ -86,10 +81,11 @@
                                     <td class="text-right">{{ $product->price }}</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td class="text-center">
-                                        <x-form.edit-button-icon wire:click="edit({{ $product }})"
-                                            class="btn-sm" />
-                                        <x-form.delete-button-icon wire:click="showDeleteDialog({{ $product }})"
-                                            class="btn-sm" />
+                                        <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
+                                            wire:click='edit({{ $product }})' />
+
+                                        <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
+                                            wire:click="showDeleteDialog({{ $product }})" />
                                     </td>
                                 </tr>
                             @endforeach

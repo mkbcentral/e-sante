@@ -10,13 +10,13 @@ use Illuminate\View\Component;
 
 class ListProductCategoryWidget extends Component
 {
-    public ?Collection $listCategory;
+    public ?Collection $categories;
     /**
      * Create a new component instance.
      */
     public function __construct(bool $isInForm=false)
     {
-        $this->listCategory=ProductCategory::orderBy('name','ASC')->get();
+        $this->categories=ProductCategory::all();
     }
 
     /**

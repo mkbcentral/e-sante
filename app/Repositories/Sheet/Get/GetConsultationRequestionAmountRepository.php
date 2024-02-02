@@ -146,4 +146,27 @@ class GetConsultationRequestionAmountRepository
         }
         return $total;
     }
+
+    public static function getTotalHospitalize($month, $year, $idSubscription,$currency): int|float
+    {
+        $amount = 0;
+        $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->where('consultation_requests.is_hospitalized', true)
+            ->select('consultation_requests.*')
+            ->with(['consultation', 'rate'])
+            ->get();
+        foreach ($consultationRequests as $consultationRequest) {
+            if ($currency == 'CDF') {
+                $amount += $consultationRequest->getTotalInvoiceCDF();
+            } else {
+                $amount += $consultationRequest->getTotalInvoiceUSD();
+            }
+        }
+        return $amount;
+    }
 }

@@ -100,6 +100,10 @@ class ProductFormView extends Component
      * Render form product component
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
+
+     public function mount(){
+        $this->form->expiration_date= date('M-m-d');
+     }
     public function render()
     {
         return view('livewire.application.product.form.product-form-view');

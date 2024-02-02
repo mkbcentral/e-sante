@@ -24,20 +24,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($productProductSupplies as $index => $productProductSupplie)
-                    <tr wire:key='{{ $productProductSupplie->id }}' class="cursor-hand"
+                @foreach ($produccts as $index => $producct)
+                    <tr wire:key='{{ $producct->id }}' class="cursor-hand"
                         wire:confirm="Etes-vous d'ajouter à la facure?"
-                        wire:click='addproductProductSupplieToInvoice({{ $productProductSupplie->product }})'
-                        ({{ $productProductSupplie->product }})>
+                        wire:click='addProductToInvoice({{ $producct }})'
+                        ({{ $producct }})>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $productProductSupplie->product_name }}</td>
+                        <td>{{ $producct->name }}</td>
                         <td class="text-center">0</td>
-                        <td class="text-right">{{ $productProductSupplie->created_at->format('d/M/Y') }}</td>
+                        <td class="text-right">{{ $producct->created_at->format('d/M/Y') }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            {{ $productProductSupplies->links('livewire::bootstrap') }}</div>
+            {{ $produccts->links('livewire::bootstrap') }}</div>
     </div>
 </div>

@@ -47,8 +47,8 @@ class GetProductRepository
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('products.*')
-            //->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('products.source_id', auth()->user()->source->id)
+            ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 

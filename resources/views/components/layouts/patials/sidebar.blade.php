@@ -22,17 +22,27 @@
                      <x-navigation.nav-link class="nav-link" href="{{ route('product.invoice') }}" wire:navigate
                          :active="request()->routeIs(['product.invoice', 'product.invoice.report'])">
                          <i class="fas fa-file-invoice-dollar"></i>
-                         <p>Factures pharmacie</p>
+                         <p>Factures Amb. privé</p>
                      </x-navigation.nav-link>
                      <x-navigation.nav-link class="nav-link" href="{{ route('product.list') }}" wire:navigate
                          :active="request()->routeIs(['product.list'])">
                          <i class="fa fa-capsules" aria-hidden="true"></i>
-                         <p>Liste Produits</p>
+                         <p>Stock principal</p>
                      </x-navigation.nav-link>
                      <x-navigation.nav-link class="nav-link" href="{{ route('product.supplies') }}" wire:navigate
                          :active="request()->routeIs(['product.supplies'])">
                          <i class="fa fa-capsules" aria-hidden="true"></i>
                          <p>Appro Médicament</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
+                         :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
+                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                         <p>Liste consulation</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.hospitalize') }}"
+                         wire:navigate :active="request()->routeIs(['consultation.hospitalize'])">
+                         <i class="fa fa-bed" aria-hidden="true"></i>
+                         <p>Patients hospitalisés</p>
                      </x-navigation.nav-link>
                  @else
                      <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate

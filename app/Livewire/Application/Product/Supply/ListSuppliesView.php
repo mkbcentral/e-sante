@@ -6,12 +6,14 @@ use App\Models\ProductSupply;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListSuppliesView extends Component
 {
     protected $listeners = [
         'newSupplyListener' => 'store'
     ];
+    public string $month;
 
     public function addNew()
     {
@@ -50,14 +52,16 @@ class ListSuppliesView extends Component
 
     public function addProductOnSupply(?ProductSupply $productSupply)
     {
-        $this->dispatch('productSupplyToAdd',$productSupply);
+        $this->dispatch('productSupplyToAdd', $productSupply);
         $this->dispatch('open-add-products-on-supply-modal');
     }
-
+    public function mount(){
+        $this->month=date('m');
+    }
     public function render()
     {
         return view('livewire.application.product.supply.list-supplies-view', [
-            'productSupplies' => ProductSupply::all()
+            'productSupplies' => ProductSupply::whereMonth('created_at', $this->month)->get()
         ]);
     }
 }

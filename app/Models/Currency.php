@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     use HasFactory;
-    const DEFAULT_CURRENCY='USD';
+    const DEFAULT_CURRENCY='CDF';
     protected $fillable=['name'];
 
 }

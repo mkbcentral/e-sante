@@ -6,13 +6,17 @@ use App\Models\Product;
 use App\Models\ProductSupply;
 use App\Models\ProductSupplyProduct;
 use Exception;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListProductSupplyItem extends Component
 {
+    use WithPagination;
     protected $listeners = ['refreshProductSupplies' => '$refresh'];
     public ?ProductSupply $productSupply;
-
+    #[Url(as: 'q')]
+    public $q = '';
     public function mount(?ProductSupply $productSupply){
         $this->productSupply=$productSupply;
     }
@@ -38,8 +42,9 @@ class ListProductSupplyItem extends Component
                 ->join('users', 'users.id', 'product_supplies.user_id')
                 ->select('product_supply_products.*')
                 ->where('product_supply_products.product_supply_id',$this->productSupply->id)
+                ->where('products.name','like','%'.$this->q.'%')
                 ->with(['product'])
-                ->get()
+                ->paginate(20)
         ]);
     }
 }
