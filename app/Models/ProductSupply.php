@@ -28,6 +28,6 @@ class ProductSupply extends Model
      */
     public function productSupplyProducts(): HasMany
     {
-        return $this->hasMany(productSupplyProduct::class);
+        return $this->hasMany(ProductSupplyProduct::class);
     }
 }
