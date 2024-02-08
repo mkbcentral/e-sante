@@ -12,7 +12,7 @@ class LoginView extends Component
     #[Rule('required', message: 'Adresse mail obligatoire', onUpdate: false)]
     #[Rule('email', message: 'Adresse mail invalide', onUpdate: false)]
     #[Rule('min:6', message: 'Taille Adresse faible', onUpdate: false)]
-    public string $email='';
+    public string $email = '';
     #[Rule('required', message: 'Mot de passe obligatoire', onUpdate: false)]
     #[Rule('min:4', message: 'Mot de passe faible', onUpdate: false)]
     public $password = '';
@@ -25,7 +25,7 @@ class LoginView extends Component
         $data = $this->validate();
         try {
             if (AuthUserRepository::login($data)) {
-                $this->dispatch('added', ['message' => "Connexion bien établie !"]);
+                $this->dispatch('updated', ['message' => "Connexion bien établie !"]);
                 return $this->redirect('/', navigate: true);;
             } else {
                 $this->dispatch('error', ['message' => "'Email ou mot de password incorrect.'"]);

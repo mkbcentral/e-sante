@@ -43,6 +43,17 @@ class ListConsultationRequestHospitalize extends Component
     }
 
     /**
+     * Open detail consultation model view
+     * emit consultationRequest listner to load data after modal detail opened
+     * @return void
+     */
+    public function openDetailConsultationModal(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-details-consultation');
+        $this->dispatch('consultationRequest', $consultationRequest);
+    }
+
+    /**
      * Get Consultation Sheet if listener emitted in parent veiew
      * @param int $selectedIndex
      * @return void

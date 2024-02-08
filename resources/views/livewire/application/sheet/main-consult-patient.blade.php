@@ -16,48 +16,62 @@
             @endif
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between   align-items-center ">
-                    <div class="my-2"> <span class="text-bold text-md text-danger mr-2">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Cas à hospitalisé ?</span>
-                        <div class="icheck-danger d-inline">
-                            <input wire:model.live='is_hospitalized' type="checkbox" id="checkboxHospitalize">
-                            <label for="checkboxHospitalize">
-                                {{ $is_hospitalized == false ? 'Non' : 'Oui' }}
-                            </label>
+                    @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
+                        <div class="my-2"> <span class="text-bold text-md text-danger mr-2">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Cas à hospitalisé ?</span>
+                            <div class="icheck-danger d-inline">
+                                <input wire:model.live='is_hospitalized' type="checkbox" id="checkboxHospitalize">
+                                <label for="checkboxHospitalize">
+                                    {{ $is_hospitalized == false ? 'Non' : 'Oui' }}
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bg-navy p-1 rounded-lg ml-2">
-                        <h3 wire:loading.class="d-none"><span>Montant:</span>
-                            <span class="money_format">
-                                {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span> |
-                            <span class="money_format">
-                                {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
-                        </h3>
-                    </div>
+                    @else
+                        <div class="bg-navy p-1 rounded-lg ml-2">
+                            <h3 wire:loading.class="d-none"><span>Montant:</span>
+                                <span class="money_format">
+                                    {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span> |
+                                <span class="money_format">
+                                    {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
+                            </h3>
+                        </div>
+                    @endif
                 </div>
                 <div>
-                    <x-form.button wire:click="openAntecedentMedicalModal" class="btn-danger  mr-1" type='button'>
-                        <i class="fa fa-file"></i>
-                        Antecedents médicaux
-                    </x-form.button>
-                    <x-form.button wire:click="openDetailConsultationModal" class="btn-secondary  mr-1" type='button'>
-                        <i class="fa fa-eye"></i>
-                        Visualiser
-                    </x-form.button>
-                     <x-form.button wire:click="openNursingModal" class="btn-secondary  mr-1" type='button'>
-                        <i class="fa fa-eye"></i>
-                        Nuering
-                    </x-form.button>
-                    @if ($consultationRequest->products->isEmpty())
-                        <x-form.button wire:click="openPrescriptionMedicalModal" class="btn-primary " type='button'>
-                            <i class="fa fa-capsules"></i>
-                            Nouvelle ordonnance
+                    @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
+                        <x-form.button wire:click="openAntecedentMedicalModal" class="btn-danger  mr-1" type='button'>
+                            <i class="fa fa-file"></i>
+                            Antecedents médicaux
                         </x-form.button>
                     @else
-                        <x-form.button wire:click="openPrescriptionMedicalModal" class="btn-info " type='button'>
-                            <i class="fa fa-capsules"></i>
-                            Modfier ordonnace
+                        <x-form.button wire:click="openDetailConsultationModal" class="btn-secondary  mr-1"
+                            type='button'>
+                            <i class="fa fa-eye"></i>
+                            Visualiser
                         </x-form.button>
+                        <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
+                            <i class="fa fa-eye"></i>
+                            Nuering
+                        </x-form.button>
+
+                        @if ($consultationRequest->products->isEmpty())
+                            <x-form.button wire:click="openPrescriptionMedicalModal" class="btn-primary "
+                                type='button'>
+                                <i class="fa fa-capsules"></i>
+                                Nouvelle ordonnance
+                            </x-form.button>
+                        @else
+                            <x-form.button wire:click="openPrescriptionMedicalModal" class="btn-info " type='button'>
+                                <i class="fa fa-capsules"></i>
+                                Modfier ordonnace
+                            </x-form.button>
+                        @endif
+                        <x-navigation.link-icon
+                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                             :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                     @endif
+
+
                 </div>
             </div>
             <div class="card">
@@ -86,9 +100,12 @@
                             ])
                         </div>
                     </div>
-                    <div>
-                        @livewire('application.sheet.form.new-consultation-comment', ['consultationRequest' => $consultationRequest])
-                    </div>
+                    @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
+                        <div>
+                            @livewire('application.sheet.form.new-consultation-comment', ['consultationRequest' => $consultationRequest])
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </x-content.main-content-page>
@@ -107,7 +124,7 @@
             window.addEventListener('open-medical-prescription', e => {
                 $('#form-medical-prescription').modal('show')
             });
-             //Open medical prescription modal
+            //Open medical prescription modal
             window.addEventListener('open-consultation-request-nursing', e => {
                 $('#form-consultation-request-nursing').modal('show')
             });

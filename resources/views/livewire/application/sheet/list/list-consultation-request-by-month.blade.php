@@ -1,6 +1,7 @@
 <div>
     @livewire('application.sheet.form.add-viatl-sign')
     @livewire('application.sheet.form.medical-prescription')
+    @livewire('application.sheet.widget.consultation-request-detail')
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -34,7 +35,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $listConsultationRequest->count() .
                                 ' Factures
-                                            réalisées'
+                                                                                            réalisées'
                             : $listConsultationRequest->count() . ' Facture réalisée' }})
                     </div>
 
@@ -102,6 +103,10 @@
                                         <x-form.icon-button :icon="'fas fa-capsules'"
                                             wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                             class="btn-primary btn-sm" />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        <x-form.icon-button :icon="'fa fa-user-plus '"
+                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                            class="btn-sm btn-info " />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
@@ -134,6 +139,10 @@
             //Open medical prescription modal
             window.addEventListener('open-medical-prescription', e => {
                 $('#form-medical-prescription').modal('show')
+            });
+            //Open detail consultation  modal
+            window.addEventListener('open-details-consultation', e => {
+                $('#consultation-detail').modal('show')
             });
         </script>
     @endpush

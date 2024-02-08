@@ -1,7 +1,8 @@
  <aside class="main-sidebar sidebar-dark-primary bg-sidebar elevation-4">
      <a href="/" class="brand-link bg-color-secondary">
-         <img src="{{ asset('defautl-user.jpg') }}" alt="myCare Logo" class="brand-image" style="opacity: .8">
-         <strong> <span class="brand-text font-weight-light text-bold">{{ config('app.name') }}</span></strong>
+         <img src="{{ asset('afia-vector-white.png') }}" alt="myCare Logo" class="brand-image mt-1" style="opacity: .8">
+         <strong> <span
+                 class="brand-text font-weight-light text-bold h3 text-uppercase">{{ config('app.name') }}</span></strong>
      </a>
      <div class="sidebar mt-4">
          <nav class="mt-2">
@@ -9,7 +10,7 @@
                  data-accordion="false">
                  <x-navigation.nav-link class="nav-link" href="{{ route('dashboard') }}" wire:navigate
                      :active="request()->routeIs('dashboard')">
-                     &#x1F4C8;
+                     <i class="fas fa-chart-bar    "></i>
                      <p>Dashboard</p>
                  </x-navigation.nav-link>
                  @if (Auth::user()->roles->pluck('name')->contains('Caisse'))
@@ -44,6 +45,18 @@
                          <i class="fa fa-bed" aria-hidden="true"></i>
                          <p>Patients hospitalisés</p>
                      </x-navigation.nav-link>
+                 @elseif (Auth::user()->roles->pluck('name')->contains('Reception'))
+                     <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate
+                         :active="request()->routeIs(['sheet', 'patient.folder'])">
+                         <i class="fa fa-folder" aria-hidden="true"></i>
+                         <p>Fiche de consultation</p>
+                     </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
+                         :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
+                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                         <p>Liste consulation</p>
+                     </x-navigation.nav-link>
+                 @elseif (Auth::user()->roles->pluck('name')->contains('Finance'))
                  @else
                      <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate
                          :active="request()->routeIs(['sheet', 'patient.folder'])">
@@ -53,14 +66,14 @@
                      <x-navigation.nav-link class="nav-link" href="{{ route('tarification') }}" wire:navigate
                          :active="request()->routeIs(['tarification'])">
                          <i class="fa fa-folder" aria-hidden="true"></i>
+
                          <p>Tarification</p>
                      </x-navigation.nav-link>
-                     <x-navigation.nav-link class="nav-link" href="{{ route('tarification.prices') }}" wire:navigate
-                         :active="request()->routeIs(['tarification.prices'])">
-                         <i class="fa fa-folder" aria-hidden="true"></i>
-                         <p>Grille tarifaire</p>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('bill.outpatient') }}" wire:navigate
+                         :active="request()->routeIs(['bill.outpatient', 'bill.outpatient.rapport'])">
+                         <i class="fas fa-file-invoice-dollar"></i>
+                         <p>Factures abulantoire</p>
                      </x-navigation.nav-link>
-
                      <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
                          :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
                          <i class="fa fa-user-plus" aria-hidden="true"></i>
@@ -101,12 +114,22 @@
                          <i class="fa fa-globe" aria-hidden="true"></i>
                          <p>Localisation</p>
                      </x-navigation.nav-link>
+                     <x-navigation.nav-link class="nav-link" href="{{ route('navigation') }}" wire:navigate
+                         :active="request()->routeIs(['navigation'])">
+                         <i class="fa fa-link" aria-hidden="true"></i>
+                         <p>Navigation</p>
+                     </x-navigation.nav-link>
                      <x-navigation.nav-link class="nav-link" href="{{ route('files') }}" wire:navigate
                          :active="request()->routeIs(['files'])">
                          <i class="fas fa-file    "></i>
                          <p>Gestion des fichiers</p>
                      </x-navigation.nav-link>
                  @endif
+                 <x-navigation.nav-link class="nav-link" href="{{ route('tarification.prices') }}" wire:navigate
+                     :active="request()->routeIs(['tarification.prices'])">
+                     <i class="fa fa-folder" aria-hidden="true"></i>
+                     <p>Grille tarifaire</p>
+                 </x-navigation.nav-link>
              </ul>
 
          </nav>

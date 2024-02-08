@@ -17,9 +17,7 @@
                     <x-form.button class="btn-primary" wire:click="newSheet"><x-icons.icon-plus-circle/> Nouvelle fiche</x-form.button>
                 </div>
             </div>
-            <div class="d-flex justify-content-center pb-2">
-                <x-widget.loading-circular-md/>
-            </div>
+
             @if($sheets->isEmpty())
                 <x-errors.data-empty/>
             @else

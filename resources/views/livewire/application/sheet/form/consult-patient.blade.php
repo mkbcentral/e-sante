@@ -24,7 +24,7 @@
                                 <input  wire:model.live="tarifsSelected" type="radio" value="{{$tarif->id}}"
                                        id="{{str_replace(' ', '',$tarif->name)}}" >
                                 <label for="{{str_replace(' ', '',$tarif->name)}}">
-                                    {{$tarif->name}}
+                                    {{$tarif->getNameOrAbbreviation()}}
                                 </label>
                             </div>
                         </div>

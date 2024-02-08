@@ -9,7 +9,8 @@
                 <x-navigation.tab-link :icon="'fas fa-capsules'" :name="'Produit'" :link="'product'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-file'" :name="'Fiches privés'" :link="'private'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-file'" :name="'Fiches abonné'" :link="'subscriber'" :active="''" />
-                <x-navigation.tab-link :icon="'fa fa-file'" :name="'Fiches agent'" :link="'agent'" :active="'active'" />
+                <x-navigation.tab-link :icon="'fa fa-file'" :name="'Fiches agent'" :link="'agent'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-file'" :name="'Examens et actes'" :link="'tarif'" :active="'active'" />
             </x-navigation.tab-header>
 
             <div class="card-body">
@@ -23,8 +24,11 @@
                     <div class="tab-pane " id="subscriber">
                         @livewire('application.files.screens.import-subscriber-sheet-view')
                     </div>
-                    <div class="tab-pane active" id="agent">
+                    <div class="tab-pane " id="agent">
                         @livewire('application.files.screens.import-agent-sheet-view')
+                    </div>
+                    <div class="tab-pane active" id="tarif">
+                       @livewire('application.files.screens.import-tarif-view')
                     </div>
                 </div>
             </div>

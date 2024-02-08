@@ -1,13 +1,14 @@
 <div>
     @livewire('application.sheet.form.add-viatl-sign')
     @livewire('application.sheet.form.medical-prescription')
+    @livewire('application.sheet.widget.consultation-request-detail')
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <div class="d-flex  align-items-center">
                     <div class="mr-2 w-100">
-                            <x-form.input-search wire:model.live.debounce.500ms="q" />
-                        </div>
+                        <x-form.input-search wire:model.live.debounce.500ms="q" />
+                    </div>
                     <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
                 </div>
                 <div class="bg-navy p-1 rounded-lg pr-2">
@@ -89,10 +90,14 @@
                                         <x-form.icon-button :icon="'fas fa-capsules'"
                                             wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                             class="btn-primary btn-sm" />
-                                    @else
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
+                                    @else
+                                        <x-form.icon-button :icon="'fa fa-eye '"
+                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
@@ -121,6 +126,10 @@
             //Open medical prescription modal
             window.addEventListener('open-medical-prescription', e => {
                 $('#form-medical-prescription').modal('show')
+            });
+            //Open detail consultation  modal
+            window.addEventListener('open-details-consultation', e => {
+                $('#consultation-detail').modal('show')
             });
         </script>
     @endpush

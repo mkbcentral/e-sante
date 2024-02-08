@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand {{theme_setting('is_dark_mode')?'navbar-dark':'navbar-white'}} navbar-light">
+    <nav class="main-header navbar navbar-expand {{ Auth::user()?->setting?->is_dark_mode==true?'navbar-dark':'navbar-light'}} ">
     @auth
     <ul class="navbar-nav">
         @livewire('application.setting.change-collapse-state')

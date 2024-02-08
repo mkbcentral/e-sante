@@ -45,8 +45,20 @@ class ListConsultationRequest extends Component
         $this->currencyName = $currency;
     }
 
+    /**
+     * Open detail consultation model view
+     * emit consultationRequest listner to load data after modal detail opened
+     * @return void
+     */
+    public function openDetailConsultationModal(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-details-consultation');
+        $this->dispatch('consultationRequest', $consultationRequest);
+    }
+
     public function openPrescriptionMedicalModal(ConsultationRequest $consultationRequest): void
     {
+
         $this->dispatch('open-medical-prescription');
         $this->dispatch('consultationRequest', $consultationRequest);
     }

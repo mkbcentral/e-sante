@@ -41,7 +41,16 @@ class ListConsultationRequestByPeriod extends Component
     {
         $this->currencyName = $currency;
     }
-
+    /**
+     * Open detail consultation model view
+     * emit consultationRequest listner to load data after modal detail opened
+     * @return void
+     */
+    public function openDetailConsultationModal(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-details-consultation');
+        $this->dispatch('consultationRequest', $consultationRequest);
+    }
 
     /**
      * Get Consultation Sheet if listener emitted in parent veiew
@@ -95,7 +104,7 @@ class ListConsultationRequestByPeriod extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.list.list-consultation-request-by-period',[
+        return view('livewire.application.sheet.list.list-consultation-request-by-period', [
             'listConsultationRequest' => GetConsultationRequestRepository::getConsultationRequestByPeriod(
                 $this->selectedIndex,
                 $this->q,
@@ -106,7 +115,7 @@ class ListConsultationRequestByPeriod extends Component
                 $this->end_date,
 
             ),
-            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date,$this->end_date, $this->selectedIndex),
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date, $this->end_date, $this->selectedIndex),
             'total_usd' => GetConsultationRequestionAmountRepository::getTotalPeriodUSD($this->start_date, $this->end_date, $this->selectedIndex),
             'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'CDF'),
             'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'USD')

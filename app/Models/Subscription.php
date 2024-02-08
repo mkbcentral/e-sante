@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use PhpParser\Builder\Function_;
 
 class Subscription extends Model
 {
@@ -18,5 +20,9 @@ class Subscription extends Model
     public function consultationSheets(): HasMany
     {
         return $this->hasMany(ConsultationSheet::class, 'consultation_sheet_id', 'local_key');
+    }
+
+    public function getAmountUSDBySubscription($month,$year):int|float{
+        return GetConsultationRequestionAmountRepository::getTotalByMonthUSD($month,$year,$this->id);
     }
 }

@@ -1,2 +1,2 @@
 @props(['icon'])
-<a {{$attributes}} ><i class="{{$icon}}" ></i></a>
+<a {{$attributes}} target="_blanck"><i class="{{$icon}}" ></i></a>

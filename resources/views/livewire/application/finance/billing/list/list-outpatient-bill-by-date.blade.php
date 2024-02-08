@@ -14,10 +14,7 @@
                         <x-form.label value="{{ __('Date') }}" class="mr-1" />
                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                     </div>
-                    <div class="d-flex align-items-center">
-                        <x-form.label value="{{ __('Devise') }}" class="mr-1" />
-                        @livewire('application.finance.widget.currency-widget')
-                    </div>
+
                 </div>
 
             </div>

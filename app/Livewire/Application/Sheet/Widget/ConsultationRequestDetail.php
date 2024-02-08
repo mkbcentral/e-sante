@@ -46,9 +46,7 @@ class ConsultationRequestDetail extends Component
      */
     public function render()
     {
-        return view(
-            'livewire.application.sheet.widget.consultation-request-detail',
-            [
+        return view('livewire.application.sheet.widget.consultation-request-detail',[
                 'categoriesTarif' => CategoryTarif::where('hospital_id', Hospital::DEFAULT_HOSPITAL())->get()
             ]
         );

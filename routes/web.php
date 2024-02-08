@@ -9,6 +9,7 @@ use App\Livewire\Application\Files\FileManagerView;
 use App\Livewire\Application\Finance\Billing\MainOutPatientBillReport;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Localization\MainLocalization;
+use App\Livewire\Application\Navigation\Mainnavigation;
 use App\Livewire\Application\Sheet\MainSheet;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Application\Patient\FolderPatient;
@@ -68,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/administration', MainAdmin::class)->name('admin');
     Route::get('/configuration', MainConfiguration::class)->name('configuration');
+    Route::get('/navigation', Mainnavigation::class)->name('navigation');
     Route::get('/files', FileManagerView::class)->name('files');
     Route::get('/localization', MainLocalization::class)->name('localization');
 });
