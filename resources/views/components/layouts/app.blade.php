@@ -7,6 +7,7 @@
     <title>{{ config('app.name') }}</title>
 
     <title>{{ config('app.name') }}</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('afia-vector-white.png') }}">
     @if (config('app.env') != 'local')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -20,8 +21,8 @@
 </head>
 
 <body
-    class="hold-transition sidebar-mini {{ Auth::user()?->setting?->is_dark_mode==true  ? 'dark-mode' : '' }}
-        {{ Auth::user()?->setting?->is_sidebar_collapse==true ? 'sidebar-collapse' : '' }}">
+    class="hold-transition sidebar-mini {{ Auth::user()?->setting?->is_dark_mode == true ? 'dark-mode' : '' }}
+        {{ Auth::user()?->setting?->is_sidebar_collapse == true ? 'sidebar-collapse' : '' }}">
     <div class="wrapper">
         @include('components.layouts.patials.navbar')
         @include('components.layouts.patials.sidebar')
