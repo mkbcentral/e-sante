@@ -1,7 +1,7 @@
 <x-print-layout>
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
     <div class="text-right"><span>Fait à Lubumbashi, Le {{ date('d/m/Y') }}</span></div>
-    <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT</h4>
+    <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT AMBULATOIRE</h4>
 
     <table class="table table-bordered  table-sm">
         <thead class="bg-secondary text-white text-uppercase">
