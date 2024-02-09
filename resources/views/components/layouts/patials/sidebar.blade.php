@@ -56,6 +56,12 @@
                          <i class="fa fa-user-plus" aria-hidden="true"></i>
                          <p>Liste consulation</p>
                      </x-navigation.nav-link>
+                 @elseif (Auth::user()->roles->pluck('name')->contains('Nurse'))
+                     <x-navigation.nav-link class="nav-link" href="{{ route('consultation.req') }}" wire:navigate
+                         :active="request()->routeIs(['consultation.req', 'consultation.consult.patient'])">
+                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                         <p>Liste consulation</p>
+                     </x-navigation.nav-link>
                  @elseif (Auth::user()->roles->pluck('name')->contains('Finance'))
                  @else
                      <x-navigation.nav-link class="nav-link" href="{{ route('sheet') }}" wire:navigate
