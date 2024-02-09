@@ -70,12 +70,12 @@
     </table>
     <table class="table table-light">
         <tr>
-            <td>G</td>
-            <td class="text-right">D</td>
+            <td>PERECEPTION</td>
+            <td class="text-right">CAISSE</td>
         </tr>
         <tr>
-            <td>G</td>
-            <td class="text-right">D</td>
+            <td>Mdm JOELLE</td>
+            <td class="text-right">GEORGETTE KAMWANYA</td>
         </tr>
     </table>
 </x-print-layout>
