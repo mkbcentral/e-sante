@@ -54,6 +54,7 @@
                             <th class="text-center">AGE</th>
                             <th class="text-right">MONTANT</th>
                             <th class="text-center">SUSCRIPTION</th>
+                            <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -85,6 +86,9 @@
                                 </td>
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
+                                <td class="text-center  {{ $consultationRequest->is_finished==true?"text-success  ":"text-danger " }}">
+                                    {{ $consultationRequest->is_finished==true?"Terminé":"En cours" }}
+                                </td>
                                 <td class="text-center">
                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                         <x-form.icon-button :icon="'fas fa-capsules'"
@@ -94,6 +98,10 @@
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-eye '"
                                             wire:click="openDetailConsultationModal({{ $consultationRequest }})"
@@ -103,7 +111,7 @@
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary"  />
                                     @endif
                                 </td>
                             </tr>

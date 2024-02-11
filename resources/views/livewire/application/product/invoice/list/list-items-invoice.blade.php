@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-center align-items-center py-2">
         <x-widget.loading-circular-md />
     </div>
-    <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> DETAILS FACCTURE</h4>
+    <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> DETAILS FACTURE</h4>
     <table class="table table-sm table-bordered table-hover">
         <thead class="bg-pink">
             <tr>
@@ -41,7 +41,7 @@
     <div class="d-flex justify-content-between align-content-center">
         <h3>Total: {{ app_format_number($productInvoice->getTotalInvoice(), 1) }} Fc</h3>
         <div class="d-inline ">
-            <a href="" class="mr-2"><i class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
+            <a href="{{ route('product.invoice.print',$productInvoice->id ) }}" target="_blanck" class="mr-2"><i class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
             <button class="btn btn-link btn-sm" type="button" wire:click='validateInvoice'>
                 <i class="{{ $productInvoice->is_valided==true?'fa fa-times':'fa fa-check'  }} " aria-hidden="true"></i>
                 {{ $productInvoice->is_valided==true?'Annuler':'Valider'  }}

@@ -77,7 +77,7 @@
                                     </td>
                                     <td class="text-uppercase">{{ $product->name }} <span
                                             class="text-bold text-pink">{{ $product->abbreviation }}</span></td>
-                                    <td class="text-center">{{ $product->initial_quantity }}</td>
+                                  <td class="{{ $product->getAmountStockGlobal()<=5?'bg-danger ':'' }} text-center">{{ $product->getAmountStockGlobal() }}</td>
                                     <td class="text-right">{{ $product->price }}</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td class="text-center">

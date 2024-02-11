@@ -17,7 +17,7 @@
             </div>
             <div class="row mt-3">
                 @foreach($tarifs as $tarif)
-                    <div class="col-md-2">
+                    <div class="col-md-6">
                         <!-- checkbox -->
                         <div class="form-group clearfix">
                             <div class="icheck-primary d-inline">

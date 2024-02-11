@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
+use App\Http\Controllers\Application\Product\ProductInvoicePrinterController;
 use App\Livewire\Application\Admin\MainAdmin;
 use App\Livewire\Application\Configuration\MainConfiguration;
 use App\Livewire\Application\Dashboard\MainDashboard;
@@ -65,6 +66,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {
             Route::get('consultation-request-private-/{id}', 'printPrivateInvoiceByDate')->name('consultation.request.private.invoice');
         });
+
+       Route::controller(ProductInvoicePrinterController::class)->group(function(){
+            Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
+       });
     });
 
     Route::get('/administration', MainAdmin::class)->name('admin');

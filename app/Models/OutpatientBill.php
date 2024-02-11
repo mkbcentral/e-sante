@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\Notifiable;
 
 class OutpatientBill extends Model
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
 
     protected $fillable = [
         'bill_number', 'client_name', 'is_validated', 'is_printed',
         'consultation_id', 'user_id', 'hospital_id', 'rate_id', 'currency_id'
     ];
+
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'outpatient_bills.' . $this->id;
+    }
 
     /**
      * The tarifs that belong to the OutpatientBill

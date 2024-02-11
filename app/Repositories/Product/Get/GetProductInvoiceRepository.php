@@ -10,7 +10,7 @@ class GetProductInvoiceRepository
     public static function getInvoiceByDate(string $date):Collection{
         return ProductInvoice::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
-            ->where('is_valided', true)
+            //->where('is_valided', true)
             ->get();
     }
 

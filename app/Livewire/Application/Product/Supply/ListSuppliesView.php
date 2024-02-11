@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Application\Product\Supply;
 
+use App\Models\Hospital;
 use App\Models\ProductSupply;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class ListSuppliesView extends Component
 {
@@ -61,7 +61,13 @@ class ListSuppliesView extends Component
     public function render()
     {
         return view('livewire.application.product.supply.list-supplies-view', [
-            'productSupplies' => ProductSupply::whereMonth('created_at', $this->month)->get()
+            'productSupplies' => ProductSupply::query()
+                ->join('users', 'users.id', 'product_supplies.user_id')
+                ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('product_supplies.user_id', Auth::id())
+                ->whereMonth('product_supplies.created_at', $this->month)
+                ->select('product_supplies.*')
+                ->get()
         ]);
     }
 }

@@ -5,7 +5,6 @@ namespace App\Repositories\Product\Get;
 use App\Models\Hospital;
 use App\Models\Product;
 use App\Models\ProductSupplyProduct;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class GetProductRepository
@@ -29,7 +28,7 @@ class GetProductRepository
             //->where('products.product_category_id', 'like', '%' . $categoryId . '%')
             //->where('products.product_family_id', 'like', '%' . $familyId . '%')
             ->where( 'products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.source_id', auth()->user()->source->id)
+            //->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 
@@ -48,7 +47,7 @@ class GetProductRepository
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('products.*')
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.source_id', auth()->user()->source->id)
+            //->where('products.source_id', auth()->user()->source->id)
             ->paginate($per_page);
     }
 

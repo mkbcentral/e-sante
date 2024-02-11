@@ -35,7 +35,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $listConsultationRequest->count() .
                                 ' Factures
-                                                                                            réalisées'
+                                                                                                                    réalisées'
                             : $listConsultationRequest->count() . ' Facture réalisée' }})
                     </div>
 
@@ -67,6 +67,7 @@
                             <th class="text-center">AGE</th>
                             <th class="text-right">MONTANT</th>
                             <th class="text-center">SUSCRIPTION</th>
+                            <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -98,6 +99,10 @@
                                 </td>
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
+                                <td
+                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
+                                    {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
+                                </td>
                                 <td class="text-center">
                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                         <x-form.icon-button :icon="'fas fa-capsules'"

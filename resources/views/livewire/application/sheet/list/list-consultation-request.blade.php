@@ -45,7 +45,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $listConsultationRequest->count() .
                                 ' Factures
-                                                                                                                                                                                                                    réalisées'
+                                                                                                                                                                                                                                            réalisées'
                             : $listConsultationRequest->count() . ' Facture réalisée' }})
                     </div>
 
@@ -82,13 +82,14 @@
                             @endif
 
                             <th class="text-center">SUSCRIPTION</th>
+                            <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($listConsultationRequest as $consultationRequest)
                             <tr style="cursor: pointer;">
-                                <td class="">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
+                                <td class="">{{ $consultationRequest->created_at->format('d/m/Y H:i:s') }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}</td>
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
@@ -117,6 +118,10 @@
                                 @endif
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
+                                <td
+                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
+                                    {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
+                                </td>
                                 <td class="text-center">
                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                         <x-form.icon-button :icon="'fas fa-capsules'"

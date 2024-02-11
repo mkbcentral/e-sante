@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Events\OutpatientBillEvent;
+use App\Events\OutpatientCreatedEvent;
 use App\Models\ConsultationSheet;
 use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
 use Illuminate\Contracts\Foundation\Application;
@@ -27,6 +29,10 @@ class ListSheet extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
+
+    public function testEvent(){
+        event(new OutpatientBillEvent('Test event'));
+    }
 
     /**
      * Get selected Subscription when selectedIndex listener emitted in parent view

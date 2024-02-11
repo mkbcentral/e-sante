@@ -111,6 +111,8 @@
             window.addEventListener('open-list-outpatient-bill-by-date-modal', e => {
                 $('#list-outpatient-bill-by-date-modal').modal('show')
             });
+
+
         </script>
     @endpush
 </div>

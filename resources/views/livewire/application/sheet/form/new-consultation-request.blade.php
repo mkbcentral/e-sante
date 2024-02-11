@@ -39,6 +39,7 @@
             window.addEventListener('close-request-form', e => {
                 $('#form-new-request').modal('hide')
             });
+
         </script>
     @endpush
 </div>

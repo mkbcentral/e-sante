@@ -41,10 +41,65 @@ class Product extends Model
     {
         return $this->hasMany(productSupplyProduct::class);
     }
-
-    public function getTotalInputsByService():int|float
+    /***
+     * get number of product by invoice
+     */
+    public function getNumberProductInvoice(): int|float
     {
-        $quantity=0;
+        return ProductInvoice::query()
+            ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
+            ->where('product_product_invoice.product_id', $this->id)
+            ->where('product_invoices.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('product_invoices.user_id', Auth::id())
+            ->sum('product_product_invoice.qty');
+    }
+    public function getNumberProducByConsultationRequest(): int|float
+    {
+        return ConsultationRequest::query()
+            ->join(
+                'consultation_request_product',
+                'consultation_request_product.consultation_request_id',
+                'consultation_requests.id'
+            )
+            ->join(
+                'consultation_sheets',
+                'consultation_sheets.id',
+                'consultation_requests.consultation_sheet_id'
+            )
+            ->where('consultation_request_product.product_id', $this->id)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_request_product.created_by', Auth::id())
+            ->sum('consultation_request_product.qty');
+    }
+
+    public function getNumberProductSupply(): int|float
+    {
+        return ProductSupply::query()
+            ->join('product_supply_products', 'product_supply_products.product_supply_id', 'product_supplies.id')
+            ->join('users', 'users.id', 'product_supplies.user_id')
+            ->where('product_supply_products.product_id', $this->id)
+            ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('product_supplies.user_id', Auth::id())
+            ->sum('product_supply_products.quantity');
+    }
+
+    public function getAmountStockGlobal(): int|float
+    {
+        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name=="GOLF") {
+            return ($this->initial_quantity + $this->getNumberProductSupply()) -
+                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
+        } else {
+            return ($this->getNumberProductSupply()) -
+                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
+        }
+
+
+    }
+
+    public function getTotalInputsByService(): int|float
+    {
+        $quantity = 0;
         $inputs = ProductSupplyProduct::join('products', 'products.id', 'product_supply_products.product_id')
             ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
             ->join('users', 'users.id', 'product_supplies.user_id')
@@ -55,10 +110,12 @@ class Product extends Model
             ->get();
 
         foreach ($inputs as $input) {
-            $quantity+=$input->quantity;
+            $quantity += $input->quantity;
         }
         return $quantity;
     }
+
+
 
     public function TotalOutputsByService()
     {

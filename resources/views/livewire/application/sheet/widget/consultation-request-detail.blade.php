@@ -28,7 +28,7 @@
                     @endif
                     @if (!$consultationRequest->consultationRequestNursings->isEmpty())
                         <h5 class="text-danger text-bold">NURSING & AUTRES</h5>
-                        @livewire('application.sheet.widget.consultation-request-nursing-widget', ['consultationRequest' => $consultationRequest, 'currency' => $currencyName])
+                        @livewire('application.sheet.widget.consultation-request-nursing-widget', ['consultationRequest' => $consultationRequest])
                     @endif
                     @if (!$consultationRequest->consultationRequestHospitalizations->isEmpty())
                         <h5 class="text-danger text-bold">SEJOUR</h5>

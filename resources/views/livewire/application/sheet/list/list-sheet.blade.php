@@ -14,7 +14,8 @@
                         </span>
                         </button>
                     </div>
-                    <x-form.button class="btn-primary" wire:click="newSheet"><x-icons.icon-plus-circle/> Nouvelle fiche</x-form.button>
+                    <x-form.button class="btn-primary mt-1" wire:click="newSheet"><x-icons.icon-plus-circle/> Nouvelle fiche</x-form.button>
+                     <x-form.button class="btn-secondary mt-1" wire:click="testEvent"><x-icons.icon-plus-circle/> Tester</x-form.button>
                 </div>
             </div>
 

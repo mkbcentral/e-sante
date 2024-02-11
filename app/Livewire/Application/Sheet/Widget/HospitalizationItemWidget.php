@@ -4,13 +4,14 @@ namespace App\Livewire\Application\Sheet\Widget;
 
 use App\Models\ConsultationRequest;
 use App\Models\ConsultationRequestHospitalization;
+use App\Models\Currency;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class HospitalizationItemWidget extends Component
 {
-
-    #[Rule('required', message: 'Non jour obligation', onUpdate: false)]
+    protected $listeners = ['currencyName' => 'getCurrencyName'];
+    #[Rule('required', message: 'Nombre jour obligation', onUpdate: false)]
     #[Rule('numeric', message: 'Nombre de jour format numerique', onUpdate: false)]
     public $numberOfDay;
     #[Rule('required', message: 'Chambre obligation', onUpdate: false)]
@@ -20,7 +21,12 @@ class HospitalizationItemWidget extends Component
     public int $idSelected = 0;
     public bool $isEditing = false;
     public ?ConsultationRequestHospitalization $consultationRequestHospitalization;
+    public string $currencyName = Currency::DEFAULT_CURRENCY;
 
+    public function getCurrencyName(string $currency)
+    {
+        $this->currencyName = $currency;
+    }
     public function edit($id, $numberOfDay)
     {
         $this->isEditing = true;
@@ -50,7 +56,7 @@ class HospitalizationItemWidget extends Component
     {
         try {
             $consultationRequestHospitalization->delete();
-            $this->$this->dispatch('refreshDetail');;
+            $this->dispatch('refreshDetail');;
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Application\Print\ConsultationRequest;
 
-use App\Charts\TestChart;
 use App\Http\Controllers\Controller;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;

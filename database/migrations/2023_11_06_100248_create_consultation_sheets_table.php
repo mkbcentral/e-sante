@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('consultation_sheets', function (Blueprint $table) {
             $table->id();
-            $table->float('number_sheet',16);
+            $table->float('number_sheet',16)->nullable();
             $table->string('name');
             $table->date('date_of_birth')->nullable();
             $table->string('phone')->nullable();

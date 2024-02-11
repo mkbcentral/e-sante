@@ -2,8 +2,11 @@
 
 namespace App\Livewire\Application\Product\Invoice;
 
+use App\Models\Hospital;
 use App\Models\ProductInvoice;
 use App\Repositories\Product\Get\GetProductInvoiceRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MainProductInvoice extends Component
@@ -70,7 +73,12 @@ class MainProductInvoice extends Component
     }
 
     public function mount(){
-        $this->productInvoice = ProductInvoice::latest()->first();
+        $this->productInvoice = ProductInvoice::query()
+                ->wheredate('created_at',Carbon::now())
+                ->where('user_id',Auth::id())
+                ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+                ->orderBy('created_at','DESC')
+                ->first();
     }
     public function render()
     {

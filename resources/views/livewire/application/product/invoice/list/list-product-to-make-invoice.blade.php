@@ -1,4 +1,5 @@
-<div wire:ignore.self>
+<div>
+    @livewire('application.product.invoice.form.form-quantity-product-to-invoice')
     <div>
         <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> LISTE DES PRODUITS</h4>
         <div class="d-flex justify-content-between align-items-center">
@@ -24,20 +25,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($produccts as $index => $producct)
-                    <tr wire:key='{{ $producct->id }}' class="cursor-hand"
-                        wire:confirm="Etes-vous d'ajouter à la facure?"
-                        wire:click='addProductToInvoice({{ $producct }})'
-                        ({{ $producct }})>
+                @foreach ($products as $index => $product)
+                    <tr wire:key='{{ $product->id }}' class="cursor-hand"
+                        wire:click='openFormQuantityModal({{ $product }})'>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $producct->name }}</td>
-                        <td class="text-center">0</td>
-                        <td class="text-right">{{ $producct->created_at->format('d/M/Y') }}</td>
+                        <td>{{ $product->name }}</td>
+                        <td class="{{ $product->getAmountStockGlobal()<=5?'bg-danger ':'' }} text-center">{{ $product->getAmountStockGlobal() }}</td>
+                        <td class="text-right">{{ $product->created_at->format('d/M/Y') }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            {{ $produccts->links('livewire::bootstrap') }}</div>
+            {{ $products->links('livewire::bootstrap') }}</div>
     </div>
+    <script type="module">
+        //Open  new sheet form modal
+        window.addEventListener('open-form-quntity-product-invoice', e => {
+            $('#form-quntity-product-invoice').modal('show')
+        });
+    </script>
 </div>

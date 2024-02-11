@@ -1,5 +1,5 @@
 <div>
-    <table class="table table-light">
+    <table class="table table-bordered">
         <thead class="thead-light">
             <tr>
                 <th>DESIGNATION</th>
@@ -12,24 +12,59 @@
         <tbody>
             @foreach ($consultationRequest->consultationRequestNursings as $consultationRequestNursing)
                 <tr>
-                    <td>{{ $consultationRequestNursing->name }}</td>
-                    <td class="text-center">{{ $consultationRequestNursing->number }}</td>
+                    @if ($isEditing == true && $idSelected == $consultationRequestNursing->id)
+                        <td>
+                            <x-form.input type='text' wire:model='nameToEdit' wire:keydown.enter='update'
+                                :error="'nameToEdit'" />
+                        </td>
+                        <td>
+                            <x-form.input type='text' wire:model='numberToEdit' wire:keydown.enter='update'
+                                :error="'numberToEdit'" />
+                        </td>
+                        <td>
+                            <x-form.input type='text' wire:model='priceToEdit' wire:keydown.enter='update'
+                                :error="'priceToEdit'" />
+                        </td>
+                    @else
+                        <td>{{ $consultationRequestNursing->name }}</td>
+                        <td class="text-center">{{ $consultationRequestNursing->number }}</td>
+                        <td class="text-right">
+                            {{ app_format_number(
+                                $currencyName == 'USD' ? $consultationRequestNursing->getAmountUSD() : $consultationRequestNursing->getAmountCDF(),
+                                1,
+                            ) }}
+                        </td>
+                    @endif
                     <td class="text-right">
-                        {{ $consultationRequestNursing->amount }}
-                    </td>
-                    <td class="text-right">
-                        {{ $consultationRequestNursing->amount }}
+                        {{ app_format_number(
+                            $currencyName == 'USD'
+                                ? $consultationRequestNursing->getAmountUSD() * $consultationRequestNursing->number
+                                : $consultationRequestNursing->getAmountCDF() * $consultationRequestNursing->number,
+                            1,
+                        ) }}
                     </td>
                     <td>
                         <x-form.edit-button-icon
-                            wire:click="edit({{ $consultationRequestHospitalization->id }},
-                                 {{ $consultationRequestHospitalization->number_of_day }})"
+                            wire:click="edit({{ $consultationRequestNursing->id }},
+                                 {{ $consultationRequestNursing->number }})"
                             class="btn-sm" />
                         <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
-                            wire:click="delete({{ $consultationRequestHospitalization->id }})" class="btn-sm" />
+                            wire:click="delete({{ $consultationRequestNursing }})" class="btn-sm" />
                     </td>
                 </tr>
             @endforeach
+             <tr class="bg-secondary">
+                <td colspan="4" class="text-right">
+                    <span class="text-bold text-lg"> TOTAL:
+                        {{ app_format_number(
+                            $currencyName == 'USD'
+                                ? $consultationRequest->getNursingAmountUSD()
+                                : $consultationRequest->getNursingAmountCDF(),
+                            1,
+                        ) }}
+                    </span>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

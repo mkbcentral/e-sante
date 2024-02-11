@@ -6,6 +6,7 @@ use App\Livewire\Forms\SheetForm;
 use App\Models\ConsultationSheet;
 use App\Models\Hospital;
 use App\Models\Subscription;
+use App\Repositories\OutpatientBill\CreateOutpatientBillRepository;
 use App\Repositories\Sheet\Creation\CreateNewConsultationRequestRepository;
 use App\Repositories\Sheet\Creation\CreateSheetRepository;
 use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
@@ -62,6 +63,7 @@ class NewConsultationSheet extends Component
     public function store(): void
     {
         $this->validate();
+
         try {
             $fields = $this->form->all();
             $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
@@ -72,12 +74,21 @@ class NewConsultationSheet extends Component
                 $this->form->gender
             );
             if ($existingSheet == null) {
+                $inpusoutpatientBill = [];
                 $sheet = CreateSheetRepository::create($fields);
                 CreateNewConsultationRequestRepository::create([
                     'consultation_sheet_id' => $sheet->id,
                     'consultation_id' => $this->form->consultation_id,
                     'has_a_shipping_ticket' => $this->has_a_shipping_ticket
                 ]);
+                if ($sheet->subscription->is_private == true) {
+                    $inpusoutpatientBill['client_name'] = $sheet->name;
+                    $inpusoutpatientBill['consultation_id'] = $this->form->consultation_id;
+                    $inpusoutpatientBill['consultation_sheet_id'] = $sheet->id;
+                    $inpusoutpatientBill['currency_id'] = null;
+                    CreateOutpatientBillRepository::create($inpusoutpatientBill);
+                    $this->dispatch('outpatientBillRefreshedMainView');
+                }
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 $this->dispatch('listSheetRefreshed');
                 $this->dispatch('refreshSheetCounter');

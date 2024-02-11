@@ -3,9 +3,8 @@
 namespace App\Livewire\Application\Finance\Billing\Form;
 
 use App\Models\Currency;
-use App\Models\Hospital;
 use App\Models\OutpatientBill;
-use App\Repositories\Rate\RateRepository;
+use App\Repositories\OutpatientBill\CreateOutpatientBillRepository;
 use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -51,17 +50,9 @@ class CreateOutpatientBill extends Component
      */
     public function store()
     {
-        $this->validate();
+        $inputs= $this->validate();
         try {
-            $outpatientBill = OutpatientBill::create([
-                'bill_number' => rand(100, 1000),
-                'client_name' => $this->client_name,
-                'consultation_id' => $this->consultation_id,
-                'user_id' => 1,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
-                'rate_id' => RateRepository::getCurrentRate()->id,
-                'currency_id' => $this->currency_id == null ? null : $this->currency_id,
-            ]);
+            $outpatientBill =CreateOutpatientBillRepository::create($inputs);
             $this->dispatch('outpatientBill', $outpatientBill);
             $this->dispatch('close-form-new-outpatient-bill');
             $this->dispatch('refreshCreateOutpatientView');

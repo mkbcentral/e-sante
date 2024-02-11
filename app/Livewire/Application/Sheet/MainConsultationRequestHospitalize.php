@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Sheet;
 
 use App\Models\Subscription;
 use App\Repositories\Subscription\Get\GetSubscriptionRepository;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MainConsultationRequestHospitalize extends Component
@@ -38,7 +39,9 @@ class MainConsultationRequestHospitalize extends Component
     public function render()
     {
         return view('livewire.application.sheet.main-consultation-request-hospitalize',[
-            'subscriptions' => GetSubscriptionRepository::getAllSubscriptionList(),
+            'subscriptions' => Auth::user()->roles->pluck('name')->contains('Caisse') ?
+                GetSubscriptionRepository::getAllSubscriptionListPrivateOnly() :
+                GetSubscriptionRepository::getAllSubscriptionList()
         ]);
     }
 }

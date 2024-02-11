@@ -153,7 +153,6 @@ class GetConsultationRequestRepository
             ->paginate($per_page);
     }
 
-
     /**
      * Get all consultation request by date
      * @param int $idSubscription

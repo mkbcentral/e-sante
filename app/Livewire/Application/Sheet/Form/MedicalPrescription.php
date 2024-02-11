@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MedicalPrescription extends Component
@@ -110,7 +111,8 @@ class MedicalPrescription extends Component
             'consultation_request_id' => $this->consultationRequest->id,
             'product_id' => $item['product_id'],
             'qty' => $item['qty'],
-            'dosage' => $item['dosage']
+            'dosage' => $item['dosage'],
+            'created_by' => Auth::id()
         ]);
         $this->dispatch('refreshProductItems');
         $this->dispatch('listSheetRefreshed');

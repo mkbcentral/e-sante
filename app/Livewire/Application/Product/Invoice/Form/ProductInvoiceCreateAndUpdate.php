@@ -5,6 +5,7 @@ namespace App\Livewire\Application\Product\Invoice\Form;
 use App\Models\Hospital;
 use App\Models\ProductInvoice;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
@@ -45,7 +46,7 @@ class ProductInvoiceCreateAndUpdate extends Component
                 'number'=>rand(1000,10000),
                 'client'=>$this->client,
                 'hospital_id'=>Hospital::DEFAULT_HOSPITAL(),
-                'user_id'=>1
+                'user_id'=>Auth::id()
             ]);
             $this->dispatch('productInvoice');
             $this->dispatch('close-form-product-invoice');
