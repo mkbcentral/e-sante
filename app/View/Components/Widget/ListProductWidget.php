@@ -5,14 +5,14 @@ namespace App\View\Components\Widget;
 use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Livewire\WithPagination;
 
 class ListProductWidget extends Component
 {
     use WithPagination;
-    public ?LengthAwarePaginator  $listProduct;
+    public ?Collection  $listProduct;
     /**
      * Create a new component instance.
      */
