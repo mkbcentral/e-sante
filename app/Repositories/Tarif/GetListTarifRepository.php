@@ -35,7 +35,7 @@ class GetListTarifRepository
             ->select('tarifs.*')
             ->where('tarifs.is_changed', false)
             ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('category_tarifs.source_id', auth()->user()->source->id)
+            //->where('category_tarifs.source_id', auth()->user()->source->id)
             ->get();
     }
 
