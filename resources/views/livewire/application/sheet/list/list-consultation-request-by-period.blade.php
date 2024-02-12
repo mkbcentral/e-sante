@@ -72,7 +72,11 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            <th class="text-right">MONTANT</th>
+                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                                <th class="text-right">MONTANT</th>
+                            @endif
                             <th class="text-center">SUSCRIPTION</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
@@ -86,23 +90,29 @@
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
+
                                 </td>
-                                <td class="text-right">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                        {{ app_format_number(
-                                            $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
-                                            1,
-                                        ) .
-                                            ' ' .
-                                            $currencyName }}
-                                    @else
-                                        {{ app_format_number(
-                                            $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
-                                            1,
-                                        ) .
-                                            ' ' .
-                                            $currencyName }}
-                                    @endif
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                    <td class="text-right">
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @else
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td
