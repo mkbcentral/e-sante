@@ -16,18 +16,24 @@
                         <x-form.input type='date' wire:model.live='end_date' :error="'end_date'" />
                     </div>
                 </div>
-                <div class="bg-navy p-1 rounded-lg pr-2">
-                    <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                            <span class="money_format">CDF: {{ app_format_number($total_product_amount_cdf, 1) }}</span>
-                            |
-                            <span class="money_format">USD: {{ app_format_number($total_product_amount_usd, 1) }}</span>
-                        @else
-                            <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
-                            <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
-                        @endif
-                    </h3>
-                </div>
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                    <div class="bg-navy p-1 rounded-lg pr-2">
+                        <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                            @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                <span class="money_format">CDF:
+                                    {{ app_format_number($total_product_amount_cdf, 1) }}</span>
+                                |
+                                <span class="money_format">USD:
+                                    {{ app_format_number($total_product_amount_usd, 1) }}</span>
+                            @else
+                                <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                                <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+                            @endif
+                        </h3>
+                    </div>
+                @endif
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
