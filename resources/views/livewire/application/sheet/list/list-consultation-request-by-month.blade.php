@@ -35,7 +35,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $listConsultationRequest->count() .
                                 ' Factures
-                                                                                                                    réalisées'
+                                                                                                                                            réalisées'
                             : $listConsultationRequest->count() . ' Facture réalisée' }})
                     </div>
 
@@ -112,6 +112,12 @@
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
+                                        <x-form.icon-button :icon="'fa fa-eye '"
+                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"

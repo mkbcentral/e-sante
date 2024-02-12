@@ -99,8 +99,9 @@
                                     @endif
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
-                                    <td class="text-center  {{ $consultationRequest->is_finished==true?"text-success  ":"text-danger " }}">
-                                    {{ $consultationRequest->is_finished==true?"Terminé":"En cours" }}
+                                <td
+                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
+                                    {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                                 </td>
                                 <td class="text-center">
                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
@@ -111,6 +112,12 @@
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
+                                        <x-form.icon-button :icon="'fa fa-eye '"
+                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-eye '"
                                             wire:click="openDetailConsultationModal({{ $consultationRequest }})"
