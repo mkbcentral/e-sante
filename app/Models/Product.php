@@ -114,10 +114,4 @@ class Product extends Model
         }
         return $quantity;
     }
-
-
-
-    public function TotalOutputsByService()
-    {
-    }
 }
