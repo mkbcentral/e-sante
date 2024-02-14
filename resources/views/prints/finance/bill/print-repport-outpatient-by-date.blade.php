@@ -74,7 +74,7 @@
             <td class="text-right">CAISSE</td>
         </tr>
         <tr>
-            <td>Mdm JOELLE</td>
+            <td>Rebecca MESSO</td>
             <td class="text-right">GEORGETTE KAMWANYA</td>
         </tr>
     </table>
