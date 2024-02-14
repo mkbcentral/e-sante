@@ -133,7 +133,7 @@ class ListTarif extends Component
                 $this->sortBy,
                 $this->sortAsc,
                 $this->selectedIndex,
-                5
+                15
             )
         ]);
     }

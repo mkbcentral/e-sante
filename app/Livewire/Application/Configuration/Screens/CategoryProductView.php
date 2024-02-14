@@ -77,7 +77,7 @@ class CategoryProductView extends Component
     public function render()
     {
         return view('livewire.application.configuration.screens.category-product-view',[
-            'categories'=>ProductCategory::orderBy('name','ASC')->get()
+            'productCategories'=>ProductCategory::orderBy('name','ASC')->get()
         ]);
     }
 }

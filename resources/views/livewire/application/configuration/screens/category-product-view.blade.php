@@ -13,23 +13,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($categories->isEmpty())
+                        @if ($productCategories->isEmpty())
                             <tr>
                                 <td colspan="3" class="text-center">
                                     <x-errors.data-empty />
                                 </td>
                             </tr>
                         @else
-                            @foreach ($categories as $index => $category)
+                            @foreach ($productCategories as $index => $cat)
                                 <tr style="cursor: pointer;" id="row1">
                                     <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td class="text-center">{{ $category->abbreviation==null?'-': $category->abbreviation }}</td>
+                                    <td>{{ $cat->name }}</td>
+                                    <td class="text-center">{{ $cat->abbreviation==null?'-': $cat->abbreviation }}</td>
                                     <td class="text-center">
-                                        <x-form.edit-button-icon wire:click="edit({{ $category }})"
+                                        <x-form.edit-button-icon wire:click="edit({{ $cat }})"
                                             class="btn-sm" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $category }})" class="btn-sm" />
+                                            wire:click="delete({{ $cat }})" class="btn-sm" />
                                     </td>
                                 </tr>
                             @endforeach

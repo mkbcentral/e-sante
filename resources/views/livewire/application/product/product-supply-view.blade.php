@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-
+                @livewire('application.product.requisition.main-product-requisition-view')
             </div>
         </div>
     </x-content.main-content-page>

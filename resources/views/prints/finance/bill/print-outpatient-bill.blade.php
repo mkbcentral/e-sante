@@ -61,12 +61,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            <tr class="total">
-                                <td colspan="4" class="text-right">
-                                    <b>{{ $category->getAmountOutpatientBillByCategory($outpatientBill->id, $category->id) }}
-                                        {{ $currency }}</b>
-                                </td>
-                            </tr>
+
 
                         </tbody>
                     @endif
@@ -76,13 +71,10 @@
                 </tr>
                 <tr class="total " class="w-25">
                     <td colspan="4" class="text-right">
-                        Payment infos <br>
                         <b>Total:
-                            {{ $currency == 'CDF'
-                                ? app_format_number($outpatientBill->getTotalOutpatientBillCDF(), 1) . ' Fc'
-                                : app_format_number($outpatientBill->getTotalOutpatientBillUSD(), 0) . ' $' }}</b>
+                            {{ app_format_number($outpatientBill->getTotalOutpatientBillCDF(), 1) . ' Fc' }}</b>
                         <br>
-
+                        {{ app_format_number($outpatientBill->getTotalOutpatientBillUSD(), 0) . ' $' }}
                     </td>
                 </tr>
             </table>

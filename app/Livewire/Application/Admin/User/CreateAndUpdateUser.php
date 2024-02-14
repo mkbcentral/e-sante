@@ -14,12 +14,10 @@ class CreateAndUpdateUser extends Component
     protected $listeners = [
         'selectedUser' => 'getUser',
     ];
-
     #[Rule('required', message: 'Adresse mail obligatoire', onUpdate: false)]
     #[Rule('email', message: 'Adresse mail invalide', onUpdate: false)]
     #[Rule('min:6', message: 'Taille Adresse faible', onUpdate: false)]
     public string $email;
-
     #[Rule('required', message: 'Username obligatoire', onUpdate: false)]
     public $name;
     #[Rule('required', message: 'Source obligatoire', onUpdate: false)]

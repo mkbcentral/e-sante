@@ -53,9 +53,10 @@ class NewConsultationRequest extends Component
                     //event(new  OutpatientBillEvent($outpatientBill));
                     $this->dispatch('outpatientBillRefreshedMainView');
                 }
-                $this->dispatch('close-request-form');
+
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
+            $this->dispatch('close-request-form');
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

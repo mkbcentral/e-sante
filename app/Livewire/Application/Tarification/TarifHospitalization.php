@@ -32,6 +32,7 @@ class TarifHospitalization extends Component
         $fields = $this->validate();
         try {
             $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
+            $fields['source_id'] = Source::DEFAULT_SOURCE();
             Hospitalization::create($fields);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
@@ -106,7 +107,7 @@ class TarifHospitalization extends Component
             'hospitalizations' => Hospitalization::orderBy('name', 'ASC')
                 ->where('is_changed', false)
                 ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
-                ->where('source_id', Source::DEFAULT_SOURCE())
+                //->where('source_id', Source::DEFAULT_SOURCE())
                 ->get()
         ]);
     }

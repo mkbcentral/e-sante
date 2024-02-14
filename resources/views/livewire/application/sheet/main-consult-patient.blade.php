@@ -27,14 +27,19 @@
                             </div>
                         </div>
                     @else
-                        <div class="bg-navy p-1 rounded-lg ml-2">
-                            <h3 wire:loading.class="d-none"><span>Montant:</span>
-                                <span class="money_format">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span> |
-                                <span class="money_format">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
-                            </h3>
-                        </div>
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <div class="bg-navy p-1 rounded-lg ml-2">
+                                <h3 wire:loading.class="d-none"><span>Montant:</span>
+                                    <span class="money_format">
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span>
+                                    |
+                                    <span class="money_format">
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
+                                </h3>
+                            </div>
+                        @endif
                     @endif
                 </div>
                 <div>
@@ -68,7 +73,7 @@
                         @endif
                         <x-navigation.link-icon
                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                             :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                     @endif
 
 
