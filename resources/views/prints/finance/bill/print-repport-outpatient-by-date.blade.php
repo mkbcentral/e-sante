@@ -60,7 +60,7 @@
                         </td>
                     </tr>
                 @endforeach
-                <tr class="text-uppercase bg-secondary text-white">
+                <tr class="text-uppercase text-bold h4">
                     <td colspan="4" class="text-right">Total</td>
                     <td class="text-right">{{ app_format_number($total_usd, 1) }}</td>
                     <td class="text-right">{{ app_format_number($total_cdf, 1) }}</td>
