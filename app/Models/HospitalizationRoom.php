@@ -31,7 +31,7 @@ class HospitalizationRoom extends Model
      */
     public function hospitalization(): BelongsTo
     {
-        return $this->belongsTo(hospitalization::class, 'hospitalization_id');
+        return $this->belongsTo(Hospitalization::class, 'hospitalization_id');
     }
 
     /**
