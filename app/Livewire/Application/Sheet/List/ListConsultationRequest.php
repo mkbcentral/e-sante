@@ -116,7 +116,7 @@ class ListConsultationRequest extends Component
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,
-                10,
+                20,
                 $this->date_filter,
                 $this->year
             ),

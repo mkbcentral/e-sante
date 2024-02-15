@@ -16,16 +16,10 @@
             @endif
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between   align-items-center ">
-                    @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
-                        <div class="my-2"> <span class="text-bold text-md text-danger mr-2">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Cas à hospitalisé ?</span>
-                            <div class="icheck-danger d-inline">
-                                <input wire:model.live='is_hospitalized' type="checkbox" id="checkboxHospitalize">
-                                <label for="checkboxHospitalize">
-                                    {{ $is_hospitalized == false ? 'Non' : 'Oui' }}
-                                </label>
-                            </div>
-                        </div>
+
+                    @if (Auth::user()->roles->pluck('name')->contains('Doctor')||Auth::user()->roles->pluck('name')->contains('Nurse'))
+                        @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
+                        @livewire('application.widgets.input-check-box-mark-finished-widget', ['consultationRequest' => $consultationRequest])
                     @else
                         @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                 Auth::user()->roles->pluck('name')->contains('Ag') ||

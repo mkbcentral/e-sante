@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <div class="d-flex align-items-center">
                     <div class="mr-2 w-100">
-                        <x-form.input-search wire:model.live.debounce.500ms=b"q" />
+                        <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
                     <div class="mr-2">
                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />

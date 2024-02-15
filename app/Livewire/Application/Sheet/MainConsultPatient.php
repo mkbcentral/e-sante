@@ -20,14 +20,7 @@ class MainConsultPatient extends Component
     public ?ConsultationRequest $consultationRequest;
     public ?ConsultationSheet $consultationSheet;
     public int $selectedIndex;
-    public bool $is_hospitalized=false;
 
-    public function updatedIsHospitalized($val)
-    {
-        $this->consultationRequest->is_hospitalized = $val;
-        $this->consultationRequest->update();
-        $this->dispatch('updated', ['message' => 'Patient marqué hospitalisé']);
-    }
 
     /**
      * Open detail consultation model view
@@ -94,7 +87,6 @@ class MainConsultPatient extends Component
      */
     public function render()
     {
-        $this->is_hospitalized = $this->consultationRequest->is_hospitalized;
         return view('livewire.application.sheet.main-consult-patient', [
             'categories' => GetCategoryTarifRepository::getListCategories()
         ]);

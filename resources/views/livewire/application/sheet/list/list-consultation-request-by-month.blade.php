@@ -2,6 +2,7 @@
     @livewire('application.sheet.form.add-viatl-sign')
     @livewire('application.sheet.form.medical-prescription')
     @livewire('application.sheet.widget.consultation-request-detail')
+    @livewire('application.sheet.form.edit-consultation-request-info')
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -85,7 +86,7 @@
                         @foreach ($listConsultationRequest as $consultationRequest)
                             <tr style="cursor: pointer;">
                                 <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
-                                <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}</td>
+                                <td class="text-center">{{ $consultationRequest->request_number }}</td>
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
@@ -133,8 +134,9 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @else
-                                        <x-form.icon-button :icon="'fa fa-user-plus '"
-                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                     <x-form.icon-button :icon="'fa fa-pen '"
+                                     data-toggle="modal" data-target="#edit-consultation-request"
+                                            wire:click="edit({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
@@ -168,6 +170,11 @@
             //Open detail consultation  modal
             window.addEventListener('open-details-consultation', e => {
                 $('#consultation-detail').modal('show')
+            });
+            //Open edit consultation request modal
+            window.addEventListener('open-edit-consultation-request', e => {
+                console.log('ok');
+                $('#edit-consultation-request').modal('show')
             });
         </script>
     @endpush

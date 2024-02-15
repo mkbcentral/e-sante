@@ -100,6 +100,11 @@ class ListConsultationRequestByMonth extends Component
         $this->year = date('Y');
     }
 
+    public function edit(?ConsultationRequest $consultationRequest){
+        $this->dispatch('selectedConsultationRequest',$consultationRequest);
+        $this->dispatch('open-edit-consultation');
+    }
+
     public function render()
     {
         return view('livewire.application.sheet.list.list-consultation-request-by-month', [
@@ -108,7 +113,7 @@ class ListConsultationRequestByMonth extends Component
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,
-                10,
+                20,
                 $this->month_name,
                 $this->year,
             ),

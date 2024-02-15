@@ -3,7 +3,6 @@
 namespace App\Livewire\Application\Sheet\List;
 
 use App\Events\OutpatientBillEvent;
-use App\Events\OutpatientCreatedEvent;
 use App\Models\ConsultationSheet;
 use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
 use Illuminate\Contracts\Foundation\Application;

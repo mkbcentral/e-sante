@@ -10,16 +10,7 @@
                             <x-widget.patient.simple-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
                         </div>
                         <div class="">
-                            <div class="my-2"> <span class="text-bold text-md text-danger mr-2">
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Cas à hospitalisé
-                                    ?</span>
-                                <div class="icheck-danger d-inline">
-                                    <input wire:model.live='is_hospitalized' type="checkbox" id="checkboxHospitalize">
-                                    <label for="checkboxHospitalize">
-                                        {{ $is_hospitalized == false ? 'Non' : 'Oui' }}
-                                    </label>
-                                </div>
-                            </div>
+                           @livewire('application.widgets.input-check-box-hospitalize-widget',['consultationRequest'=>$consultationRequest])
                         </div>
                     </div>
                     <hr>

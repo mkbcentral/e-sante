@@ -12,20 +12,15 @@ use Livewire\Component;
 
 class AddViatlSign extends Component
 {
-    protected $listeners = ['consultationRequest' => 'getConsultationRequest'];
+    protected $listeners = [
+        'consultationRequest' => 'getConsultationRequest',
+        'resfreshVitalsign'=>'$refresh'
+    ];
     public ?ConsultationRequest $consultationRequest = null;
     public array $vitalSignForm = [];
     public int $selectedMedicalOfficeIndex = 0;
     public bool $itemsVitalSignSend = false;
     public bool $is_hospitalized = false;
-
-    public function updatedIsHospitalized($val)
-    {
-        $this->consultationRequest->is_hospitalized = $val;
-        $this->consultationRequest->update();
-        $this->dispatch('updated', ['message' => 'Patient marqué hospitalisé']);
-    }
-
     /**
      * Creted new line in form  vital sign array
      * @return void
@@ -136,7 +131,7 @@ class AddViatlSign extends Component
     public function render()
     {
         if ($this->consultationRequest != null) {
-            $this->is_hospitalized = $this->consultationRequest->is_hospitalized;
+           $this->is_hospitalized=$this->consultationRequest->is_hospitalized;
         }
         return view('livewire.application.sheet.form.add-viatl-sign', [
             'medicalOffices' => GetMedicalOfficeRepository::getMedicalOfficeList()
