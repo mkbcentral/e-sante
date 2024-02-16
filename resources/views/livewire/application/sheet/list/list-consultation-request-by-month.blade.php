@@ -42,7 +42,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $listConsultationRequest->count() .
                                 ' Factures
-                                                                                                                                                                                                                    réalisées'
+                                                                                                                                                                                                                                                                    réalisées'
                             : $listConsultationRequest->count() . ' Facture réalisée' }})
                     </div>
 
@@ -55,6 +55,7 @@
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
+                            <th>#</th>
                             <th class="text-center">
                                 <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">Date
                                 </x-form.button>
@@ -83,8 +84,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listConsultationRequest as $consultationRequest)
+                        @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
+                                <td class="text-center">{{ $index+1 }}</td>
                                 <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
                                 <td class="text-center">{{ $consultationRequest->request_number }}</td>
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
@@ -134,10 +136,9 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @else
-                                     <x-form.icon-button :icon="'fa fa-pen '"
-                                     data-toggle="modal" data-target="#edit-consultation-request"
-                                            wire:click="edit({{ $consultationRequest }})"
-                                            class="btn-sm btn-info " />
+                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
+                                            data-target="#edit-consultation-request"
+                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />

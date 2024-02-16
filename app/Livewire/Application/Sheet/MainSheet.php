@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet;
 
 use App\Models\Subscription;
+use App\Repositories\Sheet\Creation\CreateNewConsultationRequestRepository;
 use App\Repositories\Subscription\Get\GetSubscriptionRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -29,6 +30,7 @@ class MainSheet extends Component
     public function mount()
     {
         $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
+
         if ($subscription) {
             $this->selectedIndex = $subscription->id;
         } else {

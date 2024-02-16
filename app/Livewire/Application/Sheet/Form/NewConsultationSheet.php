@@ -77,6 +77,8 @@ class NewConsultationSheet extends Component
                 $inpusoutpatientBill = [];
                 $sheet = CreateSheetRepository::create($fields);
                 CreateNewConsultationRequestRepository::create([
+                    'request_number' => CreateNewConsultationRequestRepository::
+                        generateConsultationRequetNumber($this->selectedIndex, date('m')),
                     'consultation_sheet_id' => $sheet->id,
                     'consultation_id' => $this->form->consultation_id,
                     'has_a_shipping_ticket' => $this->has_a_shipping_ticket

@@ -10,7 +10,7 @@ class CreateNewConsultationRequestRepository
 {
     public static function create(array $inputs):ConsultationRequest{
         return ConsultationRequest::create([
-            'request_number'=>rand(10,100),
+            'request_number'=> $inputs['request_number'],
             'consultation_sheet_id'=>$inputs['consultation_sheet_id'],
             'consultation_id'=>$inputs['consultation_id'],
             'rate_id'=>RateRepository::getCurrentRate()->id,
@@ -23,5 +23,13 @@ class CreateNewConsultationRequestRepository
             ->where('consultation_sheet_id',$sheetId)
             ->whereMonth('created_at',Carbon::now())
             ->first();
+    }
+
+    public static function generateConsultationRequetNumber($subscriptionId,$month){
+      return  ConsultationRequest::query()
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.subscription_id',$subscriptionId)
+            ->whereMonth('consultation_requests.created_at',$month)
+            ->count();
     }
 }

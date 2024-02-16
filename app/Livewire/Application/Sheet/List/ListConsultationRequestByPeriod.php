@@ -93,6 +93,13 @@ class ListConsultationRequestByPeriod extends Component
         }
         $this->sortBy = $value;
     }
+
+    public function edit(?ConsultationRequest $consultationRequest)
+    {
+        $this->dispatch('selectedConsultationRequest', $consultationRequest);
+        $this->dispatch('open-edit-consultation');
+    }
+
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;

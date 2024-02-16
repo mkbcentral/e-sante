@@ -2,6 +2,7 @@
     @livewire('application.sheet.form.add-viatl-sign')
     @livewire('application.sheet.form.medical-prescription')
     @livewire('application.sheet.widget.consultation-request-detail')
+    @livewire('application.sheet.form.edit-consultation-request-info')
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -135,10 +136,12 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @else
+                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
+                                            data-target="#edit-consultation-request"
+                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
                                         <x-form.icon-button :icon="'fa fa-eye '"
                                             wire:click="openDetailConsultationModal({{ $consultationRequest }})"
                                             class="btn-sm btn-primary " />
-
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />

@@ -24,7 +24,7 @@ class ListConsultationRequest extends Component
     ];
     public int $selectedIndex;
     public string $date_filter = '';
-    public string $year='';
+    public string $year = '';
     public string $currencyName = Currency::DEFAULT_CURRENCY;
 
     #[Url(as: 'q')]
@@ -97,6 +97,13 @@ class ListConsultationRequest extends Component
         }
         $this->sortBy = $value;
     }
+
+    public function edit(?ConsultationRequest $consultationRequest)
+    {
+        $this->dispatch('selectedConsultationRequest', $consultationRequest);
+        $this->dispatch('open-edit-consultation');
+    }
+
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;
@@ -120,10 +127,10 @@ class ListConsultationRequest extends Component
                 $this->date_filter,
                 $this->year
             ),
-            'total_cdf'=>GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter,$this->selectedIndex),
-            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter,$this->selectedIndex),
-            'total_product_amount_cdf'=> GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex,'CDF'),
-            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex,'USD')
+            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex),
+            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter, $this->selectedIndex),
+            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'CDF'),
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'USD')
         ]);
     }
 }

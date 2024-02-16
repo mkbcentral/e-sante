@@ -74,7 +74,7 @@ class GetConsultationRequestRepository
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
-            -> where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             -> whereDate('consultation_requests.created_at', $date)
             ->whereYear('consultation_requests.created_at', $year) //is_hospitalized

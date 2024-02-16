@@ -224,6 +224,23 @@
                     </td>
                 </tr>
             </table>
+            <table>
+                <tr>
+                    <td colspan="3" style="border: none">
+                        <table style="border: none">
+                            <tr style="border: none">
+                                <td style="border: none" class="text-bold text-left">
+                                    Client
+                                </td>
+
+                                <td style="border: none" class="text-right ">
+                                    CashId
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
         @endif
     </div>
 </x-print-layout>

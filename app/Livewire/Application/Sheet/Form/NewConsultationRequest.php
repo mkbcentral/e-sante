@@ -37,9 +37,10 @@ class NewConsultationRequest extends Component
 
         try {
             if (CreateNewConsultationRequestRepository::checkExistingConsultationRequestInMonth($this->consultationSheet->id) != null) {
-                $this->dispatch('error', ['message' =>"Le patient".$this->consultationSheet->name." a déjà une consultation pour ce mois"]);
+                $this->dispatch('error', ['message' => "Le patient" . $this->consultationSheet->name . " a déjà une consultation pour ce mois"]);
             } else {
                 CreateNewConsultationRequestRepository::create([
+                    'request_number' => CreateNewConsultationRequestRepository::generateConsultationRequetNumber($this->consultationSheet->subscription->id, date('m')),
                     'consultation_sheet_id' => $this->consultationSheet->id,
                     'consultation_id' => $this->consultation_id,
                     'has_a_shipping_ticket' => $this->has_a_shipping_ticket
