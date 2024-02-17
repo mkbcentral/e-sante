@@ -103,7 +103,7 @@
                                     @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fa fa-print'" class="btn btn-sm   btn-secondary"  target="_blanck"/>
+                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary"  />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
