@@ -13,8 +13,16 @@ class MainProductRequisitionView extends Component
         'listProductRequisition' => '$refresh'
     ];
 
+
     public function openAddModal(){
         $this->dispatch('open-new-requisition-modal');
+    }
+
+    public function openAddProductItemsModal(ProductRequisition $productRequisition)
+    {
+        $this->dispatch('open-product-requisition-items-modal');
+        $this->dispatch('productRequisition',$productRequisition);
+
     }
 
     public function edit(?ProductRequisition $productRequisition){

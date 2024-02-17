@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductRequisition extends Model
 {
@@ -42,5 +42,16 @@ class ProductRequisition extends Model
     {
         return $this->belongsTo(Source::class, 'source_id');
     }
+
+    /**
+     * Get all of the productRequistionProducts for the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productRequistionProducts(): HasMany
+    {
+        return $this->hasMany(ProductRequisitionProduct::class);
+    }
+
 
 }

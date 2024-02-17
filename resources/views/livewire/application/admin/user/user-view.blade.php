@@ -7,7 +7,7 @@
                 <x-widget.loading-circular-md />
             </div>
             <div class="d-flex justify-content-between">
-                <x-form.input-search :bg='"bg-teal"' wire:model.live.debounce.500ms="q" />
+                <x-form.input-search :bg=''bg-teal'' wire:model.live.debounce.500ms="q" />
                 <div>
                     <x-form.button type="button" class="btn-info" wire:click='openRoleViewModal'>
                         <i class="fas fa-fingerprint" aria-hidden="true"></i> Roles
@@ -48,12 +48,17 @@
                                 <td class="text-right">{{ $user?->source?->name }}</td>
                                 <td class="text-right">{{ $user?->agentService?->name }}</td>
                                 <td class="text-center">
-                                    <img src="{{ asset('defautl-user.jpg') }}" width="30px" alt="Avatar" class="img-circle">
+                                    <img src="{{ asset('defautl-user.jpg') }}" width="30px" alt="Avatar"
+                                        class="img-circle">
                                 </td>
                                 <td class="text-center">
                                     <x-form.button type="button" class="btn-link "
                                         wire:click='openRoleUserViewModal({{ $user }})'>
-                                        <i class="fa fa-key" aria-hidden="true"></i>
+                                        <i class="fa fa-fingerprint" aria-hidden="true"></i>
+                                    </x-form.button>
+                                     <x-form.button type="button" class="btn-link "
+                                        wire:click='openRoleUserViewModal({{ $user }})'>
+                                        <i class="fa fa-link" aria-hidden="true"></i>
                                     </x-form.button>
                                     <x-form.edit-button-icon wire:click="edit({{ $user }})" class="btn-sm" />
                                     <x-form.delete-button-icon wire:click="showDeleteDialog({{ $user }})"
@@ -78,6 +83,10 @@
             //Open role user modal
             window.addEventListener('open-form--user-role', e => {
                 $('#form--user-role').modal('show')
+            });
+             //Open open user link modal
+            window.addEventListener('open-user-link-modal', e => {
+                $('#user-link-modal').modal('show')
             });
             //Delete user dialog
             window.addEventListener('delete-user-dialog', event => {

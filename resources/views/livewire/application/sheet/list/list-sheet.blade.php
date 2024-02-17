@@ -50,7 +50,10 @@
                         @foreach ($sheets as $sheet)
                             <tr style="cursor: pointer;">
                                 <td class="text-center">{{ sprintf('%04d', $sheet->number_sheet) }}</td>
-                                <td class="text-uppercase">{{ $sheet->name.'/'.$sheet->registration_number }}</td>
+                                <td class="text-uppercase">
+                                    {{ $sheet->name }}
+                                    <span class="text-danger text-bold">{{ $sheet->registration_number != null ? '/' . $sheet->registration_number : '' }}</span>
+                                </td>
                                 <td class="text-center">{{ $sheet->gender }}</td>
                                 <td class="text-center">{{ $sheet->getPatientAge() }}</td>
                                 <td class="text-right">{{ $sheet->phone }}</td>

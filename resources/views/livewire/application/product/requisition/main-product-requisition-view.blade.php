@@ -38,8 +38,8 @@
                             <td class="text-center">{{ 0 }}</td>
                             <td class="text-center">{{ $requisition->agentService->name }}</td>
                             <td class="text-center">
-                                <x-navigation.link-icon class="btn btn-sm btn-primary"
-                                    href="{{ route('product.supply.add.products', $requisition->id) }}" wire:navigate
+                                 <x-navigation.link-icon class="btn btn-sm btn-primary"
+                                    href="{{ route('product.requisition', $requisition) }}" wire:navigate
                                     :icon="'fa fa-plus-circle'" />
                                 <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
                                     wire:click='edit({{ $requisition }})' />
@@ -56,7 +56,7 @@
     </div>
     @push('js')
         <script type="module">
-            //Open  edit modal
+            //Open  add new requisition model modal
             window.addEventListener('open-new-requisition-modal', e => {
                 $('#new-requisition-modal').modal('show')
             });

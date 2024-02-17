@@ -41,6 +41,14 @@ class UserView extends Component
         $this->dispatch('roleUser',$user);
         $this->dispatch('open-form--user-role');
     }
+
+    public function openUserLinkViewModal(User $user)
+    {
+        $this->user = $user;
+        $this->dispatch('userLink', $user);
+        $this->dispatch('open-user-link-modal');
+    }
+
     public function delete(){
         try {
             $this->user->delete();

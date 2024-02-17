@@ -22,6 +22,7 @@ use App\Livewire\Application\Sheet\MainConsultationRequest;
 use App\Livewire\Application\Sheet\MainConsultPatient;
 use App\Livewire\Application\Product\List\ListProduct;
 use App\Livewire\Application\Product\ProductSupplyView;
+use App\Livewire\Application\Product\Requisition\ProductRequisitionItemsView;
 use App\Livewire\Application\Product\Supply\Form\AddProductsInSupply;
 use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
 
@@ -55,6 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
+
+    Route::get('product-requistion/{productRequisition}',ProductRequisitionItemsView::class)->name('product.requisition');
 
     Route::prefix('print')->group(function () {
         Route::controller(OutpatientBillPrinterController::class)->group(function () {

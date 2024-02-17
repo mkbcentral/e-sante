@@ -44,6 +44,17 @@ class Product extends Model
     /***
      * get number of product by invoice
      */
+
+     /**
+      * Get all of the productRequistionProducts for the Product
+      *
+      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+      */
+     public function productRequistionProducts(): HasMany
+     {
+         return $this->hasMany(ProductRequisitionProduct::class);
+     }
+
     public function getNumberProductInvoice(): int|float
     {
         return ProductInvoice::query()
