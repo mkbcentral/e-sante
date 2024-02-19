@@ -30,9 +30,9 @@
                     <td class="text-right">{{ app_format_number($product->pivot->qty * $product->price, 1) }}</td>
                     <td>
                         <x-form.edit-button-icon wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }})"
-                            class="btn-sm" />
+                            class="btn-sm btn-primary" />
                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                            wire:click="delete({{ $product->pivot->id }})" class="btn-sm" />
+                            wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
                     </td>
                 </tr>
             @endforeach

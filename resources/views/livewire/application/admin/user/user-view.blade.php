@@ -1,6 +1,7 @@
 <div>
     @livewire('application.admin.user.role-view')
     @livewire('application.admin.user.list-role-for-user')
+    @livewire('application.admin.user.user-links')
     <div class="row">
         <div class="col-md-8">
             <div class="d-flex justify-content-center pb-2">
@@ -52,17 +53,17 @@
                                         class="img-circle">
                                 </td>
                                 <td class="text-center">
-                                    <x-form.button type="button" class="btn-link "
+                                     <x-form.edit-button-icon wire:click="edit({{ $user }})" class="btn-sm btn-info text-white" />
+                                    <x-form.button type="button" class="btn-secondary btn-sm"
                                         wire:click='openRoleUserViewModal({{ $user }})'>
                                         <i class="fa fa-fingerprint" aria-hidden="true"></i>
                                     </x-form.button>
-                                     <x-form.button type="button" class="btn-link "
-                                        wire:click='openRoleUserViewModal({{ $user }})'>
+                                     <x-form.button type="button" class="btn-primary btn-sm "
+                                        wire:click='openUserLinkViewModal({{ $user }})'>
                                         <i class="fa fa-link" aria-hidden="true"></i>
                                     </x-form.button>
-                                    <x-form.edit-button-icon wire:click="edit({{ $user }})" class="btn-sm" />
                                     <x-form.delete-button-icon wire:click="showDeleteDialog({{ $user }})"
-                                        class="btn-sm" />
+                                        class="btn-sm btn-danger text-white" />
                                 </td>
                             </tr>
                         @endforeach

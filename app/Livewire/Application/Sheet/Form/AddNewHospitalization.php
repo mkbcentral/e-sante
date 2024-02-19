@@ -89,6 +89,7 @@ class AddNewHospitalization extends Component
                 ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
                 ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
                 ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+                ->where('consultation_request_hospitalizations.consultation_request_id', $this->consultationRequest->id)
                 ->get()
 
         ]);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubMenu extends Model
@@ -24,13 +25,13 @@ class SubMenu extends Model
     }
 
     /**
-     * Get all of the subMenuUsers for the SubMenu
+     * The users that belong to the SubMenu
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function subMenuUsers(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(SubMenuUser::class);
+        return $this->belongsToMany(User::class);
     }
 
 }

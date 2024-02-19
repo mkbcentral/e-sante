@@ -58,8 +58,8 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <x-form.edit-button-icon wire:click="edit({{$tarif}})" class="btn-sm"/>
-                                <x-form.delete-button-icon wire:click="showDeleteDialog({{$tarif}})" class="btn-sm"/>
+                                <x-form.edit-button-icon wire:click="edit({{$tarif}})" class="btn-sm btn-primary"/>
+                                <x-form.delete-button-icon wire:click="showDeleteDialog({{$tarif}})" class="btn-sm btn-danger"/>
                             </td>
                         </tr>
                     @endforeach

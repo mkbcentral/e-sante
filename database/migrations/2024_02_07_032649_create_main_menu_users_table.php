@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('main_menu_users', function (Blueprint $table) {
+        Schema::create('main_menu_user', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(MainMenu::class);
             $table->foreignIdFor(User::class);

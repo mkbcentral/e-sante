@@ -11,6 +11,10 @@ class UserLinks extends Component
         'userLink' => 'getUser',
     ];
     public ?User $user = null;
+
+    public function getUser(User $user){
+        $this->user = $user;
+    }
     public function render()
     {
         return view('livewire.application.admin.user.user-links');

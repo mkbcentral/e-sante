@@ -56,7 +56,7 @@
                     <tbody>
                         @if ($listBill->isEmpty())
                             <tr>
-                                <td colspan="7" class="text-center"> <x-errors.data-empty/></td>
+                                <td colspan="7" class="text-center"> <x-errors.data-empty /></td>
                             </tr>
                         @else
                             @foreach ($listBill as $index => $bill)
@@ -99,12 +99,13 @@
                                     </td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $bill }})"
-                                            class="btn-sm" />
-                                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $bill }})" class="btn-sm" />
+                                            class="btn-sm btn-primary" />
                                         <a href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
-                                            target="_blanck"><i class="fa fa-print text-secondary  "
+                                         class="btn btn-sm  btn-secondary"
+                                            target="_blanck"><i class="fa fa-print  "
                                                 aria-hidden="true"></i></a>
+                                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
+                                            wire:click="delete({{ $bill }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach

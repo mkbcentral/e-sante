@@ -44,10 +44,10 @@
                                         {{ app_format_number($invoice->getTotalInvoice(), 1) }} Fc
                                     </td>
                                     <td class="text-center">
-                                        <x-form.edit-button-icon wire:click="edit({{$invoice}})" class="btn-sm" />
+                                        <x-form.edit-button-icon wire:click="edit({{$invoice}})" class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $invoice }})" class="btn-sm" />
-                                        <a href="#"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                            wire:click="delete({{ $invoice }})" class="btn-sm btn-danger" />
+                                        <a href="#" class="btn btn-secondary btn-sm"><i class="fa fa-print" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

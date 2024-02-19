@@ -114,24 +114,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductSupply::class);
     }
+   /**
+    * The mainMenus that belong to the User
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   public function mainMenus(): BelongsToMany
+   {
+       return $this->belongsToMany(MainMenu::class);
+   }
 
-    /**
-     * Get all of the mainMenuUsers for the MainMenu
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function mainMenuUsers(): HasMany
-    {
-        return $this->hasMany(MainMenu::class);
-    }
-
-    /**
-     * Get all of the subMenuUsers for the MainMenu
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function subMenuUsers(): HasMany
-    {
-        return $this->hasMany(SubMenuUser::class);
-    }
+   /**
+    * The subMenus that belong to the User
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   public function subMenus(): BelongsToMany
+   {
+       return $this->belongsToMany(SubMenu::class);
+   }
 }

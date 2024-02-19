@@ -17,7 +17,14 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @livewire('application.product.requisition.main-product-requisition-view')
+               <div class="card card-navy">
+                 <div class="card-header">
+                        <i class="fa fa-list" aria-hidden="true"></i> REQUISITION DES PRODUITS
+                    </div>
+                <div class="card-body">
+                    @livewire('application.product.requisition.main-product-requisition-view')
+                </div>
+               </div>
             </div>
         </div>
     </x-content.main-content-page>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MainMenu extends Model
@@ -23,13 +24,13 @@ class MainMenu extends Model
         return $this->belongsTo(Hospital::class, 'hospital_id');
     }
 
-    /**
-     * Get all of the mainMenuUsers for the MainMenu
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function mainMenuUsers(): HasMany
-    {
-        return $this->hasMany(MainMenuUser::class);
-    }
+   /**
+    * The users that belong to the MainMenu
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   public function users(): BelongsToMany
+   {
+       return $this->belongsToMany(User::class, 'main_menu_user', 'user_id', 'main_menu_id');
+   }
 }

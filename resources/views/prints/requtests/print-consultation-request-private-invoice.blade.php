@@ -170,7 +170,7 @@
                             <td class="text-uppercase">-
                                 {{ $consultationRequestHospitalization->hospitalizationRoom->hospitalization->name }}
                             </td>
-                            <td>{{ $consultationRequestHospitalization->number_of_day }}</td>
+                            <td class="text-center">{{ $consultationRequestHospitalization->number_of_day }}</td>
                             <td class="text-right">
                                 {{ app_format_number(
                                     $currency == 'USD'

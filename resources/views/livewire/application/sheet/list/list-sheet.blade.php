@@ -59,13 +59,13 @@
                                 <td class="text-right">{{ $sheet->phone }}</td>
                                 <td class="text-right text-bold text-uppercase">{{ $sheet->subscription }}</td>
                                 <td class="text-center">
-                                    <x-form.icon-button :icon="'fa fa-user-plus text-info'"
-                                        wire:click="newRequestForm({{ $sheet }})" class="btn-sm" />
-                                    <x-form.edit-button-icon wire:click="edit({{ $sheet }})" class="btn-sm" />
+                                    <x-form.icon-button :icon="'fa fa-user-plus'"
+                                        wire:click="newRequestForm({{ $sheet }})" class="btn-sm btn-info" />
+                                    <x-form.edit-button-icon wire:click="edit({{ $sheet }})" class="btn-sm btn-primary" />
                                     <x-navigation.link-icon href="{{ route('patient.folder', $sheet->id) }}"
-                                        wire:navigate :icon="'fa fa-folder-open text-warning'" />
+                                        wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                     <x-form.delete-button-icon wire:click="showDeleteDialog({{ $sheet }})"
-                                        class="btn-sm" />
+                                        class="btn-sm btn-danger" />
                                 </td>
                             </tr>
                         @endforeach
