@@ -107,7 +107,7 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
-                                        @if ($consultationRequest->is_hospitalized == false)
+                                        @if ($consultationRequest->is_finished == true)
                                              <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                              :icon="'fa fa-print'" class="btn btn-sm   btn-secondary"  />
@@ -123,10 +123,11 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                         @if ($consultationRequest->is_hospitalized == true)
-                                        @endif
-                                        <x-navigation.link-icon
+                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" target="_blanck" />
+                                        @endif
+
                                     @endif
                                 </td>
                             </tr>
