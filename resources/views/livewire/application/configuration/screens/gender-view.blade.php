@@ -27,9 +27,9 @@
                                     <td class="text-center">{{ $gender->slug }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $gender }})"
-                                            class="btn-sm" />
+                                            class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $gender }})" class="btn-sm" />
+                                            wire:click="delete({{ $gender }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach

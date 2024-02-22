@@ -74,7 +74,7 @@ class MainMenuView extends Component
     public function delete(MainMenu $mainMenu)
     {
         try {
-            if ($mainMenu->mainMenuUsers->isEmpty()) {
+            if ($mainMenu->users->isEmpty()) {
                 $mainMenu->delete();
                 $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             } else {

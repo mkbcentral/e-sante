@@ -31,9 +31,9 @@
                                     <td></td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $hospital }})"
-                                            class="btn-sm" />
+                                            class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $hospital }})" class="btn-sm" />
+                                            wire:click="delete({{ $hospital }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach

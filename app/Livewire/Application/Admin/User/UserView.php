@@ -7,15 +7,16 @@ use App\Repositories\User\GetUserRepository;
 use Exception;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UserView extends Component
 {
-
+    use WithPagination;
     protected $listeners = [
         'refreshUserList' => '$refresh',
         'deleteUserListener'=>'delete'
     ];
-    public ?User $user;
+    public ?User $user=null;
     //
     #[Url(as: 'q')]
     public $q = '';
@@ -26,6 +27,7 @@ class UserView extends Component
 
     public function edit(?User $user){
         $this->dispatch('selectedUser',$user);
+        $this->dispatch('open-form-create-user');
     }
     public function showDeleteDialog(User $user){
         $this->user=$user;
@@ -35,6 +37,13 @@ class UserView extends Component
     public function openRoleViewModal(){
         $this->dispatch('open-form-role');
     }
+
+    public function openCreateUserViewModal()
+    {
+        $this->dispatch('open-form-create-user');
+    }
+
+
     public function openRoleUserViewModal(User $user)
     {
         $this->user=$user;

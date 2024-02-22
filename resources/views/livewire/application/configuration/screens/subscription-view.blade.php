@@ -39,9 +39,9 @@
                                                     aria-hidden="true"></i>
                                             </x-form.button>
                                             <x-form.edit-button-icon wire:click="edit({{ $subscription }})"
-                                                class="btn-sm" />
+                                                class="btn-sm btn-primary" />
                                             <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                                wire:click="delete({{ $subscription }})" class="btn-sm" />
+                                                wire:click="delete({{ $subscription }})" class="btn-sm btn-danger" />
                                         </td>
                                 @endforeach
                             @endif

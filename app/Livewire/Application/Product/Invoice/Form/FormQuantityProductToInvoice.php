@@ -6,7 +6,6 @@ use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\Product;
 use App\Models\ProductInvoice;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Rule;
 use Livewire\Component;

@@ -37,8 +37,7 @@ class SubMenuItmeCheckBox extends Component
 
     public function render()
     {
-        return view(
-            'livewire.application.admin.user.widget.sub-menu-itme-check-box',
+        return view('livewire.application.admin.user.widget.sub-menu-itme-check-box',
             [
                 'subMenus' => SubMenu::all()
             ]

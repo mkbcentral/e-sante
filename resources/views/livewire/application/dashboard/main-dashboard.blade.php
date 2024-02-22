@@ -18,8 +18,15 @@
                 @if (Auth::user()->roles->pluck('name')->contains('Ag') || Auth::user()->roles->pluck('name')->contains('Admin'))
                     @livewire('application.dashboard.finance.dash-consultation-request-finance')
                 @endif
-
             </div>
         </div>
     </x-content.main-content-page>
+    @push('js')
+        <script class="module">
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            })
+        </script>
+    @endpush
 </div>

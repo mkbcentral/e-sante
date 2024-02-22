@@ -27,9 +27,9 @@
                                     <td class="text-center">{{ $cat->abbreviation==null?'-': $cat->abbreviation }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $cat }})"
-                                            class="btn-sm" />
+                                            class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $cat }})" class="btn-sm" />
+                                            wire:click="delete({{ $cat }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach

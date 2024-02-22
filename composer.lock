@@ -533,16 +533,16 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "2930cd5ef353871c821d5c43ed030d39ac8cfe65"
+                "reference": "5817d0659c5b50c9b950feb9af7b9668e2c436bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/2930cd5ef353871c821d5c43ed030d39ac8cfe65",
-                "reference": "2930cd5ef353871c821d5c43ed030d39ac8cfe65",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/5817d0659c5b50c9b950feb9af7b9668e2c436bc",
+                "reference": "5817d0659c5b50c9b950feb9af7b9668e2c436bc",
                 "shasum": ""
             },
             "require": {
@@ -604,7 +604,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/inflector/issues",
-                "source": "https://github.com/doctrine/inflector/tree/2.0.9"
+                "source": "https://github.com/doctrine/inflector/tree/2.0.10"
             },
             "funding": [
                 {
@@ -620,7 +620,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-15T18:05:13+00:00"
+            "time": "2024-02-18T20:23:39+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -2409,16 +2409,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.4.4",
+            "version": "v3.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "c0489d4a76382f6dcf6e2702112f86aa089d0c8d"
+                "reference": "266ee3dcaef540f666d4eee19a314025aba5c6e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/c0489d4a76382f6dcf6e2702112f86aa089d0c8d",
-                "reference": "c0489d4a76382f6dcf6e2702112f86aa089d0c8d",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/266ee3dcaef540f666d4eee19a314025aba5c6e4",
+                "reference": "266ee3dcaef540f666d4eee19a314025aba5c6e4",
                 "shasum": ""
             },
             "require": {
@@ -2472,7 +2472,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.4.4"
+                "source": "https://github.com/livewire/livewire/tree/v3.4.5"
             },
             "funding": [
                 {
@@ -2480,33 +2480,33 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-28T19:07:11+00:00"
+            "time": "2024-02-19T14:52:03+00:00"
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.53",
+            "version": "3.1.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SpartnerNL/Laravel-Excel.git",
-                "reference": "f5175b19389f51bf489a1558eb0efc0a59ec4b67"
+                "reference": "6d9d791dcdb01a9b6fd6f48d46f0d5fff86e6260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/f5175b19389f51bf489a1558eb0efc0a59ec4b67",
-                "reference": "f5175b19389f51bf489a1558eb0efc0a59ec4b67",
+                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/6d9d791dcdb01a9b6fd6f48d46f0d5fff86e6260",
+                "reference": "6d9d791dcdb01a9b6fd6f48d46f0d5fff86e6260",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^3.3",
                 "ext-json": "*",
-                "illuminate/support": "5.8.*||^6.0||^7.0||^8.0||^9.0||^10.0",
+                "illuminate/support": "5.8.*||^6.0||^7.0||^8.0||^9.0||^10.0||^11.0",
                 "php": "^7.0||^8.0",
                 "phpoffice/phpspreadsheet": "^1.18",
                 "psr/simple-cache": "^1.0||^2.0||^3.0"
             },
             "require-dev": {
                 "laravel/scout": "^7.0||^8.0||^9.0||^10.0",
-                "orchestra/testbench": "^6.0||^7.0||^8.0",
+                "orchestra/testbench": "^6.0||^7.0||^8.0||^9.0",
                 "predis/predis": "^1.1"
             },
             "type": "library",
@@ -2549,7 +2549,7 @@
             ],
             "support": {
                 "issues": "https://github.com/SpartnerNL/Laravel-Excel/issues",
-                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.53"
+                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.55"
             },
             "funding": [
                 {
@@ -2561,7 +2561,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-05T08:53:46+00:00"
+            "time": "2024-02-20T08:27:10+00:00"
         },
         {
             "name": "maennchen/zipstream-php",

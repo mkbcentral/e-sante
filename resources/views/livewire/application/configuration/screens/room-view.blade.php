@@ -29,9 +29,9 @@
                                     <td class="">{{ $room?->hospitalization?->name }}</td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $room }})"
-                                            class="btn-sm" />
+                                            class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $room }})" class="btn-sm" />
+                                            wire:click="delete({{ $room }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach

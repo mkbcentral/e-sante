@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Application\Navigation\AppNavigationController;
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
 use App\Http\Controllers\Application\Product\ProductInvoicePrinterController;
@@ -41,12 +42,13 @@ use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/', MainDashboard::class)->name('dashboard');
+    Route::get('/', AppNavigationController::class)->name('main');
+    Route::get('/dashboard', MainDashboard::class)->name('dashboard');
     Route::get('/sheet', MainSheet::class)->name('sheet');
     Route::get('/patient/folder/{sheetId}', FolderPatient::class)->name('patient.folder');
     Route::get('tarification', TarifView::class)->name('tarification');
     Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
-    Route::get('consultation/req', MainConsultationRequest::class)->name('consultation.req');
+    Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
     Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
     Route::get('consultation/consult-patient/{consultationRequestId}', MainConsultPatient::class)->name('consultation.consult.patient');
     Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
@@ -75,7 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
        });
     });
 
-    Route::get('/administration', MainAdmin::class)->name('admin');
+    Route::get('/users', MainAdmin::class)->name('users');
     Route::get('/configuration', MainConfiguration::class)->name('configuration');
     Route::get('/navigation', Mainnavigation::class)->name('navigation');
     Route::get('/files', FileManagerView::class)->name('files');

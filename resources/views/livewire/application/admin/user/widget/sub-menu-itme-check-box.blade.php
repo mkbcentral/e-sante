@@ -5,7 +5,7 @@
      <div class="card-body">
          <div class="row">
              @foreach ($subMenus as $subMenu)
-                 <div class="col-md-3">
+                 <div class="col-md-4">
                      <!-- checkbox -->
                      <div class="form-group clearfix">
                          <div class="icheck-primary d-inline">

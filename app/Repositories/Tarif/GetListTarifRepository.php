@@ -28,6 +28,7 @@ class GetListTarifRepository
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('tarifs.name', 'like', '%' . SELF::$query . '%')
+                        ->orWhere('tarifs.abbreviation', 'like', '%' . SELF::$query . '%')
                         ->orWhere('tarifs.price_private', 'like', '%' . SELF::$query . '%')
                         ->orWhere('tarifs.subscriber_price', 'like', '%' . SELF::$query . '%');
                 });
@@ -46,6 +47,7 @@ class GetListTarifRepository
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('tarifs.name', 'like', '%' . SELF::$query . '%')
+                        ->orWhere('tarifs.abbreviation', 'like', '%' . SELF::$query . '%')
                         ->orWhere('tarifs.price_private', 'like', '%' . SELF::$query . '%')
                         ->orWhere('tarifs.subscriber_price', 'like', '%' . SELF::$query . '%');
                 });
@@ -57,5 +59,4 @@ class GetListTarifRepository
             //->where('category_tarifs.source_id', auth()->user()->source->id)
             ->paginate($perPage);
     }
-
 }

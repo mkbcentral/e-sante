@@ -100,16 +100,18 @@
                                         <x-form.icon-button :icon="'fa fa-user-plus '"
                                             wire:click="openVitalSignForm({{ $consultationRequest }})"
                                             class="btn-sm btn-info " />
-                                             <x-form.icon-button :icon="'fa fa-eye '"
+                                        <x-form.icon-button :icon="'fa fa-eye '"
                                             wire:click="openDetailConsultationModal({{ $consultationRequest }})"
                                             class="btn-sm btn-primary " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
-                                        <x-navigation.link-icon
+                                        @if ($consultationRequest->is_hospitalized == false)
+                                             <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                              :icon="'fa fa-print'" class="btn btn-sm   btn-secondary"  />
+                                        @endif
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
@@ -120,6 +122,8 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        @if ($consultationRequest->is_hospitalized == true)
+                                        @endif
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" target="_blanck" />

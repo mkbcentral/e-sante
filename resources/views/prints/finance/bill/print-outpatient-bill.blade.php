@@ -66,6 +66,16 @@
                         </tbody>
                     @endif
                 @endforeach
+                @if ($outpatientBill->otherOutpatientBill != null)
+                    <tr class="">
+                        <td colspan="3"><b>{{ $outpatientBill->otherOutpatientBill->name }}</b></td>
+                        <td class="text-right">
+                            {{ $currency == 'CDF'
+                                ? app_format_number($outpatientBill->getOtherOutpatientBillPriceCDF(), 1)
+                                : $outpatientBill->getOtherOutpatientBillPriceUSD() }}
+                            {{ $currency }}</td>
+                    </tr>
+                @endif
                 <tr class="bg-secondary">
                     <td colspan="4" class="text-right text-white">Payment infos</td>
                 </tr>

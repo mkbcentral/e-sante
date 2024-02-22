@@ -88,6 +88,7 @@ class CreateAndUpdateUser extends Component
         }
 
          $this->dispatch('refreshUserList');
+         $this->dispatch('close-form-create-user');
         $this->name = '';
         $this->email = '';
     }

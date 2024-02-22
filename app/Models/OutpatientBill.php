@@ -83,6 +83,16 @@ class OutpatientBill extends Model
         return $this->hasOne(DetailOutpatientBill::class);
     }
 
+    /**
+     * Get the otherOutpatientBill associated with the OtherDetailOutpatientBill
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function otherOutpatientBill(): HasOne
+    {
+        return $this->hasOne(OtherDetailOutpatientBill::class);
+    }
+
 
     public function getConsultationPriceUSD(): int|float
     {
@@ -94,13 +104,23 @@ class OutpatientBill extends Model
         return $this->consultation->price_private * $this->rate->rate;
     }
 
+    public function getOtherOutpatientBillPriceUSD(): int|float
+    {
+        return $this->otherOutpatientBill !=null? $this->otherOutpatientBill->amount:0;
+    }
+
+    public function getOtherOutpatientBillPriceCDF(): int|float
+    {
+        return $this->otherOutpatientBill != null ? $this->otherOutpatientBill->amount * $this->rate->rate:0;
+    }
+
     public function getTotalOutpatientBillUSD(): int|float
     {
         $total = 0;
         foreach ($this->tarifs as $tarif) {
             $total += $tarif->price_private * $tarif->pivot->qty;
         }
-        return $this->getConsultationPriceUSD() + $total;
+        return $this->getConsultationPriceUSD() + $total+$this->getOtherOutpatientBillPriceUSD();
     }
 
     public function getTotalOutpatientBillCDF(): int|float
@@ -109,6 +129,6 @@ class OutpatientBill extends Model
         foreach ($this->tarifs as $tarif) {
             $total += ($tarif->price_private * $tarif->pivot->qty) * $this->rate->rate;
         }
-        return $this->getConsultationPriceCDF() + $total;
+        return $this->getConsultationPriceCDF() + $total +$this->getOtherOutpatientBillPriceCDF();
     }
 }

@@ -27,6 +27,9 @@
                     <button type="button" wire:click='makeIsByPeriod'
                         class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">Périodique</button>
                 </div>
+                <div class="d-flex justify-content-center pb-2">
+                    <x-widget.loading-circular-md />
+                </div>
                 @if ($isByDate == true)
                     @livewire('application.sheet.list.list-consultation-request', ['selectedIndex' => $selectedIndex])
                 @elseif ($isByMonth == true)

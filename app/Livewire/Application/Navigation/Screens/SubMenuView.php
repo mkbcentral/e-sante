@@ -71,7 +71,7 @@ class SubMenuView extends Component
     public function delete(SubMenu $subMenu)
     {
         try {
-            if ($subMenu->mainMenuUsers->isEmpty()) {
+            if ($subMenu->users()->isEmpty()) {
                 $subMenu->delete();
                 $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             } else {

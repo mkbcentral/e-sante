@@ -6,9 +6,11 @@ use App\Models\Role;
 use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RoleView extends Component
 {
+    use WithPagination;
     #[Rule('required', message: 'Username obligatoire', onUpdate: false)]
     public $name = '';
     public ?Role $roleToEdit=null;
@@ -57,7 +59,7 @@ class RoleView extends Component
     public function render()
     {
         return view('livewire.application.admin.user.role-view',[
-            'roles'=>Role::all()
+            'roles'=>Role::orderBy('name','ASC')->paginate(5)
         ]);
     }
 }

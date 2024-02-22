@@ -12,7 +12,7 @@
                     <x-form.sort-icon sortField="name"  :sortAsc="$sortAsc"  :sortBy="$sortBy" />
                 </x-form.button>
             </div>
-            <div class="d-flex justify-content-center pb-2">
+            <div class="d-flex justify-content-center pb-2 mt-2 ">
                 <x-widget.loading-circular-md/>
             </div>
             <div class="row mt-3">

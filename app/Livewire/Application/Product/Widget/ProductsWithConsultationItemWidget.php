@@ -14,26 +14,30 @@ class ProductsWithConsultationItemWidget extends Component
 {
     protected $listeners = [
         'refreshProductItems' => '$refresh',
-        'currencyName' => 'getCurrencyName'
+        'consultationRequestItems' => 'getConsultationRequest'
     ];
     public ?ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idProduct = 0;
     public bool $isEditing = false;
-    public string $currency;
+    public string $currency=Currency::DEFAULT_CURRENCY;
 
-    public function getCurrencyName(string $currency): void
+    /**
+     * Get consultation if consultationRequest listener emitted
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
+    public function getConsultationRequest(?ConsultationRequest $consultationRequest): void
     {
-        $this->currency = $currency;
+        $this->consultationRequest = $consultationRequest;
     }
-
     /**
      * Mounted component
      * @param ConsultationRequest|null $consultationRequest
      * @return void
      */
-    public function mount(?ConsultationRequest $consultationRequest): void
+    public function mount(ConsultationRequest $consultationRequest): void
     {
-        $this->consultationRequest = $consultationRequest;
+        $this->consultationRequest=$consultationRequest;
     }
 
     /**
@@ -103,7 +107,7 @@ class ProductsWithConsultationItemWidget extends Component
      */
     public function render()
     {
-        $this->currency = Currency::DEFAULT_CURRENCY;
+
         return view('livewire.application.product.widget.products-with-consultation-item-widget');
     }
 }

@@ -72,7 +72,22 @@
                     @livewire('application.finance.billing.list.list-items-tarif-outpatient-bill', [
                         'outpatientBill' => $outpatientBill,
                     ])
+                    @if ($outpatientBill->otherOutpatientBill != null)
+                        <h5 class="text-secondary ">Autres détails</h5>
+                        <table class="table  table-bordered  table-sm ">
+                            <tr class="text-bold">
+                                <td>{{ $outpatientBill->otherOutpatientBill->name }}</td>
+                                <td class="text-right">
+                                    {{ app_format_number($currencyName == 'CDF' ? $outpatientBill->getOtherOutpatientBillPriceCDF() : $outpatientBill->getOtherOutpatientBillPriceUSD(), 1) . ' ' . $currencyName }}
+                                </td>
+                            </tr>
+                        </table>
+                    @endif
+
                     <div class="small-box bg-indigo">
+                        <div class="d-flex justify-content-center pb-2 pt-2">
+                            <x-widget.loading-circular-md />
+                        </div>
                         <div class="inner">
                             <h3 class="text-bold">TOTAL FACTURE <i class="far fa-sack-dollar"></i></h4>
                                 <ul>
@@ -111,8 +126,6 @@
             window.addEventListener('open-list-outpatient-bill-by-date-modal', e => {
                 $('#list-outpatient-bill-by-date-modal').modal('show')
             });
-
-
         </script>
     @endpush
 </div>

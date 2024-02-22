@@ -1,6 +1,6 @@
 <div>
-    <x-modal.build-modal-fixed idModal='form-vital-sign' bg='bg-indigo' size='xl' headerLabel="PRISE SIGNES VITAUX ET AUTRES"
-        headerLabelIcon='fas fa-stethoscope'>
+    <x-modal.build-modal-fixed idModal='form-vital-sign' bg='bg-indigo' size='xl'
+        headerLabel="PRISE SIGNES VITAUX ET AUTRES" headerLabelIcon='fas fa-stethoscope'>
         @if ($consultationRequest != null)
             <div class="card p-2">
                 <div class="card-body">
@@ -10,7 +10,7 @@
                             <x-widget.patient.simple-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
                         </div>
                         <div class="">
-                           @livewire('application.widgets.input-check-box-hospitalize-widget',['consultationRequest'=>$consultationRequest])
+                            @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
                         </div>
                     </div>
                     <hr>

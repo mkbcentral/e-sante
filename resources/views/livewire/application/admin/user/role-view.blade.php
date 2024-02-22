@@ -7,7 +7,7 @@
         <form wire:submit='handlerSubmit'>
             <div class="card">
                 <div class="form-group">
-                    <x-form.label value="{{ __('Role') }}" />
+                    <x-form.label value="{{ __('Nom du rôle à ajouter') }}" />
                     <x-form.input placeholder='Saisir le role ici et cliquer sur Entre/Enter' type='text' wire:model='name' :error="'name'" />
                     <x-errors.validation-error value='name' />
                 </div>
@@ -34,14 +34,17 @@
                     <td class="text-center">{{ $index + 1 }}</td>
                     <td>{{ $role->name }}</td>
                     <td class="text-center">
-                        <x-form.edit-button-icon wire:click="edit({{$role}})" class="btn-sm" />
-                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?" wire:click="delete({{ $role }})" class="btn-sm" />
+                        <x-form.edit-button-icon wire:click="edit({{$role}})" class="btn-sm btn-primary " />
+                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?" wire:click="delete({{ $role }})" class="btn-sm btn-danger " />
                     </td>
                 </tr>
                 @endforeach
                 @endif
             </tbody>
         </table>
+        <div class="mt-4 d-flex justify-content-center align-items-center">
+            {{ $roles->links('livewire::bootstrap') }}
+        </div>
     </x-modal.build-modal-fixed>
     @push('js')
         <script type="module">

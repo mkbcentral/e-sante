@@ -4,12 +4,11 @@ namespace App\Repositories\User;
 
 use App\Models\Hospital;
 use App\Models\User;
-use Illuminate\Support\Collection;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 class GetUserRepository
 {
     private static string $query;
-    public static function getListUsers(string $q, string $sortBy, bool $sortAsc):Collection
+    public static function getListUsers(string $q, string $sortBy, bool $sortAsc,$per_page=10): LengthAwarePaginator
     {
         SELF::$query = $q;
         return User::when($q, function ($query) {
@@ -20,7 +19,7 @@ class GetUserRepository
         })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
         ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
         ->with(['hospital', 'source', 'agentService'])
-        ->get();
+        ->paginate(10);
     }
     public static function getIdUserDefault():int{
         return auth()->user()->id;

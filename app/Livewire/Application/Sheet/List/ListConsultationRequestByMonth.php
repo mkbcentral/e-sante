@@ -68,6 +68,7 @@ class ListConsultationRequestByMonth extends Component
     {
         $this->dispatch('open-medical-prescription');
         $this->dispatch('consultationRequest', $consultationRequest);
+        $this->dispatch('consultationRequestItems', $consultationRequest);
     }
 
     /**
