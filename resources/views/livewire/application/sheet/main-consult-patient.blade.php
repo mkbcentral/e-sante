@@ -7,7 +7,7 @@
     <div>
         <x-navigation.bread-crumb icon='fas fa-notes-medical' label='CONSULTER UN PATIENT'>
             <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
-            <x-navigation.bread-crumb-item label='Liste patients' link='consultation.req' isLinked=true />
+            <x-navigation.bread-crumb-item label='Liste patients' link='consultations.request.list' isLinked=true />
             <x-navigation.bread-crumb-item label='Consultation patient' />
         </x-navigation.bread-crumb>
         <x-content.main-content-page>

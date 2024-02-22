@@ -2,7 +2,7 @@
     <x-modal.build-modal-fixed idModal='form-medical-prescription' size='xl' headerLabel="PRESCRIPTION MEDICALE"
         headerLabelIcon='fa fa-folder-plus'>
         @if ($consultationRequest != null)
-            <div class="card p-2">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <x-widget.patient.simple-patient-info :consultationSheet='$consultationRequest->consultationSheet' />

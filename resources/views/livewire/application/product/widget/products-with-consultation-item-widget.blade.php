@@ -4,10 +4,13 @@
             <thead class="bg-primary">
                 <tr>
                     <th class="">PRODUIT</th>
-                    <th class="text-center">NOMBRE</th>
-                    <th class="text-right">P.U FC</th>
-                    <th class="text-right">P.T FC</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">NBRE</th>
+                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                        <th class="text-right">P.U</th>
+                        <th class="text-right">P.T</th>
+                        <th class="text-center">Actions</th>
+                    @endif
+
                 </tr>
             </thead>
             <tbody>
@@ -25,12 +28,14 @@
                             @endif
 
                         </td>
-                        <td class="text-right">
-                            {{ app_format_number($product->price, 1) }}
-                        </td>
-                        <td class="text-right">
-                            {{ app_format_number($product->price * $product->pivot->qty, 1) }}
-                        </td>
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <td class="text-right">
+                                {{ app_format_number($product->price, 1) }}
+                            </td>
+                            <td class="text-right">
+                                {{ app_format_number($product->price * $product->pivot->qty, 1) }}
+                            </td>
+                        @endif
                         <td class="text-center">
                             <x-form.edit-button-icon
                                 wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
