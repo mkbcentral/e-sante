@@ -1,13 +1,26 @@
 <div>
     @livewire('application.product.requisition.form.new-product-requisition')
     <div class="d-flex justify-content-between">
-        <x-form.button type="button" class="btn-dark" wire:click='openAddModal'>
-            <i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvelle demande
-        </x-form.button>
-        <x-widget.loading-circular-md />
+        <div>
+             <x-widget.loading-circular-md />
+        </div>
+        <div>
+            <x-form.button type="button" class="btn-dark" wire:click='openAddModal'>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvelle demande
+            </x-form.button>
+            <x-form.button type="button" class="btn-primary" wire:click='refreshList'>
+                <i class="fas fa-refresh" aria-hidden="true"></i> Actualiser
+            </x-form.button>
+        </div>
     </div>
     <div>
-        <div class="d-flex justify-content-end ">
+        <div class="d-flex justify-content-between ">
+            <div>
+                <div class="form-group mt-1">
+                    <x-form.label value="{{ __('Service') }}" class="mr-1" />
+                    <x-widget.list-agent-service-widget wire:model.live='agent_service_id' :error="'agent_service_id'" />
+                </div>
+            </div>
             <div class="form-group mt-1">
                 <x-form.label value="{{ __('Mois') }}" class="mr-1" />
                 <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
@@ -35,10 +48,10 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $requisition->created_at->format('d/m/Y à H:i:s') }}</td>
                             <td class="text-center">{{ $requisition->number }}</td>
-                            <td class="text-center">{{ 0 }}</td>
+                            <td class="text-center">{{ $requisition->productRequistionProducts->count() }}</td>
                             <td class="text-center">{{ $requisition->agentService->name }}</td>
                             <td class="text-center">
-                                 <x-navigation.link-icon class="btn btn-sm btn-primary"
+                                <x-navigation.link-icon class="btn btn-sm btn-primary"
                                     href="{{ route('product.requisition', $requisition) }}" wire:navigate
                                     :icon="'fa fa-plus-circle'" />
                                 <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
@@ -53,6 +66,7 @@
                 @endif
             </tbody>
         </table>
+        {{ $productRequisitions->links('livewire::bootstrap') }}
     </div>
     @push('js')
         <script type="module">

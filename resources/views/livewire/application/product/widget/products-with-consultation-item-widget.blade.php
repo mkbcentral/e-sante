@@ -8,9 +8,8 @@
                     @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
                         <th class="text-right">P.U</th>
                         <th class="text-right">P.T</th>
-                        <th class="text-center">Actions</th>
                     @endif
-
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,21 +38,23 @@
                         <td class="text-center">
                             <x-form.edit-button-icon
                                 wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
-                                class="btn-sm" />
-                            <x-form.delete-button-icon wire:click="delete({{ $product->pivot->id }})" class="btn-sm" />
+                                class="btn-sm btn-primary" />
+                            <x-form.delete-button-icon wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
                         </td>
                     </tr>
                 @endforeach
-                <tr class="bg-secondary">
-                    <td colspan="4" class="text-right">
-                        <span class="text-bold text-lg"> TOTAL:
-                            {{ app_format_number(
-                                $currency == 'USD' ? $consultationRequest->getTotalProductUSD() : $consultationRequest->getTotalProductCDF(),
-                                1,
-                            ) }}
-                            Fc</span>
-                    </td>
-                </tr>
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                    <tr class="bg-secondary">
+                        <td colspan="4" class="text-right">
+                            <span class="text-bold text-lg"> TOTAL:
+                                {{ app_format_number(
+                                    $currency == 'USD' ? $consultationRequest->getTotalProductUSD() : $consultationRequest->getTotalProductCDF(),
+                                    1,
+                                ) }}
+                                Fc</span>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     @endif
