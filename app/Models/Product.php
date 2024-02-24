@@ -45,16 +45,18 @@ class Product extends Model
      * get number of product by invoice
      */
 
-     /**
-      * Get all of the productRequistionProducts for the Product
-      *
-      * @return \Illuminate\Database\Eloquent\Relations\HasMany
-      */
-     public function productRequistionProducts(): HasMany
-     {
-         return $this->hasMany(ProductRequisitionProduct::class);
-     }
-
+    /**
+     * Get all of the productRequistionProducts for the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productRequistionProducts(): HasMany
+    {
+        return $this->hasMany(ProductRequisitionProduct::class);
+    }
+    /**
+     * Sortie sur toutes les factures en cash
+     */
     public function getNumberProductInvoice(): int|float
     {
         return ProductInvoice::query()
@@ -64,6 +66,9 @@ class Product extends Model
             ->where('product_invoices.user_id', Auth::id())
             ->sum('product_product_invoice.qty');
     }
+    /**
+     * Sortie sur les factures des abonées et personels
+     */
     public function getNumberProducByConsultationRequest(): int|float
     {
         return ConsultationRequest::query()
@@ -83,7 +88,9 @@ class Product extends Model
             ->where('consultation_request_product.created_by', Auth::id())
             ->sum('consultation_request_product.qty');
     }
-
+    /**
+     * Entre total pour chaque approvisionnement
+     */
     public function getNumberProductSupply(): int|float
     {
         return ProductSupply::query()
@@ -94,20 +101,27 @@ class Product extends Model
             ->where('product_supplies.user_id', Auth::id())
             ->sum('product_supply_products.quantity');
     }
-
-    public function getAmountStockGlobal(): int|float
+    /**
+     * Sortie sur chaque requisition faite par le service
+     */
+    public function getOutputFormRequisition(): int|float
     {
-        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name=="GOLF") {
-            return ($this->initial_quantity + $this->getNumberProductSupply()) -
-                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
-        } else {
-            return ($this->getNumberProductSupply()) -
-                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
+        $quantity = 0;
+        $inputs = ProductRequisitionProduct::query()
+            ->join('products', 'products.id', 'product_requisition_products.product_id')
+            ->select('product_requisition_products.*', 'products.name as product_name')
+            ->with(['product'])
+            ->where('product_requisition_products.product_id', $this->id)
+            ->get();
+
+        foreach ($inputs as $input) {
+            $quantity += $input->quantity;
         }
-
-
+        return $quantity;
     }
-
+    /**
+     * Entrée totale par approvisionnemnt pour chaque serice
+     */
     public function getTotalInputsByService(): int|float
     {
         $quantity = 0;
@@ -124,5 +138,26 @@ class Product extends Model
             $quantity += $input->quantity;
         }
         return $quantity;
+    }
+    /**
+     * Total des sortie
+     */
+    public function getTotalOutputProducts(): int|float
+    {
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
+    }
+    /**
+     * Stotck global
+     */
+    public function getAmountStockGlobal(): int|float
+    {
+        $quantity = 0;
+        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == "GOLF") {
+            $quantity = ($this->initial_quantity + $this->getNumberProductSupply()) - $this->getTotalOutputProducts();
+        } else {
+            $quantity = ($this->getNumberProductSupply()) -
+                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
+        }
+        return $quantity < 0 ? 0 : $quantity;
     }
 }

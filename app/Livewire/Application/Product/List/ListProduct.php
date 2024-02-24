@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Product\List;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Repositories\Product\Get\GetProductRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -26,7 +27,7 @@ class ListProduct extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
-    public string $category_id = '';
+    public string $category_name = '';
     public string $family_id = '';
     public ?Product $product;
     public bool $isSpecialty=false;
@@ -102,10 +103,11 @@ class ListProduct extends Component
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,
-                $this->category_id,
+                $this->category_name,
                 $this->family_id,
                 50
-            )
+            ),
+            'categories'=>ProductCategory::all()
         ]);
     }
 }

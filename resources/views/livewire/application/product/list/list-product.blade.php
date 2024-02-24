@@ -20,7 +20,12 @@
                     <div class="d-flex align-items-center">
                         <div class="form-group mr-2">
                             <x-form.label value="{{ __('Catégorie') }}" class="text-pink" />
-                            <x-widget.list-product-category-widget wire:model.live="category_id" :error="'category_id'" />
+                            <select class="form-control" wire:model.live="category_name">
+                                <option value="">Choisir</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <x-form.label value="{{ __('Famille') }}" class="text-pink" />
@@ -39,6 +44,14 @@
                                     wire:click="sortProduct('name')">DEISIGNATION
                                 </x-form.button>
                                 <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                            </th>
+                            <th class="text-center">
+                                QT INITIALE
+                            </th>
+                            <th class="text-center">
+                                QT ENTREE </th>
+                            <th class="text-center">
+                                QT SORTIE
                             </th>
                             <th class="text-center">
                                 <x-form.button class="text-bold text-white"
@@ -75,10 +88,17 @@
                                     <td class="text-center">
                                         {{ $index + 1 }}
                                     </td>
-                                    <td class="text-uppercase">{{ $product->name }} <span
-                                            class="text-bold text-pink">{{ $product->abbreviation }}</span></td>
-                                  <td class="{{ $product->getAmountStockGlobal()<=5?'bg-danger ':'' }} text-center">{{ $product->getAmountStockGlobal() }}</td>
-                                    <td class="text-right">{{ $product->price }}</td>
+                                    <td class="text-uppercase">{{ $product->name }}
+                                        <span class="text-bold text-pink">{{ $product->abbreviation }}</span>
+                                    </td>
+                                    <td class="text-center">{{ $product->initial_quantity }}</td>
+                                    <td class="text-center">{{ $product->getNumberProductSupply() }}</td>
+                                    <td class="text-center">{{ $product->getTotalOutputProducts() }}</td>
+                                    <td
+                                        class=" {{ $product->getAmountStockGlobal() <= 5 ? 'bg-danger ' : '' }} text-center">
+                                        {{ $product->getAmountStockGlobal() }}
+                                    </td>
+                                    <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td class="text-center">
                                         <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
