@@ -158,6 +158,6 @@ class Product extends Model
             $quantity = ($this->getNumberProductSupply()) -
                 ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
         }
-        return $quantity < 0 ? 0 : $quantity;
+        return  $quantity;
     }
 }
