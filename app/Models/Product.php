@@ -144,20 +144,18 @@ class Product extends Model
      */
     public function getTotalOutputProducts(): int|float
     {
-        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest()+$this->getOutputFormRequisition();
     }
     /**
      * Stotck global
      */
     public function getAmountStockGlobal(): int|float
     {
-        $quantity = 0;
         if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == "GOLF") {
-            $quantity = ($this->initial_quantity + $this->getNumberProductSupply()) - $this->getTotalOutputProducts();
+            return ($this->initial_quantity + $this->getNumberProductSupply()) -$this->getTotalOutputProducts();
         } else {
-            $quantity = ($this->getNumberProductSupply()) -
+            return ($this->getNumberProductSupply()) -
                 ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
         }
-        return  $quantity;
     }
 }
