@@ -4,6 +4,8 @@ namespace App\Repositories\Sheet\Get;
 
 use App\Models\ConsultationSheet;
 use App\Models\Hospital;
+use App\Models\Source;
+use Illuminate\Support\Facades\Auth;
 
 class GetConsultationSheetRepository
 {
@@ -61,6 +63,8 @@ class GetConsultationSheetRepository
         string $name,
         string $gender
     ): ?ConsultationSheet {
-        return ConsultationSheet::where('name', $name)->where('gender', $gender)->first();
+        return ConsultationSheet::where('name', $name)
+        ->where('source_id',Source::DEFAULT_SOURCE())
+        ->where('gender', $gender)->first();
     }
 }

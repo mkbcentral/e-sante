@@ -170,9 +170,6 @@ class ConsultationRequest extends Model
         return $total;
     }
 
-
-
-
     public function getTotalInvoiceCDF()
     {
         $total = 0;
@@ -217,4 +214,5 @@ class ConsultationRequest extends Model
 
         return $number;
     }
+
 }

@@ -57,14 +57,21 @@
                         <tr>
                             <th>#</th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">Date
+                                <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">N° FICHE
+                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
+                                     @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                     Auth::user()->roles->pluck('name')->contains('Ag')  )
+                                      N° FACTURE
+                                     @else
+                                      N° FICHE
+                                     @endif
+
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th>
                                 <x-form.button class="text-white" wire:click="sortSheet('name')">NOM

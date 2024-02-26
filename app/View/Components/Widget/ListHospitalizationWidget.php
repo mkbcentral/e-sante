@@ -4,7 +4,6 @@ namespace App\View\Components\Widget;
 
 use App\Models\Hospital;
 use App\Models\HospitalizationRoom;
-use App\Models\Source;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
