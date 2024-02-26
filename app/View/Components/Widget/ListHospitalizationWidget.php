@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\HospitalizationRoom;
 use App\Models\Source;
 use Closure;
@@ -17,7 +18,11 @@ class ListHospitalizationWidget extends Component
      */
     public function __construct()
     {
-        $this->listRooms = HospitalizationRoom::where('source_id',Source::DEFAULT_SOURCE())->get();
+        $this->listRooms = HospitalizationRoom::query()
+            ->join('hospitalizations', 'hospitalizations.id', 'hospitalization_rooms.hospitalization_id')
+            ->where('hospitalizations.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->select('hospitalization_rooms.*')
+            ->get();
     }
 
     /**
