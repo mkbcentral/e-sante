@@ -36,15 +36,22 @@
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
+                            <th class="text-center">#</th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">Date
+                                <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">N° FICHE
+                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
+                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                        N° FACTURE
+                                    @else
+                                        N° FICHE
+                                    @endif
+
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th>
                                 <x-form.button class="text-white" wire:click="sortSheet('name')">NOM
@@ -60,10 +67,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listConsultationRequest as $consultationRequest)
+                        @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
+                                <td class="text-center">{{ $index + 1 }}</td>
                                 <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
-                                <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}</td>
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                                @else
+                                    <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
+                                    </td>
+                                @endif
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
@@ -108,9 +123,9 @@
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                     @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
                                         @if ($consultationRequest->is_finished == true)
-                                             <x-navigation.link-icon
-                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary"  />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                                :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                         @endif
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
@@ -123,11 +138,10 @@
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                         @if ($consultationRequest->is_hospitalized == true)
-                                         <x-navigation.link-icon
-                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" target="_blanck" />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                                :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" target="_blanck" />
                                         @endif
-
                                     @endif
                                 </td>
                             </tr>

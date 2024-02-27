@@ -26,11 +26,9 @@ class GetConsultationRequestRepository
         string $sortBy,
         bool   $sortAsc,
         int    $per_page = 10
-    ): mixed
-    {
+    ): mixed {
         SELF::$keytoSearch = $q;
-        return ConsultationRequest::
-        join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
@@ -76,7 +74,7 @@ class GetConsultationRequestRepository
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
-            -> whereDate('consultation_requests.created_at', $date)
+            ->whereDate('consultation_requests.created_at', $date)
             ->whereYear('consultation_requests.created_at', $year) //is_hospitalized
             ->paginate($per_page);
     }
@@ -100,7 +98,7 @@ class GetConsultationRequestRepository
     ): mixed {
         SELF::$keytoSearch = $q;
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.subscription_id', $idSubscription)
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
@@ -111,7 +109,7 @@ class GetConsultationRequestRepository
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
-            -> whereMonth('consultation_requests.created_at', $month)
+            ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->paginate($per_page);
     }
@@ -136,7 +134,7 @@ class GetConsultationRequestRepository
     ): mixed {
         SELF::$keytoSearch = $q;
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.subscription_id', $idSubscription)
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
@@ -173,7 +171,7 @@ class GetConsultationRequestRepository
     ): mixed {
         SELF::$keytoSearch = $q;
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.subscription_id', $idSubscription)
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
@@ -204,4 +202,47 @@ class GetConsultationRequestRepository
             ->select('consultation_request_tarif.*', 'tarifs.name', 'tarifs.abbreviation')
             ->get();
     }
+
+    public static function getCountConsultationRequestByDate(
+        int    $idSubscription,
+        string $date,
+        string $year,
+    ): int|float {
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereDate('consultation_requests.created_at', $date)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->count();
+    }
+
+    public static function getCountConsultationRequestByMonth(
+        int    $idSubscription,
+        string $month,
+        string $year,
+    ): int|float {
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->count();
+    }
+
+    public static function getCountConsultationRequestBetweenDate(
+        int    $idSubscription,
+        string $startDate,
+        string $endDate,
+    ): int|float {
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
+            ->count();
+    }
+
+
 }

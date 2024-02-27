@@ -35,39 +35,47 @@
                     </div>
                 @endif
             </div>
-            <div class="d-flex justify-content-center pb-2">
-                <x-widget.loading-circular-md />
-            </div>
+
             @if ($listConsultationRequest->isEmpty())
                 <x-errors.data-empty />
             @else
-                <div class="d-flex justify-content-start align-content-center ">
+                <div class="d-flex justify-content-between align-content-center mt-2">
                     <div class="h5 text-secondary">
                         ({{ $listConsultationRequest->count() > 1
-                            ? $listConsultationRequest->count() .
+                            ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                    réalisées'
-                            : $listConsultationRequest->count() . ' Facture réalisée' }})
+                                                                                                                                                                                                                                                                                                                    réalisées'
+                            : $request_number . ' Facture réalisée' }})
                     </div>
 
                     <div class="ml-2">
-                        <x-form.button-group-link>
-                            <x-form.link-group target="_blanck" herf="#" :icon="'fa fa-print'" :label="'Imprimer rélévlé'" />
-                        </x-form.button-group-link>
+                        <a class="btn  btn-info btn-sm" target="_blank"
+                            href="{{ route('consultation.request.date.all.print', [$selectedIndex, $date_filter]) }}"><i
+                                class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
                     </div>
+                </div>
+                <div class="d-flex justify-content-center pb-2">
+                    <x-widget.loading-circular-md />
                 </div>
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
-                            <th class="">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">Date
+                            <th class="text-center">#</th>
+                            <th class="text-center">
+                                <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('number_sheet')">N° FICHE
+                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
+                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                        N° FACTURE
+                                    @else
+                                        N° FICHE
+                                    @endif
+
                                 </x-form.button>
-                                <x-form.sort-icon sortField="number_sheet" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th>
                                 <x-form.button class="text-white" wire:click="sortSheet('name')">NOM
@@ -88,10 +96,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listConsultationRequest as $consultationRequest)
+                        @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
+                                <td class="text-center">{{ $index + 1 }}</td>
                                 <td class="">{{ $consultationRequest->created_at->format('d/m/Y H:i:s') }}</td>
-                                <td class="text-center">{{ $consultationRequest->request_number }}</td>
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                                @else
+                                    <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
+                                    </td>
+                                @endif
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}

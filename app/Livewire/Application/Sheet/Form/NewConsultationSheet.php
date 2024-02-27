@@ -26,6 +26,7 @@ class NewConsultationSheet extends Component
     public ?ConsultationSheet $sheet = null;
     public $formatedSheetNumber = '';
     public bool  $has_a_shipping_ticket = false;
+    public $subscription_id=0;
 
     /**
      * Get subscription selected in parent component
@@ -54,6 +55,7 @@ class NewConsultationSheet extends Component
     {
         $this->sheet = $sheet;
         $this->form->fill($sheet->toArray());
+        $this->subscription_id=$sheet->subscription->id;
     }
 
     /**
@@ -112,6 +114,9 @@ class NewConsultationSheet extends Component
         $fields = $this->form->all();
         try {
             $fields['source_id'] = auth()->user()->source->id;
+            if ($this->subscription_id != 0) {
+                $fields['subscription_id'] = $this->subscription_id;
+            }
             $this->sheet->update($fields);
             $this->dispatch('close-form-new');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);

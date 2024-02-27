@@ -130,7 +130,12 @@ class ListConsultationRequest extends Component
             'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex),
             'total_usd' => GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter, $this->selectedIndex),
             'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'CDF'),
-            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'USD')
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'USD'),
+            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByDate(
+                $this->selectedIndex,
+                $this->date_filter,
+                $this->year
+            )
         ]);
     }
 }

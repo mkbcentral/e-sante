@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
             Route::get('rapport-date-out-patient-bill/{date}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
             Route::get('rapport-month-out-patient-bill/{date}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
+            Route::get('print-all/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
+            Route::get('print-all/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
+            Route::get('print-all/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
         });
 
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {

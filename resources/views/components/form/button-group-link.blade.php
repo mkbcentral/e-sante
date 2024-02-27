@@ -6,8 +6,6 @@
         <span class="sr-only">Toggle Dropdown</span>
     </button>
     <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" target="_blanck"
-                                href="#"><i
-                                    class="fas fa-file-pdf"></i> Fichier pdf</a>
+       {{ $slot }}
     </div>
 </div>

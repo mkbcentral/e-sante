@@ -2,14 +2,18 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Hospital;
 use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
+use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 
 class ListConsultationRequestByMonth extends Component
 {
@@ -101,11 +105,35 @@ class ListConsultationRequestByMonth extends Component
         $this->year = date('Y');
     }
 
-    public function edit(?ConsultationRequest $consultationRequest){
-        $this->dispatch('selectedConsultationRequest',$consultationRequest);
+    public function edit(?ConsultationRequest $consultationRequest)
+    {
+        $this->dispatch('selectedConsultationRequest', $consultationRequest);
         $this->dispatch('open-edit-consultation');
     }
 
+    public function fixNumerotation()
+    {
+        try {
+            $data
+                = GetConsultationRequestRepository::getConsultationRequestByDateMonth(
+                    $this->selectedIndex,
+                    $this->q,
+                    $this->sortBy,
+                    $this->sortAsc,
+                    500,
+                    $this->month_name,
+                    $this->year,
+                );
+            foreach ($data as $index => $item) {
+                $consultationRequest = ConsultationRequest::find($item->id);
+                $consultationRequest->request_number = $index + 1;
+                $consultationRequest->update();
+            }
+            $this->dispatch('added', ['message' => 'Action bien réalisée']);
+        } catch (\Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+    }
     public function render()
     {
         return view('livewire.application.sheet.list.list-consultation-request-by-month', [
@@ -121,7 +149,12 @@ class ListConsultationRequestByMonth extends Component
             'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex),
             'total_usd' => GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex),
             'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
-            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD')
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD'),
+            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year,
+            )
         ]);
     }
 }
