@@ -4,6 +4,7 @@ namespace App\Repositories\Sheet\Get;
 
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -209,7 +210,7 @@ class GetConsultationRequestRepository
         string $year,
     ): int|float {
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->whereDate('consultation_requests.created_at', $date)
@@ -237,7 +238,7 @@ class GetConsultationRequestRepository
         string $endDate,
     ): int|float {
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
@@ -245,4 +246,26 @@ class GetConsultationRequestRepository
     }
 
 
+    /**
+     * Get all consultation request by month
+     * @param int $idSubscription
+     * @param string $q
+     * @param string $sortBy
+     * @param bool $sortAsc
+     * @param int $per_page
+     * @return mixed
+     */
+    public static function getConsultationRequestHospitalizedToBordereau(): mixed
+    {
+        return ConsultationRequest::query()
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->with(['consultationSheet.subscription'])
+            ->select('consultation_requests.*')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereDate('consultation_requests.paid_at', Carbon::now())
+            ->where('consultation_requests.is_finished', true)
+            ->where('consultation_requests.is_hospitalized', true)
+            ->get();
+    }
 }

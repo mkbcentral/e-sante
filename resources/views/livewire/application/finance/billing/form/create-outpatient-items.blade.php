@@ -1,6 +1,6 @@
 <div>
     @livewire('application.finance.billing.form.create-detail-outpatient-bill')
-    @livewire('application.finance.billing.form.create-other-detail-outpatient-bill')
+
     <div class="card">
         <div class="card-body bg-indigo">
             <div class="d-flex justify-content-between align-items-center">
@@ -45,9 +45,6 @@
                         </a>
                     </li>
                 @endforeach
-                <li class="nav-item">
-                     <button class="btn btn-secondary" wire:click='OpenOtherDetailOutpatientBill' type="button">Autres détails</button>
-                </li>
             </ul>
 
         </div>
@@ -65,10 +62,7 @@
                 $('#form-detail-outpatient-bill').modal('hide')
             });
 
-             //Open outpatient bill other details
-            window.addEventListener('open-form-new-other-detail-outpatient-bill', e => {
-                $('#form-new-other-detail-outpatient-bill').modal('show')
-            });
+
         </script>
     @endpush
 </div>

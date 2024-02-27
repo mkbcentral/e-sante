@@ -31,15 +31,6 @@ class CreateOutpatientItems extends Component
     public function openEditBillFormModal(){
         $this->dispatch('open-new-outpatient-bill');
     }
-
-    public function OpenOtherDetailOutpatientBill()
-    {
-        $this->dispatch('otherDetalOutpatientBill',$this->outpatientBill);
-        $this->dispatch('open-form-new-other-detail-outpatient-bill');
-    }
-
-
-
     public  function changeIndex(CategoryTarif $category): void
     {
         $this->selectedIndex = $category->id;

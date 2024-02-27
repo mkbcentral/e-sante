@@ -2,6 +2,7 @@
     @livewire('application.finance.billing.form.create-outpatient-bill')
     @livewire('application.finance.billing.list.list-outpatient-bill-by-date')
     @livewire('application.finance.billing.form.create-detail-outpatient-bill')
+    @livewire('application.finance.billing.form.create-other-detail-outpatient-bill')
     <x-navigation.bread-crumb icon='fas fa-file-invoice-dollar' label='FACTURATION AMBULATOIRE' color='text-secondary'>
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Facturation ambulatoire' />
@@ -23,7 +24,7 @@
                         </div>
                     </div>
                 @endif
-                <div class=" bg-dark rounded bg-secondary p-1 mt-1" style="cursor: pointer"
+                <div class=" rounded bg-secondary p-1 mt-1" style="cursor: pointer"
                     wire:click='openListListOutpatientBillModal'>
                     <div class="text-center">
                         <h4><i class="far fa-folder-open"></i> Mes factures</h4>
@@ -37,6 +38,12 @@
                     </div>
                 @endif
                 @if ($outpatientBill != null)
+                    <div class="  rounded bg-warning p-1 mt-1" style="cursor: pointer"
+                        wire:click='OpenOtherDetailOutpatientBill'>
+                        <div class="text-center">
+                            <h5><i class="fa fa-plus-circle"></i> Autres détails</h5>
+                        </div>
+                    </div>
                     <a wire:click='printBill'
                         href="{{ route('outPatientBill.print', [$outpatientBill, $currencyName]) }}" target="_blanck">
                         <div class=" bg-indigo rounded bg-secondary p-1 mt-1" style="cursor: pointer">
@@ -125,6 +132,14 @@
             //Open edit sheet modal
             window.addEventListener('open-list-outpatient-bill-by-date-modal', e => {
                 $('#list-outpatient-bill-by-date-modal').modal('show')
+            });
+            //Open edit sheet modal
+            window.addEventListener('open-detail-outpatient-bill', e => {
+                $('#detail-outpatient-bill').modal('show')
+            });
+            //Open outpatient bill other details
+            window.addEventListener('open-form-new-other-detail-outpatient-bill', e => {
+                $('#form-new-other-detail-outpatient-bill').modal('show')
             });
         </script>
     @endpush

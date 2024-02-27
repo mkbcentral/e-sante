@@ -16,7 +16,7 @@ class ConsultationRequest extends Model
     protected $fillable = [
         'request_number', 'consultation_sheet_id',
         'consultation_id', 'rate_id', 'consulted_by',
-        'printed_by', 'validated_by', 'has_a_shipping_ticket', 'is_hospitalized'
+        'printed_by', 'validated_by', 'has_a_shipping_ticket', 'is_hospitalized', 'paid_at'
     ];
 
     public function rate(): BelongsTo
@@ -82,6 +82,27 @@ class ConsultationRequest extends Model
     {
         return $this->hasMany(ConsultationRequestNersing::class);
     }
+
+    /**
+     * Get the currency that owns the ConsultationRequest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
+
+    /**
+     * Get the consultationRequestCurrency associated with the ConsultationRequest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function consultationRequestCurrency(): HasOne
+    {
+        return $this->hasOne(ConsultationRequestCurrency::class);
+    }
+
 
     public function getTotalProductCDF(): float|int
     {

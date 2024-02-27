@@ -7,6 +7,7 @@ use App\Models\Currency;
 use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
+use Carbon\Carbon;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -51,6 +52,7 @@ class ListConsultationRequestHospitalize extends Component
     {
         $this->dispatch('open-details-consultation');
         $this->dispatch('consultationRequest', $consultationRequest);
+
     }
 
     /**
@@ -68,6 +70,7 @@ class ListConsultationRequestHospitalize extends Component
     {
         $this->dispatch('open-medical-prescription');
         $this->dispatch('consultationRequest', $consultationRequest);
+        $this->dispatch('updated', ['message' => 'Action bien réalisée']);
     }
 
     /**
@@ -99,6 +102,17 @@ class ListConsultationRequestHospitalize extends Component
         $this->dispatch('selectedConsultationRequest', $consultationRequest);
         $this->dispatch('open-edit-consultation');
     }
+
+    public function addToBordereau(?ConsultationRequest $consultationRequest){
+        $consultationRequest->paid_at=Carbon::now();
+        $consultationRequest->update();
+    }
+
+    public function showEditCurrency(?ConsultationRequest $consultationRequest){
+        $this->dispatch('open-edit-consultation-request-currency');
+        $this->dispatch('currencyConsultationRequest',$consultationRequest);
+    }
+
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;

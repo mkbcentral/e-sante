@@ -127,6 +127,7 @@ class GetOutpatientRepository
         $cons_total = 0;
         $total_detail=0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+            ->where('is_validated',true)
             ->with(['consultation'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
@@ -149,6 +150,7 @@ class GetOutpatientRepository
         $cons_total = 0;
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+            ->where('is_validated', true)
             ->with(['consultation'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
@@ -172,6 +174,7 @@ class GetOutpatientRepository
         $cons_total = 0;
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+            ->where('is_validated', true)
             ->with(['consultation'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
@@ -195,6 +198,7 @@ class GetOutpatientRepository
         $cons_total = 0;
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+            ->where('is_validated', true)
             ->with(['consultation'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {

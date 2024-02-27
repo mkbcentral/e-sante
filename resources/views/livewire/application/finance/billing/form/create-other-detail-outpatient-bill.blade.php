@@ -7,6 +7,12 @@
                     <x-widget.loading-circular-md />
                 </div>
                 @if ($outpatientBill != null)
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="text-bold">Client:</span> {{ $outpatientBill->client_name }}</h5><br>
+                        <h5 class="card-title"><span class="text-bold">N°:</span> {{ $outpatientBill->bill_number }}</h5>
+                    </div>
+                </div>
                     <div class="card-body">
                         <div class="form-group">
                             <x-form.label value="{{ __('Description') }}" />

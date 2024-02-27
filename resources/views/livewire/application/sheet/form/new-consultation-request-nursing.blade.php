@@ -28,26 +28,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card mt-3 p-2">
-                            <h5 class="pb-2">Devise</h5>
-                            <div class="row">
-                                @foreach ($currencies as $currency)
-                                    <div class="col-md-2">
-                                        <!-- radio -->
-                                        <div class="form-group clearfix">
-                                            <div class="icheck-primary d-inline">
-                                                <input type="radio" value="{{ $currency->id }}"
-                                                    id="{{ $currency->name }}" wire:model.blur="currency_id">
-                                                <label for="{{ $currency->name }}">
-                                                    {{ $currency->name }}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
                         <div class=" d-flex justify-content-end">
                             <x-form.button class="btn-primary" type='submit'><i class="fa fa-save"></i> Sauvegarder
                             </x-form.button>

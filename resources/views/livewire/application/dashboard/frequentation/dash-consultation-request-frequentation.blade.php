@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" wire:poll.15s>
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center mr-2">
@@ -22,7 +22,7 @@
                     <x-widget.loading-circular-md />
                 </div>
                 @if (!$requests->isEmpty())
-                    <div class="row mt-2" wire:loading.class='d-none'>
+                    <div class="row mt-2" >
                         @foreach ($requests as $req)
                             <div class="col-12 col-sm-6 col-md-4">
                                 <div class="info-box bg-indigo">

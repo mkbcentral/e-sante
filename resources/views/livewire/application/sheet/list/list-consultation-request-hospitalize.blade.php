@@ -3,6 +3,7 @@
     @livewire('application.sheet.form.medical-prescription')
     @livewire('application.sheet.widget.consultation-request-detail')
     @livewire('application.sheet.form.edit-consultation-request-info')
+    @livewire('application.sheet.form.edit-consultation-request-currency')
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -36,7 +37,7 @@
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
-                            <th class="text-center">#</th>
+                            <th class="text-center"></th>
                             <th class="text-center">
                                 <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
                                 </x-form.button>
@@ -44,7 +45,9 @@
                             </th>
                             <th class="text-center">
                                 <x-form.button class="text-white" wire:click="sortSheet('request_number')">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                            Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                            Auth::user()->roles->pluck('name')->contains('Caisse'))
                                         N° FACTURE
                                     @else
                                         N° FICHE
@@ -69,11 +72,32 @@
                     <tbody>
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
-                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td class="text-center">
+                                    @if ($consultationRequest->is_finished == true)
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-link dropdown-icon"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu" style="">
+                                                <a class="dropdown-item" href="#"
+                                                    wire:click='addToBordereau({{ $consultationRequest }})'>
+                                                    <i class="fa fa-arrow-right" aria-hidden="true"></i> Ajouter au
+                                                    borderau
+                                                </a>
+                                                 <a class="dropdown-item" href="#"
+                                                    wire:click='showEditCurrency({{ $consultationRequest }})'>
+                                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i> Changer la dévise
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                        Auth::user()->roles->pluck('name')->contains('Caisse'))
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
@@ -103,7 +127,7 @@
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td
-                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
+                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'bg-success  ' : 'text-danger ' }}">
                                     {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                                 </td>
                                 <td class="text-center">
@@ -121,27 +145,13 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                    @elseif(Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
                                         @if ($consultationRequest->is_finished == true)
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                                 :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                         @endif
                                     @else
-                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
-                                            data-target="#edit-consultation-request"
-                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
-                                        <x-form.icon-button :icon="'fa fa-eye '"
-                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        @if ($consultationRequest->is_hospitalized == true)
-                                            <x-navigation.link-icon
-                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                                :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" target="_blanck" />
-                                        @endif
                                     @endif
                                 </td>
                             </tr>
@@ -166,8 +176,12 @@
                 $('#form-medical-prescription').modal('show')
             });
             //Open detail consultation  modal
-            window.addEventListener('open-details-consultation', e => {
+            window.addEventListener('open-consultation-detail', e => {
                 $('#consultation-detail').modal('show')
+            });
+            //Open detail consultation  modal
+            window.addEventListener('open-edit-consultation-request-currency', e => {
+                $('#edit-consultation-request-currency').modal('show')
             });
         </script>
     @endpush

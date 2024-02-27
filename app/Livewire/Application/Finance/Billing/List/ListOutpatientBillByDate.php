@@ -60,6 +60,12 @@ class ListOutpatientBillByDate extends Component
         }
     }
 
+    public function printBill(OutpatientBill $outpatientBill)
+    {
+        $outpatientBill->is_validated = true;
+        $outpatientBill->update();
+    }
+
 
     public function mount(): void
     {

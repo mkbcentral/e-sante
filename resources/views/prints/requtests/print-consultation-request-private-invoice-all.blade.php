@@ -19,6 +19,7 @@
                                     {{ $consultationRequest->getRequestNumberFormatted() }}</span><br />
                                 <b>Nom</b>: {{ $consultationRequest->consultationSheet->name }} <br>
                                 <b>At:</b> {{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}<br />
+                                <b>Source:</b> {{ $consultationRequest->consultationSheet->source->name }}<br />
 
                             </td>
                         @else
@@ -28,6 +29,7 @@
                                 <b>Nom</b>: {{ $consultationRequest->consultationSheet->name }} <br>
                                 <b>Cash-ID</b>:{{ Auth::user()->name }} <br>
                                 <b>At:</b> {{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}<br />
+                                <b>Source:</b> {{ $consultationRequest->consultationSheet->source->name }}<br />
                             </td>
                         @endif
 
@@ -232,21 +234,21 @@
                 <table class="page-break">
 
                     @if ($consultationRequest->consultationSheet->subscription->is_private)
-                      <tr>
-                        <td colspan="3" style="border: none">
-                            <table style="border: none">
-                                <tr style="border: none">
-                                    <td style="border: none" class="text-bold text-left">
-                                        Client
-                                    </td>
+                        <tr>
+                            <td colspan="3" style="border: none">
+                                <table style="border: none">
+                                    <tr style="border: none">
+                                        <td style="border: none" class="text-bold text-left">
+                                            Client
+                                        </td>
 
-                                    <td style="border: none" class="text-right ">
-                                        CashId
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+                                        <td style="border: none" class="text-right ">
+                                            CashId
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                     @endif
 
                 </table>

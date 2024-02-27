@@ -3,7 +3,7 @@
         <x-navigation.bread-crumb-item label='Dashboard' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="row">
+        <div class="row" >
             <div class="col-md-6">
                 @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
                 @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')

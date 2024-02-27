@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" wire:poll.15s>
     <div class="card-body bg-secondary">
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center mr-2">
@@ -19,10 +19,10 @@
                 </p>
                 <hr>
                 <div class="d-flex justify-content-center pb-2">
-                    <x-widget.loading-circular-md />
+                    <x-widget.loading-circular-md :color="'text-white'" />
                 </div>
                 @if (!$tota_cdf != 0 || $tota_usd != 0)
-                    <div class="row mt-2" wire:loading.class='d-none'>
+                    <div class="row mt-2" >
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="info-box bg-navy">
                                 <span class="info-box-icon bg-indigo elevation-1"><i class="fas fa-dollar-sign"></i></span>

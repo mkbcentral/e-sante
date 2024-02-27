@@ -50,6 +50,7 @@
                             <th>Cleint</th>
                             <th class="text-right">MT USD</th>
                             <th class="text-right">MT CDF</th>
+                            <th class="text-center">STATUS</th>
                             <th class="text-lg-center">Actions</th>
                         </tr>
                     </thead>
@@ -97,15 +98,20 @@
                                         @endif
 
                                     </td>
+                                    <td class="text-center  {{ !$bill->is_validated?'':'bg-success ' }}">
+                                        {{ !$bill->is_validated?'En cours':'Terminé' }}
+                                    </td>
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $bill }})"
                                             class="btn-sm btn-primary" />
-                                        <a href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
-                                         class="btn btn-sm  btn-secondary"
-                                            target="_blanck"><i class="fa fa-print  "
+                                        <a wire:click='printBill({{$bill  }})' href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
+                                            class="btn btn-sm  btn-secondary" target="_blanck"><i class="fa fa-print  "
                                                 aria-hidden="true"></i></a>
-                                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $bill }})" class="btn-sm btn-danger" />
+                                        @if (!$bill->is_validated)
+                                            <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
+                                                wire:click="delete({{ $bill }})" class="btn-sm btn-danger" />
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

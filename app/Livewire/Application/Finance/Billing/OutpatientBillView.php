@@ -59,6 +59,12 @@ class OutpatientBillView extends Component
         $this->dispatch('outpatientBillToFrom', $outpatientBill);
     }
 
+    public function OpenOtherDetailOutpatientBill()
+    {
+        $this->dispatch('otherDetalOutpatientBill', $this->outpatientBill);
+        $this->dispatch('open-form-new-other-detail-outpatient-bill');
+    }
+
     /**
      * openNewOutpatientBillModal
      *Open modal to create new bill
@@ -88,6 +94,8 @@ class OutpatientBillView extends Component
 
     public function printBill(OutpatientBill $outpatientBill)
     {
+        $outpatientBill->is_validated = true;
+        $outpatientBill->update();
         $this->outpatientBill=null;
         $this->isEditing=false;
     }
@@ -97,7 +105,7 @@ class OutpatientBillView extends Component
      */
     public function mount()
     {
-        //$this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
+        $this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
     }
 
     public function render()

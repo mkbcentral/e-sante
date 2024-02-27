@@ -8,6 +8,8 @@ use App\Models\ConsultationRequest;
 use App\Models\Hospital;
 use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
+use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
+use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Support\Facades\App;
 
 class OutpatientBillPrinterController extends Controller
@@ -16,6 +18,8 @@ class OutpatientBillPrinterController extends Controller
     {
 
         $outpatientBill = OutpatientBill::find($outpatientBillId);
+        $outpatientBill->is_validated=true;
+        $outpatientBill->update();
         $categories = CategoryTarif::all();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
@@ -31,11 +35,15 @@ class OutpatientBillPrinterController extends Controller
     public function printRapportByDateOutpatientBill($date)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
+        $consultationRequests= GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
         $total_cdf = GetOutpatientRepository::getTotalBillByDateGroupByCDF($date);
         $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
+        $total_cons_usd= GetConsultationRequestionAmountRepository::getTotalHospitalizeBycurrency('USD');
+        $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeBycurrency('CDF');
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(
-            ['listBill', 'date', 'total_cdf', 'total_usd']
+            ['listBill', 'date', 'total_cdf', 'total_usd','consultationRequests',
+                'total_cons_usd', 'total_cons_cdf']
         ));
         return $pdf->stream();
     }

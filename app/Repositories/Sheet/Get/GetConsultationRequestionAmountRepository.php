@@ -5,6 +5,7 @@ namespace App\Repositories\Sheet\Get;
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
 use App\Models\Source;
+use Carbon\Carbon;
 
 class GetConsultationRequestionAmountRepository
 {
@@ -147,7 +148,7 @@ class GetConsultationRequestionAmountRepository
         return $total;
     }
 
-    public static function getTotalHospitalize($month, $year, $idSubscription,$currency): int|float
+    public static function getTotalHospitalize($month, $year, $idSubscription, $currency): int|float
     {
         $amount = 0;
         $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
@@ -157,6 +158,7 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->where('consultation_requests.is_hospitalized', true)
+            ->where('consultation_requests.is_finished', true)
             ->select('consultation_requests.*')
             ->with(['consultation', 'rate'])
             ->get();
@@ -171,5 +173,38 @@ class GetConsultationRequestionAmountRepository
     }
 
 
+    public static function getTotalHospitalizeBycurrency($currency): int|float
+    {
+        $consultationRequests = ConsultationRequest::query()
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->with(['consultationSheet.subscription'])
+            ->select('consultation_requests.*')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereDate('consultation_requests.paid_at', Carbon::now())
+            ->where('consultation_requests.is_finished', true)
+            ->where('consultation_requests.is_hospitalized', true)
+            ->get();
 
+        $amount = 0;
+        foreach ($consultationRequests as  $consultationRequest) {
+            if ($consultationRequest->currency_id != null) {
+                if ($currency == "USD" && $consultationRequest->currency->name == "USD") {
+                    $amount += $consultationRequest->getTotalInvoiceUSD();
+                } else {
+                    $amount += $consultationRequest->getTotalInvoiceCDF();
+                }
+            } else {
+                # code...
+                if ($consultationRequest->consultationRequestCurrency) {
+                    if ($currency = "USD") {
+                        $amount += $consultationRequest->consultationRequestCurrency->amount_usd;
+                    } else {
+                        $amount += $consultationRequest->consultationRequestCurrency->amount_cdf;
+                    }
+                }
+            }
+        }
+        return $amount;
+    }
 }
