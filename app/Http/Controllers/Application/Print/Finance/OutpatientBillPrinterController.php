@@ -38,8 +38,8 @@ class OutpatientBillPrinterController extends Controller
         $consultationRequests= GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
         $total_cdf = GetOutpatientRepository::getTotalBillByDateGroupByCDF($date);
         $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
-        $total_cons_usd= GetConsultationRequestionAmountRepository::getTotalHospitalizeBycurrency('USD');
-        $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeBycurrency('CDF');
+        $total_cons_usd= GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
+        $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(
             ['listBill', 'date', 'total_cdf', 'total_usd','consultationRequests',

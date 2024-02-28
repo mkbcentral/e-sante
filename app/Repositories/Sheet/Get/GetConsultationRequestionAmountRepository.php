@@ -173,7 +173,7 @@ class GetConsultationRequestionAmountRepository
     }
 
 
-    public static function getTotalHospitalizeBycurrency($currency): int|float
+    public static function getTotalHospitalizeUSD(): int|float
     {
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
@@ -188,21 +188,34 @@ class GetConsultationRequestionAmountRepository
 
         $amount = 0;
         foreach ($consultationRequests as  $consultationRequest) {
-            if ($consultationRequest->currency_id != null) {
-                if ($currency == "USD" && $consultationRequest->currency->name == "USD") {
-                    $amount += $consultationRequest->getTotalInvoiceUSD();
-                } else {
-                    $amount += $consultationRequest->getTotalInvoiceCDF();
-                }
+            if ($consultationRequest->currency_id != null && $consultationRequest->currency->name == "USD") {
+                $amount += $consultationRequest->getTotalInvoiceUSD();
             } else {
-                # code...
-                if ($consultationRequest->consultationRequestCurrency) {
-                    if ($currency = "USD") {
-                        $amount += $consultationRequest->consultationRequestCurrency->amount_usd;
-                    } else {
-                        $amount += $consultationRequest->consultationRequestCurrency->amount_cdf;
-                    }
-                }
+                $amount += $consultationRequest?->consultationRequestCurrency?->amount_usd;
+            }
+        }
+        return $amount;
+    }
+
+    public static function getTotalHospitalizeCDF(): int|float
+    {
+        $consultationRequests = ConsultationRequest::query()
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->with(['consultationSheet.subscription'])
+            ->select('consultation_requests.*')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereDate('consultation_requests.paid_at', Carbon::now())
+            ->where('consultation_requests.is_finished', true)
+            ->where('consultation_requests.is_hospitalized', true)
+            ->get();
+
+        $amount = 0;
+        foreach ($consultationRequests as  $consultationRequest) {
+            if ($consultationRequest->currency_id != null && $consultationRequest->currency->name == "CDF") {
+                $amount += $consultationRequest->getTotalInvoiceCDF();
+            } else {
+                $amount += $consultationRequest?->consultationRequestCurrency?->amount_cdf;
             }
         }
         return $amount;

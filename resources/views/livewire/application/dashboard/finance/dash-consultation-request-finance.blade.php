@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card"  wire:poll.15s>
     <div class="card-header bg-pink">
         <div class="d-flex justify-content-between">
             <p class="text-center h4">
@@ -19,7 +19,7 @@
             </div>
             <div id="charte"></div>
             @if (!$subscriptions->isEmpty())
-                <div class="row mt-2" wire:loading.class='d-none'>
+                <div class="row mt-2" >
                     @foreach ($subscriptions as $subscription)
                         @if ($subscription->getAmountUSDBySubscription($month, $year) != 0)
                             <div class="col-12 col-sm-6 col-md-6">
