@@ -22,6 +22,7 @@ use App\Livewire\Application\Tarification\PriceList;
 use App\Livewire\Application\Sheet\MainConsultationRequest;
 use App\Livewire\Application\Sheet\MainConsultPatient;
 use App\Livewire\Application\Product\List\ListProduct;
+use App\Livewire\Application\Product\ProductPurchaseView;
 use App\Livewire\Application\Product\ProductSupplyView;
 use App\Livewire\Application\Product\Requisition\ProductRequisitionItemsView;
 use App\Livewire\Application\Product\Supply\Form\AddProductsInSupply;
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');
     Route::get('product/list', ListProduct::class)->name('product.list');
     Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
+    Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');

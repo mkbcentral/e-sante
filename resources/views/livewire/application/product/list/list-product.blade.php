@@ -84,7 +84,7 @@
                             </tr>
                         @else
                             @foreach ($products as $index => $product)
-                                <tr style="cursor: pointer;" class="{{ $product->price == 0 ? 'bg-danger' : '' }}">
+                                <tr style="cursor: pointer;" class="{{ $product->price == 0 ? 'bg-warning ' : '' }}">
                                     <td class="text-center">
                                         {{ $index + 1 }}
                                     </td>
@@ -94,9 +94,8 @@
                                     <td class="text-center">{{ $product->initial_quantity }}</td>
                                     <td class="text-center">{{ $product->getNumberProductSupply() }}</td>
                                     <td class="text-center">{{ $product->getTotalOutputProducts() }}</td>
-                                    <td
-                                        class=" {{ $product->getAmountStockGlobal() <= 5 ? 'bg-danger ' : '' }} text-center">
-                                        {{ $product->getAmountStockGlobal() }}
+                                    <td class=" {{ $product->getProductStockStatus() }} text-center ">
+                                        {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}
                                     </td>
                                     <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>

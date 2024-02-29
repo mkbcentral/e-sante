@@ -8,8 +8,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-indigo">
-                    <div class="card-header">
-                        <i class="fa fa-list" aria-hidden="true"></i> LISTTE DE DEMANDE
+                    <div class="card-header d-flex justify-content-between">
+                      <span>  <i class="fa fa-list" aria-hidden="true"></i> LISTTE DE DEMANDE</span>
                     </div>
                     <div class="card-body">
                         @livewire('application.product.supply.list-supplies-view')

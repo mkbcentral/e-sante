@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,16 @@ class Product extends Model
     protected $casts = [
         'expiration_date' => 'datetime'
     ];
+
+    /**
+     * Get the productCategory that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function productCategory(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
     public function getExpirationDateAttribute($value): string
     {
         return Carbon::parse($value)->toFormattedDate();
@@ -40,6 +51,16 @@ class Product extends Model
     public function productSupplyProducts(): HasMany
     {
         return $this->hasMany(productSupplyProduct::class);
+    }
+
+    /**
+     * The productPurcharses that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function productPurcharses(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductPurchase::class)->withPivot(['id', 'quantity_stock', 'quantity_to_order']);
     }
     /***
      * get number of product by invoice
@@ -144,7 +165,7 @@ class Product extends Model
      */
     public function getTotalOutputProducts(): int|float
     {
-        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest()+$this->getOutputFormRequisition();
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
     }
     /**
      * Stotck global
@@ -152,10 +173,40 @@ class Product extends Model
     public function getAmountStockGlobal(): int|float
     {
         if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == "GOLF") {
-            return ($this->initial_quantity + $this->getNumberProductSupply()) -$this->getTotalOutputProducts();
+            return ($this->initial_quantity + $this->getNumberProductSupply()) - $this->getTotalOutputProducts();
         } else {
             return ($this->getNumberProductSupply()) -
                 ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
         }
+    }
+
+    public function getProductStockStatus(): string
+    {
+        $status = '';
+        if ($this->productCategory->name == "COMPRIME") {
+            if ($this->getAmountStockGlobal() <= 30) {
+                $status = 'bg-danger';
+            }
+        } else if ($this->productCategory->name == "SIROP") {
+            if ($this->getAmountStockGlobal() <= 10) {
+                $status = 'bg-danger';
+            }
+        } else if ($this->productCategory->name == "INJECTABLE") {
+            if ($this->getAmountStockGlobal() <= 20) {
+                $status = 'bg-danger';
+            }
+        } else if ($this->productCategory->name == "LIQUIDE" ||
+                 $this->productCategory->name == "PERFUSION" ||
+                 $this->productCategory->name == "INFUSION"
+                 ) {
+            if ($this->getAmountStockGlobal() <= 10) {
+                $status = 'bg-danger';
+            }
+        } else {
+            if ($this->getAmountStockGlobal() <= 5) {
+                $status = 'bg-danger';
+            }
+        }
+        return $status;
     }
 }

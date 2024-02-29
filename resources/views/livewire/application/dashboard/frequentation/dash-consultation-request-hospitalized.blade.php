@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card"  wire:poll.60s>
     <div class="card-header bg-indigo">
        <div class="d-flex justify-content-between align-items-center">
          <div>

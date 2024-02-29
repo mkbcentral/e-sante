@@ -18,7 +18,7 @@ class OutpatientBillPrinterController extends Controller
     {
 
         $outpatientBill = OutpatientBill::find($outpatientBillId);
-        $outpatientBill->is_validated=true;
+        $outpatientBill->is_validated = true;
         $outpatientBill->update();
         $categories = CategoryTarif::all();
         $pdf = App::make('dompdf.wrapper');
@@ -35,15 +35,17 @@ class OutpatientBillPrinterController extends Controller
     public function printRapportByDateOutpatientBill($date)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
-        $consultationRequests= GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
+        $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
         $total_cdf = GetOutpatientRepository::getTotalBillByDateGroupByCDF($date);
         $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
-        $total_cons_usd= GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
+        $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
         $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(
-            ['listBill', 'date', 'total_cdf', 'total_usd','consultationRequests',
-                'total_cons_usd', 'total_cons_cdf']
+            [
+                'listBill', 'date', 'total_cdf', 'total_usd', 'consultationRequests',
+                'total_cons_usd', 'total_cons_cdf'
+            ]
         ));
         return $pdf->stream();
     }
@@ -68,7 +70,7 @@ class OutpatientBillPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.created_at', 'ASC')
+            ->orderBy('consultation_requests.request_number', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
@@ -88,7 +90,7 @@ class OutpatientBillPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.created_at', 'ASC')
+            ->orderBy('consultation_requests.request_number', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
@@ -109,17 +111,24 @@ class OutpatientBillPrinterController extends Controller
         $categories = CategoryTarif::all();
         $currency = 'CDF';
         $consultationRequests = ConsultationRequest::query()
-            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->join(
+                'consultation_sheets',
+                'consultation_sheets.id',
+                'consultation_requests.consultation_sheet_id'
+            )
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.created_at', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
             ->whereYear('consultation_requests.created_at', $year)
+            ->orderBy('consultation_requests.request_number', 'ASC')
             ->get();
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('prints.requtests.print-consultation-request-private-invoice-all', compact(['consultationRequests', 'categories', 'currency']));
+        $pdf->loadView(
+            'prints.requtests.print-consultation-request-private-invoice-all',
+            compact(['consultationRequests', 'categories', 'currency'])
+        );
         return $pdf->stream();
     }
 }

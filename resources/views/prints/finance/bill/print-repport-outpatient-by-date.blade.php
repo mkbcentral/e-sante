@@ -81,6 +81,10 @@
         </table>
     </div>
     <div>
+        @php
+            $amount_cdf=0;
+            $amount_usd=0;
+        @endphp
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
         <div class="text-right"><span>Fait à Lubumbashi, Le {{ date('d/m/Y') }}</span></div>
         <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT HOSPITALISES</h4>

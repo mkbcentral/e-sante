@@ -14,6 +14,7 @@
                         Auth::user()->roles->pluck('name')->contains('Caisse') ||
                         Auth::user()->roles->pluck('name')->contains('Admin'))
                     @livewire('application.dashboard.finance.dash-outpaient-bil')
+                    @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize')
                 @endif
                 @if (Auth::user()->roles->pluck('name')->contains('Ag') || Auth::user()->roles->pluck('name')->contains('Admin'))
                     @livewire('application.dashboard.finance.dash-consultation-request-finance')
