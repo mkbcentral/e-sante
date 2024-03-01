@@ -1,6 +1,6 @@
 <div wire:poll.15s>
     @livewire('application.product.requisition.form.new-product-requisition')
-    <x-navigation.bread-crumb icon='fa fa-capsules' label='GESTION DES APPROS EN MEDICAMENTS' color="text-success">
+    <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS' color="text-success">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Appro médicaments' />
     </x-navigation.bread-crumb>
@@ -77,9 +77,16 @@
                                                 </x-form.button>
                                             @endif
                                         @else
-                                            <x-navigation.link-icon class="btn btn-sm btn-primary"
-                                                href="{{ route('product.requisition', $requisition) }}" wire:navigate
-                                                :icon="'fa fa-plus-circle'" />
+                                            @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                                                <x-navigation.link-icon class="btn btn-sm btn-primary"
+                                                    href="{{ route('product.requisition', $requisition) }}"
+                                                    wire:navigate :icon="'fa fa-eye'" />
+                                            @else
+                                                <x-navigation.link-icon class="btn btn-sm btn-primary"
+                                                    href="{{ route('product.requisition', $requisition) }}"
+                                                    wire:navigate :icon="'fa fa-plus-circle'" />
+                                            @endif
+
                                             <x-form.icon-button :icon="' fa fa-edit '" class="btn-sm btn-info"
                                                 wire:click='edit({{ $requisition }})' />
                                             <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
