@@ -5,8 +5,8 @@
         <div><span class="text-bold">Mois:</span> {{ $productPurchase->created_at->format('M') }}</div>
         <div><span class="text-bold4">Nbre:</span> {{ $productPurchase->products->count() }}</div>
     </div>
-    <table class="table table-bordered table-sm">
-        <thead class="bg-indigo">
+    <table class="table table-striped table-sm">
+        <thead class="table-dark">
             <tr class="border border-1">
                 <th>#</th>
                 <th>DESIGNATION</th>

@@ -21,6 +21,13 @@ class PriceList extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
+    public $type_data= 'all';
+
+    public array $rows = [
+        ['label' => 'Tout', 'value' => 'all'],
+        ['label' => 'Privé', 'value' => 'private'],
+        ['label' => 'Abonné', 'value' => 'subscriber'],
+    ];
 
 
     /**

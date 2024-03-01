@@ -17,7 +17,7 @@
                 @endforeach
             </ul>
         </div>
-        <div class="card">
+        <div class="card card-primary card-outline">
             <div class="card-body">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" wire:click='makeIsByDate'

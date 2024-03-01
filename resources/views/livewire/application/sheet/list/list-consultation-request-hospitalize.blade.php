@@ -4,7 +4,7 @@
     @livewire('application.sheet.widget.consultation-request-detail')
     @livewire('application.sheet.form.edit-consultation-request-info')
     @livewire('application.sheet.form.edit-consultation-request-currency')
-    <div class="card mt-2">
+    <div class="card card-primary card-outline ">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <div class="d-flex  align-items-center">

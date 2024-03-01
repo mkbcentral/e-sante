@@ -3,6 +3,7 @@
 use App\Http\Controllers\Application\Navigation\AppNavigationController;
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
+use App\Http\Controllers\Application\Product\OtherPrinterController;
 use App\Http\Controllers\Application\Product\ProductInvoicePrinterController;
 use App\Http\Controllers\Application\Product\ProductPrinterController;
 use App\Livewire\Application\Admin\MainAdmin;
@@ -75,7 +76,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
             Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
         });
-
         Route::controller(ProductPrinterController::class)->group(function(){
             Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
             Route::get('product/price', 'printProductListPrice')->name('product.list.price.print');
@@ -87,6 +87,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        Route::controller(ProductInvoicePrinterController::class)->group(function(){
             Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
+       });
+
+       Route::controller(OtherPrinterController::class)->group(function(){
+            Route::get('tarif-list-price/{type}/{categoryTarif?}','printListPriceTarif')->name('print.tarification.prices');
        });
     });
 
