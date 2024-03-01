@@ -29,8 +29,9 @@ class MakeQueryBuilderHelper
     public static function getSingleDataWithOneWhereClause(
         string $tableName,
         string $colName,
-        string $value){
-        return DB::table($tableName)->where($colName,$value)
+        string $value
+    ) {
+        return DB::table($tableName)->where($colName, $value)
             ->first();
     }
     /**
@@ -47,24 +48,37 @@ class MakeQueryBuilderHelper
         string $colName1,
         string $colName2,
         string $value1,
-        string $value2){
-        return DB::table($tableName)->where($colName1,$value1)
-            ->where($colName2,$value2)
+        string $value2
+    ) {
+        return DB::table($tableName)->where($colName1, $value1)
+            ->where($colName2, $value2)
             ->first();
     }
-    public static function getData(string $tableName,string $value1,$value2){
-       return DB::table($tableName)->where('consultation_request_id',$value1)
-           ->where('product_id',$value2)
-           ->first();
+    public static function getSingleData(string $tableName, $column, string $value)
+    {
+        return DB::table($tableName)->where($column, $value)
+            ->first();
     }
-    public static function update(string $tableName,string $colName,string $id, array $data): int
+
+    public static function getData(string $tableName, string $value1, $value2)
+    {
+        return DB::table($tableName)->where('consultation_request_id', $value1)
+            ->where('product_id', $value2)
+            ->first();
+    }
+    public static function update(string $tableName, string $colName, string $id, array $data): int
     {
         return DB::table($tableName)
             ->where($colName, $id)
             ->update($data);
     }
-    public static function delete(string $tableName,string $colName, string $id): int
+    public static function delete(string $tableName, string $colName, string $id): int
     {
-        return  DB::table($tableName)->where('id',$id)->delete();
+        return  DB::table($tableName)->where('id', $id)->delete();
+    }
+
+    public static function deleteWithKey(string $tableName, string $colName, string $value): int
+    {
+        return  DB::table($tableName)->where($colName, $value)->delete();
     }
 }

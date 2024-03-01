@@ -4,6 +4,7 @@ use App\Http\Controllers\Application\Navigation\AppNavigationController;
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
 use App\Http\Controllers\Application\Product\ProductInvoicePrinterController;
+use App\Http\Controllers\Application\Product\ProductPrinterController;
 use App\Livewire\Application\Admin\MainAdmin;
 use App\Livewire\Application\Configuration\MainConfiguration;
 use App\Livewire\Application\Dashboard\MainDashboard;
@@ -24,6 +25,7 @@ use App\Livewire\Application\Sheet\MainConsultPatient;
 use App\Livewire\Application\Product\List\ListProduct;
 use App\Livewire\Application\Product\ProductPurchaseView;
 use App\Livewire\Application\Product\ProductSupplyView;
+use App\Livewire\Application\Product\Requisition\MainProductRequisitionView;
 use App\Livewire\Application\Product\Requisition\ProductRequisitionItemsView;
 use App\Livewire\Application\Product\Supply\Form\AddProductsInSupply;
 use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
@@ -57,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/list', ListProduct::class)->name('product.list');
     Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
     Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
+    Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
@@ -71,6 +74,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('print-all-date/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
             Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
             Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
+        });
+
+        Route::controller(ProductPrinterController::class)->group(function(){
+            Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
         });
 
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {

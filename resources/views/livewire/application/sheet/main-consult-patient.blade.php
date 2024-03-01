@@ -17,7 +17,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between   align-items-center ">
 
-                    @if (Auth::user()->roles->pluck('name')->contains('Doctor')||Auth::user()->roles->pluck('name')->contains('Nurse'))
+                    @if (Auth::user()->roles->pluck('name')->contains('Doctor') || Auth::user()->roles->pluck('name')->contains('Nurse'))
                         @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
                         @livewire('application.widgets.input-check-box-mark-finished-widget', ['consultationRequest' => $consultationRequest])
                     @else
@@ -65,9 +65,13 @@
                                 Modfier ordonnace
                             </x-form.button>
                         @endif
-                        <x-navigation.link-icon
-                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <x-navigation.link-icon
+                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                        @endif
                     @endif
 
 

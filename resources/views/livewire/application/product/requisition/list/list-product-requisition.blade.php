@@ -1,16 +1,18 @@
 <div>
-    <div class="card card-cyan">
-        <div class="card-header">
+    <div class="card card-olive">
+        <div class="card-header h4">
             LISTE PRODUITS DEMANDES
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center ">
-                <x-form.input-search wire:model.live.debounce.500ms="q" />
-                 <x-widget.loading-circular-md />
+                <div>
+                     <x-widget.loading-circular-md />
+                </div>
+                 <x-form.input-search wire:model.live.debounce.500ms="q" bg='btn-success' />
             </div>
 
             <table class="table table-bordered table-sm mt-2">
-                <thead class="thead-light">
+                <thead class="bg-olive">
                     <tr>
                         <th>#</th>
                         <th>DESIGNATION</th>

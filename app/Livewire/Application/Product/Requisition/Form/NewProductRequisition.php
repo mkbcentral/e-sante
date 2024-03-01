@@ -39,6 +39,7 @@ class NewProductRequisition extends Component
     public function store()
     {
         $fields =  $this->validate();
+
         try {
             $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
             $fields['source_id'] = Source::DEFAULT_SOURCE();
@@ -80,6 +81,7 @@ class NewProductRequisition extends Component
     public function mount()
     {
         $this->agent_service_id = Auth::user()->agentService->id;
+        $this->created_at=date('Y-m-d H:i:s');
     }
 
     public function render()

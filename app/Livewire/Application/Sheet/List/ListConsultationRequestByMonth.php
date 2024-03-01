@@ -115,15 +115,19 @@ class ListConsultationRequestByMonth extends Component
     {
         try {
             $data
-                = GetConsultationRequestRepository::getConsultationRequestByDateMonth(
-                    $this->selectedIndex,
-                    $this->q,
-                    $this->sortBy,
-                    $this->sortAsc,
-                    500,
-                    $this->month_name,
-                    $this->year,
-                );
+                = ConsultationRequest::join(
+                    'consultation_sheets',
+                    'consultation_sheets.id',
+                    'consultation_requests.consultation_sheet_id'
+                )
+                ->where('consultation_sheets.subscription_id', $this->selectedIndex)
+                ->select('consultation_requests.*')
+                ->with(['consultationSheet.subscription'])
+                ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->whereMonth('consultation_requests.created_at', $this->month_name)
+                ->whereYear('consultation_requests.created_at', $this->year)
+                ->orderBy('consultation_requests.created_at', 'ASC')
+                ->get();
             foreach ($data as $index => $item) {
                 $consultationRequest = ConsultationRequest::find($item->id);
                 $consultationRequest->request_number = $index + 1;

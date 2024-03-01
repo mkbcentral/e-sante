@@ -1,5 +1,4 @@
 <x-print-layout>
-
     <div class="invoice-box">
         @foreach ($consultationRequests as $consultationRequest)
             @if ($consultationRequest)

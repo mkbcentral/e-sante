@@ -12,7 +12,7 @@
         <li class="nav-item mr-4">
             <div class="form-group d-flex align-items-center">
                 <label class="mr-2">Devise</label>
-                @livewire('application.finance.widget.currency-widget')''
+                @livewire('application.finance.widget.currency-widget')
             </div>
         </li>
         @auth

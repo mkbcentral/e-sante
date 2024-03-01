@@ -41,61 +41,67 @@ class ProductPurchaseView extends Component
 
     public function addProductItems(ProductPurchase $productPurchase)
     {
-        $products = Product::all();
-        foreach ($products as $product) {
-            if ($product?->productCategory?->name == "COMPRIME") {
-                if ($product->getAmountStockGlobal() <= 30) {
-                    MakeQueryBuilderHelper::create('product_product_purchase', [
-                        'product_id' => $product->id,
-                        'product_purchase_id' => $productPurchase->id,
-                        'quantity_stock' => $product->getAmountStockGlobal(),
-                        'quantity_to_order' => 0
-                    ]);
-                }
-            } else if ($product?->productCategory?->name == "SIROP") {
-                if ($product->getAmountStockGlobal() <= 10) {
-                    MakeQueryBuilderHelper::create('product_product_purchase', [
-                        'product_id' => $product->id,
-                        'product_purchase_id' => $productPurchase->id,
-                        'quantity_stock' => $product->getAmountStockGlobal(),
-                        'quantity_to_order' => 0
-                    ]);
-                }
-            } else if ($product?->productCategory?->name == "INJECTABLE") {
-                if ($product->getAmountStockGlobal() <= 20) {
-                    MakeQueryBuilderHelper::create('product_product_purchase', [
-                        'product_id' => $product->id,
-                        'product_purchase_id' => $productPurchase->id,
-                        'quantity_stock' => $product->getAmountStockGlobal(),
-                        'quantity_to_order' => 0
-                    ]);
-                } else if (
-                    $product?->productCategory?->name == "LIQUIDE" ||
-                    $product?->productCategory?->name == "PERFUSION" ||
-                    $product?->productCategory?->name == "INFUSION"
-                ) {
-                    if ($product->getAmountStockGlobal() <= 10) {
-                        MakeQueryBuilderHelper::create('product_product_purchase', [
-                            'product_id' => $product->id,
-                            'product_purchase_id' => $productPurchase->id,
-                            'quantity_stock' => $product->getAmountStockGlobal(),
-                            'quantity_to_order' => 0
-                        ]);
-                    }
+
+        try {
+            $products = Product::all();
+            foreach ($products as $product) {
+                $data = MakeQueryBuilderHelper::getSingleDataWithOneWhereClause('product_product_purchase', 'product_id', $product->id);
+                if ($data) {
+                    $this->dispatch('error', ['message' => $product->name.' Exist déjà']);
                 } else {
-                    if ($product->getAmountStockGlobal() <= 5) {
-                        MakeQueryBuilderHelper::create('product_product_purchase', [
-                            'product_id' => $product->id,
-                            'product_purchase_id' => $productPurchase->id,
-                            'quantity_stock' => $product->getAmountStockGlobal(),
-                            'quantity_to_order' => 0
-                        ]);
+                    if ($product?->productCategory?->name == "COMPRIME") {
+                        if ($product->getAmountStockGlobal() <= 30) {
+                            MakeQueryBuilderHelper::create('product_product_purchase', [
+                                'product_id' => $product->id,
+                                'product_purchase_id' => $productPurchase->id,
+                                'quantity_stock' => $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                                'quantity_to_order' => 0
+                            ]);
+                        }
+                    } else if ($product?->productCategory?->name == "SIROP") {
+                        if ($product->getAmountStockGlobal() <= 10) {
+                            MakeQueryBuilderHelper::create('product_product_purchase', [
+                                'product_id' => $product->id,
+                                'product_purchase_id' => $productPurchase->id,
+                                'quantity_stock' => $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                                'quantity_to_order' => 0
+                            ]);
+                        }
+                    } else if ($product?->productCategory?->name == "INJECTABLE") {
+                        if ($product->getAmountStockGlobal() <= 20) {
+                            MakeQueryBuilderHelper::create('product_product_purchase', [
+                                'product_id' => $product->id,
+                                'product_purchase_id' => $productPurchase->id,
+                                'quantity_stock' => $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                                'quantity_to_order' => 0
+                            ]);
+                        } else if (
+                            $product?->productCategory?->name == "LIQUIDE" ||
+                            $product?->productCategory?->name == "PERFUSION" ||
+                            $product?->productCategory?->name == "INFUSION"
+                        ) {
+                            if ($product->getAmountStockGlobal() <= 10) {
+                                MakeQueryBuilderHelper::create('product_product_purchase', [
+                                    'product_id' => $product->id,
+                                    'product_purchase_id' => $productPurchase->id,
+                                    'quantity_stock' => $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                                    'quantity_to_order' => 0
+                                ]);
+                            }
+                        } else {
+                            if ($product->getAmountStockGlobal() <= 5) {
+                                MakeQueryBuilderHelper::create('product_product_purchase', [
+                                    'product_id' => $product->id,
+                                    'product_purchase_id' => $productPurchase->id,
+                                    'quantity_stock' => $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                                    'quantity_to_order' => 0
+                                ]);
+                            }
+                        }
                     }
+                    $this->dispatch('added', ['message' => "Action bien réalisée !"]);
                 }
             }
-            $this->dispatch('added', ['message' => "Action bien réalisée !"]);
-        }
-        try {
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

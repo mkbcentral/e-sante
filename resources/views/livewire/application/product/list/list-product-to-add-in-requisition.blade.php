@@ -1,17 +1,17 @@
 <div>
     @livewire('application.product.form.add-product-to-requisition')
-     <div class="card card-indigo">
-        <div class="card-header">
+     <div class="card card-olive">
+        <div class="card-header h4">
             <i class="fa fa-list" aria-hidden="true"></i> LISTE DES PRODUITS
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-between">
-                <x-form.input-search :bg="'btn-secondary'" wire:model.live.debounce.500ms="q" />
+                <x-form.input-search :bg="'btn-success'" wire:model.live.debounce.500ms="q" />
                 <x-widget.loading-circular-md />
             </div>
 
             <table class="table table-bordered table-sm mt-0">
-                <thead class="bg-pink text-white">
+                <thead class="bg-olive">
                     <tr class="">
 
                         <th class="">

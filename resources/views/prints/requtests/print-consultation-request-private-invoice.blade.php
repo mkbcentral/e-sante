@@ -39,7 +39,7 @@
             <table class=" ">
                 <tr>
                     <td colspan="3"><b>{{ $consultationRequest->consultation->name }}</b></td>
-                    <td class="text-right">{{ app_format_number($consultationRequest->getConsultationPriceUSD(), 1) }}
+                    <td class="text-right">{{ app_format_number($consultationRequest->getConsultationPriceCDF(), 1) }}
                     </td>
                 </tr>
                 @foreach ($categories as $category)

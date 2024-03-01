@@ -1,12 +1,16 @@
 <div>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-sm">
         <thead class="thead-light">
             <tr>
                 <th>DESIGNATION</th>
                 <th class="text-center">NBRE</th>
-                <th class="text-right">PU</th>
-                <th class="text-right">PT</th>
-                <th>Actions</th>
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                    <th class="text-right">PU</th>
+                    <th class="text-right">PT</th>
+                @endif
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -21,50 +25,64 @@
                             <x-form.input type='text' wire:model='numberToEdit' wire:keydown.enter='update'
                                 :error="'numberToEdit'" />
                         </td>
-                        <td>
-                            <x-form.input type='text' wire:model='priceToEdit' wire:keydown.enter='update'
-                                :error="'priceToEdit'" />
-                        </td>
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <td>
+                                <x-form.input type='text' wire:model='priceToEdit' wire:keydown.enter='update'
+                                    :error="'priceToEdit'" />
+                            </td>
+                        @endif
                     @else
                         <td>{{ $consultationRequestNursing->name }}</td>
-                        <td class="text-center">{{ $consultationRequestNursing->number }}</td>
+                        <td class="text-center" style="width: 50px">{{ $consultationRequestNursing->number }}</td>
+                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <td class="text-right">
+                                {{ app_format_number(
+                                    $currencyName == 'USD' ? $consultationRequestNursing->getAmountUSD() : $consultationRequestNursing->getAmountCDF(),
+                                    1,
+                                ) }}
+                            </td>
+                        @endif
+                    @endif
+                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                            Auth::user()->roles->pluck('name')->contains('Ag') ||
+                            Auth::user()->roles->pluck('name')->contains('Admin'))
                         <td class="text-right">
                             {{ app_format_number(
-                                $currencyName == 'USD' ? $consultationRequestNursing->getAmountUSD() : $consultationRequestNursing->getAmountCDF(),
+                                $currencyName == 'USD'
+                                    ? $consultationRequestNursing->getAmountUSD() * $consultationRequestNursing->number
+                                    : $consultationRequestNursing->getAmountCDF() * $consultationRequestNursing->number,
                                 1,
                             ) }}
                         </td>
                     @endif
-                    <td class="text-right">
-                        {{ app_format_number(
-                            $currencyName == 'USD'
-                                ? $consultationRequestNursing->getAmountUSD() * $consultationRequestNursing->number
-                                : $consultationRequestNursing->getAmountCDF() * $consultationRequestNursing->number,
-                            1,
-                        ) }}
-                    </td>
-                    <td>
+                    <td class="text-center">
                         <x-form.edit-button-icon
                             wire:click="edit({{ $consultationRequestNursing->id }},
                                  {{ $consultationRequestNursing->number }})"
-                            class="btn-sm" />
+                            class="btn-sm btn-primary" />
                         <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
-                            wire:click="delete({{ $consultationRequestNursing }})" class="btn-sm" />
+                            wire:click="delete({{ $consultationRequestNursing }})" class="btn-sm btn-danger" />
                     </td>
                 </tr>
             @endforeach
-             <tr class="bg-secondary">
-                <td colspan="4" class="text-right">
-                    <span class="text-bold text-lg"> TOTAL:
-                        {{ app_format_number(
-                            $currencyName == 'USD'
-                                ? $consultationRequest->getNursingAmountUSD()
-                                : $consultationRequest->getNursingAmountCDF(),
-                            1,
-                        ) }}
-                    </span>
-                </td>
-            </tr>
+            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                    Auth::user()->roles->pluck('name')->contains('Ag') ||
+                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                <tr class="bg-secondary">
+                    <td colspan="4" class="text-right">
+                        <span class="text-bold text-lg"> TOTAL:
+                            {{ app_format_number(
+                                $currencyName == 'USD' ? $consultationRequest->getNursingAmountUSD() : $consultationRequest->getNursingAmountCDF(),
+                                1,
+                            ) }}
+                        </span>
+                    </td>
+                </tr>
+            @endif
         </tbody>
     </table>
 </div>

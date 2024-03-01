@@ -11,7 +11,7 @@ class ProductRequisition extends Model
 {
     use HasFactory;
 
-    protected $fillable=['number', 'agent_service_id', 'hospital_id', 'source_id'];
+    protected $fillable=['number', 'agent_service_id', 'hospital_id', 'source_id','created_at'];
 
     /**
      * Get the agentService that owns the ProductRequisition
