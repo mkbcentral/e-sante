@@ -32,8 +32,23 @@
                             <x-widget.list-product-family-widget wire:model.live="family_id" :error="'family_id'" />
                         </div>
                     </div>
-                    <x-form.button class="btn-secondary" wire:click="openCreationModal"><x-icons.icon-plus-circle />
-                        Nouveau produit</x-form.button>
+                    <div class="d-flex align-content-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                Exporter
+                            </button>
+                            <div class="dropdown-menu" role="menu" style="">
+                                <a class="dropdown-item" target="_blank" href="{{ route('product.list.price.print') }}">
+                                    <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste de prix
+                                </a>
+                            </div>
+                        </div>
+                        <x-form.button class="btn-secondary" wire:click="openCreationModal"><x-icons.icon-plus-circle />
+                            Nouveau produit</x-form.button>
+
+                    </div>
                 </div>
                 <table class="table table-bordered table-sm mt-0">
                     <thead class="bg-pink text-white">

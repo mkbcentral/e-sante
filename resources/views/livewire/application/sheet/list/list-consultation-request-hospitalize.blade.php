@@ -13,20 +13,24 @@
                     </div>
                     <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
                 </div>
-                <div class="bg-navy p-1 rounded-lg pr-2">
-                    <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                            <span class="money_format">CDF:
-                                {{ app_format_number($total_product_amount_cdf, 1) }}</span>
-                            |
-                            <span class="money_format">USD:
-                                {{ app_format_number($total_product_amount_usd, 1) }}</span>
-                        @else
-                            <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
-                            <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
-                        @endif
-                    </h3>
-                </div>
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                    <div class="bg-navy p-1 rounded-lg pr-2">
+                        <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                            @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                <span class="money_format">CDF:
+                                    {{ app_format_number($total_product_amount_cdf, 1) }}</span>
+                                |
+                                <span class="money_format">USD:
+                                    {{ app_format_number($total_product_amount_usd, 1) }}</span>
+                            @else
+                                <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                                <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+                            @endif
+                        </h3>
+                    </div>
+                @endif
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
@@ -63,7 +67,11 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            <th class="text-right">MONTANT</th>
+                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                                <th class="text-right">MONTANT</th>
+                            @endif
                             <th class="text-center">SUSCRIPTION</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
@@ -85,9 +93,10 @@
                                                     <i class="fa fa-arrow-right" aria-hidden="true"></i> Ajouter au
                                                     borderau
                                                 </a>
-                                                 <a class="dropdown-item" href="#"
+                                                <a class="dropdown-item" href="#"
                                                     wire:click='showEditCurrency({{ $consultationRequest }})'>
-                                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i> Changer la dévise
+                                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i> Changer la
+                                                    dévise
                                                 </a>
                                             </div>
                                         </div>
@@ -107,23 +116,27 @@
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
-                                <td class="text-right">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                        {{ app_format_number(
-                                            $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
-                                            1,
-                                        ) .
-                                            ' ' .
-                                            $currencyName }}
-                                    @else
-                                        {{ app_format_number(
-                                            $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
-                                            1,
-                                        ) .
-                                            ' ' .
-                                            $currencyName }}
-                                    @endif
-                                </td>
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                    <td class="text-right">
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @else
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td

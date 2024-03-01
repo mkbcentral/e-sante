@@ -49,18 +49,18 @@ class MainProductRequisitionView extends Component
             if ($productRequisition->productRequistionProducts->isEmpty()) {
                 $productRequisition->delete();
                 $this->dispatch('updated', ['message' => 'Action bien réalisée']);
-            }else{
+            } else {
                 $this->dispatch('error', ['message' => 'Action impossible, car la requistion contient des produits']);
             }
-
         } catch (Exception $ex) {
 
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
 
-    public function changeStatus(?ProductRequisition $productRequisition){
-       try {
+    public function changeStatus(?ProductRequisition $productRequisition)
+    {
+        try {
             if ($productRequisition->is_valided == true) {
                 $productRequisition->is_valided = false;
             } else {
@@ -68,14 +68,15 @@ class MainProductRequisitionView extends Component
             }
             $productRequisition->update();
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
-       } catch (Exception $ex) {
+        } catch (Exception $ex) {
 
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
 
-    public function mount(){
-        $this->month=date('m');
+    public function mount()
+    {
+        $this->month = date('m');
     }
 
     public function render()
@@ -83,17 +84,17 @@ class MainProductRequisitionView extends Component
         if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
             $productRequisitions = $this->agent_service_id == null ?
                 ProductRequisition::orderBy('created_at', 'desc')
-            ->whereMonth('created_at', $this->month)
+                ->whereMonth('created_at', $this->month)
                 ->paginate(10) :
                 ProductRequisition::orderBy('created_at', 'desc')
-            ->whereMonth('created_at', $this->month)
+                ->whereMonth('created_at', $this->month)
                 ->where('agent_service_id', $this->agent_service_id)
                 ->paginate(10);
         } else {
             $productRequisitions = ProductRequisition::orderBy('created_at', 'desc')
-            ->where('agent_service_id', Auth::user()->agentService->id)
-            ->whereMonth('created_at',$this->month)
-            ->paginate(10);
+                ->where('agent_service_id', Auth::user()->agentService->id)
+                ->whereMonth('created_at', $this->month)
+                ->paginate(10);
         }
         return view('livewire.application.product.requisition.main-product-requisition-view', [
             'productRequisitions' => $productRequisitions

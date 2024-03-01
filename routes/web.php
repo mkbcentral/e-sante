@@ -78,6 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::controller(ProductPrinterController::class)->group(function(){
             Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
+            Route::get('product/price', 'printProductListPrice')->name('product.list.price.print');
         });
 
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {

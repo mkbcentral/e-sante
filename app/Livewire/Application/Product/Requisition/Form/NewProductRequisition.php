@@ -81,7 +81,7 @@ class NewProductRequisition extends Component
     public function mount()
     {
         $this->agent_service_id = Auth::user()->agentService->id;
-        $this->created_at=date('Y-m-d H:i:s');
+        $this->created_at=date('Y-m-d');
     }
 
     public function render()
