@@ -31,16 +31,16 @@
                             {{ $currency == 'CDF'
                                 ? app_format_number($outpatientBill->getConsultationPriceCDF(), 1)
                                 : $outpatientBill->getConsultationPriceUSD() }}
-                            {{ $currency }}</td>
+                           </td>
                     </tr>
                 @endif
                 @foreach ($categories as $category)
                     @if (!$category->getOutpatientBillTarifItems($outpatientBill, $category)->isEmpty())
                         <tr class="bg-secondary text-white">
-                            <td colspan=""><b>{{ $category->name }}</b></td>
-                            <th class="text-right" scope="col">Qt</th>
-                            <th class="text-right" scope="col">P.U</th>
-                            <th class="text-right" scope="col">P.T</th>
+                            <th colspan=""><b>{{ $category->name }}</b></th>
+                            <th class="text-center" scope="col">QTE</th>
+                            <th class="text-right" scope="col">P.U CDF</th>
+                            <th class="text-right" scope="col">P.T CDF</th>
                         </tr>
                         <tbody>
                             @foreach ($category->getOutpatientBillTarifItems($outpatientBill, $category) as $item)
@@ -48,7 +48,7 @@
                                     <td class="">
                                         {{ $item->abbreviation == null ? $item->name : $item->abbreviation }}
                                     </td>
-                                    <td class="text-right">{{ $item->qty }}</td>
+                                    <td class="text-center ">{{ $item->qty }}</td>
                                     <td class="text-right">
                                         {{ $currency == 'CDF'
                                             ? app_format_number($item->price_private * $outpatientBill->rate->rate, 1)
@@ -67,13 +67,25 @@
                     @endif
                 @endforeach
                 @if ($outpatientBill->otherOutpatientBill != null)
+                    <tr class="bg-secondary text-white">
+                        <th colspan="">Autres</b></th>
+                        <th class="text-center " scope="col">QTE</th>
+                        <th class="text-right" scope="col">P.U CDF</th>
+                        <th class="text-right" scope="col">P.T CDF</th>
+                    </tr>
                     <tr class="">
-                        <td colspan="3"><b>{{ $outpatientBill->otherOutpatientBill->name }}</b></td>
+                        <td><b>{{ $outpatientBill->otherOutpatientBill->name }}</b></td>
+                        <td class="text-center"><b>1</b></td>
                         <td class="text-right">
                             {{ $currency == 'CDF'
                                 ? app_format_number($outpatientBill->getOtherOutpatientBillPriceCDF(), 1)
                                 : $outpatientBill->getOtherOutpatientBillPriceUSD() }}
-                            {{ $currency }}</td>
+                            </td>
+                        <td class="text-right">
+                            {{ $currency == 'CDF'
+                                ? app_format_number($outpatientBill->getOtherOutpatientBillPriceCDF(), 1)
+                                : $outpatientBill->getOtherOutpatientBillPriceUSD() }}
+                            </td>
                     </tr>
                 @endif
                 <tr class="bg-secondary">
@@ -98,9 +110,19 @@
                                 </td>
 
                                 <td style="border: none" class="text-right ">
-                                    CashId
+                                    Cash-Id
                                 </td>
                             </tr>
+                             <tr style="border: none">
+                                <td style="border: none" class="text-bold text-left">
+                                    {{ $outpatientBill->client_name }}
+                                </td>
+
+                                <td style="border: none" class="text-right ">
+                                    {{ Auth::user()->name }}
+                                </td>
+                            </tr>
+
                         </table>
                     </td>
                 </tr>

@@ -11,12 +11,7 @@
                 <x-form.label value="{{ __('Mois') }}" class="mr-1" />
                 <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
             </div>
-            <div class="d-flex align-items-center">
-                <x-form.label value="{{ __('Devise') }}" class="mr-1" />
-                @livewire('application.finance.widget.currency-widget')
-            </div>
         </div>
-
     </div>
     <div class="d-flex justify-content-center pb-2">
         <x-widget.loading-circular-md />
@@ -37,7 +32,7 @@
         </div>
         <div wire:loading.class='d-none'>
             <table class="table table-bordered table-sm">
-                <thead>
+                <thead class="bg-navy text-white text-uppercase">
                     <tr>
                         <th class="text-center">#</th>
                         <th>Date</th>
@@ -45,7 +40,6 @@
                         <th>Cleint</th>
                         <th class="text-right">MT USD</th>
                         <th class="text-right">MT CDF</th>
-                        <th class="text-lg-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,13 +86,7 @@
                                     @endif
 
                                 </td>
-                                <td class="text-center">
-                                    <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                        wire:click="delete({{ $bill }})" class="btn-sm" />
-                                    <a href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
-                                        target="_blanck"><i class="fa fa-print text-secondary  "
-                                            aria-hidden="true"></i></a>
-                                </td>
+
                             </tr>
                         @endforeach
                     @endif

@@ -27,8 +27,8 @@
                         ({{ $listBill->count() > 1 ? $listBill->count() . ' Facture réalisée' : $listBill->count() . ' Factured réalisées' }})
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-file-export"></i>
-                            Export </button>
+                        <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-print"></i>
+                            Imprimer </button>
                         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon"
                             data-toggle="dropdown">
                             <span class="sr-only">Toggle Dropdown</span>
@@ -36,8 +36,7 @@
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" target="_blanck"
                                 href="{{ route('rapport.date.outPatientBill.print', [$date_filter]) }}"><i
-                                    class="fas fa-file-pdf"></i> Fichier pdf</a>
-                            <a class="dropdown-item" href="#"><i class="fas fa-file-excel"></i> Fichier Excel</a>
+                                    class="fas fa-file-pdf"></i> Bordereau de versement</a>
                         </div>
                     </div>
                 </div>

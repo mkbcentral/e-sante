@@ -7,13 +7,9 @@
         <x-navigation.bread-crumb-item label='Facturation ambulatoire' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="row">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-body">
-                        @livewire('application.finance.billing.list.list-outpatient-bill-by-month')
-                    </div>
-                </div>
+        <div class="card">
+            <div class="card-body">
+                @livewire('application.finance.billing.list.list-outpatient-bill-by-month')
             </div>
         </div>
     </x-content.main-content-page>

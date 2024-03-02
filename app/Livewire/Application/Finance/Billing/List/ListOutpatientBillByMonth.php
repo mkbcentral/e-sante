@@ -15,18 +15,6 @@ class ListOutpatientBillByMonth extends Component
         'refreshListBill' => '$refresh'
     ];
     public string $month;
-    public string $currencyName = Currency::DEFAULT_CURRENCY;
-
-    /**
-     * getCurrencyName
-     * Get currency name
-     * @param  mixed $currency
-     * @return void
-     */
-    public function getCurrencyName(string $currency): void
-    {
-        $this->currencyName = $currency;
-    }
 
     public function updatedMonth($val): void
     {

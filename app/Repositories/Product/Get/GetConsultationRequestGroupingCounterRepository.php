@@ -4,7 +4,6 @@ namespace App\Repositories\Product\Get;
 
 use App\Models\ConsultationRequest;
 use Illuminate\Support\Collection;
-
 class GetConsultationRequestGroupingCounterRepository
 {
     /**
