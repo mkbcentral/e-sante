@@ -39,7 +39,7 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -166,7 +166,10 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                                     @endif
+                                    <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
+                                        wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                 </td>
+
                             </tr>
                         @endforeach
 

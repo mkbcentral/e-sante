@@ -1,4 +1,4 @@
-<div class="card py-2 px-4">
+<div class="card card-primary card-outline py-2 px-4">
     <div class="d-flex justify-content-between align-items-center mt-2 ">
         <div class="d-flex align-items-center">
             <div>

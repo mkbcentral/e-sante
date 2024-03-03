@@ -9,22 +9,22 @@
             <div class="d-flex align-items-center">
                 <x-form.input-search wire:model.live.debounce.500ms="q" />
                 <x-form.button class="btn btn-secondary btn-sm" wire:click="sortTarif('name')">Trier
-                    <x-form.sort-icon sortField="name"  :sortAsc="$sortAsc"  :sortBy="$sortBy" />
+                    <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                 </x-form.button>
             </div>
             <div class="d-flex justify-content-center pb-2">
-                <x-widget.loading-circular-md/>
+                <x-widget.loading-circular-md />
             </div>
             <div class="row mt-3">
-                @foreach($tarifs as $tarif)
+                @foreach ($tarifs as $tarif)
                     <div class="col-md-4">
                         <!-- checkbox -->
                         <div class="form-group clearfix">
                             <div class="icheck-primary d-inline">
-                                <input  wire:model.live="tarifsSelected" type="radio" value="{{$tarif->id}}"
-                                       id="{{str_replace(' ', '',$tarif->name)}}" >
-                                <label for="{{str_replace(' ', '',$tarif->name)}}">
-                                    {{$tarif->getNameOrAbbreviation()}}
+                                <input wire:model.live="tarifsSelected" type="radio" value="{{ $tarif->id }}"
+                                    id="{{ str_replace(' ', '', $tarif->name) }}">
+                                <label for="{{ str_replace(' ', '', $tarif->name) }}">
+                                    {{ $tarif->getNameOrAbbreviation() }}
                                 </label>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
     @push('js')
         <script type="module">
             //Open edit sheet modal
-            window.addEventListener('open-form-consultation-comment',e=>{
+            window.addEventListener('open-form-consultation-comment', e => {
                 $('#form-consultation-comment').modal('show')
             });
         </script>

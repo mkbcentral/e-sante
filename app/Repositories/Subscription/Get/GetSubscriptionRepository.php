@@ -21,4 +21,12 @@ class GetSubscriptionRepository
             ->where('is_private',true)
             ->get();
     }
+
+    public static function getAllSubscriptionListExecptPrivate(): Collection
+    {
+        return Subscription::where('hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('is_activated', true)
+            ->where('is_private', false)
+            ->get();
+    }
 }

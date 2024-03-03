@@ -26,7 +26,7 @@ class MakeQueryBuilderHelper
      * @param string $value
      * @return Model|Builder|object|null
      */
-    public static function getSingleDataWithOneWhereClause(
+    public static function getSnigleDataWithOneWhereClause(
         string $tableName,
         string $colName,
         string $value

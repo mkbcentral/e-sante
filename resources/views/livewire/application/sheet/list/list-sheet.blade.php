@@ -1,7 +1,7 @@
 <div>
     @livewire('application.sheet.form.new-consultation-sheet')
     @livewire('application.sheet.form.new-consultation-request')
-    <div class="card mt-2">
+    <div class="card card-primary card-outline mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <x-form.input-search wire:model.live.debounce.500ms="q" />
@@ -14,10 +14,10 @@
                             </span>
                         </button>
                     </div>
-                    <x-form.button class="btn-primary mt-1" wire:click="newSheet"><x-icons.icon-plus-circle /> Nouvelle
-                        fiche</x-form.button>
-                    <x-form.button class="btn-secondary mt-1" wire:click="testEvent"><x-icons.icon-plus-circle />
-                        Tester</x-form.button>
+                    <x-form.button class="btn-primary mt-1" wire:click="newSheet">
+                        <x-icons.icon-plus-circle />
+                        Nouvelle fiche
+                    </x-form.button>
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
@@ -52,7 +52,8 @@
                                 <td class="text-center">{{ sprintf('%04d', $sheet->number_sheet) }}</td>
                                 <td class="text-uppercase">
                                     {{ $sheet->name }}
-                                    <span class="text-danger text-bold">{{ $sheet->registration_number != null ? '/' . $sheet->registration_number : '' }}</span>
+                                    <span
+                                        class="text-danger text-bold">{{ $sheet->registration_number != null ? '/' . $sheet->registration_number : '' }}</span>
                                 </td>
                                 <td class="text-center">{{ $sheet->gender }}</td>
                                 <td class="text-center">{{ $sheet->getPatientAge() }}</td>
@@ -61,7 +62,8 @@
                                 <td class="text-center">
                                     <x-form.icon-button :icon="'fa fa-user-plus'"
                                         wire:click="newRequestForm({{ $sheet }})" class="btn-sm btn-info" />
-                                    <x-form.edit-button-icon wire:click="edit({{ $sheet }})" class="btn-sm btn-primary" />
+                                    <x-form.edit-button-icon wire:click="edit({{ $sheet }})"
+                                        class="btn-sm btn-primary" />
                                     <x-navigation.link-icon href="{{ route('patient.folder', $sheet->id) }}"
                                         wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                     <x-form.delete-button-icon wire:click="showDeleteDialog({{ $sheet }})"
