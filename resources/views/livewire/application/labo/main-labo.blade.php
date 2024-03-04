@@ -6,6 +6,7 @@
     <x-content.main-content-page>
         <div class="card-header p-2">
             <ul class="nav nav-pills">
+
                 @foreach ($subscriptions as $subscription)
                     <li class="nav-item">
                         <a wire:click='changeIndex({{ $subscription }})'
@@ -15,6 +16,12 @@
                         </a>
                     </li>
                 @endforeach
+                <li class="nav-item">
+                    <a wire:click='makeIsPrivate' class="nav-link {{ $isPrivate == true ? 'active' : '' }} "
+                        href="#inscription" data-toggle="tab">
+                        &#x1F4C2; PRIVE
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="card card-primary card-outline">
@@ -30,12 +37,16 @@
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
                 </div>
-                @if ($isByDate == true)
-                    @livewire('application.sheet.list.list-consultation-request', ['selectedIndex' => $selectedIndex])
-                @elseif ($isByMonth == true)
-                    @livewire('application.sheet.list.list-consultation-request-by-month', ['selectedIndex' => $selectedIndex])
-                @elseif ($isByPeriod == true)
-                    @livewire('application.sheet.list.list-consultation-request-by-period', ['selectedIndex' => $selectedIndex])
+                @if ($isPrivate == true)
+                    @livewire('application.labo.screens.labo-outpatient-bill-labo')
+                @else
+                    @if ($isByDate == true)
+                        @livewire('application.sheet.list.list-consultation-request', ['selectedIndex' => $selectedIndex])
+                    @elseif ($isByMonth == true)
+                        @livewire('application.sheet.list.list-consultation-request-by-month', ['selectedIndex' => $selectedIndex])
+                    @elseif ($isByPeriod == true)
+                        @livewire('application.sheet.list.list-consultation-request-by-period', ['selectedIndex' => $selectedIndex])
+                    @endif
                 @endif
             </div>
         </div>

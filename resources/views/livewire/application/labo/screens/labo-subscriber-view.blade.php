@@ -1,7 +1,8 @@
 <div>
     <x-navigation.bread-crumb icon='fa fa-folder' color='text-success' label='EXEMENS DE LABORATOIRE'>
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
-        <x-navigation.bread-crumb-item label='Demande de consultation' />
+       <x-navigation.bread-crumb-item label='Liste patients' link='labo.main' isLinked=true />
+        <x-navigation.bread-crumb-item label='Examen de labo' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
         <div class="row ">

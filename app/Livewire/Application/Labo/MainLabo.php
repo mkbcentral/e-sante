@@ -13,24 +13,28 @@ class MainLabo extends Component
     ];
     public int $selectedIndex;
     public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
+    public $isPrivate=false;
 
     public function makeIsByDate()
     {
         $this->isByDate = true;
         $this->isByMonth = false;
         $this->isByPeriod = false;
+        $this->dispatch('byDate', $this->isByDate);
     }
     public function makeIsByMonth()
     {
         $this->isByDate = false;
         $this->isByMonth = true;
         $this->isByPeriod = false;
+        $this->dispatch('byMonth', $this->isByMonth);
     }
     public function makeIsByPeriod()
     {
         $this->isByDate = false;
         $this->isByMonth = false;
         $this->isByPeriod = true;
+        $this->dispatch('byPeriod', $this->isByPeriod);
     }
 
     /**
@@ -41,7 +45,13 @@ class MainLabo extends Component
     public  function changeIndex(Subscription $subscription): void
     {
         $this->selectedIndex = $subscription->id;
+        $this->isPrivate=false;
         $this->dispatch('selectedIndex', $this->selectedIndex);
+    }
+
+    public function makeIsPrivate(){
+        $this->isPrivate=true;
+        $this->selectedIndex=0;
     }
 
     public function mount()
@@ -59,6 +69,7 @@ class MainLabo extends Component
     {
         return view('livewire.application.labo.main-labo', [
             'subscriptions' => GetSubscriptionRepository::getAllSubscriptionListExecptPrivate(),
+
         ]);
     }
 }

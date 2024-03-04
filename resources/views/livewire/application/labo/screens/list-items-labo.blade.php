@@ -17,7 +17,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categroryTarif->getConsultationTarifItems($consultationRequest, $categroryTarif) as $tarif)
+                    @if ($categroryTarif->getConsultationTarifItems($consultationRequest, $categroryTarif)->isEmpty())
+                          <tr>
+                                <td colspan="4" class="text-center"> <x-errors.data-empty /></td>
+                            </tr>
+                    @else
+                         @foreach ($categroryTarif->getConsultationTarifItems($consultationRequest, $categroryTarif) as $tarif)
                         <tr>
                             <td>{{ $tarif->abbreviation == null ? $tarif->name : $tarif->abbreviation }}</td>
                             <td class="text-xl-center">
@@ -44,6 +49,8 @@
                             </td>
                         </tr>
                     @endforeach
+                    @endif
+
                 </tbody>
             </table>
         </div>

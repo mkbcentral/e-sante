@@ -14,6 +14,7 @@ use App\Livewire\Application\Finance\Billing\MainOutPatientBillReport;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Labo\MainLabo;
 use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
+use App\Livewire\Application\Labo\Screens\MakeLaboOutpatientBillView;
 use App\Livewire\Application\Localization\MainLocalization;
 use App\Livewire\Application\Navigation\Mainnavigation;
 use App\Livewire\Application\Sheet\MainSheet;
@@ -69,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('labo',MainLabo::class)->name('labo.main');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
+    Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('product-requistion/{productRequisition}',ProductRequisitionItemsView::class)->name('product.requisition');
 
     Route::prefix('print')->group(function () {
