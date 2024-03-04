@@ -90,6 +90,11 @@ class MainProductRequisitionView extends Component
                 ->whereMonth('created_at', $this->month)
                 ->where('agent_service_id', $this->agent_service_id)
                 ->paginate(10);
+        } elseif (Auth::user()->roles->pluck('name')->contains('Nurse')) {
+            $productRequisitions = ProductRequisition::orderBy('created_at', 'desc')
+                ->whereIn('agent_service_id', [Auth::user()->agentService->id,5,6,7])
+                ->whereMonth('created_at', $this->month)
+                ->paginate(10);
         } else {
             $productRequisitions = ProductRequisition::orderBy('created_at', 'desc')
                 ->where('agent_service_id', Auth::user()->agentService->id)
