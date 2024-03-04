@@ -3,7 +3,6 @@
         headerLabelIcon='fa fa-pills'>
         <form wire:submit='handlerSubmit'>
             <div class="card p-2">
-
                 <div class="form-group">
                     <x-form.label value="{{ __('Service') }}" />
                     <x-widget.list-agent-service-widget
