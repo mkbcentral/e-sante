@@ -9,7 +9,7 @@
                         Q. GOLF TSHAMALALE/LUBUMBASHI<br />
                         RCCM:CD/LUBUMBASHI/RCCM/19-B-00658 <br>
                         N° IMPOT A2029032E <br>
-                        Contact: (+243 971330007)
+                        Contact: (+243 853951763)
                     </td>
                     @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
                         <td class="text-left">
@@ -59,26 +59,35 @@
                                     </td>
                                     <td class="text-center">{{ $item->qty }}</td>
                                     <td class="text-right">
-                                        {{ $currency == 'CDF'
-                                            ? app_format_number($item->price_private * $consultationRequest->rate->rate, 1)
-                                            : app_format_number($item->price_private, 0) }}
+                                        @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
+                                            {{ $currency == 'CDF'
+                                                ? app_format_number($item->subscriber_price * $consultationRequest->rate->rate, 1)
+                                                : app_format_number($item->subscriber_price, 0) }}
+                                        @else
+                                            {{ $currency == 'CDF'
+                                                ? app_format_number($item->price_private * $consultationRequest->rate->rate, 1)
+                                                : app_format_number($item->price_private, 0) }}
+                                        @endif
+
                                     </td>
                                     <td class="text-right">
-                                        {{ $currency == 'CDF'
-                                            ? app_format_number($item->price_private * $item->qty * $consultationRequest->rate->rate, 1)
-                                            : app_format_number($item->price_private * $item->qty, 0) }}
+                                        @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
+                                            {{ $currency == 'CDF'
+                                                ? app_format_number($item->subscriber_price * $item->qty * $consultationRequest->rate->rate, 1)
+                                                : app_format_number($item->subscriber_price * $item->qty, 0) }}
+                                        @else
+                                            {{ $currency == 'CDF'
+                                                ? app_format_number($item->price_private * $item->qty * $consultationRequest->rate->rate, 1)
+                                                : app_format_number($item->price_private * $item->qty, 0) }}
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
                             <tr class="total">
                                 <td colspan="4" class="text-right">
                                     <b> Total:
-                                        {{ app_format_number(
-                                            $currency == 'USD'
-                                                ? $category->getTotalTarifInvoiceByCategoryUSD($consultationRequest, $category)
-                                                : $category->getTotalTarifInvoiceByCategoryCDF($consultationRequest, $category),
-                                            1,
-                                        ) }}
+                                        {{ app_format_number($category->getTotalTarifInvoiceByCategoryCDF($consultationRequest, $category), 1) }}
                                     </b>
                                 </td>
                             </tr>
@@ -130,6 +139,7 @@
                             <td>{{ $consultationRequestNursing->name }}</td>
                             <td class="text-center">{{ $consultationRequestNursing->number }}</td>
                             <td class="text-right">
+
                                 {{ app_format_number(
                                     $currency == 'USD' ? $consultationRequestNursing->getAmountUSD() : $consultationRequestNursing->getAmountCDF(),
                                     1,
@@ -172,75 +182,89 @@
                             </td>
                             <td class="text-center">{{ $consultationRequestHospitalization->number_of_day }}</td>
                             <td class="text-right">
-                                {{ app_format_number(
-                                    $currency == 'USD'
-                                        ? $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateUSD()
-                                        : $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateCDF(),
-                                    1,
-                                ) }}
+                                @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
+                                    {{ app_format_number(
+                                        $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountSuscriberCDF(),
+                                        1,
+                                    ) }}
+                                @else
+                                    {{ app_format_number(
+                                        $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateCDF(),
+                                        1,
+                                    ) }}
+                                @endif
+
                             </td>
                             <td class="text-right">
-                                {{ app_format_number(
-                                    $currency == 'USD'
-                                        ? $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateUSD() *
-                                            $consultationRequestHospitalization->number_of_day
-                                        : $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateCDF() *
+                                @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
+                                    {{ app_format_number(
+                                        $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountSuscriberCDF() *
                                             $consultationRequestHospitalization->number_of_day,
-                                    1,
-                                ) }}
+                                        1,
+                                    ) }}
+                                @else
+                                    {{ app_format_number(
+                                        $consultationRequestHospitalization->hospitalizationRoom->hospitalization->getAmountPrivateCDF() *
+                                            $consultationRequestHospitalization->number_of_day,
+                                        1,
+                                    ) }}
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach
                     <tr class="total">
                         <td colspan="4" class="text-right">
                             <b>Total:
-                                {{ app_format_number(
-                                    $currency == 'USD'
-                                        ? $consultationRequest->getHospitalizationAmountUSD()
-                                        : $consultationRequest->getHospitalizationAmountCDF(),
-                                    1,
-                                ) }}
+                                {{ app_format_number($consultationRequest->getHospitalizationAmountCDF(), 1) }}
                             </b>
                         </td>
                     </tr>
                 @endif
 
                 <tr class="bg-secondary">
+                    @if ($consultationRequest->consultationSheet->subscription->is_private)
                     <td colspan="4" class="text-right text-white">Payment infos</td>
+                    @else
+                    <td colspan="4" class="text-right text-white text-uppercase text-bold">Total général</td>
+                    @endif
                 </tr>
                 <tr class="total " class="w-25">
                     <td colspan="4" class="text-right">
                         <table>
                             <tr>
-                                <td colspan="4"colspan="4" class="text-right">
+                                <td colspan="4"colspan="4" class="text-right text-bold h5">
                                     {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) . ' Fc' }}</td>
                             </tr>
-
+                            @if ($consultationRequest->consultationSheet->subscription->is_private)
                             <tr>
                                 <td colspan="4" class="text-right">
                                     {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) . ' $' }}</td>
                             </tr>
+                            @endif
                         </table>
                     </td>
                 </tr>
             </table>
-            <table>
-                <tr>
-                    <td colspan="3" style="border: none">
-                        <table style="border: none">
-                            <tr style="border: none">
-                                <td style="border: none" class="text-bold text-left">
-                                    Client
-                                </td>
+            @if ($consultationRequest->consultationSheet->subscription->is_private)
+                <table>
+                    <tr>
+                        <td colspan="3" style="border: none">
+                            <table style="border: none">
+                                <tr style="border: none">
+                                    <td style="border: none" class="text-bold text-left">
+                                        Client
+                                    </td>
 
-                                <td style="border: none" class="text-right ">
-                                    CashId
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                                    <td style="border: none" class="text-right ">
+                                        CashId
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            @endif
         @endif
     </div>
 </x-print-layout>

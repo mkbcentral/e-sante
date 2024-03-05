@@ -89,6 +89,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {
             Route::get('consultation-request-private-/{id}', 'printPrivateInvoiceByDate')->name('consultation.request.private.invoice');
+            Route::get('consultation-requests-has-not-shipping-ticket/{subscriptionId}/{month}', 'printConsultationRequestHasNotShippingTicket')
+            ->name('consultation.request.lits.has_a_shipping_ticket');
         });
 
        Route::controller(ProductInvoicePrinterController::class)->group(function(){

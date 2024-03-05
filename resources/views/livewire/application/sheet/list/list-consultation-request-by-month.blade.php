@@ -39,11 +39,27 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
                     <div class="ml-2">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                                Impression
+                            </button>
+                            <div class="dropdown-menu" role="menu" style="">
+                                <a class="dropdown-item" target="_blank"
+                                href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex,$month_name]) }}">
+                                    <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fa fa-file-excel" aria-hidden="true"></i> Relevé des factures
+                                </a>
+                            </div>
+                        </div>
                         <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
                             <div wire:loading wire:target='fixNumerotation'
                                 class="spinner-border spinner-border-sm text-primary" role="status">
@@ -55,6 +71,7 @@
                             href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"><i
                                 class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
                     </div>
+
                 </div>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
