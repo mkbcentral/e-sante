@@ -44,7 +44,7 @@
                             <td>{{ $outpatientBill->created_at->format('d/m/Y h:i') }}</td>
                             <td>{{ $outpatientBill->client_name }}</td>
                             <td class="text-center">
-                                <x-navigation.link-icon href=""
+                                <x-navigation.link-icon href="{{ route('labo.outpatientBill',$outpatientBill) }}"
                                     wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-primary" />
                             </td>
                         </tr>
