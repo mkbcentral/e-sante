@@ -44,7 +44,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                            réalisées'
+                                                                                                                                                                                                                                                                                                                                                               réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -154,6 +154,10 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
@@ -168,8 +172,7 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                                     @endif
-                                    <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                        wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+
                                 </td>
                             </tr>
                         @endforeach

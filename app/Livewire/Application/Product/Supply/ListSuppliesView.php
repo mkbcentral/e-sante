@@ -19,7 +19,6 @@ class ListSuppliesView extends Component
     {
         $this->dispatch('new-product-supply-dialog');
     }
-
     public function store()
     {
         try {
@@ -32,13 +31,11 @@ class ListSuppliesView extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-
     public function edit(?ProductSupply $productSupply)
     {
         $this->dispatch('open-edit-product-supply-model');
         $this->dispatch('productSupply', $productSupply);
     }
-
     public function delete(?ProductSupply $productSupply)
     {
         try {
@@ -49,14 +46,30 @@ class ListSuppliesView extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-
     public function addProductOnSupply(?ProductSupply $productSupply)
     {
         $this->dispatch('productSupplyToAdd', $productSupply);
         $this->dispatch('open-add-products-on-supply-modal');
     }
-    public function mount(){
-        $this->month=date('m');
+
+    public function changeStatus(?ProductSupply $productSupply)
+    {
+        try {
+            if ($productSupply->is_is_valided == true) {
+                $productSupply->is_valided = false;
+            } else {
+                $productSupply->is_valided = true;
+            }
+            $productSupply->update();
+            $this->dispatch('update', ['message' => 'Action bien réalisée']);
+        } catch (Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+    }
+
+    public function mount()
+    {
+        $this->month = date('m');
     }
     public function render()
     {

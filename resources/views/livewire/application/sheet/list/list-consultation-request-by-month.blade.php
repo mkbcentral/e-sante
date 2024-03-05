@@ -39,7 +39,7 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                    réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -52,7 +52,7 @@
                             </button>
                             <div class="dropdown-menu" role="menu" style="">
                                 <a class="dropdown-item" target="_blank"
-                                href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex,$month_name]) }}">
+                                    href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}">
                                     <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
                                 </a>
                                 <a class="dropdown-item" href="#">
@@ -172,6 +172,10 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
@@ -183,8 +187,7 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                                     @endif
-                                    <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                        wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+
                                 </td>
 
                             </tr>

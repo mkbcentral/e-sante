@@ -18,7 +18,7 @@
                     <tr>
                         <th>#</th>
                         <th>DATE</th>
-                        <th>CODE</th>
+                        <th class="text-center">CODE</th>
                         <th class="text-center">PRODUCTS</th>
                         <th class="text-center">ACTIONS</th>
                     </tr>
@@ -41,7 +41,12 @@
                                         wire:navigate :icon="'fa fa-plus-circle'" />
                                     <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
                                         wire:click='edit({{ $productSupply }})' />
-
+                                    <x-form.button
+                                        class=" {{ $productSupply->is_valided ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
+                                        type='button' wire:click='changeStatus({{ $productSupply }})'
+                                        wire:confirm="Etes-vous sûre de cette action ?">
+                                        <i class="{{ $productSupply->is_valided ? 'fa fa-times ' : 'fa fa-check' }}"></i>
+                                    </x-form.button>
                                     <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
                                         wire:confirm="Etes-vous sûre de supprimer ?"
                                         wire:click='delete({{ $productSupply }})' />

@@ -49,7 +49,7 @@
 
                     <div class="ml-2">
                         <a class="btn  btn-info btn-sm" target="_blank"
-                            href="{{ route('consultation.request.period.print', [$selectedIndex, $start_date,$end_date]) }}"><i
+                            href="{{ route('consultation.request.period.print', [$selectedIndex, $start_date, $end_date]) }}"><i
                                 class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
                     </div>
                 </div>
@@ -150,6 +150,10 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"

@@ -158,6 +158,10 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
                                         @if ($consultationRequest->is_finished == true)
                                             <x-navigation.link-icon

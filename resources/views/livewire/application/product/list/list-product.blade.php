@@ -107,7 +107,7 @@
                                         <span class="text-bold text-pink">{{ $product->abbreviation }}</span>
                                     </td>
                                     <td class="text-center">{{ $product->initial_quantity }}</td>
-                                    <td class="text-center">{{ $product->getNumberProductSupply() }}</td>
+                                    <td class="text-center">{{ $product->getTotalInputsByService() }}</td>
                                     <td class="text-center">{{ $product->getTotalOutputProducts() }}</td>
                                     <td class=" {{ $product->getProductStockStatus() }} text-center ">
                                         {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}
