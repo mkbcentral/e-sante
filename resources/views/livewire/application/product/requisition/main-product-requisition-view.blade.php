@@ -1,5 +1,6 @@
 <div wire:poll.15s>
     @livewire('application.product.requisition.form.new-product-requisition')
+    @livewire('application.product.requisition.list.list-amount-requistion-by-service')
     <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS' color="text-success">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Appro médicaments' />
@@ -18,6 +19,9 @@
                         @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
                             <x-form.button type="button" class="btn-primary" wire:click='refreshList'>
                                 <i class="fa fa-sync" aria-hidden="true  "></i> Actualiser
+                            </x-form.button>
+                             <x-form.button type="button" class="btn-dark" wire:click='openListAmount'>
+                                <i class="fa fa-sync" aria-hidden="true  "></i> Recettes
                             </x-form.button>
                         @endif
 
@@ -117,6 +121,10 @@
             //Open  add new requisition model modal
             window.addEventListener('open-new-requisition-modal', e => {
                 $('#new-requisition-modal').modal('show')
+            });
+            //Open list amount requisition by service model modal
+            window.addEventListener('open-list-amount-requisition-by-service', e => {
+                $('#list-amount-requisition-by-service').modal('show')
             });
         </script>
     @endpush

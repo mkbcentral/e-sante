@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Application\Product\Purcharse;
 
+use App\Exports\ExportProductPurcharseItems;
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ProductPurchase;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListProductPurchase extends Component
 {
@@ -51,9 +53,30 @@ class ListProductPurchase extends Component
         }
     }
 
-    public function delete($idProduct){
+    public function exportProductPurchase()
+    {
         try {
-            MakeQueryBuilderHelper::deleteWithKey('product_product_purchase', 'product_id',$idProduct);
+            $data = collect([]);
+            foreach ($this->productPurchase->products()->orderBy('name', 'ASC')->get() as $index => $product) {
+                $data->push([
+                    $index + 1,
+                    $product->name,
+                    $product->pivot->quantity_stock,
+                    $product->pivot->quantity_to_order,
+                    $product->pivot->product_id,
+                    $product->pivot->product_purchase_id,
+                ]);
+            }
+            return Excel::download(new ExportProductPurcharseItems($this->productPurchase, $data), 'REQUISITION.xlsx');
+        } catch (\Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+    }
+
+    public function delete($idProduct)
+    {
+        try {
+            MakeQueryBuilderHelper::deleteWithKey('product_product_purchase', 'product_id', $idProduct);
             $this->dispatch('added', ['message' => "Action bien réalisée !"]);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);

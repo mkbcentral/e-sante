@@ -31,6 +31,11 @@ class MainProductRequisitionView extends Component
         $this->dispatch('open-new-requisition-modal');
     }
 
+    public function openListAmount()
+    {
+        $this->dispatch('open-list-amount-requisition-by-service');
+    }
+
     public function openAddProductItemsModal(ProductRequisition $productRequisition)
     {
         $this->dispatch('open-product-requisition-items-modal');

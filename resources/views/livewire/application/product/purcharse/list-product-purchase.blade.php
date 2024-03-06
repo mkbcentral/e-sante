@@ -18,7 +18,7 @@
                         <a class="dropdown-item" target="_blank" href="{{ route('product.purcharse.print',$productPurchase) }}" >
                             <i class="fa fa-file-pdf" aria-hidden="true"></i> Fichier PDF
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="#" wire:click='exportProductPurchase'>
                             <i class="fa fa-file-excel" aria-hidden="true"></i> Fichier Excel
                         </a>
                     </div>

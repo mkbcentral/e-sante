@@ -131,11 +131,9 @@ class Product extends Model
         $quantity = 0;
         $inputs = ProductRequisitionProduct::query()
             ->join('products', 'products.id', 'product_requisition_products.product_id')
-            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
             ->select('product_requisition_products.*', 'products.name as product_name')
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
-            ->where('product_requisitions.is_valided', true)
             ->get();
 
         foreach ($inputs as $input) {
@@ -156,7 +154,6 @@ class Product extends Model
             ->with(['product'])
             ->where('users.agent_service_id', Auth::user()->agentService->id)
             ->where('product_supply_products.product_id', $this->id)
-            ->where('product_supply_products.product_id', $this->id)
             ->get();
 
         foreach ($inputs as $input) {
@@ -169,13 +166,7 @@ class Product extends Model
      */
     public function getTotalOutputProducts(): int|float
     {
-        $total=0;
-        if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-          $total=  0;
-        } else if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            $total=  $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
-        }
-        return $total;
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
     }
     /**
      * Stotck global
@@ -205,10 +196,11 @@ class Product extends Model
             if ($this->getAmountStockGlobal() <= 20) {
                 $status = 'bg-danger';
             }
-        } else if ($this->productCategory->name == "LIQUIDE" ||
-                 $this->productCategory->name == "PERFUSION" ||
-                 $this->productCategory->name == "INFUSION"
-                 ) {
+        } else if (
+            $this->productCategory->name == "LIQUIDE" ||
+            $this->productCategory->name == "PERFUSION" ||
+            $this->productCategory->name == "INFUSION"
+        ) {
             if ($this->getAmountStockGlobal() <= 10) {
                 $status = 'bg-danger';
             }

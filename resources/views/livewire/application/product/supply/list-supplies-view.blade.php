@@ -42,10 +42,11 @@
                                     <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
                                         wire:click='edit({{ $productSupply }})' />
                                     <x-form.button
-                                        class=" {{ $productSupply->is_valided ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
+                                        class=" {{ $productSupply->is_valided == true ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
                                         type='button' wire:click='changeStatus({{ $productSupply }})'
                                         wire:confirm="Etes-vous sûre de cette action ?">
-                                        <i class="{{ $productSupply->is_valided ? 'fa fa-times ' : 'fa fa-check' }}"></i>
+                                        <i
+                                            class="{{ $productSupply->is_valided == true ? 'fa fa-times ' : 'fa fa-check' }}"></i>
                                     </x-form.button>
                                     <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
                                         wire:confirm="Etes-vous sûre de supprimer ?"

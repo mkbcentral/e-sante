@@ -55,7 +55,7 @@ class ListSuppliesView extends Component
     public function changeStatus(?ProductSupply $productSupply)
     {
         try {
-            if ($productSupply->is_is_valided == true) {
+            if ($productSupply->is_valided == true) {
                 $productSupply->is_valided = false;
             } else {
                 $productSupply->is_valided = true;
@@ -77,7 +77,7 @@ class ListSuppliesView extends Component
             'productSupplies' => ProductSupply::query()
                 ->join('users', 'users.id', 'product_supplies.user_id')
                 ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
-                ->where('product_supplies.user_id', Auth::id())
+               // ->where('product_supplies.user_id', Auth::id())
                 ->whereMonth('product_supplies.created_at', $this->month)
                 ->select('product_supplies.*')
                 ->get()
