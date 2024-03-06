@@ -177,6 +177,9 @@
                                             href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
                                             :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
+                                    <x-form.icon-button :icon="'fa fa-eye '"
+                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
                                             wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
