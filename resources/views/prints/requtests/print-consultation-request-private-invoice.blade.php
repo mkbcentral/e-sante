@@ -264,6 +264,24 @@
                         </td>
                     </tr>
                 </table>
+                @else
+                <table>
+                    <tr>
+                        <td colspan="3" style="border: none">
+                            <table style="border: none">
+                                <tr style="border: none">
+                                    <td style="border: none" class="text-bold text-left">
+                                        INFP&COM
+                                    </td>
+
+                                    <td style="border: none" class="text-right ">
+                                        A.G
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             @endif
         @endif
     </div>

@@ -39,7 +39,6 @@ class ConsultationRequestPrinterController extends Controller
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereMonth('consultation_requests.created_at', $month)
-            ->where('has_a_shipping_ticket', false)
             ->whereYear('consultation_requests.created_at', $year)
             ->get();
         $pdf = App::make('dompdf.wrapper');
