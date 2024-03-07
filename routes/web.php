@@ -12,6 +12,9 @@ use App\Livewire\Application\Dashboard\MainDashboard;
 use App\Livewire\Application\Files\FileManagerView;
 use App\Livewire\Application\Finance\Billing\MainOutPatientBillReport;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
+use App\Livewire\Application\Finance\Cashbox\ExpenseVoucherView;
+use App\Livewire\Application\Finance\Cashbox\NoteMoneySendingView;
+use App\Livewire\Application\Finance\Cashbox\PayrollView;
 use App\Livewire\Application\Labo\MainLabo;
 use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
 use App\Livewire\Application\Labo\Screens\MakeLaboOutpatientBillView;
@@ -68,6 +71,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
 
+    Route::get('finance/payroll/',PayrollView::class)->name('payroll');
+    Route::get('finance/expense-voucher/',ExpenseVoucherView::class)->name('expense.voucher');
+    Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
+
     Route::get('labo',MainLabo::class)->name('labo.main');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
@@ -108,3 +115,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/files', FileManagerView::class)->name('files');
     Route::get('/localization', MainLocalization::class)->name('localization');
 });
+
