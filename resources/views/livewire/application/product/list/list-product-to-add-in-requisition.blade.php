@@ -1,6 +1,6 @@
 <div>
     @livewire('application.product.form.add-product-to-requisition')
-     <div class="card card-olive">
+    <div class="card card-olive">
         <div class="card-header h4">
             <i class="fa fa-list" aria-hidden="true"></i> LISTE DES PRODUITS
         </div>
@@ -15,10 +15,10 @@
                     <tr class="">
 
                         <th class="">
-                           DEISIGNATION
+                            DEISIGNATION
                         </th>
                         <th class="text-right">
-                           EXP.
+                            EXP.
                         </th>
                         <th class="text-center">Actions</th>
                     </tr>

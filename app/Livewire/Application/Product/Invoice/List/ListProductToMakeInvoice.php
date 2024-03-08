@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Application\Product\Invoice\List;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\Product;
 use App\Models\ProductInvoice;
 use App\Repositories\Product\Get\GetProductRepository;
@@ -36,8 +35,8 @@ class ListProductToMakeInvoice extends Component
 
     public function openFormQuantityModal(Product $product){
 
-        $this->dispatch('productInvoice',$product,$this->productInvoice);
         $this->dispatch('open-form-quntity-product-invoice');
+        $this->dispatch('productInvoice', $product, $this->productInvoice);
     }
 
     public function mount(?ProductInvoice $productInvoice){

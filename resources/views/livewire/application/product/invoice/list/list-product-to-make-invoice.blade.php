@@ -26,11 +26,15 @@
             </thead>
             <tbody>
                 @foreach ($products as $index => $product)
-                    <tr wire:key='{{ $product->id }}' class="cursor-hand"
-                        wire:click='openFormQuantityModal({{ $product }})'>
+                    <tr wire:key='{{ $product->id }}' class="cursor-hand" data-toggle="modal"
+                        data-target="#form-quntity-product-invoice"
+                        wire:click='openFormQuantityModal({{ $product }})' data-toggle="tooltip"
+                        data-placement="top" title="({{ $product->name }})">
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td class="{{ $product->getAmountStockGlobal()<=5?'bg-danger ':'' }} text-center">{{ $product->getAmountStockGlobal() }}</td>
+                        <td>{{ strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
+                        </td>
+                        <td class="{{ $product->getAmountStockGlobal() <= 5 ? 'bg-danger ' : '' }} text-center">
+                            {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}</td>
                         <td class="text-right">{{ $product->created_at->format('d/M/Y') }}</td>
                     </tr>
                 @endforeach

@@ -97,7 +97,7 @@ class MainProductRequisitionView extends Component
                 ->paginate(10);
         } elseif (Auth::user()->roles->pluck('name')->contains('Nurse')) {
             $productRequisitions = ProductRequisition::orderBy('created_at', 'desc')
-                ->whereIn('agent_service_id', [Auth::user()->agentService->id,5,6,7,13])
+                ->whereIn('agent_service_id', [Auth::user()->agentService->id, 5, 6, 7, 13, 10, 11])
                 ->whereMonth('created_at', $this->month)
                 ->paginate(10);
         } else {

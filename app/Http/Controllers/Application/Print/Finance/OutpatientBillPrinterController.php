@@ -10,13 +10,13 @@ use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 
 class OutpatientBillPrinterController extends Controller
 {
     public function printOutPatientBill($outpatientBillId, $currency)
     {
-
         $outpatientBill = OutpatientBill::find($outpatientBillId);
         $outpatientBill->is_validated = true;
         $outpatientBill->update();
@@ -40,11 +40,13 @@ class OutpatientBillPrinterController extends Controller
         $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
         $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
         $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
+        $dateToMorrow = Carbon::tomorrow();
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(
             [
                 'listBill', 'date', 'total_cdf', 'total_usd', 'consultationRequests',
-                'total_cons_usd', 'total_cons_cdf'
+                'total_cons_usd', 'total_cons_cdf', 'dateToMorrow'
             ]
         ));
         return $pdf->stream();

@@ -19,8 +19,9 @@ class MainProductInvoice extends Component
      */
     protected $listeners = [
         'productInvoice' => 'getProductInvoice',
+        'productInvoiceUpdated' => 'getProductInvoiceUpdated',
         'productInvoiceToEdit' => 'getProductInvoiceToEdit',
-        'productInvoiceRefreshedMainView' => '$refresh'
+        'productInvoiceRefreshedMainView' => '$refresh',
     ];
     public ?ProductInvoice $productInvoice=null;
     public bool $isEditing = false;
@@ -37,8 +38,18 @@ class MainProductInvoice extends Component
      */
     public function getProductInvoice(): void
     {
-        $this->productInvoice = ProductInvoice::latest()->first();
+        $this->productInvoice = ProductInvoice::query()
+                ->wheredate('created_at',Carbon::now())
+                ->where('user_id',Auth::id())
+                ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
+                ->orderBy('created_at','DESC')
+                ->first();
     }
+
+    public function getProductInvoiceUpdated(ProductInvoice $productInvoice){
+        $this->productInvoice=$productInvoice;
+    }
+
     /**
      * Get productInvoice if productInvoiceToEditListener is emitted with edition mode
      * getOutpatientToEdit
@@ -59,6 +70,7 @@ class MainProductInvoice extends Component
      */
     public function openNewProductInvoice(): void
     {
+        $this->productInvoice=null;
         $this->dispatch('open-form-product-invoice');
     }
     /**
@@ -73,12 +85,14 @@ class MainProductInvoice extends Component
     }
 
     public function mount(){
+
         $this->productInvoice = ProductInvoice::query()
                 ->wheredate('created_at',Carbon::now())
                 ->where('user_id',Auth::id())
                 ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
                 ->orderBy('created_at','DESC')
                 ->first();
+
     }
     public function render()
     {

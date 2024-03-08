@@ -3,8 +3,8 @@
         <x-widget.loading-circular-md />
     </div>
     <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> DETAILS FACTURE</h4>
-    <table class="table table-sm table-bordered table-hover">
-        <thead class="bg-pink">
+    <table class="table table-sm table-bordered">
+        <thead class="bg-indigo">
             <tr>
                 <th>DESIGNATION</th>
                 <th class="text-center">QTY</th>
@@ -15,8 +15,9 @@
         </thead>
         <tbody>
             @foreach ($productInvoice->products as $product)
-                <tr wire:key='{{ $product->pivot->id }}' class="cursor-hand">
-                    <td>{{ $product->name }}</td>
+                <tr wire:key='{{ $product->pivot->id }}' class="cursor-hand"
+                   data-toggle="tooltip" data-placement="top" title="({{ $product->name }})">
+                    <td>{{ strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}</td>
 
                     <td class="text-center">
                         @if ($isEditing && $idSelected == $product->pivot->id)

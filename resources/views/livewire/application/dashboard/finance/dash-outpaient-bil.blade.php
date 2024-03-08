@@ -21,7 +21,7 @@
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md :color="'text-white'" />
                 </div>
-                @if (!$tota_cdf != 0 || $tota_usd != 0)
+                @if ($tota_cdf != 0 || $tota_usd != 0)
                     <div class="row mt-2" >
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="info-box bg-navy">

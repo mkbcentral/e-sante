@@ -13,6 +13,8 @@ class ProductInvoiceCreateAndUpdate extends Component
 {
     protected $listeners = [
         'productInvoiceToFrom' => 'getProductInvoice',
+        'resetdProductInvoice'=>'$refresh'
+
     ];
     #[Rule('required', message: 'Nom du client obligation', onUpdate: false)]
     public string $client;
@@ -23,7 +25,6 @@ class ProductInvoiceCreateAndUpdate extends Component
     public string $modalLabel = 'CREATION NOUVELLE FACTURE';
 
     public ?ProductInvoice $productInvoice=null;
-
 
     /**
      * ProductInvoice
@@ -64,10 +65,11 @@ class ProductInvoiceCreateAndUpdate extends Component
            $this->productInvoice->client=$this->client;
            $this->productInvoice->created_at=$this->created_at;
            $this->productInvoice->update();
-            $this->dispatch('productInvoice');
+            $this->dispatch('productInvoiceUpdated', $this->productInvoice);
             $this->dispatch('productInvoiceRefreshedMainView');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-form-product-invoice');
+            $this->productInvoice = null;
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -87,6 +89,11 @@ class ProductInvoiceCreateAndUpdate extends Component
 
     public function render()
     {
+        if ($this->productInvoice==null) {
+           $this->client='';
+           $this->created_at=date('Y-m-d');
+            $this->modalLabel = 'CREATION LA FACTURE';
+        }
         return view('livewire.application.product.invoice.form.product-invoice-create-and-update');
     }
 }

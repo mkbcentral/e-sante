@@ -102,6 +102,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        Route::controller(ProductInvoicePrinterController::class)->group(function(){
             Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
+            Route::get('product-invoice-rapport-date/{month}', 'printOutpatientBillRapportByDate')->name('product.invoice.rapport.date.print');
+            Route::get('product-invoice-rapport-month/{date}', 'printOutpatientBillRapportByMonth')->name('product.invoice.rapport.month.print');
        });
 
        Route::controller(OtherPrinterController::class)->group(function(){
