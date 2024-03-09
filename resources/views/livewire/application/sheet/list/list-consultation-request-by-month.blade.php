@@ -39,7 +39,7 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -86,7 +86,7 @@
                                 <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
+                                <x-form.button class="text-white" wire:click="sortSheet('id')">
                                     @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
                                         N° FACTURE
                                     @else
@@ -121,7 +121,8 @@
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}/
+                                        {{ $consultationRequest->consultationSheet->source->name }}</td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
                                     </td>
@@ -177,7 +178,7 @@
                                             href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
                                             :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
-                                    <x-form.icon-button :icon="'fa fa-eye '"
+                                        <x-form.icon-button :icon="'fa fa-eye '"
                                             wire:click="openDetailConsultationModal({{ $consultationRequest }})"
                                             class="btn-sm btn-primary " />
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
@@ -188,7 +189,7 @@
                                             wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @endif
 
                                 </td>

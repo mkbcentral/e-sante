@@ -10,6 +10,7 @@
             <tr>
                 <th class="text-center">#</th>
                 <th>Date</th>
+                <th>N° Facture</th>
                 <th>Nom complet</th>
                 <th class="text-right">MONTANT</th>
             </tr>
@@ -21,6 +22,7 @@
                     <tr class="money_format">
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td>{{ $consultationRequest->consultationSheet->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $consultationRequest->getRequestNumberFormatted()}}</td>
                         <td class="">{{ $consultationRequest->consultationSheet?->name }}</td>
                         <td class="text-right money_format">
                             {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) }}</td>
@@ -31,13 +33,13 @@
                     @endphp
                 @endforeach
                 <tr>
-                    <td colspan="4" class="text-right bg-secondary text-white h5">TOTAL</td>
+                    <td colspan="5" class="text-right bg-secondary text-white h5">TOTAL</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-right h6 text-bold">{{ app_format_number($total_cdf, 1) }} CDF</td>
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_cdf, 1) }} CDF</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-right h6 text-bold">{{ app_format_number($total_usd, 1) }} USD</td>
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd, 1) }} USD</td>
                 </tr>
             @endif
         </tbody>

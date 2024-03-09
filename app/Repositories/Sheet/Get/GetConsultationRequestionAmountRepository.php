@@ -77,6 +77,22 @@ class GetConsultationRequestionAmountRepository
         }
         return $total;
     }
+    public static function getTotalByMonthAllSourceCDF($month, $year, $idSubscription): int|float
+    {
+        $total = 0;
+        $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->select('consultation_requests.*')
+            ->with(['consultation', 'rate'])
+            ->get();
+        foreach ($consultationRequests as $consultationRequest) {
+            $total += $consultationRequest->getTotalInvoiceCDF();
+        }
+        return $total;
+    }
 
     /**
      * Get consultation requests by month USD
@@ -85,6 +101,24 @@ class GetConsultationRequestionAmountRepository
      * @return int|float
      */
     public static function getTotalByMonthUSD($month, $year, $idSubscription): int|float
+    {
+        $total = 0;
+        $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->select('consultation_requests.*')
+            ->with(['consultation', 'rate'])
+            ->get();
+        foreach ($consultationRequests as $consultationRequest) {
+            $total += $consultationRequest->getTotalInvoiceUSD();
+        }
+        return $total;
+    }
+
+    public static function getTotalByMonthAllSourceUSD($month, $year, $idSubscription): int|float
     {
         $total = 0;
         $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)

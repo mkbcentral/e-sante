@@ -150,8 +150,8 @@ class ConsultationRequest extends Model
         foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $amount += $consultationRequestHospitalization->hospitalizationRoom
-                ->hospitalization->price_private *
-                $consultationRequestHospitalization->number_of_day * $this->rate->rate;
+                    ->hospitalization->price_private *
+                    $consultationRequestHospitalization->number_of_day * $this->rate->rate;
             } else {
                 $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price
                     * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
@@ -190,7 +190,10 @@ class ConsultationRequest extends Model
         }
         return $total;
     }
-
+    /**
+     * Get the total invoice in CDF
+     * @return float|int
+     */
     public function getTotalInvoiceCDF()
     {
         $total = 0;
@@ -203,10 +206,13 @@ class ConsultationRequest extends Model
         }
         return $this->consultation->is_consultation_paid == false ?
             ($this->getConsultationPriceCDF() + $total) +
-             $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF():
-            $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF()+$this->getNursingAmountCDF();
+            $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF() :
+            $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF();
     }
-
+    /**
+     * Get the total invoice in USD
+     * @return float|int
+     */
     public function getTotalInvoiceUSD()
     {
         $total = 0;
@@ -219,21 +225,27 @@ class ConsultationRequest extends Model
         }
         return $this->consultation->is_consultation_paid == false ?
             ($this->getConsultationPriceUSD() + $total) +
-            $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD():
-            $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD()+$this->getNursingAmountUSD();
+            $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD() :
+            $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD();
     }
 
+    /**
+     * Get the request number formatted
+     *
+     * @return string
+     */
     public function getRequestNumberFormatted(): string
     {
         $number = '';
         $mounth = $this->created_at->format('m');
-        if ($this->consultationSheet->subscription->is_subscriber==true) {
-            $number = $this->request_number . '/' . $mounth . '/' . $this->consultationSheet->subscription->name;
+        $formattedRequestNumber = str_pad($this->request_number, 3, '0', STR_PAD_LEFT);
+        if ($this->consultationSheet->subscription->is_subscriber == true) {
+            $formattedMonth = format_fr_month_name($mounth);
+            $substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
+            $number = $formattedRequestNumber . '/' . $substringMonth . '/' . $this->consultationSheet->subscription->name;
         } else {
-            $number = $this->request_number . '/' . $mounth;
+            $number = $formattedRequestNumber . '/' . $mounth;
         }
-
         return $number;
     }
-
 }

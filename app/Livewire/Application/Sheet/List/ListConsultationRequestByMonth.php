@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
-use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
 use App\Models\Hospital;
@@ -10,6 +9,7 @@ use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -126,7 +126,7 @@ class ListConsultationRequestByMonth extends Component
                 ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
                 ->whereMonth('consultation_requests.created_at', $this->month_name)
                 ->whereYear('consultation_requests.created_at', $this->year)
-                ->orderBy('consultation_requests.created_at', 'ASC')
+                ->orderBy('consultation_requests.id', 'ASC')
                 ->get();
             foreach ($data as $index => $item) {
                 $consultationRequest = ConsultationRequest::find($item->id);
@@ -140,8 +140,11 @@ class ListConsultationRequestByMonth extends Component
     }
     public function render()
     {
-        return view('livewire.application.sheet.list.list-consultation-request-by-month', [
-            'listConsultationRequest' => GetConsultationRequestRepository::getConsultationRequestByDateMonth(
+        if (
+            Auth::user()->roles->pluck('name')->contains('Ag') ||
+            Auth::user()->roles->pluck('name')->contains('Admin')
+        ) {
+            $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByDateMonthAllSource(
                 $this->selectedIndex,
                 $this->q,
                 $this->sortBy,
@@ -149,16 +152,42 @@ class ListConsultationRequestByMonth extends Component
                 20,
                 $this->month_name,
                 $this->year,
-            ),
-            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex),
-            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex),
-            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
-            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD'),
-            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+            );
+            $request_number= GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year,
-            )
+            );
+            $total_cd= GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceCDF($this->month_name, $this->year, $this->selectedIndex);
+            $total_usd= GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceUSD($this->month_name, $this->year, $this->selectedIndex);
+        } else {
+            $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByDateMonth(
+                $this->selectedIndex,
+                $this->q,
+                $this->sortBy,
+                $this->sortAsc,
+                20,
+                $this->month_name,
+                $this->year,
+                Auth::user()->id
+            );
+            $request_number= GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year,
+                Auth::user()->id
+            );
+            $total_cd= GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex);
+            $total_usd= GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex);
+        }
+
+        return view('livewire.application.sheet.list.list-consultation-request-by-month', [
+            'listConsultationRequest' => $listConsultationRequest,
+            'total_cdf' => $total_cd,
+            'total_usd' => $total_usd,
+            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
+            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD'),
+            'request_number' => $request_number,
         ]);
     }
 }

@@ -115,6 +115,32 @@ class GetConsultationRequestRepository
             ->paginate($per_page);
     }
 
+    public static function getConsultationRequestByDateMonthAllSource(
+        int    $idSubscription,
+        string $q,
+        string $sortBy,
+        bool   $sortAsc,
+        int    $per_page = 10,
+        string $month,
+        string $year,
+    ): mixed {
+        SELF::$keytoSearch = $q;
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->when($q, function ($query) {
+                return $query->where(function ($query) {
+                    return $query->where('consultation_sheets.name', 'like', '%' . SELF::$keytoSearch . '%')
+                        ->orWhere('consultation_sheets.number_sheet', 'like', '%' . SELF::$keytoSearch . '%');
+                });
+            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription', 'consultationSheet.source','consultationSheet.hospital'])
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->paginate($per_page);
+    }
+
     /**
      * Get all consultation request by month
      * @param int $idSubscription
@@ -143,7 +169,7 @@ class GetConsultationRequestRepository
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
-            ->with(['consultationSheet.subscription'])
+            ->with(['consultationSheet.subscription', 'consultationSheet.source', 'consultationSheet.hospital'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->whereMonth('consultation_requests.created_at', $month)
@@ -180,7 +206,7 @@ class GetConsultationRequestRepository
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
-            ->with(['consultationSheet.subscription'])
+            ->with(['consultationSheet.subscription', 'consultationSheet.source', 'consultationSheet.hospital'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
@@ -227,6 +253,19 @@ class GetConsultationRequestRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->count();
+    }
+
+    public static function getCountConsultationRequestByMonthAllSource(
+        int    $idSubscription,
+        string $month,
+        string $year,
+    ): int|float {
+        return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+        ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->count();

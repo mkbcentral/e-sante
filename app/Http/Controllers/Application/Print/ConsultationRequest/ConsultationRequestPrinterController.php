@@ -34,7 +34,7 @@ class ConsultationRequestPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.request_number', 'ASC')
+            ->orderBy('consultation_requests.id', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
