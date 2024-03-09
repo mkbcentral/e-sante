@@ -65,7 +65,11 @@ class ListConsultationRequestHospitalize extends Component
         $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
-
+    /**
+     * Open medical prescription modal
+     * @param ConsultationRequest $consultationRequest
+     * @return void
+     */
     public function openPrescriptionMedicalModal(ConsultationRequest $consultationRequest): void
     {
         $this->dispatch('open-medical-prescription');
@@ -96,29 +100,65 @@ class ListConsultationRequestHospitalize extends Component
         }
         $this->sortBy = $value;
     }
-
+    /**
+     * Open edit consultation modal
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
     public function edit(?ConsultationRequest $consultationRequest)
     {
         $this->dispatch('selectedConsultationRequest', $consultationRequest);
         $this->dispatch('open-edit-consultation');
     }
-
+    /**
+     * Open edit consultation currency modal
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
     public function addToBordereau(?ConsultationRequest $consultationRequest){
+        /*
+        $this->dispatch('open-form-date-versement');
+        $this->dispatch('consultationRequestDate', $consultationRequest);
+        $consultationRequest->paid_at = Carbon::now();
+        $consultationRequest->update();
+        */
         $consultationRequest->paid_at=Carbon::now();
         $consultationRequest->update();
     }
+    /**
+     * Delete from Bordereau
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
+    public function deleteToBordereau(?ConsultationRequest $consultationRequest){
+        $consultationRequest->paid_at = null;
+        $consultationRequest->update();
+    }
 
+    /**
+     * Open edit consultation currency modal
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
     public function showEditCurrency(?ConsultationRequest $consultationRequest){
         $this->dispatch('open-edit-consultation-request-currency');
         $this->dispatch('currencyConsultationRequest',$consultationRequest);
     }
-
+    /**
+     * Open edit consultation currency modal
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;
         $this->month_name = date('m');
         $this->year = date('Y');
     }
+    /**
+     * Render view
+     * @return void
+     */
     public function render()
     {
         return view('livewire.application.sheet.list.list-consultation-request-hospitalize', [

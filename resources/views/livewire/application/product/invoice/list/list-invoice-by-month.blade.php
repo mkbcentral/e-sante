@@ -4,13 +4,7 @@
             <h3 class="ml-2 text-uppercase text-bold text-indigo">Total: {{ app_format_number($totalInvoice, 1) }} Fc
             </h3>
         </div>
-        @if ($isByDate == true)
-            <a href="{{ route('product.invoice.rapport.date.print', $date_filter) }}" target="_blank" class="mr-2"><i
-                    class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
-        @else
-            <a href="{{ route('product.invoice.rapport.month.print', $month) }}" target="_blank" class="mr-2"><i
-                    class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
-        @endif
+
     </div>
     <div class="d-flex justify-content-center pb-2">
         <x-widget.loading-circular-md />
@@ -18,8 +12,6 @@
 
     <div wire:loading.class='d-none'>
         <div class="d-flex justify-content-between items-center">
-            <h4 class="text-uppercase text-secondary mt-2">Rapport des ventes
-                {{ $isByDate == true ? 'journlières' : 'mensuelles' }}</h4>
             <div class="d-flex">
                 <div class="form-group d-flex align-items-center">
                     <x-form.label value="{{ __('Date') }}" class="mr-2" />
@@ -29,8 +21,21 @@
                     <x-form.label value="{{ __('Mois') }}" class="mr-2 ml-2" />
                     <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
                 </div>
-
-
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="form-group d-flex align-items-center ml-2">
+                    <x-form.label value="{{ __('Date versment') }}" class="mr-1" />
+                    <x-form.input type='date' wire:model.live='date_versement' :error="'date_versement'" />
+                </div>
+                <div>
+                    @if ($isByDate == true)
+                        <a href="{{ route('product.invoice.rapport.date.print', [$date_filter,$date_versement,$isByDate]) }}" target="_blank"
+                            class="ml-2"><i class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
+                    @else
+                        <a href="{{ route('product.invoice.rapport.month.print', [$month,$date_versement,$isByDate]) }}" target="_blank"
+                            class="ml-2"><i class="fa fa-print" aria-hidden="true"></i> Imprimer</a>
+                    @endif
+                </div>
             </div>
         </div>
         <table class="table table-bordered table-sm">

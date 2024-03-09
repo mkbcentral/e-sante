@@ -4,6 +4,7 @@ namespace App\Livewire\Application\Finance\Billing;
 
 use App\Models\Currency;
 use App\Models\OutpatientBill;
+use Exception;
 use Livewire\Component;
 
 class OutpatientBillView extends Component
@@ -21,6 +22,7 @@ class OutpatientBillView extends Component
     ];
     public ?OutpatientBill $outpatientBill = null;
     public bool $isEditing = false;
+
     /**
      * @var string
      */
@@ -44,7 +46,7 @@ class OutpatientBillView extends Component
      */
     public function getOutpatient(): void
     {
-        $this->outpatientBill = OutpatientBill::orderBy('id','desc')->first();
+        $this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
     }
     /**
      * Get OutpatientBill if outpatientBillToEditListener is emitted with edition mode
@@ -58,13 +60,6 @@ class OutpatientBillView extends Component
         $this->isEditing = true;
         $this->dispatch('outpatientBillToFrom', $outpatientBill);
     }
-
-    public function OpenOtherDetailOutpatientBill()
-    {
-        $this->dispatch('otherDetalOutpatientBill', $this->outpatientBill);
-        $this->dispatch('open-form-new-other-detail-outpatient-bill');
-    }
-
     /**
      * openNewOutpatientBillModal
      *Open modal to create new bill
@@ -85,19 +80,58 @@ class OutpatientBillView extends Component
         $this->dispatch('open-form-detail-outpatient-bill');
         $this->dispatch('outpatientBillToDetail', $this->outpatientBill);
     }
-
+    /**
+     * openListListOutpatientBillModal
+     *Open modal to show list bills
+     * @return void
+     */
     public function openListListOutpatientBillModal(): void
     {
         $this->dispatch('open-list-outpatient-bill-by-date-modal');
         $this->dispatch('refreshListBill');
     }
-
+    /**
+    * printBill
+    * Print OutpatientBill
+    * @param  mixed $outpatientBill
+    * @return void
+    */
     public function printBill(OutpatientBill $outpatientBill)
     {
         $outpatientBill->is_validated = true;
         $outpatientBill->update();
-        $this->outpatientBill=null;
-        $this->isEditing=false;
+        $this->outpatientBill = null;
+        $this->isEditing = false;
+    }
+    /**
+     * changeStatus
+     * Change status of OutpatientBill
+     * @param  mixed $outpatientBill
+     * @return void
+     */
+    public function cancelBill()
+    {
+        $this->outpatientBill = null;
+    }
+
+    /**
+     * edit
+     * Select OutpatientBill to edit
+     * @param  mixed $outpatientBill
+     * @return void
+     */
+    public function delete()
+    {
+        try {
+            foreach ($this->outpatientBill->tarifs as $tarif) {
+                $tarif->delete();
+            }
+            $this->outpatientBill->delete();
+            $this->outpatientBill = null;
+            $this->dispatch('updated', ['message' => 'Action bien réalisée']);
+        } catch (Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
     }
 
     /**
@@ -107,7 +141,10 @@ class OutpatientBillView extends Component
     {
         //$this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
     }
-
+    /**
+     * render
+     * @return void
+     */
     public function render()
     {
         return view('livewire.application.finance.billing.outpatient-bill-view');

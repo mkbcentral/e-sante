@@ -7,12 +7,14 @@ use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use Exception;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListOutpatientBillByDate extends Component
 {
+    use WithPagination;
     protected $listeners = [
         'currencyName' => 'getCurrencyName',
-        'refreshListBill'=>'$refresh'
+        'refreshListBill' => '$refresh'
     ];
     public string $date_filter;
     public string $currencyName = Currency::DEFAULT_CURRENCY;
@@ -30,7 +32,7 @@ class ListOutpatientBillByDate extends Component
 
     public function updatedDateFilter($val): void
     {
-        $this->date_filter=$val;
+        $this->date_filter = $val;
     }
     /**
      * edit
@@ -40,9 +42,9 @@ class ListOutpatientBillByDate extends Component
      */
     public function edit(?OutpatientBill $outpatientBill): void
     {
-        $this->dispatch('outpatientSelected',$outpatientBill);
-        $this->dispatch('outpatientBillToEdit',$outpatientBill);
-        $this->dispatch('outpatientBillToEdit',$outpatientBill);
+        $this->dispatch('outpatientSelected', $outpatientBill);
+        $this->dispatch('outpatientBillToEdit', $outpatientBill);
+        $this->dispatch('outpatientBillToEdit', $outpatientBill);
         $this->dispatch('close-list-outpatient-bill-by-date-modal');
     }
     /**
@@ -51,12 +53,16 @@ class ListOutpatientBillByDate extends Component
      * @param  mixed $outpatientBill
      * @return void
      */
-    public function delete(?OutpatientBill $outpatientBill){
+    public function delete(?OutpatientBill $outpatientBill)
+    {
         try {
+            foreach ($outpatientBill->tarifs as $tarif) {
+                $tarif->delete();
+            }
             $outpatientBill->delete();
-            $this->dispatch('updated',['message'=>'Action bien réalisée']);
+            $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
-           $this->dispatch('error',['message'=>$ex->getMessage()]);
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
 
@@ -66,17 +72,32 @@ class ListOutpatientBillByDate extends Component
         $outpatientBill->update();
     }
 
+    public function changeStatus(OutpatientBill $outpatientBill)
+    {
+        try {
+            if ($outpatientBill->is_validated == true) {
+                $outpatientBill->is_validated = false;
+            } else {
+                $outpatientBill->is_validated = true;
+            }
+            $outpatientBill->update();
+            $this->dispatch('error', ['message' => 'Action bein réalisée !']);
+        } catch (Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+    }
 
     public function mount(): void
     {
-        $this->date_filter=date('Y-m-d');
+        $this->date_filter = date('Y-m-d');
     }
     public function render()
     {
-        return view('livewire.application.finance.billing.list.list-outpatient-bill-by-date',[
-            'listBill'=>GetOutpatientRepository::getOutpatientPatientByDate($this->date_filter),
-            'tota_cdf'=>GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date_filter),
-            'tota_usd'=>GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date_filter)
+        return view('livewire.application.finance.billing.list.list-outpatient-bill-by-date', [
+            'listBill' => GetOutpatientRepository::getOutpatientPatientByDate($this->date_filter),
+            'tota_cdf' => GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date_filter),
+            'tota_usd' => GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date_filter),
+            'counter_by_month' => GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date_filter)
         ]);
     }
 }

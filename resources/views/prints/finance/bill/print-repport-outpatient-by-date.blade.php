@@ -1,7 +1,7 @@
 <x-print-layout>
     <div>
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
-        <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow->format('d/m/Y') }}</span></div>
+        <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
         <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT AMBULATOIRE</h4>
 
         <table class="table table-bordered  table-sm">
@@ -9,7 +9,7 @@
                 <tr>
                     <th class="text-center">#</th>
                     <th>Date admise</th>
-                    <th class="text-center">N° Fracture</th>
+                     <th class="text-center">#Invoice</th>
                     <th>Cleint</th>
                     <th class="text-right">MT USD</th>
                     <th class="text-right">MT CDF</th>
@@ -86,7 +86,7 @@
             $amount_usd=0;
         @endphp
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
-        <div class="text-right"><span>Fait à Lubumbashi, Le {{$dateToMorrow->format('d/m/Y') }}</span></div>
+        <div class="text-right"><span>Fait à Lubumbashi, Le {{$dateToMorrow }}</span></div>
         <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT HOSPITALISES</h4>
 
         <table class="table table-bordered  table-sm">

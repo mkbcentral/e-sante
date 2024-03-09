@@ -14,32 +14,12 @@
                         <x-form.label value="{{ __('Date') }}" class="mr-1" />
                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                     </div>
-
                 </div>
-
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
             </div>
             <div wire:loading.class='d-none'>
-                <div class="d-flex justify-content-between align-items-center ">
-                    <div class="h5">
-                        ({{ $listBill->count() > 1 ? $listBill->count() . ' Facture réalisée' : $listBill->count() . ' Factured réalisées' }})
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-print"></i>
-                            Imprimer </button>
-                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-icon"
-                            data-toggle="dropdown">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" target="_blanck"
-                                href="{{ route('rapport.date.outPatientBill.print', [$date_filter]) }}"><i
-                                    class="fas fa-file-pdf"></i> Bordereau de versement</a>
-                        </div>
-                    </div>
-                </div>
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
@@ -103,13 +83,18 @@
                                     <td class="text-center">
                                         <x-form.edit-button-icon wire:click="edit({{ $bill }})"
                                             class="btn-sm btn-primary" />
-                                        <a wire:click='printBill({{ $bill }})'
-                                            href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
-                                            class="btn btn-sm  btn-secondary" target="_blanck"><i class="fa fa-print  "
-                                                aria-hidden="true"></i></a>
-                                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $bill }})" class="btn-sm btn-danger" />
                                         @if (!$bill->is_validated)
+                                            <a wire:click='printBill({{ $bill }})'
+                                                href="{{ route('outPatientBill.print', [$bill, $currencyName]) }}"
+                                                class="btn btn-sm  btn-secondary" target="_blanck"><i
+                                                    class="fa fa-print  " aria-hidden="true"></i></a>
+                                            <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
+                                                wire:click="delete({{ $bill }})" class="btn-sm btn-danger" />
+                                        @else
+                                            <x-form.button wire:click="changeStatus({{ $bill }})"
+                                                class="btn-sm btn-warning">
+                                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                            </x-form.button>
                                         @endif
 
 
@@ -119,6 +104,12 @@
                         @endif
                     </tbody>
                 </table>
+                <div class="mt-4 d-flex justify-content-between align-items-center">
+                    <div class="h5">
+                        ({{ $counter_by_month > 1 ? $counter_by_month . ' Facture réalisée' : $counter_by_month . ' Factured réalisées' }})
+                    </div>
+                    {{ $listBill->links('livewire::bootstrap') }}
+                </div>
             </div>
         </div>
     </x-modal.build-modal-fixed>

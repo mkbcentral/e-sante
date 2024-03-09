@@ -11,6 +11,7 @@ use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\App;
 
 class OutpatientBillPrinterController extends Controller
@@ -32,7 +33,7 @@ class OutpatientBillPrinterController extends Controller
         return $pdf->stream();
     }
 
-    public function printRapportByDateOutpatientBill($date)
+    public function printRapportByDateOutpatientBill($date,$date_versement)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
         $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
@@ -40,7 +41,7 @@ class OutpatientBillPrinterController extends Controller
         $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
         $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
         $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
-        $dateToMorrow = Carbon::tomorrow();
+        $dateToMorrow =(new DateTime($date_versement))->format('d/m/Y');
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(

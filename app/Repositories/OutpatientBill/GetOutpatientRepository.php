@@ -9,19 +9,32 @@ use Illuminate\Support\Facades\DB;
 class GetOutpatientRepository
 {
 
-
-    public static function getOutpatientPatientByDate(string $date): Collection
+    /**
+     * getOutpatientPatientByDate
+     * @param mixed $date
+     * @return mixed
+     */
+    public static function getOutpatientPatientByDate(string $date): mixed
     {
         return OutpatientBill::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
-            ->get();
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->paginate(10);
     }
-
-    public static function getOutpatientPatientByMonth(string $month): Collection
+    /**
+     * getOutpatientPatientByMonth
+     * @param mixed $month
+     * @return mixed
+     */
+    public static function getOutpatientPatientByMonth(string $month): mixed
     {
+
         return OutpatientBill::orderBy('created_at', 'DESC')
             ->whereMonth('created_at', $month)
-            ->get();
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->paginate(10);
     }
 
     /**
@@ -34,6 +47,8 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
@@ -53,7 +68,8 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->with(['consultation'])
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
@@ -73,6 +89,8 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
@@ -85,7 +103,7 @@ class GetOutpatientRepository
 
     /**
      * getTotalBillByMonthCDF
-     * @param mixed $month
+     * @param mixed $date
      * @return int|float
      */
     public static function getTotalBillByMonthCDF(string $date): int|float
@@ -93,7 +111,7 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $date)
-            ->with(['consultation'])
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
@@ -103,7 +121,12 @@ class GetOutpatientRepository
         }
         return $total + $cons_total;
     }
-
+    /**
+     * getOutpatientBillTarifItemByCategoryTarif
+     * @param mixed $outpatientBillId
+     * @param mixed $categoryTarifId
+     * @return Collection
+     */
     public static function getOutpatientBillTarifItemByCategoryTarif(int $outpatientBillId, int $categoryTarifId): Collection
     {
         return DB::table('outpatient_bill_tarif')
@@ -114,8 +137,6 @@ class GetOutpatientRepository
             ->select('outpatient_bill_tarif.*', 'tarifs.name', 'tarifs.abbreviation', 'tarifs.price_private')
             ->get();
     }
-
-
     /**
      * getTotalBillByDate group by currency CDF
      * @param mixed $date
@@ -125,16 +146,16 @@ class GetOutpatientRepository
     {
         $total = 0;
         $cons_total = 0;
-        $total_detail=0;
+        $total_detail = 0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->where('is_validated',true)
-            ->with(['consultation'])
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
-            if ($outpatientBill->currency && $outpatientBill->currency->name=='CDF') {
+            if ($outpatientBill->currency && $outpatientBill->currency->name == 'CDF') {
                 $total += $outpatientBill->getTotalOutpatientBillCDF();
-            }else{
-                $total_detail+=$outpatientBill?->detailOutpatientBill?->amount_cdf;
+            } else {
+                $total_detail += $outpatientBill?->detailOutpatientBill?->amount_cdf;
             }
         }
         return $total + $total_detail;
@@ -151,7 +172,7 @@ class GetOutpatientRepository
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereDate('created_at', $date)
             ->where('is_validated', true)
-            ->with(['consultation'])
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'USD') {
@@ -175,7 +196,7 @@ class GetOutpatientRepository
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
             ->where('is_validated', true)
-            ->with(['consultation'])
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'CDF') {
@@ -199,7 +220,7 @@ class GetOutpatientRepository
         $total_detail = 0;
         $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
             ->where('is_validated', true)
-            ->with(['consultation'])
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->get();
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'USD') {
@@ -211,4 +232,29 @@ class GetOutpatientRepository
         return $total + $total_detail;
     }
 
+    /**
+     * getCountOfOutpatientBillByDate
+     * @param mixed $date
+     * @return int
+     */
+    public static function getCountOfOutpatientBillByDate(string $date): int
+    {
+        return OutpatientBill::whereDate('created_at', $date)
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->count();
+    }
+
+    /**
+     * getCountOfOutpatientBillByMonth
+     * @param mixed $month
+     * @return int
+     */
+    public static function getCountOfOutpatientBillByMonth(string $month): int
+    {
+        return OutpatientBill::whereMonth('created_at', $month)
+            ->where('is_validated', true)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->count();
+    }
 }

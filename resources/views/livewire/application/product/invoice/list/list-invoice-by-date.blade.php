@@ -25,6 +25,7 @@
                             <th>N° Fracture</th>
                             <th>Cleint</th>
                             <th class="text-right">Montant</th>
+                            <th class="text-right">STATUS</th>
                             <th class="text-lg-center">Actions</th>
                         </tr>
                     </thead>
@@ -43,11 +44,25 @@
                                     <td class="text-right">
                                         {{ app_format_number($invoice->getTotalInvoice(), 1) }} Fc
                                     </td>
+                                    <td class="{{ $invoice->is_valided ? 'bg-success ' : '' }}">
+                                        {{ $invoice->is_valided ? 'Términé' : 'En cours' }}
+                                    </td>
                                     <td class="text-center">
-                                        <x-form.edit-button-icon wire:click="edit({{$invoice}})" class="btn-sm btn-primary" />
-                                        <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $invoice }})" class="btn-sm btn-danger" />
-                                        <a href="#" class="btn btn-secondary btn-sm"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                        @if ($invoice->is_valided)
+                                            <x-form.button wire:click="changeStatus({{ $invoice }})"
+                                                wire:confirm="Etes-vous de réaliser l'opération?"
+                                                class="btn-sm btn-danger">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </x-form.button>
+                                        @else
+                                            <x-form.edit-button-icon wire:click="edit({{ $invoice }})"
+                                                class="btn-sm btn-primary" />
+                                            <a href="#" class="btn btn-secondary btn-sm"><i class="fa fa-print"
+                                                    aria-hidden="true"></i></a>
+                                            <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
+                                                wire:click="delete({{ $invoice }})" class="btn-sm btn-danger" />
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

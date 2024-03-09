@@ -50,14 +50,18 @@ class CreateOutpatientBill extends Component
      */
     public function store()
     {
-        $inputs= $this->validate();
+        $inputs = $this->validate();
         try {
-            $outpatientBill =CreateOutpatientBillRepository::create($inputs);
-            $this->dispatch('outpatientBill', $outpatientBill);
-            $this->dispatch('close-form-new-outpatient-bill');
-            $this->dispatch('refreshCreateOutpatientView');
-            $this->dispatch('added', ['message' => 'Action bien réalisée']);
-            $this->outpatientBill = null;
+            if (CreateOutpatientBillRepository::outpatienBillExist($this->client_name)) {
+                $this->dispatch('error', ['message' => 'Ce client a déjà une facture en cours']);
+            } else {
+                $outpatientBill = CreateOutpatientBillRepository::create($inputs);
+                $this->dispatch('outpatientBill', $outpatientBill);
+                $this->dispatch('close-form-new-outpatient-bill');
+                $this->dispatch('refreshCreateOutpatientView');
+                $this->dispatch('added', ['message' => 'Action bien réalisée']);
+                $this->outpatientBill = null;
+            };
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

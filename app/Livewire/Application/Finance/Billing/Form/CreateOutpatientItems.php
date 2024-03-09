@@ -14,7 +14,8 @@ class CreateOutpatientItems extends Component
         'outpatientFreshinfo' => '$refresh'
     ];
     public ?OutpatientBill $outpatientBill;
-    public int $selectedIndex ;
+    public int $selectedIndex;
+    public  $isOtherDetail = false;
 
 
     /**
@@ -28,14 +29,24 @@ class CreateOutpatientItems extends Component
         $this->outpatientBill = $outpatientBill;
     }
 
-    public function openEditBillFormModal(){
+    public function openEditBillFormModal()
+    {
         $this->dispatch('open-new-outpatient-bill');
     }
     public  function changeIndex(CategoryTarif $category): void
     {
+        $this->isOtherDetail = false;
         $this->selectedIndex = $category->id;
         $this->dispatch('selectedIndex', $this->selectedIndex);
         $this->dispatch('refreshItemsTarifWidget', $category->id);
+    }
+
+    public function OpenOtherDetailOutpatientBill()
+    {
+        $this->isOtherDetail = true;
+        $this->selectedIndex = 0;
+        $this->dispatch('otherDetalOutpatientBill', $this->outpatientBill);
+        $this->dispatch('open-form-new-other-detail-outpatient-bill');
     }
 
     public function mount(?OutpatientBill $outpatientBill)
@@ -44,6 +55,17 @@ class CreateOutpatientItems extends Component
         $this->selectedIndex = CategoryTarif::where('name', 'like', '%LABO%')->first()->id;
     }
 
+    public function openAddDetailFormModal()
+    {
+        $this->dispatch('open-form-detail-outpatient-bill');
+        $this->dispatch('outpatientBillToDetail', $this->outpatientBill);
+    }
+
+    public function openNewOutpatientBillModal(): void
+    {
+        $this->dispatch('outpatientBillToFrom', $this->outpatientBill);
+        $this->dispatch('open-new-outpatient-bill');
+    }
     public function render()
     {
         return view('livewire.application.finance.billing.form.create-outpatient-items', [

@@ -83,8 +83,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('print')->group(function () {
         Route::controller(OutpatientBillPrinterController::class)->group(function () {
             Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
-            Route::get('rapport-date-out-patient-bill/{date}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
-            Route::get('rapport-month-out-patient-bill/{date}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
+            Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
+            Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
             Route::get('print-all-date/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
             Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
             Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
@@ -102,8 +102,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        Route::controller(ProductInvoicePrinterController::class)->group(function(){
             Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
-            Route::get('product-invoice-rapport-date/{month}', 'printOutpatientBillRapportByDate')->name('product.invoice.rapport.date.print');
-            Route::get('product-invoice-rapport-month/{date}', 'printOutpatientBillRapportByMonth')->name('product.invoice.rapport.month.print');
+            Route::get('product-invoice-rapport-date/{date}/{dateVersement}/{isByDate}', 'printOutpatientBillRapportByDate')->name('product.invoice.rapport.date.print');
+            Route::get('product-invoice-rapport-month/{month}/{dateVersement}/0', 'printOutpatientBillRapportByMonth')->name('product.invoice.rapport.month.print');
        });
 
        Route::controller(OtherPrinterController::class)->group(function(){

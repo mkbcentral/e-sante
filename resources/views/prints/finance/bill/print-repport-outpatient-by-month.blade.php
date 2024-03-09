@@ -8,7 +8,7 @@
             <tr>
                 <th class="text-center">#</th>
                 <th>Date</th>
-                <th>N° Fracture</th>
+                <th class="text-center">#Invoice</th>
                 <th>Cleint</th>
                 <th class="text-right">MT USD</th>
                 <th class="text-right">MT CDF</th>

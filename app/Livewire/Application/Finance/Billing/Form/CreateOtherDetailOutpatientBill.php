@@ -22,6 +22,7 @@ class CreateOtherDetailOutpatientBill extends Component
     public $amount;
     public OutpatientBill $outpatientBill;
     public ?OtherDetailOutpatientBill $otherOutpatientBill = null;
+
     public function getOutpatient(OutpatientBill $outpatientBill)
     {
         if ($outpatientBill->otherOutpatientBill != null) {

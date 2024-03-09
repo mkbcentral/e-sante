@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
@@ -26,4 +27,22 @@ class ProductInvoice extends Model
         }
         return $total;
     }
+
+    /**
+     * Get the user that owns the ProductInvoice
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Get formatted number attribute
+    public function getNumberAttribute($value)
+    {
+        return 'A-'.$value.'-PS';
+    }
+
+
 }

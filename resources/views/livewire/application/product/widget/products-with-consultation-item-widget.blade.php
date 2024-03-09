@@ -17,7 +17,9 @@
                     <tr style="cursor: pointer;" data-toggle="tooltip" data-placement="top"
                         title="({{ $product->name }}) Posologie:
                     {{ $product->pivot->dosage == null ? 'Nom défini' : $product->pivot->dosage }}">
-                        <td class="text-uppercase">- {{  strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name  }}</td>
+                        <td class="text-uppercase">-
+                            {{ strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
+                        </td>
                         <td class="text-center">
                             @if ($isEditing && $idSelected == $product->pivot->id)
                                 <x-form.input type='text' style="width: 70px;text-align: center" wire:model='qty'
@@ -39,7 +41,8 @@
                             <x-form.edit-button-icon
                                 wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
                                 class="btn-sm btn-primary" />
-                            <x-form.delete-button-icon wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
+                            <x-form.delete-button-icon wire:click="delete({{ $product->pivot->id }})"
+                                class="btn-sm btn-danger" />
                         </td>
                     </tr>
                 @endforeach

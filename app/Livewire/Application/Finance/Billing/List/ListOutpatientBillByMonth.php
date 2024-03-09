@@ -2,23 +2,33 @@
 
 namespace App\Livewire\Application\Finance\Billing\List;
 
-use App\Models\Currency;
 use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
+use Carbon\Carbon;
 use Exception;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListOutpatientBillByMonth extends Component
 {
+    use WithPagination;
     protected $listeners = [
         'currencyName' => 'getCurrencyName',
         'refreshListBill' => '$refresh'
     ];
-    public string $month;
+    public string $month, $date, $date_versement;
+    public bool $isByDate = true;
+
+    public function updatedDate($val): void
+    {
+        $this->date = $val;
+        $this->isByDate = true;
+    }
 
     public function updatedMonth($val): void
     {
         $this->month = $val;
+        $this->isByDate = false;
     }
     /**
      * edit
@@ -51,13 +61,24 @@ class ListOutpatientBillByMonth extends Component
     public function mount(): void
     {
         $this->month = date('m');
+        $this->date = date('Y-m-d');
+        $this->date_versement=Carbon::tomorrow()->format('Y-m-d');
     }
     public function render()
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-month', [
-            'listBill' => GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
-            'tota_cdf' => GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month),
-            'tota_usd' => GetOutpatientRepository::getTotalBillByMonthGroupByUSD($this->month)
+            'listBill' => $this->isByDate ?
+                GetOutpatientRepository::getOutpatientPatientByDate($this->date) :
+                GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
+            'tota_cdf' =>  $this->isByDate ?
+                GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date) :
+                GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month),
+            'tota_usd' => $this->isByDate ?
+                GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date) :
+                GetOutpatientRepository::getTotalBillByMonthGroupByUSD($this->month),
+            'counter_by_month' => $this->isByDate ?
+                GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date) :
+                GetOutpatientRepository::getCountOfOutpatientBillByMonth($this->month),
         ]);
     }
 }

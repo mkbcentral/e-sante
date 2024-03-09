@@ -9,8 +9,8 @@
                         <hr>
                         <div class="form-group">
                             <x-form.label value="{{ __('Type consultation') }}" />
-                            <x-widget.list-consultation-widget wire:model.blur='consultation_id' :error="'sheet_id'" />
-                            <x-errors.validation-error value='sheet_id' />
+                            <x-widget.list-consultation-widget wire:model.blur='consultation_id' :error="'consultation_id'" />
+                            <x-errors.validation-error value='consultation_id' />
                         </div>
                         @if ($consultationSheet->subscription?->is_subscriber)
                             <div class="my-2"> <span class="text-bold text-md text-info mr-2">Avec bon ?</span>

@@ -8,61 +8,63 @@
     <x-content.main-content-page>
         <div class="row">
             <div class="col-md-2">
-                @if ($isEditing)
-                    <div class="p-1 rounded bg-indigo" style="cursor: pointer;" wire:click='newInvoice'>
-                        <div class="text-center">
-                            <h4><i class="fa fa-plus-circle" aria-hidden="true"></i> Nouveau</h4>
-                        </div>
-                    </div>
-                    <div class="p-1 rounded bg-blue mt-1" style="cursor: pointer;" wire:click='openNewProductInvoice'>
+                @if ($productInvoice && $isEditing)
+                    <div class="p-1 rounded bg-info mt-1"
+                    style="cursor: pointer;" wire:click='openNewProductInvoice'>
                         <div class="text-center">
                             <h4><i class="fas fa-pen    "></i> Editer</h4>
                         </div>
                     </div>
+                    <div class=" bg-dark rounded bg-secondary p-1 mt-1" style="cursor: pointer"
+                        wire:click='openListListProductInvoice'>
+                        <div class="text-center">
+                            <h4><i class="far fa-folder-open"></i> Mes factures</h4>
+                        </div>
+                    </div>
+
+                    @if ($productInvoice->is_valided == false && $productInvoice)
+                        <div class="rounded bg-pink p-1 mt-1" style="cursor: pointer"
+                            wire:click='setProductInvoiceToNull' wire:confirm="Etes-vous d'annuler?">
+                            <div class="text-center">
+                                <h4><i class="far fa-times-circle"></i> Annuler</h4>
+                            </div>
+                        </div>
+                        <div class="rounded bg-danger p-1 mt-1" style="cursor: pointer"
+                            wire:click='deleteProductInvoice' wire:confirm="Etes-vous de supprimer?">
+                            <div class="text-center">
+                                <h4><i class="fa fa-trash"></i> Supprimer</h4>
+                            </div>
+                        </div>
+                    @else
+                        <div class="rounded bg-primary p-1 mt-1" style="cursor: pointer"
+                            wire:click='setProductInvoiceToNull' wire:confirm="Etes-vous d'annuler?">
+                            <div class="text-center">
+                                <h4><i class="fa fa-check-double"></i> Terminer</h4>
+                            </div>
+                        </div>
+                    @endif
                 @else
                     <div class="p-1 rounded bg-secondary" style="cursor: pointer;" wire:click='openNewProductInvoice'>
                         <div class="text-center">
                             <h4><i class="fa fa-plus " aria-hidden="true"></i> Créer...</h4>
                         </div>
                     </div>
-                @endif
-                <div class=" bg-dark rounded bg-secondary p-1 mt-1" style="cursor: pointer"
-                    wire:click='openListListProductInvoice'>
-                    <div class="text-center">
-                        <h4><i class="far fa-folder-open"></i> Mes factures</h4>
-                    </div>
-                </div>
-
-                <a href="{{ route('product.invoice.report') }}" wire: >
-                    <div class=" bg-danger rounded bg-secondary p-1 mt-1">
+                    <div class=" bg-dark rounded bg-secondary p-1 mt-1" style="cursor: pointer"
+                        wire:click='openListListProductInvoice'>
                         <div class="text-center">
-                            <h4><i class="far fa-folder"></i> Rapport</h4>
+                            <h4><i class="far fa-folder-open"></i> Mes factures</h4>
                         </div>
                     </div>
-                </a>
+                @endif
             </div>
             <div class="col-md-10">
                 @if ($productInvoice)
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card {{ $isEditing == true ? 'bg-indigo' : 'bg-pink' }}">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4 class="card-title"><span class="text-bold">N° Fact:
-                                                </span>:{{ $productInvoice->number }}</h4><br>
-                                            <h4 class="card-title"><span class="text-bold">Client:
-                                                </span>:{{ $productInvoice->client }}</h4><br>
-                                            <h4 class="card-title"><span class="text-bold">Date:
-                                                </span>:{{ $productInvoice->created_at->format('d/m/Y') }}</h4>
-                                        </div>
-                                        <div>
-                                            <h4 class="card-title"><span class="text-bold"><i class="fa fa-user"
-                                                        aria-hidden="true"></i>User:
-                                                </span>:Use</h4><br>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card {{ $isEditing == true ? 'bg-navy' : 'bg-indigo' }}">
+                                @include('components.widget.outpatientbill.product-invoice-info', [
+                                    'productInvoice' => $productInvoice,
+                                ])
                             </div>
                             <div class="card">
                                 <div class="card-body">
@@ -73,20 +75,20 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+                            <div class="card bg-indigo p-2 ">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4> RECETTE/JOUR</h4>
+                                        <h3 class="text-bold">Total: {{ app_format_number($totalInvoice, 1) }} Fc</h3>
+                                    </div>
+                                    <h1 class="mr-4"><i class="fa fa-hand-holding-usd"></i></h1>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-body">
                                     @livewire('application.product.invoice.list.list-items-invoice', [
                                         'productInvoice' => $productInvoice,
                                     ])
-                                </div>
-                            </div>
-                            <div class="card mt-4 bg-indigo p-2 ">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                    <h4> RECETTE/JOUR</h4>
-                                    <h3 class="text-bold">Total: {{ app_format_number($totalInvoice, 1) }} Fc</h3>
-                                </div>
-                                <h1 class="mr-4"><i class="fa fa-hand-holding-usd"></i></h1>
                                 </div>
                             </div>
                         </div>

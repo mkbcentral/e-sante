@@ -11,6 +11,9 @@ use Livewire\WithPagination;
 
 class ListProductToMakeInvoice extends Component
 {
+    protected $listeners = [
+        'productInvoiceToadd' => 'getProductInvoice',
+    ];
     use WithPagination;
     #[Url(as: 'q')]
     public $q = '';
@@ -19,6 +22,16 @@ class ListProductToMakeInvoice extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
     public ?ProductInvoice $productInvoice;
+    /**
+     * Get ProductInvoice if ProductInvoiceListener is emitted
+     * getOutpatient
+     * @return void
+     */
+    public function getProductInvoice(?ProductInvoice $productInvoice)
+    {
+        $this->productInvoice = $productInvoice;
+    }
+
     /**
      * sort product ASC or DESC
      * @param $value

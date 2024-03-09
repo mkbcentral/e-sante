@@ -2,7 +2,6 @@
     @livewire('application.finance.billing.form.create-outpatient-bill')
     @livewire('application.finance.billing.list.list-outpatient-bill-by-date')
     @livewire('application.finance.billing.form.create-detail-outpatient-bill')
-    @livewire('application.finance.billing.form.create-other-detail-outpatient-bill')
     <x-navigation.bread-crumb icon='fas fa-file-invoice-dollar' label='FACTURATION AMBULATOIRE' color='text-secondary'>
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Facturation ambulatoire' />
@@ -38,12 +37,6 @@
                     </div>
                 @endif
                 @if ($outpatientBill != null)
-                    <div class="  rounded bg-warning p-1 mt-1" style="cursor: pointer"
-                        wire:click='OpenOtherDetailOutpatientBill'>
-                        <div class="text-center">
-                            <h5><i class="fa fa-plus-circle"></i> Autres détails</h5>
-                        </div>
-                    </div>
                     <a wire:click='printBill'
                         href="{{ route('outPatientBill.print', [$outpatientBill, $currencyName]) }}" target="_blanck">
                         <div class=" bg-indigo rounded bg-secondary p-1 mt-1" style="cursor: pointer">
@@ -52,14 +45,19 @@
                             </div>
                         </div>
                     </a>
-                @endif
-                <a class="mt-2" href="{{ route('bill.outpatient.rapport') }}" wire:navigate>
-                    <div class=" bg-danger rounded bg-secondary p-1 mt-2">
+                    <div wire:click='cancelBill' wire:confirm="Etes-vous d'annuler?" class=" bg-pink rounded  p-1 mt-1" style="cursor: pointer">
                         <div class="text-center">
-                            <h4><i class="far fa-folder"></i> Rapport</h4>
+                            <h4><i class="fas fa-times-circle"></i> Annuler</h4>
                         </div>
                     </div>
-                </a>
+                    <div wire:click='cancelBill'
+                        wire:confirm="Etes-vous de supprimer?"
+                        class=" bg-danger rounded  p-1 mt-1" style="cursor: pointer">
+                        <div class="text-center">
+                            <h4><i class="fas fa-trash"></i> Supprimer</h4>
+                        </div>
+                    </div>
+                @endif
             </div>
             <div class="col-md-6">
                 @if ($outpatientBill != null)
@@ -76,6 +74,33 @@
             </div>
             <div class="col-md-4">
                 @if ($outpatientBill != null)
+                    <div class="small-box bg-indigo">
+                        <div class="d-flex justify-content-center pb-2 pt-2">
+                            <x-widget.loading-circular-md />
+                        </div>
+                        <div class="inner">
+                            <h4 class="text-bold">TOTAL FACTURE <i class="far fa-sack-dollar"></i></h4>
+                            <ul>
+                                <li>
+                                    <h4 class="text-bold">
+                                        @livewire('application.finance.billing.widget.usd-amount-outpatient-bill-widget', [
+                                            'outpatientBill' => $outpatientBill,
+                                        ])$
+                                    </h4>
+                                </li>
+                                <li>
+                                    <h4 class="text-bold">
+                                        @livewire('application.finance.billing.widget.cdf-amount-outpatient-bill-widget', [
+                                            'outpatientBill' => $outpatientBill,
+                                        ]) Fc
+                                    </h4>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-money-check-alt text-white"></i>
+                        </div>
+                    </div>
                     @livewire('application.finance.billing.list.list-items-tarif-outpatient-bill', [
                         'outpatientBill' => $outpatientBill,
                     ])
@@ -90,38 +115,9 @@
                             </tr>
                         </table>
                     @endif
-
-                    <div class="small-box bg-indigo">
-                        <div class="d-flex justify-content-center pb-2 pt-2">
-                            <x-widget.loading-circular-md />
-                        </div>
-                        <div class="inner">
-                            <h3 class="text-bold">TOTAL FACTURE <i class="far fa-sack-dollar"></i></h4>
-                                <ul>
-                                    <li>
-                                        <h4 class="text-bold">
-                                            @livewire('application.finance.billing.widget.usd-amount-outpatient-bill-widget', [
-                                                'outpatientBill' => $outpatientBill,
-                                            ])$
-                                        </h4>
-                                    </li>
-                                    <li>
-                                        <h4 class="text-bold">
-                                            @livewire('application.finance.billing.widget.cdf-amount-outpatient-bill-widget', [
-                                                'outpatientBill' => $outpatientBill,
-                                            ]) Fc
-                                        </h4>
-                                    </li>
-                                </ul>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-money-check-alt text-gray"></i>
-                        </div>
-                    </div>
                 @endif
             </div>
         </div>
-
     </x-content.main-content-page>
     @push('js')
         <script type="module">

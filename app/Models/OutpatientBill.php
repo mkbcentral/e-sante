@@ -92,28 +92,27 @@ class OutpatientBill extends Model
     {
         return $this->hasOne(OtherDetailOutpatientBill::class);
     }
-
-
+    /* Get the consultation price in USD */
     public function getConsultationPriceUSD(): int|float
     {
         return $this->consultation->price_private;
     }
-
+    /* Get the consultation price in CDF */
     public function getConsultationPriceCDF(): int|float
     {
         return $this->consultation->price_private * $this->rate->rate;
     }
-
+    /* Get the other outpatient bill in USD */
     public function getOtherOutpatientBillPriceUSD(): int|float
     {
         return $this->otherOutpatientBill !=null? $this->otherOutpatientBill->amount:0;
     }
-
+    /* Get the other outpatient bill in CDF */
     public function getOtherOutpatientBillPriceCDF(): int|float
     {
         return $this->otherOutpatientBill != null ? $this->otherOutpatientBill->amount * $this->rate->rate:0;
     }
-
+    /* Get the total bill in USD */
     public function getTotalOutpatientBillUSD(): int|float
     {
         $total = 0;
@@ -122,7 +121,11 @@ class OutpatientBill extends Model
         }
         return $this->getConsultationPriceUSD() + $total+$this->getOtherOutpatientBillPriceUSD();
     }
-
+    /**
+     * Get the total bill in CDF
+     *
+     * @return int|float
+     */
     public function getTotalOutpatientBillCDF(): int|float
     {
         $total = 0;
@@ -130,5 +133,10 @@ class OutpatientBill extends Model
             $total += ($tarif->price_private * $tarif->pivot->qty) * $this->rate->rate;
         }
         return $this->getConsultationPriceCDF() + $total +$this->getOtherOutpatientBillPriceCDF();
+    }
+
+    public function getBillNumberAttribute($value): string
+    {
+        return 'A-' . $value.'-PS';
     }
 }
