@@ -24,6 +24,32 @@ class Product extends Model
         'expiration_date' => 'datetime'
     ];
 
+    public function getInitialQuantityAttribute($value): int
+    {
+        $number = 0;
+        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
+            $number = $value;
+        }  else {
+            $number =  0;
+        }
+        return $number;
+    }
+
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class);
+    }
+
+    public function hospital(): BelongsTo
+    {
+        return $this->belongsTo(Hospital::class);
+    }
+
+    public function productFamily(): BelongsTo
+    {
+        return $this->belongsTo(ProductFamily::class, 'product_family_id');
+    }
+
     /**
      * Get the productCategory that owns the Product
      *
@@ -62,10 +88,6 @@ class Product extends Model
     {
         return $this->belongsToMany(ProductPurchase::class)->withPivot(['id', 'quantity_stock', 'quantity_to_order']);
     }
-    /***
-     * get number of product by invoice
-     */
-
     /**
      * Get all of the productRequistionProducts for the Product
      *
@@ -82,13 +104,16 @@ class Product extends Model
     {
         return ProductInvoice::query()
             ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
+            ->join('users', 'users.id', 'product_invoices.user_id')
             ->where('product_product_invoice.product_id', $this->id)
             ->where('product_invoices.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('product_invoices.user_id', Auth::id())
+            ->where('users.source_id', Auth::user()->source->id)
+            ->where('is_valided', true)
             ->sum('product_product_invoice.qty');
     }
     /**
-     * Sortie sur les factures des abonées et personels
+     * Sortie sur les factures des privés hospitalisé, abonées et personels
      */
     public function getNumberProducByConsultationRequest(): int|float
     {
@@ -110,7 +135,7 @@ class Product extends Model
             ->sum('consultation_request_product.qty');
     }
     /**
-     * Entre total pour chaque approvisionnement
+     * get number of product by supply
      */
     public function getNumberProductSupply(): int|float
     {
@@ -119,7 +144,7 @@ class Product extends Model
             ->join('users', 'users.id', 'product_supplies.user_id')
             ->where('product_supply_products.product_id', $this->id)
             ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('product_supplies.user_id', Auth::id())
+            ->where('product_supplies.user_id', Auth::id())
             ->where('product_supplies.is_valided', true)
             ->sum('product_supply_products.quantity');
     }
@@ -131,7 +156,7 @@ class Product extends Model
         $quantity = 0;
         $inputs = ProductRequisitionProduct::query()
             ->join('products', 'products.id', 'product_requisition_products.product_id')
-            ->select('product_requisition_products.*', 'products.name as product_name')
+            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
             ->get();
@@ -141,19 +166,17 @@ class Product extends Model
         }
         return $quantity;
     }
-    /**
-     * Entrée totale par approvisionnemnt pour chaque serice
-     */
-    public function getTotalInputsByService(): int|float
+
+    public function getOutputFormRequisitionByService(): int|float
     {
         $quantity = 0;
-        $inputs = ProductSupplyProduct::join('products', 'products.id', 'product_supply_products.product_id')
-            ->join('product_supplies', 'product_supplies.id', 'product_supply_products.product_supply_id')
-            ->join('users', 'users.id', 'product_supplies.user_id')
-            ->select('product_supply_products.*', 'products.name as product_name')
+        $inputs = ProductRequisitionProduct::query()
+            ->join('products', 'products.id', 'product_requisition_products.product_id')
+            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
+            ->select('product_requisition_products.*', 'products.name as product_name')
             ->with(['product'])
-            ->where('users.agent_service_id', Auth::user()->agentService->id)
-            ->where('product_supply_products.product_id', $this->id)
+            ->where('product_requisition_products.product_id', $this->id)
+            ->where('product_requisitions.user_id', Auth::id())
             ->get();
 
         foreach ($inputs as $input) {
@@ -161,26 +184,44 @@ class Product extends Model
         }
         return $quantity;
     }
+
+    public function getTotalInputProducts(): int|float
+    {
+        $number = 0;
+        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
+            $number =  $this->initial_quantity + $this->getOutputFormRequisitionByService();
+        } elseif (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+            $number =   $this->getNumberProductSupply();
+        } else {
+            $this->getOutputFormRequisitionByService();
+        }
+        return $number;
+    }
     /**
-     * Total des sortie
+     * get total output products
      */
     public function getTotalOutputProducts(): int|float
     {
-        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest() + $this->getOutputFormRequisition();
+        $number = 0;
+        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
+            $number = $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest();
+        } elseif (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+            $number = $this->getOutputFormRequisition();
+        } else {
+            $this->getNumberProducByConsultationRequest();
+        }
+        return $number;
     }
     /**
      * Stotck global
      */
     public function getAmountStockGlobal(): int|float
     {
-        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == "GOLF") {
-            return ($this->initial_quantity + $this->getNumberProductSupply()) - $this->getTotalOutputProducts();
-        } else {
-            return ($this->getNumberProductSupply()) -
-                ($this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest());
-        }
+        return    $number =$this->getTotalInputProducts()-$this->getTotalOutputProducts();;
     }
-
+    /**
+     * get product stock status
+     */
     public function getProductStockStatus(): string
     {
         $status = '';

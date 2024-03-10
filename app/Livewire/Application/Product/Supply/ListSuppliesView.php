@@ -39,6 +39,9 @@ class ListSuppliesView extends Component
     public function delete(?ProductSupply $productSupply)
     {
         try {
+            foreach ($productSupply->productSupplyProducts as $productSupplyProduct) {
+                $productSupplyProduct->delete();
+            }
             $productSupply->delete();
             $this->dispatch('error', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
@@ -77,7 +80,7 @@ class ListSuppliesView extends Component
             'productSupplies' => ProductSupply::query()
                 ->join('users', 'users.id', 'product_supplies.user_id')
                 ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
-               // ->where('product_supplies.user_id', Auth::id())
+                ->where('product_supplies.user_id', Auth::id())
                 ->whereMonth('product_supplies.created_at', $this->month)
                 ->select('product_supplies.*')
                 ->get()
