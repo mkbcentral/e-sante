@@ -27,11 +27,15 @@ class ListProduct extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
-    public string $category_name = '';
+    public string $category_id = '';
     public string $family_id = '';
     public ?Product $product;
-    public bool $isSpecialty=false;
+    public bool $isSpecialty = false;
 
+    public function updatedCategoryId($value): void
+    {
+        $this->category_id = $value;
+    }
     /**
      * Open creation mode modal
      * @return void
@@ -72,8 +76,11 @@ class ListProduct extends Component
     public function delete(): void
     {
         try {
-            $this->product->delete();
-            $this->dispatch('product-deleted', ['message' => "Produit bien supprimé !"]);
+            if ($this->product->is_trashed)
+                $this->product->update(['is_trashed' => false]);
+            else
+                $this->product->update(['is_trashed' => true]);
+            $this->dispatch('product-deleted', ['message' => "Produit bien retiré !"]);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -103,11 +110,11 @@ class ListProduct extends Component
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,
-                $this->category_name,
+                $this->category_id,
                 $this->family_id,
                 50
             ),
-            'categories'=>ProductCategory::all()
+            'categories' => ProductCategory::all()
         ]);
     }
 }

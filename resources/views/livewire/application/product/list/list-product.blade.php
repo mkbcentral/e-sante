@@ -20,12 +20,7 @@
                     <div class="d-flex align-items-center">
                         <div class="form-group mr-2">
                             <x-form.label value="{{ __('Catégorie') }}" class="text-pink" />
-                            <select class="form-control" wire:model.live="category_name">
-                                <option value="">Choisir</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
+                            <x-widget.list-product-category-widget wire:model.live="category_id" :error="'category_id'" />
                         </div>
                         <div class="form-group">
                             <x-form.label value="{{ __('Famille') }}" class="text-pink" />
@@ -87,6 +82,7 @@
                                 </x-form.button>
                                 <x-form.sort-icon sortField="expiration_date" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
+                            <th class="text-center">CETEGORIE</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -109,12 +105,16 @@
                                     <td class="text-center">{{ $product->initial_quantity }}</td>
                                     <td class="text-center">{{ $product->getNumberProductSupply() }}</td>
                                     <td class="text-center">{{ $product->getTotalOutputProducts() }}</td>
-                                    <td class=" {{ $product->getProductStockStatus() }} text-center ">
+                                    <td class=" {{ $product?->getProductStockStatus() }} text-center ">
                                         {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}
                                     </td>
                                     <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
+                                    <td class="text-right text-uppercase {{ !$product->productCategory ? 'bg-dark' : '' }} ">
+                                        {{ $product->productCategory ? $product->productCategory?->name : 'Non categorisé' }}
+                                    </td>
                                     <td class="text-center">
+
                                         <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
                                             wire:click='edit({{ $product }})' />
 

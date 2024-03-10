@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GetProductRepository
 {
-    public static string $keyToSear;
+    public static string $keyToSear, $categoryId, $familyId;
     public static function getProductList(
         string $q,
         string $sortBy,
@@ -20,17 +20,17 @@ class GetProductRepository
     ) {
         SELF::$keyToSear = $q;
         return  Product::query()
-            ->join('product_categories', 'product_categories.id', 'products.product_category_id')
             ->when($q, function ($query) {
                 return $query->where(function ($query) {
                     return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
                         ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
                 });
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->where('product_categories.name', 'like', '%' . $categoryId . '%')
-            //->where('products.product_family_id', 'like', '%' . $familyId . '%')
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('products.source_id', auth()->user()->source->id)
+            ->where('products.product_category_id', 'like', '%' . $categoryId . '%')
+            ->where('products.product_family_id', 'like', '%' . $familyId . '%')
+            ->where('products.is_trashed', false)
+            ->whereIn('products.source_id', [1, 2])
             ->select('products.*')
             ->paginate($per_page);
     }
@@ -50,7 +50,8 @@ class GetProductRepository
         })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('products.*')
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('products.source_id', auth()->user()->source->id)
+            ->where('products.is_trashed', false)
+            ->whereIn('products.source_id', [1, 2])
             ->paginate($per_page);
     }
 

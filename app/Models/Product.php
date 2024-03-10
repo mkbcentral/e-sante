@@ -17,7 +17,7 @@ class Product extends Model
     protected $fillable = [
         'butch_number', 'initial_quantity', 'name',
         'price', 'expiration_date', 'product_family_id', 'product_category_id',
-        'hospital_id', 'is_specialty', 'source_id'
+        'hospital_id', 'is_specialty', 'source_id', 'is_trashed', 'created_by', 'updated_by'
     ];
 
     protected $casts = [
@@ -184,22 +184,22 @@ class Product extends Model
     public function getProductStockStatus(): string
     {
         $status = '';
-        if ($this->productCategory->name == "COMPRIME") {
+        if ($this->productCategory?->name == "COMPRIME") {
             if ($this->getAmountStockGlobal() <= 30) {
                 $status = 'bg-danger';
             }
-        } else if ($this->productCategory->name == "SIROP") {
+        } else if ($this->productCategory?->name == "SIROP") {
             if ($this->getAmountStockGlobal() <= 10) {
                 $status = 'bg-danger';
             }
-        } else if ($this->productCategory->name == "INJECTABLE") {
+        } else if ($this->productCategory?->name == "INJECTABLE") {
             if ($this->getAmountStockGlobal() <= 20) {
                 $status = 'bg-danger';
             }
         } else if (
-            $this->productCategory->name == "LIQUIDE" ||
-            $this->productCategory->name == "PERFUSION" ||
-            $this->productCategory->name == "INFUSION"
+            $this->productCategory?->name == "LIQUIDE" ||
+            $this->productCategory?->name == "PERFUSION" ||
+            $this->productCategory?->name == "INFUSION"
         ) {
             if ($this->getAmountStockGlobal() <= 10) {
                 $status = 'bg-danger';

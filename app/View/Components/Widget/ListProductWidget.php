@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Widget;
 
+use App\Models\Hospital;
 use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -18,7 +19,11 @@ class ListProductWidget extends Component
      */
     public function __construct()
     {
-        $this->listProduct=Product::orderBy('name','ASC')->get();
+        $this->listProduct=Product::orderBy('name','ASC')
+            ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('is_trashed', false)
+            ->whereIn('source_id', [1, 2])
+            ->paginate(25);
     }
 
     /**
