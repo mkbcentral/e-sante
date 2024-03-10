@@ -88,10 +88,6 @@ class Product extends Model
     {
         return $this->belongsToMany(ProductPurchase::class)->withPivot(['id', 'quantity_stock', 'quantity_to_order']);
     }
-    /***
-     * get number of product by invoice
-     */
-
     /**
      * Get all of the productRequistionProducts for the Product
      *
@@ -223,7 +219,9 @@ class Product extends Model
     {
         return    $number =$this->getTotalInputProducts()-$this->getTotalOutputProducts();;
     }
-
+    /**
+     * get product stock status
+     */
     public function getProductStockStatus(): string
     {
         $status = '';
