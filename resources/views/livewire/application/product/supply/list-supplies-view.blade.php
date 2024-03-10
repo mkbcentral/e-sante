@@ -20,6 +20,7 @@
                         <th>DATE</th>
                         <th class="text-center">CODE</th>
                         <th class="text-center">PRODUCTS</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">ACTIONS</th>
                     </tr>
                 </thead>
@@ -35,22 +36,35 @@
                                 <td>{{ $productSupply->created_at->format('d/m/Y à H:i:s') }}</td>
                                 <td class="text-center">{{ $productSupply->code }}</td>
                                 <td class="text-center">{{ $productSupply->productSupplyProducts->count() }}</td>
+                                <td class="text-center {{ $productSupply->is_valided ? 'bg-success' : '' }}">
+                                    {{ $productSupply->is_valided ? 'Validé' : 'En cours' }}
+                                </td>
                                 <td class="text-center">
-                                    <x-navigation.link-icon class="btn btn-sm btn-primary"
-                                        href="{{ route('product.supply.add.products', $productSupply->id) }}"
-                                        wire:navigate :icon="'fa fa-plus-circle'" />
-                                    <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
-                                        wire:click='edit({{ $productSupply }})' />
-                                    <x-form.button
-                                        class=" {{ $productSupply->is_valided == true ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
-                                        type='button' wire:click='changeStatus({{ $productSupply }})'
-                                        wire:confirm="Etes-vous sûre de cette action ?">
-                                        <i
-                                            class="{{ $productSupply->is_valided == true ? 'fa fa-times ' : 'fa fa-check' }}"></i>
-                                    </x-form.button>
-                                    <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
-                                        wire:confirm="Etes-vous sûre de supprimer ?"
-                                        wire:click='delete({{ $productSupply }})' />
+                                    @if ($productSupply->is_valided == true)
+                                        <x-form.button
+                                            class=" {{ $productSupply->is_valided == true ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
+                                            type='button' wire:click='changeStatus({{ $productSupply }})'
+                                            wire:confirm="Etes-vous sûre de cette action ?">
+                                            <i
+                                                class="{{ $productSupply->is_valided == true ? 'fa fa-times ' : 'fa fa-check' }}"></i>
+                                        </x-form.button>
+                                    @else
+                                        <x-navigation.link-icon class="btn btn-sm btn-primary"
+                                            href="{{ route('product.supply.add.products', $productSupply->id) }}"
+                                            wire:navigate :icon="'fa fa-plus-circle'" />
+                                        <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
+                                            wire:click='edit({{ $productSupply }})' />
+                                        <x-form.button
+                                            class=" {{ $productSupply->is_valided == true ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
+                                            type='button' wire:click='changeStatus({{ $productSupply }})'
+                                            wire:confirm="Etes-vous sûre de cette action ?">
+                                            <i
+                                                class="{{ $productSupply->is_valided == true ? 'fa fa-times ' : 'fa fa-check' }}"></i>
+                                        </x-form.button>
+                                        <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
+                                            wire:confirm="Etes-vous sûre de supprimer ?"
+                                            wire:click='delete({{ $productSupply }})' />
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
