@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Product\Requisition;
 
+use App\Models\Product;
 use App\Models\ProductRequisition;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,13 @@ class MainProductRequisitionView extends Component
 
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
+    }
+    /**
+     * Show the detail of the product requisition
+     */
+    public function showDetailModal(ProductRequisition $productRequisition  ){
+        $this->dispatch('productRequisitionDetail', $productRequisition);
+        $this->dispatch('open-form-product-requisition-detail');
     }
 
     public function mount()

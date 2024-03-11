@@ -23,7 +23,7 @@ class ListProductWidget extends Component
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('is_trashed', false)
             ->whereIn('source_id', [1, 2])
-            ->paginate(25);
+            ->get();
     }
 
     /**

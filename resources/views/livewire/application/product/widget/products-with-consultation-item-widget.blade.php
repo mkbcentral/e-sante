@@ -41,8 +41,8 @@
                             <x-form.edit-button-icon
                                 wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
                                 class="btn-sm btn-primary" />
-                            <x-form.delete-button-icon wire:click="delete({{ $product->pivot->id }})"
-                                class="btn-sm btn-danger" />
+                            <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
+                                wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
                         </td>
                     </tr>
                 @endforeach

@@ -27,9 +27,9 @@ class Product extends Model
     public function getInitialQuantityAttribute($value): int
     {
         $number = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
+        if (Auth::user()->roles->pluck('name')->contains('Pharma')&& Auth::user()->source->id == Source::GOLF ){
             $number = $value;
-        }  else {
+        } else {
             $number =  0;
         }
         return $number;
@@ -177,6 +177,7 @@ class Product extends Model
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
             ->where('product_requisitions.user_id', Auth::id())
+            ->where('product_requisitions.is_valided', true)
             ->get();
 
         foreach ($inputs as $input) {
@@ -217,7 +218,7 @@ class Product extends Model
      */
     public function getAmountStockGlobal(): int|float
     {
-        return    $number =$this->getTotalInputProducts()-$this->getTotalOutputProducts();;
+        return    $number = $this->getTotalInputProducts() - $this->getTotalOutputProducts();;
     }
     /**
      * get product stock status

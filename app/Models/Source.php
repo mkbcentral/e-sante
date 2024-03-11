@@ -12,6 +12,9 @@ class Source extends Model
     use HasFactory;
     protected $fillable=['name','hospital_id'];
 
+    const GOLF = 'GOLF';
+    const VILLE = 'VILLE';
+
     /**
      * Get the hospital that owns the Source
      *

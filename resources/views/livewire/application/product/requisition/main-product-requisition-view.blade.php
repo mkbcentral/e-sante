@@ -1,7 +1,9 @@
 <div wire:poll.15s>
     @livewire('application.product.requisition.form.new-product-requisition')
     @livewire('application.product.requisition.list.list-amount-requistion-by-service')
-    <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS' color="text-success">
+    @livewire('application.product.requisition.list-detail-product-requisition')
+    <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS'
+             color="text-success">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Appro médicaments' />
     </x-navigation.bread-crumb>
@@ -60,9 +62,9 @@
                             </tr>
                         @else
                             @foreach ($productRequisitions as $index => $requisition)
-                                <tr wire:key='{{ $requisition->id }}'>
+                                <tr class="cursor-hand" wire:key='{{ $requisition->id }}' >
                                     <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>{{ $requisition->created_at->format('d/m/Y à H:i:s') }}</td>
+                                    <td><a wire:click='showDetailModal({{  $requisition}})' href="#">{{ $requisition->created_at->format('d/m/Y à H:i:s') }}</a></td>
                                     <td class="text-center">{{ $requisition->number }}</td>
                                     <td class="text-center">{{ $requisition->productRequistionProducts->count() }}
                                     </td>
@@ -125,6 +127,12 @@
             //Open list amount requisition by service model modal
             window.addEventListener('open-list-amount-requisition-by-service', e => {
                 $('#list-amount-requisition-by-service').modal('show')
+            });
+            /**
+             * Open edit sheet modal
+             */
+            window.addEventListener('open-form-product-requisition-detail', e => {
+                $('#form-product-requisition-detail').modal('show')
             });
         </script>
     @endpush

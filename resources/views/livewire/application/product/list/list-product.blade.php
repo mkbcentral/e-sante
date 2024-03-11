@@ -95,7 +95,9 @@
                             </tr>
                         @else
                             @foreach ($products as $index => $product)
-                                <tr style="cursor: pointer;" class="{{ $product->price == 0 ? 'bg-warning ' : '' }}">
+                                <tr style="cursor: pointer;"
+                                    class="{{ $product->price == 0 ? 'bg-warning ' : '' }}
+                                        {{ $product?->name == $products[$index + 1]?->name ? 'bg-dark ' : '' }} ">
                                     <td class="text-center">
                                         {{ $index + 1 }}
                                     </td>
@@ -110,7 +112,8 @@
                                     </td>
                                     <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
-                                    <td class="text-right text-uppercase {{ !$product->productCategory ? 'bg-dark' : '' }} ">
+                                    <td
+                                        class="text-right text-uppercase {{ !$product->productCategory ? 'bg-dark' : '' }} ">
                                         {{ $product->productCategory ? $product->productCategory?->name : 'Non categorisé' }}
                                     </td>
                                     <td class="text-center">

@@ -11,6 +11,13 @@ class ProductSupply extends Model
 {
     use HasFactory;
     protected $fillable=['code','user_id'];
+
+
+    public function getCodeAttribute($value):string
+    {
+        return 'AP-'.$value.'-PS';
+    }
+
     /**
      * Get the user associated with the ProductSupply
      *

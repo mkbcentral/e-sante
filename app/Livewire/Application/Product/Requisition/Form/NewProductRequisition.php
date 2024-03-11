@@ -43,6 +43,7 @@ class NewProductRequisition extends Component
         try {
             $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
             $fields['source_id'] = Source::DEFAULT_SOURCE();
+            $fields['user_id'] = Auth::id();
             $fields['number'] = rand(1000, 10000);
             ProductRequisition::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -57,6 +58,7 @@ class NewProductRequisition extends Component
     {
         $fields =  $this->validate();
         try {
+            $fields['user_id'] = Auth::id();
             $this->productRequisition->update($fields);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('listProductRequisition');

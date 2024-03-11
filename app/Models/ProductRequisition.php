@@ -11,7 +11,22 @@ class ProductRequisition extends Model
 {
     use HasFactory;
 
-    protected $fillable=['number', 'agent_service_id', 'hospital_id', 'source_id','created_at'];
+    protected $fillable=['number', 'agent_service_id', 'hospital_id','user_id', 'source_id','created_at'];
+
+    public function getNumberAttribute($value): string
+    {
+        return 'RQ-'.$value.'-PS';
+    }
+
+    /**
+     * Get the user that created the ProductRequisition
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     /**
      * Get the agentService that owns the ProductRequisition
