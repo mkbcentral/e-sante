@@ -18,7 +18,7 @@ class GetOutpatientRepository
     {
         return OutpatientBill::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
-            ->where('is_validated', $is_validated)
+            //->where('is_validated', $is_validated)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->paginate(10);
     }
