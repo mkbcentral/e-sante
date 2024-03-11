@@ -39,7 +39,7 @@ class MainConsultationRequestHospitalize extends Component
     public function render()
     {
         return view('livewire.application.sheet.main-consultation-request-hospitalize',[
-            'subscriptions' => Auth::user()->roles->pluck('name')->contains('Caisse') ?
+            'subscriptions' => Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Finance') ?
                 GetSubscriptionRepository::getAllSubscriptionListPrivateOnly() :
                 GetSubscriptionRepository::getAllSubscriptionList()
         ]);
