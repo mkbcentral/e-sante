@@ -68,16 +68,16 @@ class ListOutpatientBillByMonth extends Component
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-month', [
             'listBill' => $this->isByDate ?
-                GetOutpatientRepository::getOutpatientPatientByDate($this->date) :
+                GetOutpatientRepository::getOutpatientPatientByDate($this->date,true) :
                 GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
             'tota_cdf' =>  $this->isByDate ?
-                GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date) :
-                GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month),
+                GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date,true) :
+                GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month,true),
             'tota_usd' => $this->isByDate ?
-                GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date) :
+                GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date,true) :
                 GetOutpatientRepository::getTotalBillByMonthGroupByUSD($this->month),
             'counter_by_month' => $this->isByDate ?
-                GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date) :
+                GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date,true) :
                 GetOutpatientRepository::getCountOfOutpatientBillByMonth($this->month),
         ]);
     }
