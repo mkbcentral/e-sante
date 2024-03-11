@@ -240,9 +240,9 @@ class ConsultationRequest extends Model
         $mounth = $this->created_at->format('m');
         $formattedRequestNumber = str_pad($this->request_number, 3, '0', STR_PAD_LEFT);
         if ($this->consultationSheet->subscription->is_subscriber == true) {
-            $formattedMonth = format_fr_month_name($mounth);
-            $substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
-            $number = $formattedRequestNumber . '/' . $substringMonth . '/' . $this->consultationSheet->subscription->name;
+            //$formattedMonth = format_fr_month_name($mounth);
+            //$substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
+            $number = $formattedRequestNumber . '/' . $mounth . '/' . $this->consultationSheet->subscription->name;
         } else {
             $number = $formattedRequestNumber . '/' . $mounth;
         }
