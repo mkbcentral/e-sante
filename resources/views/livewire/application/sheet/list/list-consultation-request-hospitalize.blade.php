@@ -16,7 +16,8 @@
                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                         Auth::user()->roles->pluck('name')->contains('Admin') ||
-                        Auth::user()->roles->pluck('name')->contains('Caisse'))
+                        Auth::user()->roles->pluck('name')->contains('Caisse')||
+                        Auth::user()->roles->pluck('name')->contains('Finance'))
                     <div class="bg-navy p-1 rounded-lg pr-2">
                         <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
                             @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
@@ -52,7 +53,8 @@
                                 <x-form.button class="text-white" wire:click="sortSheet('request_number')">
                                     @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
                                             Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                            Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                            Auth::user()->roles->pluck('name')->contains('Caisse')||
+                                             Auth::user()->roles->pluck('name')->contains('Finance'))
                                         N° FACTURE
                                     @else
                                         N° FICHE
@@ -71,7 +73,8 @@
                             @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                     Auth::user()->roles->pluck('name')->contains('Ag') ||
                                     Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                    Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                    Auth::user()->roles->pluck('name')->contains('Caisse')||
+                                     Auth::user()->roles->pluck('name')->contains('Finance'))
                                 <th class="text-right">MONTANT</th>
                             @endif
                             <th class="text-center">SUSCRIPTION</th>
@@ -132,7 +135,8 @@
                         @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                 Auth::user()->roles->pluck('name')->contains('Ag') ||
                                 Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                Auth::user()->roles->pluck('name')->contains('Caisse')||
+                                 Auth::user()->roles->pluck('name')->contains('Finance'))
                             <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                         @else
                             <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
@@ -145,8 +149,9 @@
                         @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                 Auth::user()->roles->pluck('name')->contains('Ag') ||
                                 Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse'))
-                            <td class="text-right">
+                                Auth::user()->roles->pluck('name')->contains('Caisse')||
+                                Auth::user()->roles->pluck('name')->contains('Finance'))
+                            <td class="text-right text-bold">
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                     {{ app_format_number(
                                         $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
