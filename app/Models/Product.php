@@ -27,7 +27,7 @@ class Product extends Model
     public function getInitialQuantityAttribute($value): int
     {
         $number = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')&& Auth::user()->source->id == Source::GOLF ){
+        if (Auth::user()->roles->pluck('name')->contains('Pharma')&& Auth::user()->source->name == Source::GOLF ){
             $number = $value;
         } else {
             $number =  0;
