@@ -10,6 +10,15 @@ use Livewire\Component;
 
 class ConsultationRequestNursingWidget extends Component
 {
+
+    protected $listeners = [
+        'consultationRequestNursingItems' => 'getConsultationRequest'
+    ];
+    public function getConsultationRequest(?ConsultationRequest $consultationRequest)
+    {
+        $this->consultationRequest = $consultationRequest;
+    }
+
     public ?ConsultationRequest $consultationRequest;
     public ?ConsultationRequestNersing $consultationRequestNursing;
     public string $currencyName = Currency::DEFAULT_CURRENCY;
@@ -52,6 +61,8 @@ class ConsultationRequestNursingWidget extends Component
             $this->isEditing = false;
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('listSheetRefreshed');
+            $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
+            $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
             $this->dispatch('refreshDetail');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

@@ -19,6 +19,7 @@ class OutpatientBillView extends Component
         'outpatientBillToEdit' => 'getOutpatientToEdit',
         'outpatientBillRefreshedMainView' => '$refresh',
         'currencyName' => 'getCurrencyName',
+        'outpatientBillCanceled' => 'cancelBill',
     ];
     public ?OutpatientBill $outpatientBill = null;
     public bool $isEditing = false;

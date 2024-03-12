@@ -39,7 +39,7 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -55,7 +55,7 @@
                                     href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}">
                                     <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" target="_blank"  href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}">
                                     <i class="fa fa-file-excel" aria-hidden="true"></i> Relevé des factures
                                 </a>
                             </div>
@@ -117,17 +117,25 @@
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
                                 <td class="text-center">{{ $index + 1 }}</td>
-                                <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
+                                <td class="text-center"><a href="#"
+                                        wire:click="openDetailConsultationModal({{ $consultationRequest }})">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</a>
+                                </td>
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}/
-                                        {{ $consultationRequest->consultationSheet->source->name }}</td>
+                                       <span class="text-danger">{{ $consultationRequest->consultationSheet->source->name }}</span>
+                                    </td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
                                     </td>
                                 @endif
-                                <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
+                                <td class="text-uppercase">
+                                    <a href="#" class="text-decoration-underline"
+                                        wire:click="openDetailConsultationModal({{ $consultationRequest }})">
+                                        {{ $consultationRequest->consultationSheet->name }}</a>
+
+                                </td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
@@ -153,7 +161,10 @@
                                     </td>
                                 @endif
                                 <td class="text-center text-bold text-uppercase">
-                                    {{ $consultationRequest->consultationSheet->subscription->name }}</td>
+                                    <a href="#" class="text-decoration-underline"
+                                        wire:click="openDetailConsultationModal({{ $consultationRequest }})">
+                                        {{ $consultationRequest->consultationSheet->subscription->name }}</a>
+                                </td>
                                 <td
                                     class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
                                     {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
@@ -178,9 +189,6 @@
                                             href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
                                             :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                     @else
-                                        <x-form.icon-button :icon="'fa fa-eye '"
-                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
                                         <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                             data-target="#edit-consultation-request"
                                             wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
@@ -190,10 +198,9 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
-                                       <x-form.icon-button :icon="'fa fa-trash '"
-                                       wire:confirm='Est-vous sur de supprimer'
+                                        <x-form.icon-button :icon="'fa fa-trash '" wire:confirm='Est-vous sur de supprimer'
                                             wire:click="delete({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
+                                            class="btn-sm btn-danger " />
                                     @endif
 
                                 </td>
@@ -228,6 +235,7 @@
                 console.log('ok');
                 $('#edit-consultation-request').modal('show')
             });
+
         </script>
     @endpush
 </div>

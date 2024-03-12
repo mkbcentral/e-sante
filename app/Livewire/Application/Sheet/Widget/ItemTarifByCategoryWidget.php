@@ -13,7 +13,10 @@ use Livewire\Component;
 
 class ItemTarifByCategoryWidget extends Component
 {
-    protected $listeners = ['currencyName' => 'getCurrencyName'];
+    protected $listeners = [
+        'currencyName' => 'getCurrencyName',
+        'consultationRequestItemsTarif' => 'getConsultationRequest'
+    ];
     public ?CategoryTarif $categoryTarif;
     public ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idTarif = 0;
@@ -41,6 +44,13 @@ class ItemTarifByCategoryWidget extends Component
     public function updatedIdTarif(): void
     {
         $this->update();
+    }
+
+    public function getConsultationRequest(?ConsultationRequest $consultationRequest)
+    {
+
+        $this->consultationRequest = $consultationRequest;
+
     }
 
     /**
@@ -87,6 +97,8 @@ class ItemTarifByCategoryWidget extends Component
             $this->idSelected = 0;
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');
+            $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
+            $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }

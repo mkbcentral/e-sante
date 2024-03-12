@@ -31,6 +31,11 @@ class MainConsultPatient extends Component
     {
         $this->dispatch('open-details-consultation');
         $this->dispatch('consultationRequest', $this->consultationRequest);
+
+        $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
+        $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
+        $this->dispatch('consultationRequestNursingItems', $this->consultationRequest);
+        $this->dispatch('consultationRequestHospitalizationItems', $this->consultationRequest);
     }
     /**
      * Open antecedent modal view

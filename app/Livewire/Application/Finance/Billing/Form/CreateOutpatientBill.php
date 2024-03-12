@@ -22,6 +22,9 @@ class CreateOutpatientBill extends Component
     #[Rule('nullable')]
     #[Rule('numeric', message: 'Dévise invalide', onUpdate: false)]
     public $currency_id;
+    #[Rule('date', message: 'Format date invalide', onUpdate: false)]
+    public $created_at;
+
 
     public bool $isEditing = false;
     public string $modalLabel = 'CREATION NOUVELLE FACTURE';
@@ -40,6 +43,7 @@ class CreateOutpatientBill extends Component
         $this->client_name = $outpatientBill->client_name;
         $this->consultation_id = $outpatientBill->consultation_id;
         $this->currency_id = $outpatientBill->currency_id;
+        $this->created_at = $outpatientBill->created_at->format('Y-m-d');
         $this->isEditing = true;
         $this->modalLabel = 'EDITER LA FACTURE';
     }
@@ -78,12 +82,14 @@ class CreateOutpatientBill extends Component
             $this->outpatientBill->client_name = $this->client_name;
             $this->outpatientBill->consultation_id = $this->consultation_id;
             $this->outpatientBill->currency_id = $this->currency_id == null ? null : $this->currency_id;
+            $this->outpatientBill->created_at = $this->created_at;
             $this->outpatientBill->update();
             $this->dispatch('close-form-new-outpatient-bill');
             $this->dispatch('outpatientFreshinfo');
             $this->dispatch('outpatientBillRefreshedMainView');
             $this->dispatch('refreshListItemsOupatient');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
+            $this->dispatch('outpatientBillCanceled');
         } catch (Exception  $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -100,6 +106,8 @@ class CreateOutpatientBill extends Component
         } else {
             $this->store();
         }
+
+
     }
     public function render()
     {

@@ -10,7 +10,11 @@ use Livewire\Component;
 
 class HospitalizationItemWidget extends Component
 {
-    protected $listeners = ['currencyName' => 'getCurrencyName'];
+
+    protected $listeners = [
+        'currencyName' => 'getCurrencyName',
+         'consultationRequestHospitalizationItems' => 'getConsultationRequest'
+        ];
     #[Rule('required', message: 'Nombre jour obligation', onUpdate: false)]
     #[Rule('numeric', message: 'Nombre de jour format numerique', onUpdate: false)]
     public $numberOfDay;

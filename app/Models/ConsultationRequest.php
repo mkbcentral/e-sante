@@ -150,12 +150,13 @@ class ConsultationRequest extends Model
         foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $amount += $consultationRequestHospitalization->hospitalizationRoom
-                    ->hospitalization->price_private *
+                    ->hospitalization->subscriber_price *
                     $consultationRequestHospitalization->number_of_day * $this->rate->rate;
             } else {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private
                     * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
             }
+
         }
         return $amount;
     }
@@ -164,9 +165,9 @@ class ConsultationRequest extends Model
         $amount = 0;
         foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
             if ($this->consultationSheet->subscription->is_subscriber) {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private * $consultationRequestHospitalization->number_of_day;
-            } else {
                 $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price * $consultationRequestHospitalization->number_of_day;
+            } else {
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->is_subscriber  * $consultationRequestHospitalization->number_of_day;
             }
         }
         return $amount;
@@ -240,9 +241,9 @@ class ConsultationRequest extends Model
         $mounth = $this->created_at->format('m');
         $formattedRequestNumber = str_pad($this->request_number, 3, '0', STR_PAD_LEFT);
         if ($this->consultationSheet->subscription->is_subscriber == true) {
-            //$formattedMonth = format_fr_month_name($mounth);
-            //$substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
-            $number = $formattedRequestNumber . '/' . $mounth . '/' . $this->consultationSheet->subscription->name;
+            $formattedMonth = format_fr_month_name($mounth);
+            $substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
+            $number = $formattedRequestNumber . '/' . $substringMonth . '/' . $this->consultationSheet->subscription->name;
         } else {
             $number = $formattedRequestNumber . '/' . $mounth;
         }

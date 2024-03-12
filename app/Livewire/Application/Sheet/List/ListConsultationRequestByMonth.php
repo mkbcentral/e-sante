@@ -55,6 +55,10 @@ class ListConsultationRequestByMonth extends Component
     {
         $this->dispatch('open-details-consultation');
         $this->dispatch('consultationRequest', $consultationRequest);
+        $this->dispatch('consultationRequestItemsTarif', $consultationRequest);
+        $this->dispatch('consultationRequestProductItems', $consultationRequest);
+        $this->dispatch('consultationRequestNursingItems', $consultationRequest);
+        $this->dispatch('consultationRequestHospitalizationItems', $consultationRequest);
     }
 
     /**
@@ -72,7 +76,7 @@ class ListConsultationRequestByMonth extends Component
     {
         $this->dispatch('open-medical-prescription');
         $this->dispatch('consultationRequest', $consultationRequest);
-        $this->dispatch('consultationRequestItems', $consultationRequest);
+        $this->dispatch('consultationRequestProductItems', $consultationRequest);
     }
 
     /**
@@ -138,14 +142,26 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-    public function delete(ConsultationRequest $consultationRequest){
-       try {
+    public function delete(ConsultationRequest $consultationRequest)
+    {
+        try {
+            foreach ($consultationRequest->tarifs as $tarif) {
+                $tarif->delete();
+            }
+            foreach ($consultationRequest->products as $product) {
+                $product->delete();
+            }
+            foreach ($consultationRequest->consultationRequestHospitalizations as $hospitalization) {
+                $hospitalization->delete();
+            }
+            foreach ($consultationRequest->consultationRequestNursings as $nursing) {
+               $nursing->delete();
+            }
             $consultationRequest->delete();
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
-       } catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
-
     }
     public function render()
     {
@@ -162,13 +178,13 @@ class ListConsultationRequestByMonth extends Component
                 $this->month_name,
                 $this->year,
             );
-            $request_number= GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
+            $request_number = GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year,
             );
-            $total_cd= GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceCDF($this->month_name, $this->year, $this->selectedIndex);
-            $total_usd= GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceUSD($this->month_name, $this->year, $this->selectedIndex);
+            $total_cd = GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceCDF($this->month_name, $this->year, $this->selectedIndex);
+            $total_usd = GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceUSD($this->month_name, $this->year, $this->selectedIndex);
         } else {
             $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByDateMonth(
                 $this->selectedIndex,
@@ -180,14 +196,14 @@ class ListConsultationRequestByMonth extends Component
                 $this->year,
                 Auth::user()->id
             );
-            $request_number= GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+            $request_number = GetConsultationRequestRepository::getCountConsultationRequestByMonth(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year,
                 Auth::user()->id
             );
-            $total_cd= GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex);
-            $total_usd= GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex);
+            $total_cd = GetConsultationRequestionAmountRepository::getTotalByMonthCDF($this->month_name, $this->year, $this->selectedIndex);
+            $total_usd = GetConsultationRequestionAmountRepository::getTotalByMonthUSD($this->month_name, $this->year, $this->selectedIndex);
         }
 
         return view('livewire.application.sheet.list.list-consultation-request-by-month', [

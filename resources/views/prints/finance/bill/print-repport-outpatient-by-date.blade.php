@@ -3,7 +3,6 @@
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
         <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
         <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT AMBULATOIRE</h4>
-
         <table class="table table-bordered  table-sm">
             <thead class="bg-secondary text-white text-uppercase">
                 <tr>
@@ -69,7 +68,7 @@
                 @endif
             </tbody>
         </table>
-        <table class="table table-light page-break">
+        <table class="table table-light {{!$consultationRequests->isEmpty()? 'page-break':'' }}">
             <tr>
                 <td>PERECEPTION</td>
                 <td class="text-right">CAISSE</td>
@@ -80,7 +79,8 @@
             </tr>
         </table>
     </div>
-    <div>
+    @if (!$consultationRequests->isEmpty())
+         <div>
         @php
             $amount_cdf=0;
             $amount_usd=0;
@@ -158,4 +158,6 @@
             </tr>
         </table>
     </div>
+    @endif
+
 </x-print-layout>

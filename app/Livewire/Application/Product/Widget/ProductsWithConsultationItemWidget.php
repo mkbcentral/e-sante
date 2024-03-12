@@ -14,7 +14,7 @@ class ProductsWithConsultationItemWidget extends Component
 {
     protected $listeners = [
         'refreshProductItems' => '$refresh',
-        'consultationRequestItems' => 'getConsultationRequest'
+        'consultationRequestProductItems' => 'getConsultationRequest'
     ];
     public ?ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idProduct = 0;
@@ -73,6 +73,8 @@ class ProductsWithConsultationItemWidget extends Component
             $this->idSelected = 0;
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');
+            $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
+            $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
 

@@ -7,6 +7,7 @@ use App\Repositories\Subscription\Get\GetSubscriptionRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MainConsultationRequest extends Component
@@ -55,6 +56,12 @@ class MainConsultationRequest extends Component
         }else{
             $this->selectedIndex=0;
         }
+
+        if (Auth::user()->roles->pluck('name')->contains('Admin')) {
+           $this->isByMonth=true;
+            $this->isByDate = false;
+        }
+
     }
 
 

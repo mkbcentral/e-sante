@@ -50,6 +50,10 @@ class ListConsultationRequestByPeriod extends Component
     {
         $this->dispatch('open-details-consultation');
         $this->dispatch('consultationRequest', $consultationRequest);
+        $this->dispatch('consultationRequestItemsTarif', $consultationRequest);
+        $this->dispatch('consultationRequestProductItems', $consultationRequest);
+        $this->dispatch('consultationRequestNursingItems', $consultationRequest);
+        $this->dispatch('consultationRequestHospitalizationItems', $consultationRequest);
     }
 
     /**

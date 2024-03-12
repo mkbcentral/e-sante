@@ -4,6 +4,7 @@ namespace App\Repositories\OutpatientBill;
 
 use App\Models\OutpatientBill;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GetOutpatientRepository
@@ -16,7 +17,15 @@ class GetOutpatientRepository
      */
     public static function getOutpatientPatientByDate(string $date): mixed
     {
-        return OutpatientBill::orderBy('created_at', 'DESC')
+        //
+        return Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence') ?
+            OutpatientBill::orderBy('created_at', 'DESC')
+            ->whereDate('created_at', $date)
+            ->where('user_id', Auth::id())
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->paginate(10) :
+            OutpatientBill::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
             ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
@@ -30,7 +39,13 @@ class GetOutpatientRepository
     public static function getOutpatientPatientByMonth(string $month): mixed
     {
 
-        return OutpatientBill::orderBy('created_at', 'DESC')
+        return Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence') ?
+            OutpatientBill::orderBy('created_at', 'DESC')
+            ->whereMonth('created_at', $month)
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->paginate(10) :
+            OutpatientBill::orderBy('created_at', 'DESC')
             ->whereMonth('created_at', $month)
             ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
@@ -46,10 +61,21 @@ class GetOutpatientRepository
     {
         $total = 0;
         $cons_total = 0;
-        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        };
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
                 $total += $tarif->price_private * $tarif->pivot->qty;
@@ -67,10 +93,21 @@ class GetOutpatientRepository
     {
         $total = 0;
         $cons_total = 0;
-        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
                 $total += (($tarif->price_private * $tarif->pivot->qty) * $outpatientBill->rate->rate);
@@ -88,10 +125,21 @@ class GetOutpatientRepository
     {
         $total = 0;
         $cons_total = 0;
-        $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
                 $total += $tarif->price_private * $tarif->pivot->qty;
@@ -110,9 +158,19 @@ class GetOutpatientRepository
     {
         $total = 0;
         $cons_total = 0;
-        $outpatientBills = OutpatientBill::whereMonth('created_at', $date)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $date)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $date)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($outpatientBill->tarifs as $tarif) {
                 $total += (($tarif->price_private * $tarif->pivot->qty) * $outpatientBill->rate->rate);
@@ -147,10 +205,22 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $total_detail = 0;
-        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'CDF') {
                 $total += $outpatientBill->getTotalOutpatientBillCDF();
@@ -170,10 +240,21 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $total_detail = 0;
-        $outpatientBills = OutpatientBill::whereDate('created_at', $date)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereDate('created_at', $date)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'USD') {
                 $total += $outpatientBill->getTotalOutpatientBillUSD();
@@ -194,10 +275,25 @@ class GetOutpatientRepository
         $total = 0;
         $cons_total = 0;
         $total_detail = 0;
-        $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->get();
+
+        if (
+            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence')
+        ) {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+                ->where('is_validated', true)
+                ->where('user_id', Auth::id())
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        } else {
+            $outpatientBills = OutpatientBill::whereMonth('created_at', $month)
+                ->where('is_validated', true)
+                ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+                ->get();
+        }
+
+
+
         foreach ($outpatientBills as $outpatientBill) {
             if ($outpatientBill->currency && $outpatientBill->currency->name == 'CDF') {
                 $total += $outpatientBill->getTotalOutpatientBillCDF();
@@ -239,7 +335,14 @@ class GetOutpatientRepository
      */
     public static function getCountOfOutpatientBillByDate(string $date): int
     {
-        return OutpatientBill::whereDate('created_at', $date)
+        return Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence') ?
+            OutpatientBill::whereDate('created_at', $date)
+            ->where('is_validated', true)
+            ->where('user_id', Auth::id())
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->count() :
+            OutpatientBill::whereDate('created_at', $date)
             ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->count();
@@ -252,7 +355,14 @@ class GetOutpatientRepository
      */
     public static function getCountOfOutpatientBillByMonth(string $month): int
     {
-        return OutpatientBill::whereMonth('created_at', $month)
+        return Auth::user()->roles->pluck('name')->contains('Caisse') ||
+            Auth::user()->roles->pluck('name')->contains('Urgence') ?
+            OutpatientBill::whereMonth('created_at', $month)
+            ->where('is_validated', true)
+            ->where('user_id', Auth::id())
+            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            ->count() :
+            OutpatientBill::whereMonth('created_at', $month)
             ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->count();
