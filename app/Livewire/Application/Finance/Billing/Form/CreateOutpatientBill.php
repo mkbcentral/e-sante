@@ -22,6 +22,7 @@ class CreateOutpatientBill extends Component
     #[Rule('nullable')]
     #[Rule('numeric', message: 'Dévise invalide', onUpdate: false)]
     public $currency_id;
+    #[Rule('nullable')]
     #[Rule('date', message: 'Format date invalide', onUpdate: false)]
     public $created_at;
 
