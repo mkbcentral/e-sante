@@ -1,4 +1,4 @@
-<div wire:poll.15s>
+<div>
     <div class="d-flex justify-content-end align-content-center">
         <div class="bg-navy p-1 rounded-lg pr-2">
             <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i><span>Recettes</span>
@@ -63,7 +63,7 @@
                 <tbody>
                     @if ($listBill->isEmpty())
                         <tr>
-                            <td colspan="6" class="text-center">Aucune données trpuvée</td>
+                            <td colspan="5" class="text-center">Aucune données trpuvée</td>
                         </tr>
                     @else
                         @foreach ($listBill as $index => $bill)

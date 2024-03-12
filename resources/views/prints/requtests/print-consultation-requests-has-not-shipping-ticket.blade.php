@@ -45,7 +45,10 @@
         </tbody>
     </table>
     <div class="text-left">
-        <h6>NB: Un million neuf cent septante sept mille huit cent trente Franc congolais </h6>
+        <h6>NB: Un million neuf cent quatre-vingt mille huit cent  Francs congolais </h6>
+    </div>
+    <div class="text-right">
+        Fait à Lubumbashi, Le {{ date('d/m/Y') }}
     </div>
     <div class="invoice-box">
         <table>
@@ -54,7 +57,7 @@
                     <table style="border: none">
                         <tr style="border: none">
                             <td style="border: none" class="text-bold text-left">
-                                INFP&COM
+                                INFO&COM
                             </td>
                             <td style="border: none" class="text-right ">
                                 A.G
@@ -71,7 +74,7 @@
 
                             </td>
                             <td style="border: none; margin-right: ;" class="text-right mr-4">
-                                Dady KALMERYpx
+                                Dady KALMERY
                             </td>
                         </tr>
                     </table>

@@ -14,11 +14,11 @@ class GetOutpatientRepository
      * @param mixed $date
      * @return mixed
      */
-    public static function getOutpatientPatientByDate(string $date, $is_validated=false): mixed
+    public static function getOutpatientPatientByDate(string $date): mixed
     {
         return OutpatientBill::orderBy('created_at', 'DESC')
             ->whereDate('created_at', $date)
-            //->where('is_validated', $is_validated)
+            ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
             ->paginate(10);
     }

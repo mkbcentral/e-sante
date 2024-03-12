@@ -138,6 +138,15 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
+    public function delete(ConsultationRequest $consultationRequest){
+       try {
+            $consultationRequest->delete();
+            $this->dispatch('added', ['message' => 'Action bien réalisée']);
+       } catch (\Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+
+    }
     public function render()
     {
         if (

@@ -39,7 +39,7 @@
                         ({{ $request_number > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -190,6 +190,10 @@
                                         <x-navigation.link-icon
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                       <x-form.icon-button :icon="'fa fa-trash '"
+                                       wire:confirm='Est-vous sur de supprimer'
+                                            wire:click="delete({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
                                     @endif
 
                                 </td>
