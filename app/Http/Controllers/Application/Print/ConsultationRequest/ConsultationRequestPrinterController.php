@@ -61,6 +61,7 @@ class ConsultationRequestPrinterController extends Controller
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', 1)
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->get();

@@ -13,10 +13,11 @@
                     </td>
                     @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
                         <td class="text-left">
-                            <span style="font-size: 22px"><b>Invoice</b> #:
-                                {{ $consultationRequest->getRequestNumberFormatted() }}</span><br />
-                            <b>Nom</b>: {{ $consultationRequest->consultationSheet->name }} <br>
-                            <b>At:</b> {{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}<br />
+                            <span style="font-size: 20px"><b>Invoice #:
+                                    {{ $consultationRequest->getRequestNumberFormatted() }}</b></span><br />
+                            <b>Name</b>: {{ $consultationRequest->consultationSheet->name }} <br>
+                            <b>Received at:</b> {{ $consultationRequest->created_at->format('d-m-Y') }}<br />
+                            <b>Source:</b> {{ $consultationRequest->consultationSheet->source->name }}<br />
                         </td>
                     @else
                         <td class="text-left">
@@ -223,9 +224,9 @@
 
                 <tr class="bg-secondary">
                     @if ($consultationRequest->consultationSheet->subscription->is_private)
-                    <td colspan="4" class="text-right text-white">Payment infos</td>
+                        <td colspan="4" class="text-right text-white">Payment infos</td>
                     @else
-                    <td colspan="4" class="text-right text-white text-uppercase text-bold">Total général</td>
+                        <td colspan="4" class="text-right text-white text-uppercase text-bold">Total général</td>
                     @endif
                 </tr>
                 <tr class="total " class="w-25">
@@ -236,10 +237,11 @@
                                     {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) . ' Fc' }}</td>
                             </tr>
                             @if ($consultationRequest->consultationSheet->subscription->is_private)
-                            <tr>
-                                <td colspan="4" class="text-right">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) . ' $' }}</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) . ' $' }}
+                                    </td>
+                                </tr>
                             @endif
                         </table>
                     </td>
@@ -263,7 +265,7 @@
                         </td>
                     </tr>
                 </table>
-                @else
+            @else
                 <table>
                     <tr>
                         <td colspan="3" style="border: none">

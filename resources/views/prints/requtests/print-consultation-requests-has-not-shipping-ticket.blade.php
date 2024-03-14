@@ -11,6 +11,9 @@
                 <th class="text-center">#</th>
                 <th>Date</th>
                 <th>Nom complet</th>
+                <th>Respo</th>
+                <th>Matricule</th>
+                <th>Source</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +23,10 @@
                     <tr class="money_format">
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td>{{ $consultationRequest->consultationSheet->created_at->format('d/m/Y') }}</td>
-
                         <td class="">{{ $consultationRequest->consultationSheet?->name }}</td>
-
+                        <td></td>
+                        <td></td>
+                        <td class="">{{ $consultationRequest->consultationSheet?->source->name }}</td>
                     </tr>
                 @endforeach
             @endif
