@@ -142,7 +142,7 @@
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td class="text-right">
+                                    <td class="text-right {{  $consultationRequest->getTotalInvoiceCDF()==27000?'bg-danger':'' }}">
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
