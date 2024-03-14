@@ -19,6 +19,8 @@ class ConsultationRequest extends Model
         'printed_by', 'validated_by', 'has_a_shipping_ticket', 'is_hospitalized', 'paid_at', 'created_at'
     ];
 
+
+
     public function rate(): BelongsTo
     {
         return $this->belongsTo(Rate::class, 'rate_id');

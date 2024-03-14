@@ -17,6 +17,7 @@ class EditConsultationRequestInfo extends Component
     public $consultation_id;
     #[Rule('required', message: 'Numero obligatoire')]
     public $request_number;
+    
     #[Rule('required', message: 'Date création obligatoire')]
     #[Rule('date', message: 'Formzt date invalide')]
     public $created_at;

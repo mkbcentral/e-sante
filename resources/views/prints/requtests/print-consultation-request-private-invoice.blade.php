@@ -17,7 +17,6 @@
                                 {{ $consultationRequest->getRequestNumberFormatted() }}</span><br />
                             <b>Nom</b>: {{ $consultationRequest->consultationSheet->name }} <br>
                             <b>At:</b> {{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}<br />
-
                         </td>
                     @else
                         <td class="text-left">
