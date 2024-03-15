@@ -239,7 +239,7 @@
                             @if ($consultationRequest->consultationSheet->subscription->is_private)
                                 <tr>
                                     <td colspan="4" class="text-right">
-                                        {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) . ' $' }}
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceCDF()/2700, 0) . ' $' }}
                                     </td>
                                 </tr>
                             @endif

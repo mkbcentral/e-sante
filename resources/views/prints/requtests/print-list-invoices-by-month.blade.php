@@ -45,7 +45,7 @@
         </tbody>
     </table>
     <div class="text-left">
-        <h6>NB: Un million neuf cent quatre-vingt mille huit cent  Francs congolais </h6>
+        <h6>NB: {{ucfirst(app_format_number_letter($total_cdf)) }} Fancs congolais </h6>
     </div>
     <div class="text-right">
         Fait à Lubumbashi, Le {{ date('d/m/Y') }}
@@ -82,5 +82,4 @@
             </tr>
         </table>
     </div>
-
 </x-print-layout>

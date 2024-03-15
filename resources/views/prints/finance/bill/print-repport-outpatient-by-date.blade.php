@@ -2,7 +2,9 @@
     <div>
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
         <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
-        <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT AMBULATOIRE</h4>
+        <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT
+            {{ Auth::user()->roles->pluck('name')->contains('Caisse')?'AMBULATOIRE':'URGENCES' }}
+             </h4>
         <table class="table table-bordered  table-sm">
             <thead class="bg-secondary text-white text-uppercase">
                 <tr>

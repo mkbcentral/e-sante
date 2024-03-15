@@ -9,6 +9,7 @@
         "arielmejiadev/larapex-charts": "^8.0",
         "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "kwn/number-to-words": "^2.9",
         "laravel/fortify": "^1.19",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
@@ -31,7 +32,8 @@
     "autoload": {
         "files": [
             "app/helpers/format_number_helper.php",
-            "app/helpers/format_fr_month_name.php"
+            "app/helpers/format_fr_month_name.php",
+            "app/helpers/format_number_letter.php"
         ],
         "psr-4": {
             "App\\": "app/",

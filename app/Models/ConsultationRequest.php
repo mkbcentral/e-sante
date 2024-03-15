@@ -169,7 +169,7 @@ class ConsultationRequest extends Model
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price * $consultationRequestHospitalization->number_of_day;
             } else {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->is_subscriber  * $consultationRequestHospitalization->number_of_day;
+                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private  * $consultationRequestHospitalization->number_of_day;
             }
         }
         return $amount;
