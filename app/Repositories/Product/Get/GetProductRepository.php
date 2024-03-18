@@ -16,35 +16,68 @@ class GetProductRepository
         bool $sortAsc,
         string $categoryId,
         string $familyId,
-        int $per_page = 25
+        int $per_page = 25,
+         bool $is_trashed
     ) {
         SELF::$keyToSear = $q;
-        return $categoryId == "" ? Product::query()
-            ->when($q, function ($query) {
-                return $query->where(function ($query) {
-                    return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
-                        ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
-                });
-            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.is_trashed', false)
-            ->whereIn('products.source_id', [1, 2])
-            ->select('products.*')
-            ->paginate($per_page) :
-            Product::query()
-            ->when($q, function ($query) {
-                return $query->where(function ($query) {
-                    return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
-                        ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
-                });
-            })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('products.product_category_id', $categoryId)
-            //->where('products.product_family_id', 'like', '%' . $familyId . '%')
-            ->where('products.is_trashed', false)
-            ->whereIn('products.source_id', [1, 2])
-            ->select('products.*')
-            ->paginate($per_page);
+
+        if ($is_trashed==true) {
+            return $categoryId == "" ? Product::query()
+                ->when($q, function ($query) {
+                    return $query->where(function ($query) {
+                        return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
+                            ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
+                    });
+                })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+                ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('products.is_trashed', true)
+                ->whereIn('products.source_id', [1, 2])
+                ->select('products.*')
+                ->paginate($per_page) :
+                Product::query()
+                ->when($q, function ($query) {
+                    return $query->where(function ($query) {
+                        return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
+                            ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
+                    });
+                })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+                ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('products.product_category_id', $categoryId)
+                //->where('products.product_family_id', 'like', '%' . $familyId . '%')
+                ->where('products.is_trashed', false)
+                ->where('is_trashed', true)
+                ->whereIn('products.source_id', [1, 2])
+                ->select('products.*')
+                ->paginate($per_page);
+        } else {
+            return $categoryId == "" ? Product::query()
+                ->when($q, function ($query) {
+                    return $query->where(function ($query) {
+                        return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
+                            ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
+                    });
+                })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+                ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->whereIn('products.source_id', [1, 2])
+                ->select('products.*')
+                ->paginate($per_page) :
+                Product::query()
+                ->when($q, function ($query) {
+                    return $query->where(function ($query) {
+                        return $query->where('products.name', 'like', '%' . SELF::$keyToSear . '%')
+                            ->orWhere('products.price', 'like', '%' . SELF::$keyToSear . '%');
+                    });
+                })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
+                ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
+                ->where('products.product_category_id', $categoryId)
+                //->where('products.product_family_id', 'like', '%' . $familyId . '%')
+                ->where('products.is_trashed', false)
+                ->whereIn('products.source_id', [1, 2])
+                ->select('products.*')
+                ->paginate($per_page);
+        }
+
+
     }
 
     public static function getProductListExceptFamilyAndCategory(

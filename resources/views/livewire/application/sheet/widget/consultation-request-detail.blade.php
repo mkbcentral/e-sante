@@ -8,32 +8,27 @@
             @if ($consultationRequest != null)
                 <div class="card-body">
                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                      @if (!$consultationRequest->products->isEmpty())
-                        <h5 class="text-danger text-bold">MEDICATION</h5>
-                        @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
-                    @endif
-                    @else
-                    <x-widget.patient.card-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
-                    <h5 class="text-danger text-bold">CONSULTATION</h5>
-                    @livewire('application.sheet.widget.consultation-detail-widget', ['consultationRequest' => $consultationRequest])
-                    @foreach ($categoriesTarif as $index => $category)
-                        @if (!$category->getConsultationTarifItems($consultationRequest, $category)->isEmpty())
-                            <h5 class="text-danger text-bold">{{ $category->name }}</h5>
-                            @livewire('application.sheet.widget.item-tarif-by-category-widget', ['categoryTarif' => $category, 'consultationRequest' => $consultationRequest])
+                        @if (!$consultationRequest->products->isEmpty())
+                            <h5 class="text-danger text-bold">MEDICATION</h5>
+                            @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
                         @endif
-                    @endforeach
-                    @if (!$consultationRequest->products->isEmpty())
-                        <h5 class="text-danger text-bold">MEDICATION</h5>
-                        @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
-                    @endif
-                    @if (!$consultationRequest->consultationRequestNursings->isEmpty())
-                        <h5 class="text-danger text-bold">NURSING & AUTRES</h5>
-                        @livewire('application.sheet.widget.consultation-request-nursing-widget', ['consultationRequest' => $consultationRequest])
-                    @endif
-                    @if (!$consultationRequest->consultationRequestHospitalizations->isEmpty())
-                        <h5 class="text-danger text-bold">SEJOUR</h5>
-                        @livewire('application.sheet.widget.hospitalization-item-widget', ['consultationRequest' => $consultationRequest])
-                    @endif
+                    @else
+                        <x-widget.patient.card-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
+                        <h5 class="text-danger text-bold">CONSULTATION</h5>
+                        @livewire('application.sheet.widget.consultation-detail-widget', ['consultationRequest' => $consultationRequest])
+                        @livewire('application.sheet.widget.item-tarif-by-category-widget', ['consultationRequest' => $consultationRequest])
+                        @if (!$consultationRequest->products->isEmpty())
+                            <h5 class="text-danger text-bold">MEDICATION</h5>
+                            @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
+                        @endif
+                        @if (!$consultationRequest->consultationRequestNursings->isEmpty())
+                            <h5 class="text-danger text-bold">NURSING & AUTRES</h5>
+                            @livewire('application.sheet.widget.consultation-request-nursing-widget', ['consultationRequest' => $consultationRequest])
+                        @endif
+                        @if (!$consultationRequest->consultationRequestHospitalizations->isEmpty())
+                            <h5 class="text-danger text-bold">SEJOUR</h5>
+                            @livewire('application.sheet.widget.hospitalization-item-widget', ['consultationRequest' => $consultationRequest])
+                        @endif
                     @endif
                 </div>
                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||

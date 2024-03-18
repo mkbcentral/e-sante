@@ -49,7 +49,17 @@ class GetConsultationRequestProductAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ])
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             if ($currency == 'CDF') {

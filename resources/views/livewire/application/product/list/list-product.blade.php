@@ -40,8 +40,13 @@
                                 </a>
                             </div>
                         </div>
-                        <x-form.button class="btn-secondary" wire:click="openCreationModal"><x-icons.icon-plus-circle />
+                        <x-form.button class="btn-secondary mr-2 btn-sm"
+                            wire:click="openCreationModal"><x-icons.icon-plus-circle />
                             Nouveau produit</x-form.button>
+                        <x-form.button class="btn-info btn-sm" wire:click="getTrached">
+                            <i class="{{ $is_trashed == true ? 'fas fa-sync ' : 'fas fa-box-open' }}  "></i>
+                            {{ $is_trashed == true ? 'Actualiser' : ' Mon archive' }}
+                        </x-form.button>
 
                     </div>
                 </div>
@@ -120,9 +125,16 @@
 
                                         <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"
                                             wire:click='edit({{ $product }})' />
+                                        @if ($product->is_trashed == true)
+                                            <x-form.button class="btn-secondary btn-sm"
+                                                wire:click="showDeleteDialog({{ $product }})">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </x-form.button>
+                                        @else
+                                            <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
+                                                wire:click="showDeleteDialog({{ $product }})" />
+                                        @endif
 
-                                        <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
-                                            wire:click="showDeleteDialog({{ $product }})" />
                                     </td>
                                 </tr>
                             @endforeach

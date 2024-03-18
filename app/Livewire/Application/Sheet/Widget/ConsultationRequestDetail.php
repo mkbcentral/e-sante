@@ -28,7 +28,6 @@ class ConsultationRequestDetail extends Component
     public function getCurrencyName(string $currency)
     {
         $this->currencyName = $currency;
-
     }
 
     /**
@@ -46,9 +45,7 @@ class ConsultationRequestDetail extends Component
      */
     public function render()
     {
-        return view('livewire.application.sheet.widget.consultation-request-detail',[
-                'categoriesTarif' => CategoryTarif::where('hospital_id', Hospital::DEFAULT_HOSPITAL())->get()
-            ]
-        );
+        return view(
+            'livewire.application.sheet.widget.consultation-request-detail');
     }
 }

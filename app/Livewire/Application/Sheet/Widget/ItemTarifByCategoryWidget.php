@@ -6,6 +6,7 @@ use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Hospital;
 use App\Models\Tarif;
 use App\Repositories\Tarif\GetListTarifRepository;
 use Illuminate\Support\Collection;
@@ -17,7 +18,6 @@ class ItemTarifByCategoryWidget extends Component
         'currencyName' => 'getCurrencyName',
         'consultationRequestItemsTarif' => 'getConsultationRequest'
     ];
-    public ?CategoryTarif $categoryTarif;
     public ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idTarif = 0;
     public bool $isEditing = false;
@@ -48,7 +48,6 @@ class ItemTarifByCategoryWidget extends Component
 
     public function getConsultationRequest(?ConsultationRequest $consultationRequest)
     {
-
         $this->consultationRequest = $consultationRequest;
 
     }
@@ -122,14 +121,14 @@ class ItemTarifByCategoryWidget extends Component
         }
     }
 
-    public function mount(?CategoryTarif $categoryTarif, ConsultationRequest $consultationRequest): void
+    public function mount( ConsultationRequest $consultationRequest): void
     {
-
-        $this->categoryTarif = $categoryTarif;
         $this->consultationRequest = $consultationRequest;
     }
     public function render()
     {
-        return view('livewire.application.sheet.widget.item-tarif-by-category-widget');
+        return view('livewire.application.sheet.widget.item-tarif-by-category-widget',[
+                'categoriesTarif' => CategoryTarif::where('hospital_id', Hospital::DEFAULT_HOSPITAL())->get()
+            ]);
     }
 }

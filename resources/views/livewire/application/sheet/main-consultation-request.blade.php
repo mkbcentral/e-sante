@@ -19,7 +19,8 @@
         </div>
         <div class="card card-primary card-outline">
             <div class="card-body">
-                <div class="btn-group" role="group" aria-label="Basic example">
+               <div class="d-flex justify-content-between align-items-center">
+                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" wire:click='makeIsByDate'
                         class="btn {{ $isByDate == true ? 'btn-secondary' : '' }}">Journalière</button>
                     <button type="button" wire:click='makeIsByMonth'
@@ -27,6 +28,12 @@
                     <button type="button" wire:click='makeIsByPeriod'
                         class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">Périodique</button>
                 </div>
+                  @livewire('application.finance.widget.amount-consultation-request-by-month-widget',
+                  ['selectedIndex'=>$selectedIndex,
+                  'isByDate'=>$isByDate,
+                  'isByMonth'=>$isByMonth,
+                  'isByPeriod'=>$isByPeriod])
+               </div>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
                 </div>

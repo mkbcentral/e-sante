@@ -23,7 +23,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceCDF();
@@ -45,7 +56,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceUSD();
@@ -70,7 +92,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceCDF();
@@ -86,7 +119,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceCDF();
@@ -110,7 +154,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceUSD();
@@ -127,7 +182,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceUSD();
@@ -150,7 +216,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceCDF();
@@ -173,7 +250,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             $total += $consultationRequest->getTotalInvoiceUSD();
@@ -193,7 +281,18 @@ class GetConsultationRequestionAmountRepository
             ->where('consultation_requests.is_hospitalized', true)
             ->where('consultation_requests.is_finished', true)
             ->select('consultation_requests.*')
-            ->with(['consultation', 'rate'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             if ($currency == 'CDF') {
@@ -210,13 +309,24 @@ class GetConsultationRequestionAmountRepository
     {
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-            ->with(['consultationSheet.subscription'])
             ->select('consultation_requests.*')
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->whereDate('consultation_requests.paid_at', Carbon::now())
             ->where('consultation_requests.is_finished', true)
             ->where('consultation_requests.is_hospitalized', true)
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->get();
 
         $amount = 0;
@@ -234,7 +344,18 @@ class GetConsultationRequestionAmountRepository
     {
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-            ->with(['consultationSheet.subscription'])
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
             ->select('consultation_requests.*')
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', auth()->user()->source->id)

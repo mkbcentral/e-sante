@@ -15,6 +15,8 @@ use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Finance\Cashbox\ExpenseVoucherView;
 use App\Livewire\Application\Finance\Cashbox\NoteMoneySendingView;
 use App\Livewire\Application\Finance\Cashbox\PayrollView;
+use App\Livewire\Application\Finance\Product\FinanceRapport;
+use App\Livewire\Application\Labo\LaboMonthlyReleases;
 use App\Livewire\Application\Labo\MainLabo;
 use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
 use App\Livewire\Application\Labo\Screens\MakeLaboOutpatientBillView;
@@ -68,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
     Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
+    Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
 
@@ -78,6 +81,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('labo',MainLabo::class)->name('labo.main');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
+    Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
+
+
     Route::get('product-requistion/{productRequisition}',ProductRequisitionItemsView::class)->name('product.requisition');
 
     Route::prefix('print')->group(function () {

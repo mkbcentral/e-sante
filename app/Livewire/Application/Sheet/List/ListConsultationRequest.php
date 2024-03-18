@@ -4,8 +4,6 @@ namespace App\Livewire\Application\Sheet\List;
 
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
-use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
-use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -30,7 +28,7 @@ class ListConsultationRequest extends Component
     #[Url(as: 'q')]
     public string $q = '';
     #[Url(as: 'sortBy')]
-    public $sortBy = 'name';
+    public $sortBy = 'consultation_sheets.name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
@@ -131,10 +129,6 @@ class ListConsultationRequest extends Component
                 $this->date_filter,
                 $this->year
             ),
-            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex),
-            'total_usd' => GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter, $this->selectedIndex),
-            'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'CDF'),
-            'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'USD'),
             'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByDate(
                 $this->selectedIndex,
                 $this->date_filter,

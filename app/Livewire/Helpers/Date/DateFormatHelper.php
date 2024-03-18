@@ -95,4 +95,18 @@ class DateFormatHelper
             '2030'
         ];
     }
+
+    public static function getListDateForMonth($month,$year):array{
+
+
+
+
+        $days=cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $dates=array();
+        for ($i=1; $i <= $days; $i++) {
+            $date = Carbon::createFromDate($year, $month, $i)->format('Y-m-d');
+            $dates[] = $date;
+        }
+        return $dates;
+    }
 }

@@ -28,7 +28,7 @@ class ListConsultationRequestHospitalize extends Component
     #[Url(as: 'q')]
     public string $q = '';
     #[Url(as: 'sortBy')]
-    public $sortBy = 'name';
+    public $sortBy = 'consultation_sheets.name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 

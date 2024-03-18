@@ -12,6 +12,11 @@
     color: white;
 }
 
+.vertical-text {
+    transform: rotate(270deg);
+    white-space: nowrap;
+}
+
 .cursor-hand {
     cursor: pointer;
 

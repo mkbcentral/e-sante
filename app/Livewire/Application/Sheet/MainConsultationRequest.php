@@ -17,26 +17,27 @@ class MainConsultationRequest extends Component
     ];
     public int $selectedIndex;
     public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
-
     public function makeIsByDate()
     {
         $this->isByDate = true;
         $this->isByMonth = false;
         $this->isByPeriod = false;
+        $this->dispatch('isByDate', $this->isByDate);
     }
     public function makeIsByMonth()
     {
         $this->isByDate = false;
         $this->isByMonth = true;
         $this->isByPeriod = false;
+        $this->dispatch('isByMonth', $this->isByMonth);
     }
     public function makeIsByPeriod()
     {
         $this->isByDate = false;
         $this->isByMonth = false;
         $this->isByPeriod = true;
+        $this->dispatch('isByPeriod', $this->isByPeriod);
     }
-
     /**
      * Change Subscription Selected
      * @param Subscription $subscription
@@ -63,8 +64,6 @@ class MainConsultationRequest extends Component
         }
 
     }
-
-
     /**
      * Render component
      * @return Application|Factory|View|\Illuminate\Foundation\Application

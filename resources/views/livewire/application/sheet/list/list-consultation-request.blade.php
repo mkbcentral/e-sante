@@ -14,28 +14,7 @@
                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                     </div>
                 </div>
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                        Auth::user()->roles->pluck('name')->contains('Admin'))
-                    <div class="bg-navy p-1 rounded-lg pr-2">
-
-                        <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                <span class="money_format">CDF:
-                                    {{ app_format_number($total_product_amount_cdf, 1) }}</span>
-                                |
-                                <span class="money_format">USD:
-                                    {{ app_format_number($total_product_amount_usd, 1) }}</span>
-                            @else
-                                <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
-                                <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
-                            @endif
-                        </h3>
-
-                    </div>
-                @endif
             </div>
-
             @if ($listConsultationRequest->isEmpty())
                 <x-errors.data-empty />
             @else
@@ -68,7 +47,7 @@
                             </th>
                             <th class="text-center">
                                 <x-form.button class="text-white" wire:click="sortSheet('request_number')">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                    @if (Auth::user()->roles->pluck('request_number')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
                                         N° FACTURE
                                     @else
                                         N° FICHE
@@ -78,9 +57,9 @@
                                 <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th>
-                                <x-form.button class="text-white" wire:click="sortSheet('name')">NOM
+                                <x-form.button class="text-white" wire:click="sortSheet('consultation_sheets.name')">NOM
                                     COMPLET</x-form.button>
-                                <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>

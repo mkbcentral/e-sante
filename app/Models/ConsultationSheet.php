@@ -87,4 +87,14 @@ class ConsultationSheet extends Model
         return ConsultationRequest::where('consultation_sheet_id', $this->id)
             ->orderBy('created_at', 'DESC')->first();
     }
+
+    /**
+     * Get the agentService that owns the ConsultationSheet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function agentService(): BelongsTo
+    {
+        return $this->belongsTo(AgentService::class, 'agent_service_id');
+    }
 }

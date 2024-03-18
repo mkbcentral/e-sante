@@ -31,6 +31,7 @@ class ListProduct extends Component
     public string $family_id = '';
     public ?Product $product;
     public bool $isSpecialty = false;
+    public bool $is_trashed = false;
 
     public function updatedCategoryId($value): void
     {
@@ -99,6 +100,10 @@ class ListProduct extends Component
         $this->sortBy = $value;
     }
 
+    public function getTrached(){
+        $this->is_trashed = !$this->is_trashed;
+    }
+
     /**
      * Render compoent
      * @return Application|Factory|View|\Illuminate\Foundation\Application
@@ -112,7 +117,8 @@ class ListProduct extends Component
                 $this->sortAsc,
                 $this->category_id,
                 $this->family_id,
-                50
+                50,
+                $this->is_trashed
             ),
             'categories' => ProductCategory::all()
         ]);

@@ -27,7 +27,7 @@ class Product extends Model
     public function getInitialQuantityAttribute($value): int
     {
         $number = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')&& Auth::user()->source->name == Source::GOLF ){
+        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == Source::GOLF) {
             $number = $value;
         } else {
             $number =  0;
@@ -166,6 +166,28 @@ class Product extends Model
         }
         return $quantity;
     }
+    /**
+     * Sortie sur chaque requisition faite par le service à partir du mois de mars jusqu'à la fin de l'année
+     */
+    public function getOutputRequisitionWithMarchToEndOfYear()
+    {
+        $quantity = 0;
+        $startDate = date('Y') . '-03-01'; // March 1st of the current year
+        $endDate = date('Y') . '-12-31'; // December 31st of the current year
+        $inputs = ProductRequisitionProduct::query()
+            ->join('products', 'products.id', 'product_requisition_products.product_id')
+            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
+            ->select('product_requisition_products.*', 'products.name as product_name')
+            ->with(['product'])
+            ->where('product_requisition_products.product_id', $this->id)
+            ->where('product_requisitions.is_valided', true)
+            ->whereBetween('product_requisition_products.created_at', [$startDate, $endDate])
+            ->get();
+        foreach ($inputs as $input) {
+            $quantity += $input->quantity;
+        }
+        return $quantity;
+    }
 
     public function getOutputFormRequisitionByService(): int|float
     {
@@ -207,7 +229,7 @@ class Product extends Model
         if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
             $number = $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest();
         } elseif (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            $number = $this->getOutputFormRequisition();
+            $number = $this->getOutputRequisitionWithMarchToEndOfYear();
         } else {
             $this->getNumberProducByConsultationRequest();
         }
