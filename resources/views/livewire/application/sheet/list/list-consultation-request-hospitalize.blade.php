@@ -16,7 +16,7 @@
                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                         Auth::user()->roles->pluck('name')->contains('Admin') ||
-                        Auth::user()->roles->pluck('name')->contains('Caisse')||
+                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
                         Auth::user()->roles->pluck('name')->contains('Finance'))
                     <div class="bg-navy p-1 rounded-lg pr-2">
                         <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
@@ -53,8 +53,8 @@
                                 <x-form.button class="text-white" wire:click="sortSheet('request_number')">
                                     @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
                                             Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                            Auth::user()->roles->pluck('name')->contains('Caisse')||
-                                             Auth::user()->roles->pluck('name')->contains('Finance'))
+                                            Auth::user()->roles->pluck('name')->contains('Caisse') ||
+                                            Auth::user()->roles->pluck('name')->contains('Finance'))
                                         N° FACTURE
                                     @else
                                         N° FICHE
@@ -73,8 +73,8 @@
                             @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                     Auth::user()->roles->pluck('name')->contains('Ag') ||
                                     Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                    Auth::user()->roles->pluck('name')->contains('Caisse')||
-                                     Auth::user()->roles->pluck('name')->contains('Finance'))
+                                    Auth::user()->roles->pluck('name')->contains('Caisse') ||
+                                    Auth::user()->roles->pluck('name')->contains('Finance'))
                                 <th class="text-right">MONTANT</th>
                             @endif
                             <th class="text-center">SUSCRIPTION</th>
@@ -85,11 +85,8 @@
                     <tbody>
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;"
-                            @if ($consultationRequest->paid_at != null && $consultationRequest->paid_at ==date('Y-m-d') )
-                                class="bg-warning"
-                                data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui"
-                            @endif
-                            >
+                                @if ($consultationRequest->paid_at != null && $consultationRequest->paid_at == date('Y-m-d')) class="bg-warning"
+                                data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui" @endif>
                                 <td class="text-center">
                                     @if ($consultationRequest->is_finished == true)
                                         <div class="btn-group">
@@ -135,8 +132,8 @@
                         @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                 Auth::user()->roles->pluck('name')->contains('Ag') ||
                                 Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse')||
-                                 Auth::user()->roles->pluck('name')->contains('Finance'))
+                                Auth::user()->roles->pluck('name')->contains('Caisse') ||
+                                Auth::user()->roles->pluck('name')->contains('Finance'))
                             <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                         @else
                             <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
@@ -149,7 +146,7 @@
                         @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                 Auth::user()->roles->pluck('name')->contains('Ag') ||
                                 Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse')||
+                                Auth::user()->roles->pluck('name')->contains('Caisse') ||
                                 Auth::user()->roles->pluck('name')->contains('Finance'))
                             <td class="text-right text-bold">
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
@@ -175,31 +172,35 @@
                             class="text-center  {{ $consultationRequest->is_finished == true ? 'bg-success  ' : 'text-danger ' }}">
                             {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                         </td>
-                        <td class="text-center">
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                <x-form.icon-button :icon="'fas fa-capsules'"
-                                    wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                    class="btn-primary btn-sm" />
-                            @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
-                                <x-form.icon-button :icon="'fa fa-user-plus '"
-                                    wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                    class="btn-sm btn-info " />
-                                <x-form.icon-button :icon="'fa fa-eye '"
-                                    wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                    class="btn-sm btn-primary " />
-                                <x-navigation.link-icon
-                                    href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                    wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                            @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
-                                <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                    wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                            @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
-                                @if ($consultationRequest->is_finished == true)
-                                    <x-navigation.link-icon
-                                        href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                        :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
-                                @endif
+                        <td class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}"">
+                            @if ($consultationRequest->is_printed == true)
+                                Cloturé
                             @else
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                    <x-form.icon-button :icon="'fas fa-capsules'"
+                                        wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                        class="btn-primary btn-sm" />
+                                @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                    <x-form.icon-button :icon="'fa fa-user-plus '"
+                                        wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                        class="btn-sm btn-info " />
+                                    <x-form.icon-button :icon="'fa fa-eye '"
+                                        wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                        class="btn-sm btn-primary " />
+                                    <x-navigation.link-icon
+                                        href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                        wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                    <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
+                                        wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                                    @if ($consultationRequest->is_finished == true)
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                    @endif
+                                @else
+                                @endif
                             @endif
                         </td>
                         </tr>

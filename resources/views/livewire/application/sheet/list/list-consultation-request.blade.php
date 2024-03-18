@@ -23,7 +23,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                               réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
 
@@ -47,7 +47,8 @@
                             </th>
                             <th class="text-center">
                                 <x-form.button class="text-white" wire:click="sortSheet('request_number')">
-                                    @if (Auth::user()->roles->pluck('request_number')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                    @if (Auth::user()->roles->pluck('request_number')->contains('Admin') ||
+                                            Auth::user()->roles->pluck('name')->contains('Ag'))
                                         N° FACTURE
                                     @else
                                         N° FICHE
@@ -59,7 +60,8 @@
                             <th>
                                 <x-form.button class="text-white" wire:click="sortSheet('consultation_sheets.name')">NOM
                                     COMPLET</x-form.button>
-                                <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                                <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
@@ -118,40 +120,45 @@
                                     class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
                                     {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                                 </td>
-                                <td class="text-center">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                        <x-form.icon-button :icon="'fas fa-capsules'"
-                                            wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                            class="btn-primary btn-sm" />
-                                    @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
-                                        <x-form.icon-button :icon="'fa fa-user-plus '"
-                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                            class="btn-sm btn-info " />
-                                        <x-form.icon-button :icon="'fa fa-eye '"
-                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
-                                        <x-navigation.link-icon
-                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
-                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                <td
+                                    class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}">
+                                    @if ($consultationRequest->is_printed == true)
+                                        Cloturé
                                     @else
-                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
-                                            data-target="#edit-consultation-request"
-                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
-                                        <x-form.icon-button :icon="'fa fa-eye '"
-                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            <x-form.icon-button :icon="'fas fa-capsules'"
+                                                wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                                class="btn-primary btn-sm" />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                            <x-form.icon-button :icon="'fa fa-user-plus '"
+                                                wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                                class="btn-sm btn-info " />
+                                            <x-form.icon-button :icon="'fa fa-eye '"
+                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                                class="btn-sm btn-primary " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                            <x-navigation.link-icon
+                                                href="{{ route('labo.subscriber', $consultationRequest) }}"
+                                                wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                        @else
+                                            <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
+                                                data-target="#edit-consultation-request"
+                                                wire:click="edit({{ $consultationRequest }})"
+                                                class="btn-sm btn-info " />
+                                            <x-form.icon-button :icon="'fa fa-eye '"
+                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                                class="btn-sm btn-primary " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                                :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                        @endif
                                     @endif
-
                                 </td>
                             </tr>
                         @endforeach

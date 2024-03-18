@@ -154,7 +154,8 @@
                                     class="text-center  {{ $consultationRequest->is_finished == true ? 'text-success  ' : 'text-danger ' }}">
                                     {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                                 </td>
-                                <td class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}">
+                                <td
+                                    class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}">
                                     @if ($consultationRequest->is_printed == true)
                                         Cloturé
                                     @else
