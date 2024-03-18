@@ -29,7 +29,7 @@ class GetOutpatientRepository
             ->whereDate('created_at', $date)
             ->where('is_validated', true)
             ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->paginate(10);
+            ->paginate(20);
     }
     /**
      * getOutpatientPatientByMonth
