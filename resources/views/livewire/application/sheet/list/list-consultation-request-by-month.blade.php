@@ -5,56 +5,55 @@
     @livewire('application.sheet.form.edit-consultation-request-info')
     <div class="card mt-2">
         <div class="card-body">
-
+            <div class="d-flex justify-content-between align-content-center">
+                <div class="h5 text-secondary">
+                    ({{ $request_number > 1
+                        ? $request_number .
+                            ' Factures                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                        : $request_number . ' Facture réalisée' }})
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class=" w-100">
+                        <x-form.input-search wire:model.live.debounce.500ms="q" />
+                    </div>
+                    <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
+                </div>
+                <div class="ml-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            Impression
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Toute les factures
+                            </a>
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
+                            </a>
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}">
+                                <i class="fa fa-file-excel" aria-hidden="true"></i> Relevé des factures
+                            </a>
+                        </div>
+                    </div>
+                    <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
+                        Numérotr
+                    </button>
+                    <button wire:click='closeBilling' class="btn btn-dark btn-sm" type="button">
+                        Cloturer
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center pb-2">
+                <x-widget.loading-circular-md />
+            </div>
             @if ($listConsultationRequest->isEmpty())
                 <x-errors.data-empty />
             @else
-                <div class="d-flex justify-content-between align-content-center">
-                    <div class="h5 text-secondary">
-                        ({{ $request_number > 1
-                            ? $request_number .
-                                ' Factures                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
-                            : $request_number . ' Facture réalisée' }})
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class=" w-100">
-                            <x-form.input-search wire:model.live.debounce.500ms="q" />
-                        </div>
-                        <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
-                    </div>
-                    <div class="ml-2">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fa fa-print" aria-hidden="true"></i>
-                                Impression
-                            </button>
-                            <div class="dropdown-menu" role="menu" style="">
-                                <a class="dropdown-item" target="_blank"
-                                    href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}">
-                                    <i class="fa fa-file-pdf" aria-hidden="true"></i> Toute les factures
-                                </a>
-                                <a class="dropdown-item" target="_blank"
-                                    href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}">
-                                    <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
-                                </a>
-                                <a class="dropdown-item" target="_blank"
-                                    href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}">
-                                    <i class="fa fa-file-excel" aria-hidden="true"></i> Relevé des factures
-                                </a>
-                            </div>
-                        </div>
-                        <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
-                            Numérotr
-                        </button>
-                        <button wire:click='closeBilling' class="btn btn-dark btn-sm" type="button">
-                            Cloturer
-                        </button>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center pb-2">
-                    <x-widget.loading-circular-md />
-                </div>
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>

@@ -14,10 +14,13 @@
                             </span>
                         </button>
                     </div>
-                    <x-form.button class="btn-primary mt-1" wire:click="newSheet">
-                        <x-icons.icon-plus-circle />
-                        Nouvelle fiche
-                    </x-form.button>
+                    @if (Auth::user()->roles->pluck('name')->contains('Reception') ||
+                            Auth::user()->roles->pluck('name')->contains('Nurse'))
+                        <x-form.button class="btn-primary mt-1" wire:click="newSheet">
+                            <x-icons.icon-plus-circle />
+                            Nouvelle fiche
+                        </x-form.button>
+                    @endif
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
@@ -60,14 +63,17 @@
                                 <td class="text-right">{{ $sheet->phone }}</td>
                                 <td class="text-right text-bold text-uppercase">{{ $sheet->subscription }}</td>
                                 <td class="text-center">
-                                    <x-form.icon-button :icon="'fa fa-user-plus'"
-                                        wire:click="newRequestForm({{ $sheet }})" class="btn-sm btn-info" />
-                                    <x-form.edit-button-icon wire:click="edit({{ $sheet }})"
-                                        class="btn-sm btn-primary" />
-                                    <x-navigation.link-icon href="{{ route('patient.folder', $sheet->id) }}"
-                                        wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
-                                    <x-form.delete-button-icon wire:click="showDeleteDialog({{ $sheet }})"
-                                        class="btn-sm btn-danger" />
+                                    @if (Auth::user()->roles->pluck('name')->contains('Reception') ||
+                                            Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        <x-form.icon-button :icon="'fa fa-user-plus'"
+                                            wire:click="newRequestForm({{ $sheet }})" class="btn-sm btn-info" />
+                                        <x-form.edit-button-icon wire:click="edit({{ $sheet }})"
+                                            class="btn-sm btn-primary" />
+                                        <x-navigation.link-icon href="{{ route('patient.folder', $sheet->id) }}"
+                                            wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
+                                        <x-form.delete-button-icon wire:click="showDeleteDialog({{ $sheet }})"
+                                            class="btn-sm btn-danger" />
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
