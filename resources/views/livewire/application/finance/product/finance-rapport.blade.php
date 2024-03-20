@@ -12,11 +12,11 @@
         <div class="card card-outline card-navy">
             <div class="card-body">
                 <table class="table table-bordered table-sm">
-                    <thead class="thead-dark">
+                    <thead class="">
                         <tr>
                             <th>SUSCRIPTION</th>
                             @foreach ($months as $month)
-                                <th class="text-right">{{ $month['name'] }}</th>
+                                <th class="text-right"><a target="_blank" href="{{ route('print.product.finance.repport', $month['number']) }}">{{ $month['name'] }}</a></th>
                             @endforeach
 
                         </tr>
@@ -46,7 +46,8 @@
                             <td class="text-uppercase text-bold">PRIVE HOSPITALISE</td>
                             @foreach ($months as $month)
                                 @php
-                                    $amount_hosp = App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository::getProductAmountHospitalize(
+                                    $amount_hosp = App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository::
+                                    getProductAmountHospitalize(
                                         $month['number'],
                                         '2024',
                                         1,

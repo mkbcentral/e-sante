@@ -38,11 +38,14 @@
                             </td>
                         @endif
                         <td class="text-center">
-                            <x-form.edit-button-icon
-                                wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
-                                class="btn-sm btn-primary" />
-                            <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
-                                wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
+                            @if ($consultationRequest->is_printed == false)
+                                <x-form.edit-button-icon
+                                    wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
+                                    class="btn-sm btn-primary" />
+                                <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
+                                    wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
+
+                            @endif
                         </td>
                     </tr>
                 @endforeach

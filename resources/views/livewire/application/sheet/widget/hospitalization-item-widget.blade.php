@@ -28,7 +28,8 @@
                     @else
                         <td class="text-uppercase">-
                             {{ $consultationRequestHospitalization->hospitalizationRoom->hospitalization->name }}</td>
-                        <td class="text-center" style="width: 50px">{{ $consultationRequestHospitalization->number_of_day }}</td>
+                        <td class="text-center" style="width: 50px">
+                            {{ $consultationRequestHospitalization->number_of_day }}</td>
                     @endif
                     @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                             Auth::user()->roles->pluck('name')->contains('Ag') ||
@@ -53,13 +54,15 @@
                         </td>
                     @endif
                     <td class="text-center">
-                        <x-form.edit-button-icon
-                            wire:click="edit({{ $consultationRequestHospitalization->id }},
+                        @if ($consultationRequest->is_printed == false)
+                            <x-form.edit-button-icon
+                                wire:click="edit({{ $consultationRequestHospitalization->id }},
                                  {{ $consultationRequestHospitalization->number_of_day }})"
-                            class="btn-sm btn-primary" />
-                        <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
-                            wire:click="delete({{ $consultationRequestHospitalization->id }})"
-                             class="btn-sm btn-danger" />
+                                class="btn-sm btn-primary" />
+                            <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
+                                wire:click="delete({{ $consultationRequestHospitalization->id }})"
+                                class="btn-sm btn-danger" />
+                        @endif
                     </td>
                 </tr>
             @endforeach

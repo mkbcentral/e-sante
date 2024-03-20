@@ -150,7 +150,6 @@ class GetConsultationRequestionAmountRepository
         $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->whereYear('consultation_requests.created_at', $year)
             ->select('consultation_requests.*')

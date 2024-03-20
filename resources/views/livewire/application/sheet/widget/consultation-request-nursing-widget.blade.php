@@ -60,12 +60,14 @@
                         </td>
                     @endif
                     <td class="text-center">
-                        <x-form.edit-button-icon
-                            wire:click="edit({{ $consultationRequestNursing->id }},
+                        @if ($consultationRequest->is_printed == false)
+                            <x-form.edit-button-icon
+                                wire:click="edit({{ $consultationRequestNursing->id }},
                                  {{ $consultationRequestNursing->number }})"
-                            class="btn-sm btn-primary" />
-                        <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
-                            wire:click="delete({{ $consultationRequestNursing }})" class="btn-sm btn-danger" />
+                                class="btn-sm btn-primary" />
+                            <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
+                                wire:click="delete({{ $consultationRequestNursing }})" class="btn-sm btn-danger" />
+                        @endif
                     </td>
                 </tr>
             @endforeach

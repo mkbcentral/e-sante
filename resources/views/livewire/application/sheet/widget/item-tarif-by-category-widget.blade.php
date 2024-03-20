@@ -62,11 +62,13 @@
                             @endif
 
                             <td class="text-center">
-                                <x-form.edit-button-icon
-                                    wire:click="edit({{ $item->id }},{{ $item->qty }},{{ $item->category_id }},{{ $item->id_tarif }})"
-                                    class="btn-sm btn-primary" />
-                                <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
-                                    wire:click="delete({{ $item->id }})" class="btn-sm btn-danger" />
+                                @if ($consultationRequest->is_printed == false)
+                                    <x-form.edit-button-icon
+                                        wire:click="edit({{ $item->id }},{{ $item->qty }},{{ $item->category_id }},{{ $item->id_tarif }})"
+                                        class="btn-sm btn-primary" />
+                                    <x-form.delete-button-icon wire:confirm="Etes-vous sûre de supprimer ?"
+                                        wire:click="delete({{ $item->id }})" class="btn-sm btn-danger" />
+                                @endif
                             </td>
                         </tr>
                     @endforeach

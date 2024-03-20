@@ -32,15 +32,16 @@
             </td>
         @endif
         <td class="text-center">
-            @if (!$consultationRequest->is_consultation_paid)
-                <x-form.icon-button :icon="'fa fa-edit text-white'" wire:click="edit" class="btn-sm" />
+            @if ($consultationRequest->is_printed == false)
+                @if (!$consultationRequest->is_consultation_paid)
+                    <x-form.icon-button :icon="'fa fa-edit text-white'" wire:click="edit" class="btn-sm" />
+                @endif
+                @if ($consultationRequest->is_consultation_paid)
+                    <x-form.icon-button :icon="'fa fa-times text-white'" wire:click="makeIsPaid" class="btn-sm" />
+                @else
+                    <x-form.icon-button :icon="'fa fa-check text-white'" wire:click="makeIsPaid" class="btn-sm" />
+                @endif
             @endif
-            @if ($consultationRequest->is_consultation_paid)
-                <x-form.icon-button :icon="'fa fa-times text-white'" wire:click="makeIsPaid" class="btn-sm" />
-            @else
-                <x-form.icon-button :icon="'fa fa-check text-white'" wire:click="makeIsPaid" class="btn-sm" />
-            @endif
-
         </td>
     </tr>
 </table>

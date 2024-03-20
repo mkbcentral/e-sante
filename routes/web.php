@@ -50,19 +50,18 @@ use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
 |
 */
 
-
-
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/', AppNavigationController::class)->name('main');
     Route::get('/dashboard', MainDashboard::class)->name('dashboard');
     Route::get('/sheet', MainSheet::class)->name('sheet');
     Route::get('/patient/folder/{sheetId}', FolderPatient::class)->name('patient.folder');
     Route::get('tarification', TarifView::class)->name('tarification');
+
     Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
     Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
     Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
     Route::get('consultation/consult-patient/{consultationRequestId}', MainConsultPatient::class)->name('consultation.consult.patient');
+
     Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');
     Route::get('product/list', ListProduct::class)->name('product.list');
@@ -71,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
+
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
 
@@ -82,7 +82,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
-
 
     Route::get('product-requistion/{productRequisition}',ProductRequisitionItemsView::class)->name('product.requisition');
 
@@ -116,6 +115,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        Route::controller(OtherPrinterController::class)->group(function(){
             Route::get('tarif-list-price/{type}/{categoryTarif?}','printListPriceTarif')->name('print.tarification.prices');
+            Route::get('product-finance-repport/{month}', 'printProductFinanceRapportByMonth')->name('print.product.finance.repport');
        });
     });
 

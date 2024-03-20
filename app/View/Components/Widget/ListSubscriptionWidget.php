@@ -17,7 +17,7 @@ class ListSubscriptionWidget extends Component
      */
     public function __construct()
     {
-        $this->listSubscription=Subscription::orderBy('name','ASC')
+        $this->listSubscription=Subscription::orderBy('id','ASC')
             ->where('hospital_id',Hospital::DEFAULT_HOSPITAL())
             ->get();
     }
