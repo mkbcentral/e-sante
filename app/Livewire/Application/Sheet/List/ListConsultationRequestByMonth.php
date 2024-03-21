@@ -168,10 +168,10 @@ class ListConsultationRequestByMonth extends Component
             foreach ($consultationRequests as $consultationRequest) {
                 if ( $consultationRequest->is_printed==true) {
                     $consultationRequest->is_printed = false;
-                    $consultationRequest->is_validated = false;
+                    $consultationRequest->is_finished = false;
                 } else {
                     $consultationRequest->is_printed = true;
-                    $consultationRequest->is_validated = true;
+                    $consultationRequest->is_finished = true;
                 }
                 $consultationRequest->update();
             }
