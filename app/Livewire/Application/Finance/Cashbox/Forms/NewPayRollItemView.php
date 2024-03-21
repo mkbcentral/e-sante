@@ -78,6 +78,7 @@ class NewPayRollItemView extends Component
         }
         $this->payrollItem = null;
         $this->dispatch('refreshdListPayrollItems');
+        $this->dispatch('refreshdPayroll');
     }
 
     public function mount(?Payroll $payroll)

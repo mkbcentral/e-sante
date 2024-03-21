@@ -12,6 +12,7 @@ class PayrollView extends Component
         'refreshdPayroll' => '$refresh',
     ];
     public ?Payroll $payroll = null;
+    public $date_filter;
     public function openAddModal()
     {
 
@@ -44,10 +45,16 @@ class PayrollView extends Component
         }
     }
 
+    public function mount(){
+        $this->date_filter=date('Y-m-d');
+    }
+
     public function render()
     {
         return view('livewire.application.finance.cashbox.payroll-view', [
-            'payRolls' => Payroll::query()->get()
+            'payRolls' => Payroll::query()
+                    ->whereDate('created_at',$this->date_filter)
+                    ->get()
         ]);
     }
 }

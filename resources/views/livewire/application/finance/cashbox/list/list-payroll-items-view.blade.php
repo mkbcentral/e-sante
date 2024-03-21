@@ -6,13 +6,23 @@
                 <div class="col-md-8">
                     <div class="card ">
                         <div class="card-body">
-                            <h5 class="card-title"><span class="text-success text-bold">N°: </span>
-                                {{ $payroll->number }}</h5><br>
-                            <h5 class="card-title"><span class="text-success text-bold">Description: </span>
-                                {{ $payroll->description }}</h5><br>
-                            <h5 class="card-title"><span class="text-success text-bold">Date: </span>
-                                {{ $payroll->created_at->format('d/m/Y H:i:s') }}</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title"><span class="text-success text-bold">N°: </span>
+                                        {{ $payroll->number }}</h5><br>
+                                    <h5 class="card-title"><span class="text-success text-bold">Description: </span>
+                                        {{ $payroll->description }}</h5><br>
+                                    <h5 class="card-title"><span class="text-success text-bold">Date: </span>
+                                        {{ $payroll->created_at->format('d/m/Y H:i:s') }}</h5>
+                                </div>
+                                <div>
+                                    <h3>Total: {{  app_format_number($payroll->getPayrollTotalAmount(), 1) }} {{ $payroll->currency->name }}</h3>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-center pb-2">
+                        <x-widget.loading-circular-md />
                     </div>
                     <table class="table table-striped table-sm">
                         <thead class="bg-success">

@@ -236,12 +236,40 @@
                                 <td colspan="4"colspan="4" class="text-right text-bold h5">
                                     {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) . ' Fc' }}</td>
                             </tr>
-                            @if ($consultationRequest->consultationSheet->subscription->is_private)
+                            @if ($consultationRequest->caution != null)
                                 <tr>
-                                    <td colspan="4" class="text-right">
-                                        {{ app_format_number($consultationRequest->getTotalInvoiceCDF()/2700, 0) . ' $' }}
+                                    <td colspan="4"colspan="4" class="text-right text-bold bg-secondary text-white">
+                                        Caution</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"colspan="4" class="text-right text-bold h5">
+                                        {{ app_format_number($consultationRequest->getCautionCDF(), 1) . ' Fc' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"colspan="4" class="text-right text-bold bg-secondary text-white">
+                                        Reste à payer</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"colspan="4" class="text-right text-bold h5">
+                                        {{ app_format_number($consultationRequest->getAmountCautionCDF(), 1) . ' Fc' }}
                                     </td>
                                 </tr>
+                            @endif
+
+                            @if ($consultationRequest->consultationSheet->subscription->is_private)
+                                @if ($consultationRequest->caution == null)
+                                    <tr>
+                                        <td colspan="4" class="text-right text-bold h5">
+                                            {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) . ' $' }}
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="4" class="text-right text-bold h5">
+                                            {{ app_format_number($consultationRequest->getAmountCautionUSD(), 0) . ' $' }}
+                                        </td>
+                                    </tr>
+                                @endif
                             @endif
                         </table>
                     </td>

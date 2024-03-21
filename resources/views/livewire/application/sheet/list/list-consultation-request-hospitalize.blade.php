@@ -4,6 +4,7 @@
     @livewire('application.sheet.widget.consultation-request-detail')
     @livewire('application.sheet.form.edit-consultation-request-info')
     @livewire('application.sheet.form.edit-consultation-request-currency')
+    @livewire('application.finance.make-caution')
     <div class="card card-primary card-outline ">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -123,93 +124,101 @@
                                                             dévise
                                                         </a>
                                                     @endif
+                                                @endif
+                                                <a class="dropdown-item text-primary text-bold" href="#"
+                                                    wire:click='openCautionModal({{ $consultationRequest }})'>
+                                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                                   Passer caution
+                                                </a>
                                             </div>
                                         </div>
                                     @endif
-                        @endif
-                        </td>
-                        <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                Auth::user()->roles->pluck('name')->contains('Finance'))
-                            <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
-                        @else
-                            <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
-                            </td>
-                        @endif
-                        <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
-                        <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
-                        <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
-                        </td>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                Auth::user()->roles->pluck('name')->contains('Finance'))
-                            <td class="text-right text-bold">
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                    {{ app_format_number(
-                                        $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
-                                        1,
-                                    ) .
-                                        ' ' .
-                                        $currencyName }}
-                                @else
-                                    {{ app_format_number(
-                                        $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
-                                        1,
-                                    ) .
-                                        ' ' .
-                                        $currencyName }}
-                                @endif
-                            </td>
-                        @endif
-                        <td class="text-center text-bold text-uppercase">
-                            {{ $consultationRequest->consultationSheet->subscription->name }}</td>
-                        <td
-                            class="text-center  {{ $consultationRequest->is_finished == true ? 'bg-success  ' : 'text-danger ' }}">
-                            {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
-                        </td>
-                        <td class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}"">
-                            @if ($consultationRequest->is_printed == true)
-                                Cloturé
-                            @else
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                    <x-form.icon-button :icon="'fas fa-capsules'"
-                                        wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                        class="btn-primary btn-sm" />
-                                @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
-                                    <x-form.icon-button :icon="'fa fa-user-plus '"
-                                        wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                        class="btn-sm btn-info " />
-                                    <x-form.icon-button :icon="'fa fa-eye '"
-                                        wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                        class="btn-sm btn-primary " />
-                                    <x-navigation.link-icon
-                                        href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                        wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
-                                    <x-navigation.link-icon href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                        wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    @if ($consultationRequest->is_finished == true)
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
-                                    @endif
-                                @else
-                                @endif
-                            @endif
-                        </td>
-                        </tr>
-            @endforeach
+                                </td>
 
-            </tbody>
-            </table>
-            <div class="mt-4 d-flex justify-content-center align-items-center">
-                {{ $listConsultationRequest->links('livewire::bootstrap') }}</div>
+                                <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
+                                        Auth::user()->roles->pluck('name')->contains('Finance'))
+                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                                @else
+                                    <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
+                                    </td>
+                                @endif
+                                <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
+                                <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
+                                <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
+                                </td>
+                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
+                                        Auth::user()->roles->pluck('name')->contains('Finance'))
+                                    <td class="text-right text-bold">
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @else
+                                            {{ app_format_number(
+                                                $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                                1,
+                                            ) .
+                                                ' ' .
+                                                $currencyName }}
+                                        @endif
+                                    </td>
+                                @endif
+                                <td class="text-center text-bold text-uppercase">
+                                    {{ $consultationRequest->consultationSheet->subscription->name }}</td>
+                                <td
+                                    class="text-center  {{ $consultationRequest->is_finished == true ? 'bg-success  ' : 'text-danger ' }}">
+                                    {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
+                                </td>
+                                <td
+                                    class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}"">
+                                    @if ($consultationRequest->is_printed == true)
+                                        Cloturé
+                                    @else
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            <x-form.icon-button :icon="'fas fa-capsules'"
+                                                wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                                class="btn-primary btn-sm" />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                            <x-form.icon-button :icon="'fa fa-user-plus '"
+                                                wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                                class="btn-sm btn-info " />
+                                            <x-form.icon-button :icon="'fa fa-eye '"
+                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                                class="btn-sm btn-primary " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                            <x-navigation.link-icon
+                                                href="{{ route('labo.subscriber', $consultationRequest) }}"
+                                                wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                                            @if ($consultationRequest->is_finished == true)
+                                                <x-navigation.link-icon
+                                                    href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                                    :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                            @endif
+                                        @else
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+                <div class="mt-4 d-flex justify-content-center align-items-center">
+                    {{ $listConsultationRequest->links('livewire::bootstrap') }}</div>
             @endif
         </div>
 
@@ -231,6 +240,10 @@
             //Open detail consultation  modal
             window.addEventListener('open-edit-consultation-request-currency', e => {
                 $('#edit-consultation-request-currency').modal('show')
+            });
+            //Open detail consultation  modal
+            window.addEventListener('open-form-caution', e => {
+                $('#form-caution').modal('show')
             });
         </script>
     @endpush

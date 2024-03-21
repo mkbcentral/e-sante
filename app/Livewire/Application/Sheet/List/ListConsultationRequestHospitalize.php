@@ -17,7 +17,7 @@ class ListConsultationRequestHospitalize extends Component
     use WithPagination;
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
-        'listSheetRefreshed' => '$refresh',
+        'listHospitalizeRefreshed' => '$refresh',
         'currencyName' => 'getCurrencyName',
     ];
     public int $selectedIndex;
@@ -152,6 +152,14 @@ class ListConsultationRequestHospitalize extends Component
      * @param ConsultationRequest|null $consultationRequest
      * @return void
      */
+
+
+    public function openCautionModal(ConsultationRequest $consultationRequest){
+        $this->dispatch('consultationRequestionCaution',$consultationRequest);
+        $this->dispatch('open-form-caution');
+    }
+
+
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;

@@ -27,6 +27,7 @@ class ListPayrollItemsView extends Component
         try {
             $payrollItem->delete();
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            $this->dispatch('refreshdPayroll');
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

@@ -104,7 +104,15 @@ class ConsultationRequest extends Model
     {
         return $this->hasOne(ConsultationRequestCurrency::class);
     }
-
+    /**
+     * Get the caution associated with the ConsultationRequest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function caution(): HasOne
+    {
+        return $this->hasOne(Caution::class);
+    }
 
     public function getTotalProductCDF(): float|int
     {
@@ -158,7 +166,6 @@ class ConsultationRequest extends Model
                 $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private
                     * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
             }
-
         }
         return $amount;
     }
@@ -193,6 +200,18 @@ class ConsultationRequest extends Model
         }
         return $total;
     }
+
+    public function getCautionCDF(): int|float
+    {
+        return $this->caution->amount * $this->rate->rate;
+    }
+
+    public function getCautionUSD(): int|float
+    {
+        return $this->caution->amount;
+    }
+
+
     /**
      * Get the total invoice in CDF
      * @return float|int
@@ -200,6 +219,7 @@ class ConsultationRequest extends Model
     public function getTotalInvoiceCDF()
     {
         $total = 0;
+        $net_to_paid = 0;
         foreach ($this->tarifs as $tarif) {
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $total += $tarif->subscriber_price * $tarif->pivot->qty * $this->rate->rate;
@@ -207,10 +227,12 @@ class ConsultationRequest extends Model
                 $total += $tarif->price_private * $tarif->pivot->qty * $this->rate->rate;
             }
         }
-        return $this->consultation->is_consultation_paid == false ?
+        $net_to_paid = $this->consultation->is_consultation_paid == false ?
             ($this->getConsultationPriceCDF() + $total) +
             $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF() :
             $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF();
+
+        return $net_to_paid;
     }
     /**
      * Get the total invoice in USD
@@ -219,6 +241,7 @@ class ConsultationRequest extends Model
     public function getTotalInvoiceUSD()
     {
         $total = 0;
+        $net_to_paid = 0;
         foreach ($this->tarifs as $tarif) {
             if ($this->consultationSheet->subscription->is_subscriber) {
                 $total += $tarif->subscriber_price * $tarif->pivot->qty;
@@ -226,10 +249,21 @@ class ConsultationRequest extends Model
                 $total += $tarif->price_private * $tarif->pivot->qty;
             }
         }
-        return $this->consultation->is_consultation_paid == false ?
+        $net_to_paid
+            = $this->consultation->is_consultation_paid == false ?
             ($this->getConsultationPriceUSD() + $total) +
             $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD() :
             $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD();
+        return  $net_to_paid;
+    }
+
+    public function getAmountCautionCDF(){
+        return $this->caution ==null?0:$this->getTotalInvoiceCDF()-$this->getCautionCDF();
+    }
+
+    public function getAmountCautionUSD()
+    {
+        return $this->caution == null ? 0 : $this->getTotalInvoiceUSD() - $this->getCautionUSD();
     }
 
     /**

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Payroll extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'number',
         'description',
         'category_spend_money_id',
@@ -28,37 +28,62 @@ class Payroll extends Model
     {
         return $this->belongsTo(CategorySpendMoney::class, 'category_spend_money_id');
     }
-     /**
-      * Get the hospital that owns the Payroll
-      *
-      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-      */
-     public function hospital(): BelongsTo
-     {
-         return $this->belongsTo(Hospital::class, 'hospital_id');
-     }
+    /**
+     * Get the hospital that owns the Payroll
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hospital(): BelongsTo
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id');
+    }
 
-     /**
-      * Get the user that owns the Payroll
-      *
-      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-      */
-     public function user(): BelongsTo
-     {
-         return $this->belongsTo(User::class, 'user_id');
-     }
+    /**
+     * Get the user that owns the Payroll
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
-     /**
-      * Get all of the payRollItems for the Payroll
-      *
-      * @return \Illuminate\Database\Eloquent\Relations\HasMany
-      */
-     public function payRollItems(): HasMany
-     {
-         return $this->hasMany(PayrollItem::class);
-     }
+    /**
+     * Get all of the payRollItems for the Payroll
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payRollItems(): HasMany
+    {
+        return $this->hasMany(PayrollItem::class);
+    }
 
-     public function getCouterPayRollItems():int|float{
+    public function getCouterPayRollItems(): int|float
+    {
         return $this->payRollItems->count();
-     }
+    }
+
+    /**
+     * Get the currency that owns the Payroll
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
+
+    public function getPayrollTotalAmount():int|float
+    {
+        $total=0;
+        foreach ($this->payRollItems as $payRoll) {
+           $total+=$payRoll->amount;
+        }
+
+        return $total;
+    }
+
+    public function getNumberAttribute($val):string{
+        return 'E-'.$val.'-PS';
+    }
 }
