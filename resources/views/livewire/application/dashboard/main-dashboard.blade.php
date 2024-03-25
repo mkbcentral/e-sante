@@ -7,21 +7,20 @@
             <div class="col-md-6">
                 @if (Auth::user()->roles->pluck('name')->contains('Finance-F'))
                     @livewire('application.dashboard.finance.dash-payroll-by-date')
-                @else
-                    @livewire('application.dashboard.product.dash-invoice-product')
-                @endif
-
-            </div>
-            <div class="col-md-6">
-                 @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
-                    @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
-                @if (Auth::user()->roles->pluck('name')->contains('Ag') ||
+                @elseif (Auth::user()->roles->pluck('name')->contains('Ag') ||
                         Auth::user()->roles->pluck('name')->contains('Finance') ||
-                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
                         Auth::user()->roles->pluck('name')->contains('Admin'))
+                    @livewire('application.dashboard.product.dash-invoice-product')
+                    @livewire('application.dashboard.finance.dash-outpaient-bil')
+                    @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize')
+                @elseif (Auth::user()->roles->pluck('name')->contains('Caisse'))
                     @livewire('application.dashboard.finance.dash-outpaient-bil')
                     @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize')
                 @endif
+            </div>
+            <div class="col-md-6">
+                @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
+                @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
                 @if (Auth::user()->roles->pluck('name')->contains('Ag') || Auth::user()->roles->pluck('name')->contains('Admin'))
                     @livewire('application.dashboard.finance.dash-consultation-request-finance')
                 @endif
