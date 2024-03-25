@@ -3,12 +3,18 @@
         <x-navigation.bread-crumb-item label='Dashboard' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="row" >
+        <div class="row">
             <div class="col-md-6">
-                @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
-                @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
+                @if (Auth::user()->roles->pluck('name')->contains('Finance-F'))
+                    @livewire('application.dashboard.finance.dash-payroll-by-date')
+                @else
+                    @livewire('application.dashboard.product.dash-invoice-product')
+                @endif
+
             </div>
             <div class="col-md-6">
+                 @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
                 @if (Auth::user()->roles->pluck('name')->contains('Ag') ||
                         Auth::user()->roles->pluck('name')->contains('Finance') ||
                         Auth::user()->roles->pluck('name')->contains('Caisse') ||

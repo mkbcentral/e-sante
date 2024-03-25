@@ -140,8 +140,15 @@ class OutpatientBillView extends Component
      */
     public function mount()
     {
-        //$this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
+        $this->outpatientBill = OutpatientBill::orderBy('id', 'desc')->first();
     }
+
+    public function OpenOtherDetailOutpatientBill(): void
+    {
+        $this->dispatch('otherDetalOutpatientBill', $this->outpatientBill);
+        $this->dispatch('open-form-new-other-detail-outpatient-bill');
+    }
+
     /**
      * render
      * @return void

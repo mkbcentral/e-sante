@@ -15,11 +15,22 @@
                         <select id="cat-spend" class="form-control"
                          wire:model.blur='category_spend_money_id'>
                             <option value="">Choisir</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @foreach ($categories as $categorY)
+                                <option value="{{ $categorY->id }}">{{ $categorY->name }}</option>
                             @endforeach
                         </select>
                         <x-errors.validation-error value='category_spend_money_id' />
+                    </div>
+                    <div class="form-group">
+                        <label for="cat-spend">Source/Compte</label>
+                        <select id="cat-spend" class="form-control"
+                         wire:model.blur='payroll_source_id'>
+                            <option value="">Choisir</option>
+                            @foreach ($payrollSources as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <x-errors.validation-error value='payroll_source_id' />
                     </div>
                     <div class="form-group">
                         <h5 class="pb-2">Devise</h5>

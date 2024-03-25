@@ -68,7 +68,7 @@ class CreateOutpatientBill extends Component
                 $this->outpatientBill = null;
             };
         } catch (Exception $ex) {
-            $this->dispatch('error', ['message' => $ex->getMessage()]);
+            $this->dispatch('error', ['message' => "Quelque se mal passer, réessayer SVP !"]);
         }
     }
 

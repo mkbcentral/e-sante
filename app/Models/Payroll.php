@@ -16,7 +16,8 @@ class Payroll extends Model
         'category_spend_money_id',
         'hospital_id',
         'currency_id',
-        'user_id'
+        'user_id',
+        'payroll_source_id',
     ];
 
     /**
@@ -71,6 +72,16 @@ class Payroll extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class, 'currency_id');
+    }
+
+    /**
+     * Get the payrollSource that owns the Payroll
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function payrollSource(): BelongsTo
+    {
+        return $this->belongsTo(PayrollSource::class, 'payroll_source_id');
     }
 
     public function getPayrollTotalAmount():int|float

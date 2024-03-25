@@ -12,6 +12,7 @@ class NewPayRollItemView extends Component
 {
     protected $listeners = [
         'payRollItem' => 'getPayrollItem',
+        'payRollItems' => 'getPayroll',
     ];
     public ?PayrollItem $payrollItem = null;
     public ?Payroll $payroll;
@@ -23,6 +24,12 @@ class NewPayRollItemView extends Component
     #[Rule('required', message: 'Cateorie obligatoire')]
     #[Rule('numeric', message: 'Format numeric invalide')]
     public $amount;
+
+
+    public function getPayroll(?Payroll $payroll)
+    {
+        $this->payroll = $payroll;
+    }
 
     public function getPayrollItem(?PayrollItem $payrollItem)
     {
@@ -81,9 +88,8 @@ class NewPayRollItemView extends Component
         $this->dispatch('refreshdPayroll');
     }
 
-    public function mount(?Payroll $payroll)
+    public function mount()
     {
-        $this->payroll = $payroll;
     }
 
     public function render()

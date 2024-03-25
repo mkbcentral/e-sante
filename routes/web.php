@@ -14,6 +14,7 @@ use App\Livewire\Application\Finance\Billing\MainOutPatientBillReport;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
 use App\Livewire\Application\Finance\Cashbox\ExpenseVoucherView;
 use App\Livewire\Application\Finance\Cashbox\NoteMoneySendingView;
+use App\Livewire\Application\Finance\Cashbox\PayrollByMonthView;
 use App\Livewire\Application\Finance\Cashbox\PayrollView;
 use App\Livewire\Application\Finance\Product\FinanceRapport;
 use App\Livewire\Application\Labo\LaboMonthlyReleases;
@@ -75,6 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
 
     Route::get('finance/payroll/',PayrollView::class)->name('payroll');
+    Route::get('finance/payroll/month', PayrollByMonthView::class)->name('payroll.month');
     Route::get('finance/expense-voucher/',ExpenseVoucherView::class)->name('expense.voucher');
     Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
 
@@ -116,6 +118,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
        Route::controller(OtherPrinterController::class)->group(function(){
             Route::get('tarif-list-price/{type}/{categoryTarif?}','printListPriceTarif')->name('print.tarification.prices');
             Route::get('product-finance-repport/{month}', 'printProductFinanceRapportByMonth')->name('print.product.finance.repport');
+
+
+            //payroll
+            Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
        });
     });
 

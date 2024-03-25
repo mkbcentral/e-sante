@@ -1,5 +1,4 @@
-<div  class="card">
-    @livewire('application.finance.cashbox.forms.new-pay-roll-view')
+<div  class="card" >
     @livewire('application.finance.cashbox.list.list-payroll-items-view')
     <x-navigation.bread-crumb icon='fa fa-file' label='ETAT DE PAIE' color="text-success">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
@@ -8,21 +7,15 @@
     <x-content.main-content-page>
         <div class="card card-success">
             <div class="card-header">
-                <H4><i class="fa fa-list" aria-hidden="true"></i> LISTE DES ETATS DE PAIE JOUNALIERS</H4>
+                <H4><i class="fa fa-list" aria-hidden="true"></i> RAPPORT ETATS DE PAIE MENSUEL</H4>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-between align-content-center">
-                        <x-form.button :icon="'fa fa-user-plus'" type="button" class="btn-success" wire:click='openAddModal'>
-                            <i class="fa fa-file" aria-hidden="true"></i> Créer...
-                        </x-form.button>
-
-                    </div>
                     <div class="badge badge-info">
                         <h3 class="text-uppercase">Total: {{ app_format_number($totalUSD, 1) }} USD | {{ app_format_number($totalCDF, 1) }} CDF</h3>
                     </div>
                     <div class="mr-2">
-                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
+                        <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pb-2 mt-2">
@@ -64,23 +57,8 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        @if ($payRoll->is_valided == true)
-                                            <x-form.icon-button :icon="'fa fa-sync '" class="btn-sm btn-info"
+                                         <x-form.icon-button :icon="'fa fa-sync '" class="btn-sm btn-info"
                                                 wire:click='addItems({{ $payRoll }})' />
-                                            <x-navigation.link-icon href="{{ route('print.payroll', $payRoll) }}"
-                                                target="_blank" :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
-                                        @else
-                                            <x-form.icon-button :icon="'fa fa-sync '" class="btn-sm btn-info"
-                                                wire:click='addItems({{ $payRoll }})' />
-                                            <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
-                                                wire:click='edit({{ $payRoll }})' />
-                                            <x-navigation.link-icon href="{{ route('print.payroll', $payRoll) }}"
-                                                target="_blank" :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
-                                            <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
-                                                wire:confirm="Etes-vous sûre de supprimer ?"
-                                                wire:click='delete({{ $payRoll }})' />
-                                        @endif
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -92,10 +70,6 @@
     </x-content.main-content-page>
     @push('js')
         <script type="module">
-            //Open  add new payroll modal
-            window.addEventListener('open-form-pay-roll', e => {
-                $('#form-pay-roll').modal('show')
-            });
             //Open lits payroll items modal
             window.addEventListener('open-list-pay-roll-items', e => {
                 $('#list-pay-roll-items').modal('show')

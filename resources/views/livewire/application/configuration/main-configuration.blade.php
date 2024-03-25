@@ -21,7 +21,8 @@
                 <x-navigation.tab-link :icon="'fas fa-hospital'" :name="'Chambre'" :link="'room'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-bed'" :name="'Lit'" :link="'bed'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-hand-holding-usd'" :name="'Catégories depenses'" :link="'category-spend'" :active="''" />
-                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Type caisse'" :link="'cash-category'" :active="'active'" />
+                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Type caisse'" :link="'cash-category'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Source dépense'" :link="'source-payroll'" :active="'active'" />
             </x-navigation.tab-header>
             <div class="card-body">
                 <div class="tab-content">
@@ -70,8 +71,11 @@
                     <div class="tab-pane " id="category-spend">
                        @livewire('application.configuration.screens.category-spend-view')
                     </div>
-                    <div class="tab-pane active" id="cash-category">
+                    <div class="tab-pane" id="cash-category">
                         @livewire('application.configuration.screens.cash-category-view')
+                    </div>
+                    <div class="tab-pane active" id="source-payroll">
+                        @livewire('application.configuration.screens.source-payroll-view')
                     </div>
                 </div>
             </div>

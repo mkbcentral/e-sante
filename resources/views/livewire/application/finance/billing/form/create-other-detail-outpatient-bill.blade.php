@@ -38,7 +38,7 @@
         @if ($otherOutpatientBill != null)
             <div class="d-flex justify-content-end">
             <x-form.button class="btn-danger" wire:click='delete' wire:confirm="Etes-vous d'annuler?" type='button'><i class="fa fa-times"></i>
-                Annuler</x-form.button>
+                Retirer</x-form.button>
         </div>
         @endif
     </x-modal.build-modal-fixed>

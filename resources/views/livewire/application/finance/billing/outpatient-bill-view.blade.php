@@ -45,18 +45,20 @@
                             </div>
                         </div>
                     </a>
-                    <div wire:click='cancelBill' wire:confirm="Etes-vous d'annuler?" class=" bg-pink rounded  p-1 mt-1" style="cursor: pointer">
+                    @if ($outpatientBill->is_validated==false)
+                        <div wire:click='cancelBill' wire:confirm="Etes-vous d'annuler?" class=" bg-pink rounded  p-1 mt-1"
+                        style="cursor: pointer">
                         <div class="text-center">
                             <h4><i class="fas fa-times-circle"></i> Annuler</h4>
                         </div>
                     </div>
-                    <div wire:click='cancelBill'
-                        wire:confirm="Etes-vous de supprimer?"
+                    <div wire:click='cancelBill' wire:confirm="Etes-vous de supprimer?"
                         class=" bg-danger rounded  p-1 mt-1" style="cursor: pointer">
                         <div class="text-center">
                             <h4><i class="fas fa-trash"></i> Supprimer</h4>
                         </div>
                     </div>
+                    @endif
                 @endif
             </div>
             <div class="col-md-6">
@@ -105,15 +107,28 @@
                         'outpatientBill' => $outpatientBill,
                     ])
                     @if ($outpatientBill->otherOutpatientBill != null)
-                        <h5 class="text-secondary ">Autres détails</h5>
-                        <table class="table  table-bordered  table-sm ">
-                            <tr class="text-bold">
-                                <td>{{ $outpatientBill->otherOutpatientBill->name }}</td>
-                                <td class="text-right">
-                                    {{ app_format_number($currencyName == 'CDF' ? $outpatientBill->getOtherOutpatientBillPriceCDF() : $outpatientBill->getOtherOutpatientBillPriceUSD(), 1) . ' ' . $currencyName }}
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="text-secondary text-uppercase ">Autres détails non tarifié</h5>
+                                <table class="table  table-bordered  table-sm ">
+                                    <thead class="text-info text-uppercase">
+                                        <th>Designation</th>
+                                        <th class="text-right">Montant</th>
+                                        <th class="text-center">Action</th>
+                                    </thead>
+                                    <tr class="text-bold">
+                                        <td>{{ $outpatientBill->otherOutpatientBill->name }}</td>
+                                        <td class="text-right">
+                                            {{ app_format_number($currencyName == 'CDF' ? $outpatientBill->getOtherOutpatientBillPriceCDF() : $outpatientBill->getOtherOutpatientBillPriceUSD(), 1) . ' ' . $currencyName }}
+                                        </td>
+                                        <td class="text-center">
+                                            <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
+                                                wire:click='OpenOtherDetailOutpatientBill' data-toggle="modal"
+                                                data-target="#form-new-other-detail-outpatient-bill" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                     @endif
                 @endif
             </div>

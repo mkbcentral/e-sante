@@ -27,22 +27,22 @@
                                     {{ $currency->name }}
                                 </option>
                             @endforeach
-                             <option value="">Aucune</option>
+                            <option value="">Aucune</option>
                         </select>
                         <x-errors.validation-error value='currency_id' />
                     </div>
-                </div>
-                @if ($outpatientBill)
-                     <div class="form-group">
-                        <x-form.label value="{{ __('Date création') }}" />
-                        <x-form.input type='date' wire:keydown.enter='handlerSubmit' wire:model.blur='created_at'
-                            :error="'created_at'" />
-                        <x-errors.validation-error value='created_at' />
+                    @if ($outpatientBill)
+                        <div class="form-group">
+                            <x-form.label value="{{ __('Date création') }}" />
+                            <x-form.input type='date' wire:keydown.enter='handlerSubmit' wire:model.blur='created_at'
+                                :error="'created_at'" />
+                            <x-errors.validation-error value='created_at' />
+                        </div>
+                    @endif
+                    <div class=" d-flex justify-content-end">
+                        <x-form.button class="btn-info" type='submit'><i class="fa fa-save"></i>
+                            Sauvegarder</x-form.button>
                     </div>
-                @endif
-                <div class="card-footer d-flex justify-content-end">
-                    <x-form.button class="btn-info" type='submit'><i class="fa fa-save"></i>
-                        Sauvegarder</x-form.button>
                 </div>
             </div>
         </form>

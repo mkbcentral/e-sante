@@ -16,7 +16,8 @@
                                         {{ $payroll->created_at->format('d/m/Y H:i:s') }}</h5>
                                 </div>
                                 <div>
-                                    <h3>Total: {{  app_format_number($payroll->getPayrollTotalAmount(), 1) }} {{ $payroll->currency->name }}</h3>
+                                    <h3>Total: {{ app_format_number($payroll->getPayrollTotalAmount(), 1) }}
+                                        {{ $payroll->currency->name }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -40,13 +41,19 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $payRollItem->name }}</td>
                                     <td class="text-center">{{ $payRollItem->agentService->name }}</td>
-                                    <td class="text-right">{{ $payRollItem->amount }}</td>
-                                    <td class="text-center">
-                                        <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
-                                            wire:click='edit({{ $payRollItem }})' />
-                                        <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
-                                            wire:confirm="Etes-vous sûre de supprimer ?"
-                                            wire:click='delete({{ $payRollItem }})' />
+                                    <td class="text-right">{{ app_format_number($payRollItem->amount, 1) }}
+                                        {{ $payroll->currency->name }}</td>
+                                    <td class="text-center {{ $payroll->is_valided == true ? 'bg-success ' : '' }}">
+                                        @if ($payroll->is_valided == true)
+                                            Cloturé
+                                        @else
+                                            <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
+                                                wire:click='edit({{ $payRollItem }})' />
+                                            <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
+                                                wire:confirm="Etes-vous sûre de supprimer ?"
+                                                wire:click='delete({{ $payRollItem }})' />
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -54,9 +61,19 @@
                     </table>
                 </div>
                 <div class="col-md-4">
-                    @livewire('application.finance.cashbox.forms.new-pay-roll-item-view', [
-                        'payroll' => $payroll,
-                    ])
+                    @if ($payroll->is_valided == true)
+                        <div class="text-center mt-4">
+                            <h4 class="text-success">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Etat de paie déjà cloturé !
+                            </h4>
+                        </div>
+                    @else
+                        @livewire('application.finance.cashbox.forms.new-pay-roll-item-view', [
+                            'payroll' => $payroll,
+                        ])
+                    @endif
+
                 </div>
             </div>
         @endif

@@ -6,6 +6,7 @@ use App\Models\CategorySpendMoney;
 use App\Models\Currency;
 use App\Models\Hospital;
 use App\Models\Payroll;
+use App\Models\PayrollSource;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -22,11 +23,15 @@ class NewPayRollView extends Component
     #[Rule('required', message: 'Cateorie obligatoire')]
     public $category_spend_money_id;
 
+    #[Rule('required', message: 'Source obligatoire')]
+    public $payroll_source_id;
+
     public function getPayroll(?Payroll $payroll)
     {
         $this->payroll = $payroll;
         $this->description = $payroll->description;
         $this->currency_id = $payroll->currency_id;
+        $this->payroll_source_id = $payroll->payroll_source_id;
         $this->category_spend_money_id = $payroll->category_spend_money_id;
     }
 
@@ -40,6 +45,7 @@ class NewPayRollView extends Component
                 'category_spend_money_id' => $this->category_spend_money_id,
                 'hospital_id' => Hospital::DEFAULT_HOSPITAL(),
                 'currency_id' => $this->currency_id,
+                'payroll_source_id' => $this->payroll_source_id,
                 'user_id' => Auth::id(),
             ]);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -55,6 +61,7 @@ class NewPayRollView extends Component
             $this->payroll->update([
                 'description' => $this->description,
                 'category_spend_money_id' => $this->category_spend_money_id,
+                'payroll_source_id' => $this->payroll_source_id,
                 'currency_id' => $this->currency_id,
             ]);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -81,7 +88,8 @@ class NewPayRollView extends Component
     {
         return view('livewire.application.finance.cashbox.forms.new-pay-roll-view', [
             'categories' => CategorySpendMoney::all(),
-            'currencies' => Currency::all()
+            'currencies' => Currency::all(),
+            'payrollSources'=>PayrollSource::all()
         ]);
     }
 }
