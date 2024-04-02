@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Application\Product;
 
 use App\Http\Controllers\Controller;
+use App\Livewire\Helpers\Date\DateFormatHelper;
 use App\Models\CategoryTarif;
 use App\Models\Payroll;
 use App\Models\Subscription;
+use App\Models\Tarif;
 use Illuminate\Support\Facades\App;
 
 class OtherPrinterController extends Controller
@@ -56,6 +58,25 @@ class OtherPrinterController extends Controller
                 'payroll'
             ])
         )->set_option('isRemoteEnabled', true);
+        return $pdf->stream();
+    }
+
+    //Print labo monthly release
+    public function printLaboMonthlyReleases($month, $subscription_id)
+    {
+        $days
+        = DateFormatHelper::getListDateForMonth($month,'2024');
+        $tarifs= Tarif::query()->where('category_tarif_id', 1)
+            ->orderBy('name', 'asc')
+            ->get();
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView(
+            'prints.labo.print-labo-monthly-release',
+            compact([
+                'month',
+                'days','tarifs','subscription_id'
+            ])
+        )->set_option('isRemoteEnabled', true)->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
 }

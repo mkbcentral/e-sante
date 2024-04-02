@@ -122,6 +122,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             //payroll
             Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
+
+            //labo monthly release
+            Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
        });
     });
 
