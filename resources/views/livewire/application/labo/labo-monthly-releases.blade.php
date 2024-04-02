@@ -32,7 +32,7 @@
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive table-sm ">
                     <table class="table table-bordered text-bold">
                         <thead class="bg-primary">
                             <tr>

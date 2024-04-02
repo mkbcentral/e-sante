@@ -7,7 +7,7 @@
     <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
     <h4 class="text-center text-bold mt-2">CONSOMMATION MENSUELLE LABORATOIRE</h4>
     <h6 class="text-left">Mois: {{ format_fr_month_name($month) }}/{{ $subscription->name }}</h6>
-    <table class="table table-bordered table-sm text-bold">
+    <table class="table table-striped table-sm text-bold">
         <thead class="bg-dark text-white ">
             <tr>
                 <th>EXAMEN</th>
@@ -75,7 +75,7 @@
                             }
 
                         @endphp
-                        <td class="text-center ">
+                        <td class="text-center">
                             {{ $total == 0 ? '-' : $total }}
                         </td>
                     @endforeach
