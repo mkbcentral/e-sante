@@ -20,7 +20,7 @@
             @foreach ($tarifs as $tarif)
                 <tr data-toggle="tooltip" data-placement="top" title="{{ $tarif->getNameOrAbbreviation() }}">
                     <td>
-                        {{ strlen($tarif->getNameOrAbbreviation()) > 10 ? substr($tarif->getNameOrAbbreviation(), 0, 10) . '...' : $tarif->getNameOrAbbreviation() }}
+                        {{ strlen($tarif->getNameOrAbbreviation()) > 10 ? substr($tarif->getNameOrAbbreviation(), 0, 25) . '...' : $tarif->getNameOrAbbreviation() }}
                     </td>
                     @foreach ($days as $day)
                         @php
