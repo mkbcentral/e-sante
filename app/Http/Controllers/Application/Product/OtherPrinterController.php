@@ -69,12 +69,13 @@ class OtherPrinterController extends Controller
         $tarifs= Tarif::query()->where('category_tarif_id', 1)
             ->orderBy('name', 'asc')
             ->get();
+        $subscription=Subscription::find($subscription_id);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
             'prints.labo.print-labo-monthly-release',
             compact([
                 'month',
-                'days','tarifs','subscription_id'
+                'days','tarifs', 'subscription','subscription_id'
             ])
         )->set_option('isRemoteEnabled', true)->setPaper('a4', 'landscape');
         return $pdf->stream();
