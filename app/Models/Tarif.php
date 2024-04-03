@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tarif extends Model
 {
@@ -19,6 +20,16 @@ class Tarif extends Model
     public function categoryTarif(): BelongsTo
     {
         return $this->belongsTo(CategoryTarif::class, 'category_tarif_id');
+    }
+
+    /**
+     * The roles that belong to the Tarif
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty']);
     }
 
     /**

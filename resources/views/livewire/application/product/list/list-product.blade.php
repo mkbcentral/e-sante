@@ -106,7 +106,7 @@
                                     <td class="text-center">
                                         {{ $index + 1 }}
                                     </td>
-                                    <td class="text-uppercase">{{ $product->name }}
+                                    <td class="text-uppercase {{ $is_trashed==true?'bg-warning ':'' }}">{{ $product->name }}
                                         <span class="text-bold text-pink">{{ $product->abbreviation }}</span>
                                     </td>
                                     <td class="text-center">{{ $product->initial_quantity }}</td>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
 use App\Models\Hospital;
@@ -31,9 +32,11 @@ class ListConsultationRequestByMonth extends Component
     public $sortBy = 'consultation_sheets.name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
+    public $isClosing=false;
 
-    public function updatedMonthName($val){
-        $this->dispatch('monthSelected',$val);
+    public function updatedMonthName($val)
+    {
+        $this->dispatch('monthSelected', $val);
     }
 
     /**
@@ -166,7 +169,7 @@ class ListConsultationRequestByMonth extends Component
                 ->orderBy('consultation_requests.id', 'ASC')
                 ->get();
             foreach ($consultationRequests as $consultationRequest) {
-                if ( $consultationRequest->is_printed==true) {
+                if ($consultationRequest->is_printed == true) {
                     $consultationRequest->is_printed = false;
                     $consultationRequest->is_finished = false;
                 } else {
@@ -185,16 +188,17 @@ class ListConsultationRequestByMonth extends Component
     {
         try {
             foreach ($consultationRequest->tarifs as $tarif) {
-                $tarif->delete();
+                MakeQueryBuilderHelper::deleteWithKey('consultation_request_tarif', 'consultation_request_id', $consultationRequest->id);
             }
             foreach ($consultationRequest->products as $product) {
-                $product->delete();
+                MakeQueryBuilderHelper::deleteWithKey('consultation_request_product', 'consultation_request_id', $consultationRequest->id);
             }
             foreach ($consultationRequest->consultationRequestHospitalizations as $hospitalization) {
-                $hospitalization->delete();
+                MakeQueryBuilderHelper::deleteWithKey('consultation_request_hospitalizations', 'consultation_request_id', $consultationRequest->id);
+
             }
             foreach ($consultationRequest->consultationRequestNursings as $nursing) {
-               $nursing->delete();
+                MakeQueryBuilderHelper::deleteWithKey('consultation_request_nersings', 'consultation_request_id', $consultationRequest->id);
             }
             $consultationRequest->delete();
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
@@ -202,8 +206,35 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
+
+    public function checkIsClosin(){
+        $consultationRequestPrinted
+            = ConsultationRequest::join(
+                'consultation_sheets',
+                'consultation_sheets.id',
+                'consultation_requests.consultation_sheet_id'
+            )
+            ->where('consultation_sheets.subscription_id', $this->selectedIndex)
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription'])
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->whereMonth('consultation_requests.created_at', $this->month_name)
+            ->whereYear('consultation_requests.created_at', $this->year)
+            ->orderBy('consultation_requests.id', 'ASC')
+            ->where('consultation_requests.is_printed',true)
+            ->orderBy('consultation_requests.created_at','DESC')
+            ->first();
+        if ($consultationRequestPrinted != null) {
+            $this->isClosing =true;
+        } else {
+            $this->isClosing = false;
+        }
+
+    }
+
     public function render()
     {
+        $this->checkIsClosin();
         if (
             Auth::user()->roles->pluck('name')->contains('Ag') ||
             Auth::user()->roles->pluck('name')->contains('Admin')
@@ -239,7 +270,6 @@ class ListConsultationRequestByMonth extends Component
                 $this->year,
                 Auth::user()->id
             );
-
         }
         return view('livewire.application.sheet.list.list-consultation-request-by-month', [
             'listConsultationRequest' => $listConsultationRequest,

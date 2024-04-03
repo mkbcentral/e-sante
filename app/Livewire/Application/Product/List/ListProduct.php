@@ -77,10 +77,12 @@ class ListProduct extends Component
     public function delete(): void
     {
         try {
-            if ($this->product->is_trashed)
+            if ($this->product->is_trashed == true) {
                 $this->product->update(['is_trashed' => false]);
-            else
+            } else {
                 $this->product->update(['is_trashed' => true]);
+            }
+            $this->is_trashed =false;
             $this->dispatch('product-deleted', ['message' => "Produit bien retiré !"]);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -100,8 +102,13 @@ class ListProduct extends Component
         $this->sortBy = $value;
     }
 
-    public function getTrached(){
-        $this->is_trashed = !$this->is_trashed;
+    public function getTrached()
+    {
+        if ($this->is_trashed == false) {
+            $this->is_trashed = true;
+        } else {
+            $this->is_trashed = false;
+        }
     }
 
     /**

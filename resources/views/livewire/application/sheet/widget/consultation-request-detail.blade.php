@@ -14,6 +14,10 @@
                         @endif
                     @else
                         <x-widget.patient.card-patient-info :consultationSheet='$consultationRequest->consultationSheet' />
+                        <div class="d-flex justify-content-end">
+                            <h5 class="text-bold text-primary"><i class="fa fa-calendar"></i> Date:
+                                {{ $consultationRequest?->created_at->format('d/M/Y') }}</h5>
+                        </div>
                         <h5 class="text-danger text-bold">CONSULTATION</h5>
                         @livewire('application.sheet.widget.consultation-detail-widget', ['consultationRequest' => $consultationRequest])
                         @livewire('application.sheet.widget.item-tarif-by-category-widget', ['consultationRequest' => $consultationRequest])

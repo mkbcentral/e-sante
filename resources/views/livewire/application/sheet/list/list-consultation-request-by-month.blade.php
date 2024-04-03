@@ -40,12 +40,14 @@
                             </a>
                         </div>
                     </div>
-                    <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
-                        Numérotr
-                    </button>
-                    <button wire:click='closeBilling' class="btn btn-dark btn-sm" type="button">
-                        Cloturer
-                    </button>
+                    @if ($isClosing == false)
+                        <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
+                            Numérotr
+                        </button>
+                        <button wire:click='closeBilling' class="btn btn-dark btn-sm" type="button">
+                            Cloturer
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">

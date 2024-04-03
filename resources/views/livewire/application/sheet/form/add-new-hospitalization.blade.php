@@ -3,7 +3,9 @@
         <h4 class="text-navy"><i class="fa fa-bed" aria-hidden="true"></i> HOSPITALISATION</h4>
         <div class="card p-2">
             <form wire:submit='handlerSubmit'>
-                <h5 class="text-info "><i class="{{$consultationRequestHospitalization==null?'fa fa-plus-circle':'fa fa-pen' }} " aria-hidden="true"></i> {{ $formLabel }}</h5>
+                <h5 class="text-info "><i
+                        class="{{ $consultationRequestHospitalization == null ? 'fa fa-plus-circle' : 'fa fa-pen' }} "
+                        aria-hidden="true"></i> {{ $formLabel }}</h5>
                 <hr>
                 <div class="d-flex  align-content-center ">
                     <div class="form-group">
@@ -17,7 +19,11 @@
                         <x-form.input type='number' wire:model='number_of_day' :error="'number_of_day'" />
                         <x-errors.validation-error value='number_of_day' />
                     </div>
+
                 </div>
+                <x-form.button wire:click="handlerSubmit" class="btn-primary" type='submit'>
+                    <i class="fab fa-save"></i> Sauvegarder
+                </x-form.button>
             </form>
         </div>
         <table class="table table-bordered table-sm">
@@ -43,7 +49,8 @@
                             <td>{{ $consultationRequestHospitalization?->hospitalizationRoom?->name }}</td>
                             <td>{{ $consultationRequestHospitalization->number_of_day }}</td>
                             <td class="text-center">
-                                <x-form.edit-button-icon wire:click="edit({{ $consultationRequestHospitalization }})" class="btn-sm" />
+                                <x-form.edit-button-icon wire:click="edit({{ $consultationRequestHospitalization }})"
+                                    class="btn-sm" />
                                 <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
                                     wire:click="delete({{ $consultationRequestHospitalization }})" class="btn-sm" />
                             </td>

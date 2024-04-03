@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between">
           <h5 class="text-bold">INDENTITES</h5>
-          <h5 class="text-bold text-primary"><i class="fa fa-calendar"></i> Date: {{$consultationSheet?->created_at->format('d/M/Y')}}</h5>
+
       </div>
         <hr>
         <div class="row invoice-info">

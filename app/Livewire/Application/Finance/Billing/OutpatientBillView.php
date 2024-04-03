@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Finance\Billing;
 
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\Currency;
 use App\Models\OutpatientBill;
 use Exception;
@@ -113,6 +114,7 @@ class OutpatientBillView extends Component
     public function cancelBill()
     {
         $this->outpatientBill = null;
+        $this->outpatientBill = null;
     }
 
     /**
@@ -125,9 +127,11 @@ class OutpatientBillView extends Component
     {
         try {
             foreach ($this->outpatientBill->tarifs as $tarif) {
-                $tarif->delete();
+                MakeQueryBuilderHelper::deleteWithKey('outpatient_bill_tarif', 'outpatient_bill_id', $this->outpatientBill->id);
             }
+            $this->outpatientBill->otherOutpatientBill->delete();
             $this->outpatientBill->delete();
+            $this->isEditing= false;
             $this->outpatientBill = null;
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {

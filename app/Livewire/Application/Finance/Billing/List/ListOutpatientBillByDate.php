@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Finance\Billing\List;
 
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\Currency;
 use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
@@ -57,8 +58,9 @@ class ListOutpatientBillByDate extends Component
     {
         try {
             foreach ($outpatientBill->tarifs as $tarif) {
-                $tarif->delete();
+                MakeQueryBuilderHelper::deleteWithKey('outpatient_bill_tarif', 'outpatient_bill_id', $outpatientBill->id);
             }
+            $outpatientBill->otherOutpatientBill->delete();
             $outpatientBill->delete();
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {

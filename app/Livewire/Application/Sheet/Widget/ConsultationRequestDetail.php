@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Application\Sheet\Widget;
 
-use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
-use App\Models\Hospital;
 use App\Models\Tarif;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -45,7 +43,6 @@ class ConsultationRequestDetail extends Component
      */
     public function render()
     {
-        return view(
-            'livewire.application.sheet.widget.consultation-request-detail');
+        return view('livewire.application.sheet.widget.consultation-request-detail');
     }
 }

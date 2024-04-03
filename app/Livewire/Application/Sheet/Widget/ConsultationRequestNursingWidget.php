@@ -84,6 +84,7 @@ class ConsultationRequestNursingWidget extends Component
     public function mount(ConsultationRequest $consultationRequest)
     {
         $this->consultationRequest = $consultationRequest;
+
     }
     public function render()
     {

@@ -30,6 +30,11 @@ class NewConsultationRequestNursing extends Component
     public function getconsultationRequest(ConsultationRequest $consultationRequest): void
     {
         $this->consultationRequest = $consultationRequest;
+        if ($this->consultationRequest->consultationSheet->subscription->is_subscriber == true) {
+            $this->amount = 10;
+        } else {
+            $this->amount = 7.5;
+        }
     }
 
     public function store()
@@ -44,7 +49,6 @@ class NewConsultationRequestNursing extends Component
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
     }
-
     public function render()
     {
         return view('livewire.application.sheet.form.new-consultation-request-nursing', [
