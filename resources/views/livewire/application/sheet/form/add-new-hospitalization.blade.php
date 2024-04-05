@@ -10,13 +10,15 @@
                 <div class="d-flex  align-content-center ">
                     <div class="form-group">
                         <x-form.label value="{{ __('Chambre') }}" />
-                        <x-widget.list-hospitalization-widget wire:model.blur='hospitalization_room_id'
+                        <x-widget.list-hospitalization-widget
+                        wire:model.blur='hospitalization_room_id'
                             :error="'hospitalization_room_id'" />
                         <x-errors.validation-error value='hospitalization_room_id' />
                     </div>
                     <div class="form-group">
                         <x-form.label value="{{ __('Nombre jour') }}" />
-                        <x-form.input type='number' wire:model='number_of_day' :error="'number_of_day'" />
+                        <x-form.input type='number' wire:model='number_of_day'
+                        :error="'number_of_day'" />
                         <x-errors.validation-error value='number_of_day' />
                     </div>
 
