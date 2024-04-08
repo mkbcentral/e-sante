@@ -129,6 +129,9 @@ class OutpatientBillView extends Component
             foreach ($this->outpatientBill->tarifs as $tarif) {
                 MakeQueryBuilderHelper::deleteWithKey('outpatient_bill_tarif', 'outpatient_bill_id', $this->outpatientBill->id);
             }
+            if ($this->outpatientBill->otherOutpatientBill != null) {
+                $this->outpatientBill->otherOutpatientBill->delete();
+            }
             $this->outpatientBill->otherOutpatientBill->delete();
             $this->outpatientBill->delete();
             $this->isEditing= false;

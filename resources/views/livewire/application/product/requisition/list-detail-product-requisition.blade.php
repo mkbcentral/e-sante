@@ -12,7 +12,8 @@
                             <h5 class=""><span class="text-info">#Num:</span> {{ $productRequisition->number }}
                             </h5>
                             <h5 class="text-uppercase
-                            "><span class="text-info">Service:</span>
+                            "><span
+                                    class="text-info">Service:</span>
                                 {{ $productRequisition->agentService->name }}</h5>
                         </div>
                         <div>
@@ -32,6 +33,7 @@
                         <th>#</th>
                         <th>Désignation</th>
                         <th class="text-center">Quantité</th>
+                        <th class="text-right">P.U</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -40,6 +42,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $productRequistionProduct?->product?->name }}</td>
+
                             <td class="text-center">
                                 @if ($isEditing == true && $productRequistionProductId == $productRequistionProduct->id)
                                     <x-form.input type='text' style="width: 70px;text-align: center"
@@ -48,6 +51,7 @@
                                     {{ $productRequistionProduct->quantity }}
                                 @endif
                             </td>
+                            <td class="text-right">{{ $productRequistionProduct?->product?->price }}</td>
                             <td class="text-center">
                                 @if ($productRequisition->is_valided)
                                     <span class="text-success">Livré</span>

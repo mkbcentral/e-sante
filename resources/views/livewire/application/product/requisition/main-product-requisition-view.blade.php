@@ -50,6 +50,7 @@
                             <th>DATE</th>
                             <th>CODE</th>
                             <th class="text-center">PRODUCTS</th>
+                            <th class="text-right">R.A</th>
                             <th class="text-center">SERVICE</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">ACTIONS</th>
@@ -68,6 +69,7 @@
                                     <td class="text-center">{{ $requisition->number }}</td>
                                     <td class="text-center">{{ $requisition->productRequistionProducts->count() }}
                                     </td>
+                                    <td class="text-right">{{ app_format_number($requisition->getProductAmpout(),1) }}</td>
                                     <td class="text-center">{{ $requisition->agentService->name }}</td>
                                     <td class="text-center {{ $requisition->is_valided ? 'text-success ' : '' }}">
                                         {{ $requisition->is_valided ? 'Livré' : 'En cours' }}</td>

@@ -68,5 +68,14 @@ class ProductRequisition extends Model
         return $this->hasMany(ProductRequisitionProduct::class);
     }
 
+    public function getProductAmpout(){
+        $amount=0;
+        foreach ($this->productRequistionProducts as $productRequistionProduct ) {
+            $amount+=$productRequistionProduct->product->price* $productRequistionProduct->quantity;
+        }
+
+        return $this->is_valided==false?0: $amount;
+    }
+
 
 }

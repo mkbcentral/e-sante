@@ -30,6 +30,7 @@ class GetProductRepository
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->where('products.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereIn('products.source_id', [1, 2])
+            ->where('products.is_trashed', $is_trashed)
             ->select('products.*')
             ->paginate($per_page) :
             Product::query()

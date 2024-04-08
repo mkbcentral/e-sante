@@ -60,7 +60,9 @@ class ListOutpatientBillByDate extends Component
             foreach ($outpatientBill->tarifs as $tarif) {
                 MakeQueryBuilderHelper::deleteWithKey('outpatient_bill_tarif', 'outpatient_bill_id', $outpatientBill->id);
             }
-            $outpatientBill->otherOutpatientBill->delete();
+            if ($outpatientBill->otherOutpatientBill) {
+                $outpatientBill->otherOutpatientBill->delete();
+            }
             $outpatientBill->delete();
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
