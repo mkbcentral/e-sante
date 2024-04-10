@@ -237,7 +237,8 @@ class ListConsultationRequestByMonth extends Component
         $this->checkIsClosin();
         if (
             Auth::user()->roles->pluck('name')->contains('Ag') ||
-            Auth::user()->roles->pluck('name')->contains('Admin')
+            Auth::user()->roles->pluck('name')->contains('Admin') ||
+            Auth::user()->roles->pluck('name')->contains('Labo')
         ) {
             $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByMonthAllSource(
                 $this->selectedIndex,
