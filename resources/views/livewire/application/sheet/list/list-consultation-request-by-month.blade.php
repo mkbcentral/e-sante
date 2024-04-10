@@ -105,7 +105,8 @@
                                 </td>
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
+                                        Auth::user()->roles->pluck('name')->contains('Labo'))
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}/
                                         <span
                                             class="text-danger">{{ $consultationRequest->consultationSheet->source->name }}</span>
