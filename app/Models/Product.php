@@ -145,6 +145,7 @@ class Product extends Model
             ->where('product_supply_products.product_id', $this->id)
             ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('product_supplies.user_id', Auth::id())
+            ->whereMonth('product_supplies.created_at', date('m'))
             ->where('product_supplies.is_valided', true)
             ->sum('product_supply_products.quantity');
     }

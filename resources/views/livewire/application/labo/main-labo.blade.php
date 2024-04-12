@@ -6,7 +6,6 @@
     <x-content.main-content-page>
         <div class="card-header p-2">
             <ul class="nav nav-pills">
-
                 @foreach ($subscriptions as $subscription)
                     <li class="nav-item">
                         <a wire:click='changeIndex({{ $subscription }})'

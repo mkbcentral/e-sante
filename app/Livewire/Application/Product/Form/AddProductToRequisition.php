@@ -17,6 +17,9 @@ class AddProductToRequisition extends Component
     #[Rule('required', message: 'Quantité obligatoire obligatoire')]
     #[Rule('numeric', message: 'Quantité  format invalide')]
     public $quantity;
+    #[Rule('numeric', message: 'Quantité dispo  format invalide')]
+    public $quantity_available;
+    public string $formTitle = 'Ajouter un produit à la réquisition';
 
     public bool $isEditing = false;
 
@@ -25,9 +28,16 @@ class AddProductToRequisition extends Component
         $this->product = $product;
         $this->productRequisition = $productRequisition;
         $this->isEditing = $isEditing;
+
         if ($this->isEditing == true) {
+            $this->formTitle = 'Modifier un produit à la réquisition';
             $productRequisitionProduct = ProductRequisitionProduct::where('product_id', $product->id)->first();
             $this->quantity = $productRequisitionProduct->quantity;
+            $this->quantity_available = $productRequisitionProduct->quantity_available;
+        }else{
+            $this->quantity = 0;
+            $this->quantity_available = 0;
+
         }
     }
 
@@ -37,6 +47,7 @@ class AddProductToRequisition extends Component
         try {
             ProductRequisitionProduct::create([
                 'quantity' => $this->quantity,
+                'quantity_available' => $this->quantity_available,
                 'product_id' => $this->product->id,
                 'product_requisition_id' => $this->productRequisition->id,
             ]);
@@ -51,8 +62,12 @@ class AddProductToRequisition extends Component
         $this->validate();
         try {
             $productRequisitionProduct = ProductRequisitionProduct::where('product_id', $this->product->id)->first();
+
             $productRequisitionProduct->quantity = $this->quantity;
+            $productRequisitionProduct->quantity_available = $this->quantity_available;
             $productRequisitionProduct->update();
+            dd($productRequisitionProduct);
+            $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }

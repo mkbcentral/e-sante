@@ -10,7 +10,7 @@ class ProductRequisitionProduct extends Model
 {
     use HasFactory;
 
-    protected $fillable=['product_id', 'product_requisition_id', 'quantity'];
+    protected $fillable=['product_id', 'product_requisition_id', 'quantity','quantity_available'];
     /**
      * Get the product that owns the ProductRequisitionProduct
      *

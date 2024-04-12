@@ -16,6 +16,7 @@
                     <tr>
                         <th>#</th>
                         <th>DESIGNATION</th>
+                        <th class="text-center">Q.T DISPO</th>
                         <th class="text-center">Q.T APPRO</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -30,6 +31,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $productProductRequisition->product->name }}</td>
+                                <td class="text-center">{{ $productProductRequisition->quantity_available }}</td>
                                 <td class="text-center">{{ $productProductRequisition->quantity }}</td>
                                 <td class="text-center">
                                     <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
