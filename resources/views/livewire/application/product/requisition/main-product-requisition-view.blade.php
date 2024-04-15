@@ -2,8 +2,7 @@
     @livewire('application.product.requisition.form.new-product-requisition')
     @livewire('application.product.requisition.list.list-amount-requistion-by-service')
     @livewire('application.product.requisition.list-detail-product-requisition')
-    <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS'
-             color="text-success">
+    <x-navigation.bread-crumb icon='fa fa-capsules' label='REQUISITION DES  MEDICAMENTS' color="text-success">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Appro médicaments' />
     </x-navigation.bread-crumb>
@@ -22,7 +21,7 @@
                             <x-form.button type="button" class="btn-primary" wire:click='refreshList'>
                                 <i class="fa fa-sync" aria-hidden="true  "></i> Actualiser
                             </x-form.button>
-                             <x-form.button type="button" class="btn-dark" wire:click='openListAmount'>
+                            <x-form.button type="button" class="btn-dark" wire:click='openListAmount'>
                                 <i class="fa fa-sync" aria-hidden="true  "></i> Recettes
                             </x-form.button>
                         @endif
@@ -63,13 +62,16 @@
                             </tr>
                         @else
                             @foreach ($productRequisitions as $index => $requisition)
-                                <tr class="cursor-hand" wire:key='{{ $requisition->id }}' >
+                                <tr class="cursor-hand" wire:key='{{ $requisition->id }}'>
                                     <td class="text-center">{{ $index + 1 }}</td>
-                                    <td><a wire:click='showDetailModal({{  $requisition}})' href="#">{{ $requisition->created_at->format('d/m/Y à H:i:s') }}</a></td>
+                                    <td><a wire:click='showDetailModal({{ $requisition }})'
+                                            href="#">{{ $requisition->created_at->format('d/m/Y à H:i:s') }}</a>
+                                    </td>
                                     <td class="text-center">{{ $requisition->number }}</td>
                                     <td class="text-center">{{ $requisition->productRequistionProducts->count() }}
                                     </td>
-                                    <td class="text-right">{{ app_format_number($requisition->getProductAmpout(),1) }}</td>
+                                    <td class="text-right">{{ app_format_number($requisition->getProductAmpout(), 1) }}
+                                    </td>
                                     <td class="text-center">{{ $requisition->agentService->name }}</td>
                                     <td class="text-center {{ $requisition->is_valided ? 'text-success ' : '' }}">
                                         {{ $requisition->is_valided ? 'Livré' : 'En cours' }}</td>
@@ -110,6 +112,13 @@
                                                 </x-form.button>
                                             @endif
                                         @endif
+                                        @if ($requisition->is_valided)
+                                            <x-navigation.link-icon
+                                            href="{{ route('product.requisition.print', [$requisition->id]) }}"
+                                            :icon="'fa fa-print'"
+                                            class="btn btn-sm   btn-secondary" />
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

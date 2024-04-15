@@ -173,8 +173,8 @@ class Product extends Model
     public function getOutputRequisitionWithMarchToEndOfYear()
     {
         $quantity = 0;
-        $startDate = date('Y') . '-03-01'; // March 1st of the current year
-        $endDate = date('Y') . '-12-31'; // December 31st of the current year
+        $startDate = date('Y') . '-04-01'; // March 1st of the current year
+       $endDate = date('Y') . '-12-31'; // December 31st of the current year
         $inputs = ProductRequisitionProduct::query()
             ->join('products', 'products.id', 'product_requisition_products.product_id')
             ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
@@ -182,7 +182,7 @@ class Product extends Model
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
             ->where('product_requisitions.is_valided', true)
-            ->whereBetween('product_requisition_products.created_at', [$startDate, $endDate])
+            ->whereMonth('product_requisition_products.created_at', [$startDate, $endDate])
             ->get();
         foreach ($inputs as $input) {
             $quantity += $input->quantity;

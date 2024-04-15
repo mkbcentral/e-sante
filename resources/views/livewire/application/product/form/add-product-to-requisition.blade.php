@@ -8,7 +8,7 @@
                         <h5 class="card-title"><span class="text-bold">N° Req:</span>:{{ $productRequisition->number }}
                         </h5><br>
                         <h5 class="card-title"><span class="text-bold">Service
-                                :</span>:{{ $productRequisition->agentService->name }} </h5>
+                            </span>:{{ $productRequisition->agentService->name }} </h5><br>
                         <h5 class="card-title"><span class="text-bold">Produit</span>:{{ $product->name }} </h5>
                     </div>
                 </div>

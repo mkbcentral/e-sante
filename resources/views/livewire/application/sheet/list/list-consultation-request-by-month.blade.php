@@ -18,7 +18,7 @@
                     </div>
                     <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
                 </div>
-                <div class="ml-2">
+                <div class="mr-4" style="margin-right: 40px">
                     <div class="btn-group">
                         <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
                             aria-expanded="false">
@@ -40,14 +40,26 @@
                             </a>
                         </div>
                     </div>
-                    @if ($isClosing == false)
-                        <button wire:click='fixNumerotation' class="btn btn-primary btn-sm" type="button">
-                            Numérotr
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fas fa-cogs"></i>
+                            Autes options
                         </button>
-                        <button wire:click='closeBilling' class="btn btn-dark btn-sm" type="button">
-                            Cloturer
-                        </button>
-                    @endif
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" href="#" wire:click='fixNumerotation'>
+                                <i class="fas fa-list-ol"></i> Numéroter
+                            </a>
+                            <a class="dropdown-item" href="#" wire:click='fixNumerotation'>
+                                <i class="fas fa-dollar-sign"></i> Fixer taux
+                            </a>
+                            <a class="dropdown-item" href="#" wire:click='closeBilling'>
+                                <i class="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
+                                    aria-hidden="true"></i>
+                                {{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
@@ -128,7 +140,7 @@
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
                                     <td
-                                        class="text-right {{ $consultationRequest->getTotalInvoiceCDF() == 27000 ? 'bg-danger' : '' }}">
+                                        class="text-right {{ $consultationRequest->getTotalInvoiceCDF() == 28000 ? 'bg-danger' : '' }}">
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
@@ -160,6 +172,9 @@
                                     class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}">
                                     @if ($consultationRequest->is_printed == true)
                                         Cloturé
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             <x-form.icon-button :icon="'fas fa-capsules'"

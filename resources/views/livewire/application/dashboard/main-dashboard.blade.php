@@ -16,13 +16,15 @@
                 @elseif (Auth::user()->roles->pluck('name')->contains('Caisse'))
                     @livewire('application.dashboard.finance.dash-outpaient-bil')
                     @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize')
+                @else
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
                 @endif
             </div>
             <div class="col-md-6">
-                @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation')
-                @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
                 @if (Auth::user()->roles->pluck('name')->contains('Ag') || Auth::user()->roles->pluck('name')->contains('Admin'))
                     @livewire('application.dashboard.finance.dash-consultation-request-finance')
+                @else
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')
                 @endif
             </div>
         </div>

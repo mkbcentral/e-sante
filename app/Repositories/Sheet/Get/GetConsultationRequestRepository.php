@@ -336,4 +336,28 @@ class GetConsultationRequestRepository
             ->where('consultation_requests.is_hospitalized', true)
             ->get();
     }
+
+    //Get consultation request check is closing
+    public static function getConsultationRequestChechkIfIsClosing(
+        int $selectedIndex,
+        string $month_name,
+        string $year
+
+    ):?ConsultationRequest{
+        return ConsultationRequest::join(
+            'consultation_sheets',
+            'consultation_sheets.id',
+            'consultation_requests.consultation_sheet_id'
+        )
+            ->where('consultation_sheets.subscription_id', $selectedIndex)
+            ->select('consultation_requests.*')
+            ->with(['consultationSheet.subscription'])
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->whereMonth('consultation_requests.created_at', $month_name)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->orderBy('consultation_requests.id', 'ASC')
+            ->where('consultation_requests.is_printed', true)
+            ->orderBy('consultation_requests.created_at', 'DESC')
+            ->first();
+    }
 }

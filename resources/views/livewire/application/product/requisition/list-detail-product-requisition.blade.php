@@ -62,7 +62,6 @@
                                         wire:click="delete({{ $productRequistionProduct }})"
                                         class="btn-sm btn-danger" />
                                 @endif
-
                             </td>
                         </tr>
                     @endforeach

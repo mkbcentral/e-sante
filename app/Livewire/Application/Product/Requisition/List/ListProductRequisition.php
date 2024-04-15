@@ -17,13 +17,19 @@ class ListProductRequisition extends Component
     public ?ProductRequisition $productRequisition;
     #[Url(as: 'q')]
     public $q = '';
-    public function mount(ProductRequisition $productRequisition){
-        $this->productRequisition=$productRequisition;
+    public function mount(ProductRequisition $productRequisition)
+    {
+        $this->productRequisition = $productRequisition;
     }
 
     public function edit(?Product $product)
     {
-        $this->dispatch('productToRequition', $product, $this->productRequisition, true);
+        $this->dispatch(
+            'productToRequition',
+            $product,
+            $this->productRequisition,
+            true
+        );
         $this->dispatch('open-add-to-product-requisition-modal');
     }
 

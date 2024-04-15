@@ -64,7 +64,6 @@
         @else
             <h6>NB: {{ ucfirst(app_format_number_letter($total_cdf)) }} Fancs congolais </h6>
         @endif
-        <h1>POLYCLINIQUE SHUKRANI LUBUMBASHI</h1>
     </div>
     <div class="text-right">
         Fait à Lubumbashi, Le {{ date('d/m/Y') }}

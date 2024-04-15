@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Application\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductPurchase;
+use App\Models\ProductRequisition;
 use Illuminate\Support\Facades\App;
 
 class ProductPrinterController extends Controller
@@ -31,4 +32,18 @@ class ProductPrinterController extends Controller
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
     }
+
+    public function printListProductRequisition($id)
+    {
+        $productRequisition=ProductRequisition::find($id);
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView(
+            'prints.product.print-product-requisition',
+            compact([
+                'productRequisition',
+            ])
+        )->set_option('isRemoteEnabled', true);
+        return $pdf->stream();
+    }
+
 }

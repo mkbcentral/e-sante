@@ -99,6 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::controller(ProductPrinterController::class)->group(function(){
             Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
             Route::get('product/price', 'printProductListPrice')->name('product.list.price.print');
+            Route::get('product/requisition/{id}', 'printListProductRequisition')
+                ->name('product.requisition.print');
         });
 
         Route::controller(ConsultationRequestPrinterController::class)->group(function () {
@@ -107,6 +109,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('consultation.request.lits.has_a_shipping_ticket');
             Route::get('list-invoices-by-monthj/{subscriptionId}/{month}', 'printListInvoicesByMonth')
             ->name('list.invoices.month');
+            Route::get('monthly-frequentation/{month?}/{year?}', 'printMonthlyFrequentation')
+                ->name('monthly.frequentation');
+            Route::get('monthly-frequentation-hospitalize/{month?}/{year?}', 'printMonthlyFrequentationHospitalize')
+            ->name('monthly.frequentation.hospitalize');
         });
 
        Route::controller(ProductInvoicePrinterController::class)->group(function(){

@@ -7,6 +7,8 @@ use App\Models\ConsultationRequest;
 use App\Models\Currency;
 use App\Models\Hospital;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
+use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
+use App\Repositories\Sheet\Get\ManageConsultationRequestRepository;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
@@ -32,7 +34,7 @@ class ListConsultationRequestByMonth extends Component
     public $sortBy = 'consultation_sheets.name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
-    public $isClosing=false;
+    public $isClosing = false;
 
     public function updatedMonthName($val)
     {
@@ -125,25 +127,11 @@ class ListConsultationRequestByMonth extends Component
     public function fixNumerotation()
     {
         try {
-            $data
-                = ConsultationRequest::join(
-                    'consultation_sheets',
-                    'consultation_sheets.id',
-                    'consultation_requests.consultation_sheet_id'
-                )
-                ->where('consultation_sheets.subscription_id', $this->selectedIndex)
-                ->select('consultation_requests.*')
-                ->with(['consultationSheet.subscription'])
-                ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-                ->whereMonth('consultation_requests.created_at', $this->month_name)
-                ->whereYear('consultation_requests.created_at', $this->year)
-                ->orderBy('consultation_requests.id', 'ASC')
-                ->get();
-            foreach ($data as $index => $item) {
-                $consultationRequest = ConsultationRequest::find($item->id);
-                $consultationRequest->request_number = $index + 1;
-                $consultationRequest->update();
-            }
+            ManageConsultationRequestRepository::fixNumerotation(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year
+            );
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -154,30 +142,11 @@ class ListConsultationRequestByMonth extends Component
     public function closeBilling()
     {
         try {
-            $consultationRequests
-                = ConsultationRequest::join(
-                    'consultation_sheets',
-                    'consultation_sheets.id',
-                    'consultation_requests.consultation_sheet_id'
-                )
-                ->where('consultation_sheets.subscription_id', $this->selectedIndex)
-                ->select('consultation_requests.*')
-                ->with(['consultationSheet.subscription'])
-                ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-                ->whereMonth('consultation_requests.created_at', $this->month_name)
-                ->whereYear('consultation_requests.created_at', $this->year)
-                ->orderBy('consultation_requests.id', 'ASC')
-                ->get();
-            foreach ($consultationRequests as $consultationRequest) {
-                if ($consultationRequest->is_printed == true) {
-                    $consultationRequest->is_printed = false;
-                    $consultationRequest->is_finished = false;
-                } else {
-                    $consultationRequest->is_printed = true;
-                    $consultationRequest->is_finished = true;
-                }
-                $consultationRequest->update();
-            }
+            ManageConsultationRequestRepository::closeConsultationRequest(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year
+            );
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -187,49 +156,41 @@ class ListConsultationRequestByMonth extends Component
     public function delete(ConsultationRequest $consultationRequest)
     {
         try {
-            foreach ($consultationRequest->tarifs as $tarif) {
-                MakeQueryBuilderHelper::deleteWithKey('consultation_request_tarif', 'consultation_request_id', $consultationRequest->id);
-            }
-            foreach ($consultationRequest->products as $product) {
-                MakeQueryBuilderHelper::deleteWithKey('consultation_request_product', 'consultation_request_id', $consultationRequest->id);
-            }
-            foreach ($consultationRequest->consultationRequestHospitalizations as $hospitalization) {
-                MakeQueryBuilderHelper::deleteWithKey('consultation_request_hospitalizations', 'consultation_request_id', $consultationRequest->id);
-
-            }
-            foreach ($consultationRequest->consultationRequestNursings as $nursing) {
-                MakeQueryBuilderHelper::deleteWithKey('consultation_request_nersings', 'consultation_request_id', $consultationRequest->id);
-            }
-            $consultationRequest->delete();
+            ManageConsultationRequestRepository::deleteConsultationRequest($consultationRequest);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
 
-    public function checkIsClosin(){
+    public function fixWithCurrentRate()
+    {
+        try {
+            $consultationRequestPrinted
+                = GetConsultationRequestRepository::getConsultationRequestChechkIfIsClosing(
+                    $this->selectedIndex,
+                    $this->month_name,
+                    $this->year
+                );
+            $this->dispatch('added', ['message' => 'Action bien réalisée']);
+        } catch (\Exception $ex) {
+            $this->dispatch('error', ['message' => $ex->getMessage()]);
+        }
+    }
+
+    public function checkIsClosin()
+    {
         $consultationRequestPrinted
-            = ConsultationRequest::join(
-                'consultation_sheets',
-                'consultation_sheets.id',
-                'consultation_requests.consultation_sheet_id'
-            )
-            ->where('consultation_sheets.subscription_id', $this->selectedIndex)
-            ->select('consultation_requests.*')
-            ->with(['consultationSheet.subscription'])
-            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->whereMonth('consultation_requests.created_at', $this->month_name)
-            ->whereYear('consultation_requests.created_at', $this->year)
-            ->orderBy('consultation_requests.id', 'ASC')
-            ->where('consultation_requests.is_printed',true)
-            ->orderBy('consultation_requests.created_at','DESC')
-            ->first();
+            = ManageConsultationRequestRepository::fixRate(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year
+            );
         if ($consultationRequestPrinted != null) {
-            $this->isClosing =true;
+            $this->isClosing = true;
         } else {
             $this->isClosing = false;
         }
-
     }
 
     public function render()

@@ -14,6 +14,8 @@ class Source extends Model
 
     const GOLF = 'GOLF';
     const VILLE = 'VILLE';
+    const GOLF_ID = 1;
+    const VILLE_ID = 2;
 
     /**
      * Get the hospital that owns the Source

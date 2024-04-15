@@ -12,17 +12,31 @@
         </div>
         <div class="">
             <div class="">
-                <p class="text-center h text-secondary">
+                <p class="h4 m-2 text-secondary">
                     <strong><i class="fas fa-chart-bar"></i>
                         {{ $month == '' ? ' TAUX DE FRAQUANTETION JOUNALIERE' : ' TAUX DE FRAQUANTETION MENSUELLE' }}
                     </strong>
                 </p>
-                <hr>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
                 </div>
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                            Impression
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('monthly.frequentation', [$month, $year]) }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Rapport de frequentation
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 @if (!$requests->isEmpty())
-                    <div class="row mt-2" >
+                    <div class="row mt-2">
                         @foreach ($requests as $req)
                             <div class="col-12 col-sm-6 col-md-4">
                                 <div class="info-box bg-indigo">

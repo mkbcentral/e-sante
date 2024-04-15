@@ -31,7 +31,10 @@ class AddProductToRequisition extends Component
 
         if ($this->isEditing == true) {
             $this->formTitle = 'Modifier un produit à la réquisition';
-            $productRequisitionProduct = ProductRequisitionProduct::where('product_id', $product->id)->first();
+            $productRequisitionProduct = ProductRequisitionProduct::
+            where('product_requisition_id', $productRequisition->id)
+            ->where('product_id', $product->id)
+            ->first();
             $this->quantity = $productRequisitionProduct->quantity;
             $this->quantity_available = $productRequisitionProduct->quantity_available;
         }else{
@@ -62,7 +65,6 @@ class AddProductToRequisition extends Component
         $this->validate();
         try {
             $productRequisitionProduct = ProductRequisitionProduct::where('product_id', $this->product->id)->first();
-
             $productRequisitionProduct->quantity = $this->quantity;
             $productRequisitionProduct->quantity_available = $this->quantity_available;
             $productRequisitionProduct->update();

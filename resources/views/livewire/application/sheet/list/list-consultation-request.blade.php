@@ -26,12 +26,6 @@
                                                                                                                                                                                                                                                                                                                                                                                        réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
-
-                    <div class="ml-2">
-                        <a class="btn  btn-info btn-sm" target="_blank"
-                            href="{{ route('consultation.request.date.all.print', [$selectedIndex, $date_filter]) }}"><i
-                                class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
-                    </div>
                 </div>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />

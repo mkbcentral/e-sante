@@ -5,7 +5,6 @@ namespace App\Repositories\Sheet\Get;
 use App\Models\ConsultationSheet;
 use App\Models\Hospital;
 use App\Models\Source;
-use Illuminate\Support\Facades\Auth;
 
 class GetConsultationSheetRepository
 {
