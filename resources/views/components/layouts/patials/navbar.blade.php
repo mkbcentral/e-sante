@@ -24,7 +24,7 @@
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset('defautl-user.jpg') }}"
                 class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-none d-md-inline ">{{ Auth::user()->name }}</span>
+                <span class="d-none d-md-inline ">{{ Auth::user()?->name }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <!-- User image -->
@@ -32,7 +32,7 @@
                 <img src="{{ asset('defautl-user.jpg') }}"
                 class="img-circle elevation-2" alt="User Image">
                 <p>
-                  <small>{{ Auth::user()->email }}</small>
+                  <small>{{ Auth::user()?->email }}</small>
                 </p>
               </li>
 

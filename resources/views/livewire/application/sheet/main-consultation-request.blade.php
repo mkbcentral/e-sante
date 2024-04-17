@@ -22,11 +22,14 @@
                <div class="d-flex justify-content-between align-items-center">
                  <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" wire:click='makeIsByDate'
-                        class="btn {{ $isByDate == true ? 'btn-secondary' : '' }}">Journalière</button>
+                        class="btn {{ $isByDate == true ? 'btn-secondary' : '' }}">
+                        <i class="fa fa-calendar-day text-secondary" aria-hidden="true"></i> Journalière</button>
                     <button type="button" wire:click='makeIsByMonth'
-                        class="btn {{ $isByMonth == true ? 'btn-secondary' : '' }}">Mensuelle</button>
+                        class="btn {{ $isByMonth == true ? 'btn-secondary' : '' }}">
+                         <i class="fa fa-calendar-alt text-secondary" aria-hidden="true"></i> Mensuelle</button>
                     <button type="button" wire:click='makeIsByPeriod'
-                        class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">Périodique</button>
+                        class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">
+                         <i class="fa fa-calendar-minus text-secondary" aria-hidden="true"></i> Périodique</button>
                 </div>
                   @livewire('application.finance.widget.amount-consultation-request-by-month-widget',
                   ['selectedIndex'=>$selectedIndex,

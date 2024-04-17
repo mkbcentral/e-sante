@@ -8,7 +8,8 @@
          <nav class="mt-2">
              <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                  data-accordion="false">
-                 @if (Auth::user()->subMenus->isEmpty())
+                 @if (Auth::user() != null)
+                     @if (Auth::user()->subMenus->isEmpty())
                      <x-navigation.nav-link class="nav-link" href="{{ route('admin') }}" wire:navigate
                          :active="request()->routeIs(['admin'])">
                        <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -22,6 +23,7 @@
                              <p>{{ $subMenu->name }}</p>
                          </x-navigation.nav-link>
                      @endforeach
+                 @endif
                  @endif
              </ul>
 

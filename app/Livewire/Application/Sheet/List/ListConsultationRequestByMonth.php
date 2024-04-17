@@ -166,12 +166,11 @@ class ListConsultationRequestByMonth extends Component
     public function fixWithCurrentRate()
     {
         try {
-            $consultationRequestPrinted
-                = GetConsultationRequestRepository::getConsultationRequestChechkIfIsClosing(
-                    $this->selectedIndex,
-                    $this->month_name,
-                    $this->year
-                );
+            ManageConsultationRequestRepository::fixRate(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year
+            );
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -181,7 +180,7 @@ class ListConsultationRequestByMonth extends Component
     public function checkIsClosin()
     {
         $consultationRequestPrinted
-            = ManageConsultationRequestRepository::fixRate(
+            = GetConsultationRequestRepository::getConsultationRequestChechkIfIsClosing(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year

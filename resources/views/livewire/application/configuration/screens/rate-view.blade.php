@@ -16,6 +16,7 @@
                 <tr>
                     <th>#</th>
                     <th>Rate</th>
+                    <th>STATUS</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
                         <tr style="cursor: pointer;" id="row1">
                             <td class="text-center">{{ $index + 1 }}</td>
                             <td>{{ $rate->rate }}</td>
+                            <td>{{ $rate->is_current?'En utilisation':'Déactivé' }}</td>
                             <td class="text-center">
                                 <x-form.button type="button" class="btn-light"
                                     wire:confirm="Etes-vous sûre de réaliser l'opération ?"

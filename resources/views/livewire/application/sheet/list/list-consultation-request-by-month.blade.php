@@ -47,13 +47,13 @@
                             Autes options
                         </button>
                         <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item" href="#" wire:click='fixNumerotation'>
+                            <a class="dropdown-item"  wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='fixNumerotation'>
                                 <i class="fas fa-list-ol"></i> Numéroter
                             </a>
-                            <a class="dropdown-item" href="#" wire:click='fixNumerotation'>
+                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='fixWithCurrentRate'>
                                 <i class="fas fa-dollar-sign"></i> Fixer taux
                             </a>
-                            <a class="dropdown-item" href="#" wire:click='closeBilling'>
+                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='closeBilling'>
                                 <i class="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
                                     aria-hidden="true"></i>
                                 {{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}

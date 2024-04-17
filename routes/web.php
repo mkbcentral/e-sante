@@ -51,7 +51,7 @@ use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
 |
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function () {
     Route::get('/', AppNavigationController::class)->name('main');
     Route::get('/dashboard', MainDashboard::class)->name('dashboard');
     Route::get('/sheet', MainSheet::class)->name('sheet');
@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
+    Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
 
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
@@ -85,59 +86,59 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
 
-    Route::get('product-requistion/{productRequisition}',ProductRequisitionItemsView::class)->name('product.requisition');
-
-    Route::prefix('print')->group(function () {
-        Route::controller(OutpatientBillPrinterController::class)->group(function () {
-            Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
-            Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
-            Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
-            Route::get('print-all-date/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
-            Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
-            Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
-        });
-        Route::controller(ProductPrinterController::class)->group(function(){
-            Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
-            Route::get('product/price', 'printProductListPrice')->name('product.list.price.print');
-            Route::get('product/requisition/{id}', 'printListProductRequisition')
-                ->name('product.requisition.print');
-        });
-
-        Route::controller(ConsultationRequestPrinterController::class)->group(function () {
-            Route::get('consultation-request-private-/{id}', 'printPrivateInvoiceByDate')->name('consultation.request.private.invoice');
-            Route::get('consultation-requests-has-not-shipping-ticket/{subscriptionId}/{month}', 'printConsultationRequestHasNotShippingTicket')
-            ->name('consultation.request.lits.has_a_shipping_ticket');
-            Route::get('list-invoices-by-monthj/{subscriptionId}/{month}', 'printListInvoicesByMonth')
-            ->name('list.invoices.month');
-            Route::get('monthly-frequentation/{month?}/{year?}', 'printMonthlyFrequentation')
-                ->name('monthly.frequentation');
-            Route::get('monthly-frequentation-hospitalize/{month?}/{year?}', 'printMonthlyFrequentationHospitalize')
-            ->name('monthly.frequentation.hospitalize');
-        });
-
-       Route::controller(ProductInvoicePrinterController::class)->group(function(){
-            Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
-            Route::get('product-invoice-rapport-date/{date}/{dateVersement}/{isByDate}', 'printOutpatientBillRapportByDate')->name('product.invoice.rapport.date.print');
-            Route::get('product-invoice-rapport-month/{month}/{dateVersement}/0', 'printOutpatientBillRapportByMonth')->name('product.invoice.rapport.month.print');
-       });
-
-       Route::controller(OtherPrinterController::class)->group(function(){
-            Route::get('tarif-list-price/{type}/{categoryTarif?}','printListPriceTarif')->name('print.tarification.prices');
-            Route::get('product-finance-repport/{month}', 'printProductFinanceRapportByMonth')->name('print.product.finance.repport');
-
-
-            //payroll
-            Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
-
-            //labo monthly release
-            Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
-       });
-    });
-
     Route::get('/users', MainAdmin::class)->name('users');
     Route::get('/configuration', MainConfiguration::class)->name('configuration');
     Route::get('/navigation', Mainnavigation::class)->name('navigation');
     Route::get('/files', FileManagerView::class)->name('files');
     Route::get('/localization', MainLocalization::class)->name('localization');
 });
+
+//Printing route
+Route::prefix('print')->group(function () {
+    Route::controller(OutpatientBillPrinterController::class)->group(function () {
+        Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
+        Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
+        Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
+        Route::get('print-all-date/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
+        Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
+        Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
+    });
+    Route::controller(ProductPrinterController::class)->group(function () {
+        Route::get('product-purcharse/{productPurchase}', 'printProductPurcharseList')->name('product.purcharse.print');
+        Route::get('product/price', 'printProductListPrice')->name('product.list.price.print');
+        Route::get('product/requisition/{id}', 'printListProductRequisition')
+            ->name('product.requisition.print');
+    });
+
+    Route::controller(ConsultationRequestPrinterController::class)->group(function () {
+        Route::get('consultation-request-private-/{id}', 'printPrivateInvoiceByDate')->name('consultation.request.private.invoice');
+        Route::get('consultation-requests-has-not-shipping-ticket/{subscriptionId}/{month}', 'printConsultationRequestHasNotShippingTicket')
+            ->name('consultation.request.lits.has_a_shipping_ticket');
+        Route::get('list-invoices-by-monthj/{subscriptionId}/{month}', 'printListInvoicesByMonth')
+            ->name('list.invoices.month');
+        Route::get('monthly-frequentation/{month?}/{year?}', 'printMonthlyFrequentation')
+            ->name('monthly.frequentation');
+        Route::get('monthly-frequentation-hospitalize/{month?}/{year?}', 'printMonthlyFrequentationHospitalize')
+            ->name('monthly.frequentation.hospitalize');
+    });
+
+    Route::controller(ProductInvoicePrinterController::class)->group(function () {
+        Route::get('product-invoice/{id}', 'printInvoiceProduct')->name('product.invoice.print');
+        Route::get('product-invoice-rapport-date/{date}/{dateVersement}/{isByDate}', 'printOutpatientBillRapportByDate')->name('product.invoice.rapport.date.print');
+        Route::get('product-invoice-rapport-month/{month}/{dateVersement}/0', 'printOutpatientBillRapportByMonth')->name('product.invoice.rapport.month.print');
+    });
+
+    Route::controller(OtherPrinterController::class)->group(function () {
+        Route::get('tarif-list-price/{type}/{categoryTarif?}', 'printListPriceTarif')->name('print.tarification.prices');
+        Route::get('product-finance-repport/{month}', 'printProductFinanceRapportByMonth')->name('print.product.finance.repport');
+
+
+        //payroll
+        Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
+
+        //labo monthly release
+        Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
+    });
+});
+
 

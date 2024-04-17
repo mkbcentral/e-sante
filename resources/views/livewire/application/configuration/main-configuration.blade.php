@@ -6,7 +6,7 @@
     <x-content.main-content-page>
         <div class="card">
             <x-navigation.tab-header>
-                <x-navigation.tab-link :icon="'fa fa-file'" :name="'Taux echange'" :link="'user'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-file'" :name="'Taux echange'" :link="'user'" :active="'active'" />
                 <x-navigation.tab-link :icon="'fa fa-users'" :name="'Suscription'" :link="'subscription'" :active="''" />
                 <x-navigation.tab-link :icon="'fas fa-capsules'" :name="'Categorie produits'" :link="'categoryProduct'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-pills'" :name="'Famille Produits'" :link="'familyProduct'" :active="''" />
@@ -22,11 +22,11 @@
                 <x-navigation.tab-link :icon="'fa fa-bed'" :name="'Lit'" :link="'bed'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-hand-holding-usd'" :name="'Catégories depenses'" :link="'category-spend'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Type caisse'" :link="'cash-category'" :active="''" />
-                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Source dépense'" :link="'source-payroll'" :active="'active'" />
+                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Source dépense'" :link="'source-payroll'" :active="''" />
             </x-navigation.tab-header>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane " id="user">
+                    <div class="tab-pane active" id="user">
                         @livewire('application.configuration.screens.rate-view')
                     </div>
                     <div class="tab-pane" id="subscription">
@@ -74,7 +74,7 @@
                     <div class="tab-pane" id="cash-category">
                         @livewire('application.configuration.screens.cash-category-view')
                     </div>
-                    <div class="tab-pane active" id="source-payroll">
+                    <div class="tab-pane " id="source-payroll">
                         @livewire('application.configuration.screens.source-payroll-view')
                     </div>
                 </div>
