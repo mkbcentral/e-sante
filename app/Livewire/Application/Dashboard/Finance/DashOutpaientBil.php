@@ -8,6 +8,7 @@ use Livewire\Component;
 class DashOutpaientBil extends Component
 {
     public $date_filter = '', $month, $year;
+    public $amounts = [15,25];
     public function updatedDateFilter()
     {
         $this->month = '';

@@ -19,8 +19,16 @@ class DashConsultationRequestFinance extends Component
     {
         $this->month = date('m');
         $this->year = date('Y');
-        $this->dataChart = [25000, 15000, 7500, 8500, 5000];
-        $this->labelsChart = ['OCC', 'IFS', 'SEK', 'CNSS', 'SASE'];
+        $subscriptions = Subscription::where('is_private', false)
+            ->orderBy('name', 'asc')
+            ->where('is_personnel', false)->get();
+        foreach ($subscriptions as $subscription) {
+            $amount = $subscription->getAmountUSDBySubscription($this->month, $this->year);
+            if ($amount != 0) {
+                $this->dataChart[] = floor($amount);
+                $this->labelsChart[] = $subscription->name;
+            }
+        }
     }
 
     public function render()

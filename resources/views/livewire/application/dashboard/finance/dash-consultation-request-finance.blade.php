@@ -1,7 +1,7 @@
-<div class="card"  wire:poll.30s>
-    <div class="card-header bg-pink">
+<div class="card" wire:poll.30s>
+    <div class="card-header">
         <div class="d-flex justify-content-between">
-            <p class="text-center h4">
+            <p class="text-center h4 text-secondary">
                 <strong><i class="fas fa-chart-bar"></i>
                     RECETTES MENSUELLE DES ABONNES
                 </strong>
@@ -17,13 +17,13 @@
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
             </div>
-            <div id="charte"></div>
+            <div id="chart"></div>
             @if (!$subscriptions->isEmpty())
-                <div class="row mt-2" >
+                <div class="row mt-2">
                     @foreach ($subscriptions as $subscription)
                         @if ($subscription->getAmountUSDBySubscription($month, $year) != 0)
                             <div class="col-12 col-sm-6 col-md-6">
-                                <div class="info-box bg-pink">
+                                <div class="info-box bg-indigo">
                                     <span class="info-box-icon bg-primary elevation-1"><i
                                             class="fas fa-user"></i></span>
                                     <div class="info-box-content">
@@ -51,11 +51,19 @@
             chart: {
                 type: 'area'
             },
-
             series: [{
                 name: 'Recettes',
                 data: @json($dataChart)
             }],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                }
+            },
             xaxis: {
                 categories: @json($labelsChart)
             }

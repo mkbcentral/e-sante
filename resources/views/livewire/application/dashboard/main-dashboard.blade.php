@@ -10,8 +10,8 @@
                 @elseif (Auth::user()->roles->pluck('name')->contains('Ag') ||
                         Auth::user()->roles->pluck('name')->contains('Finance') ||
                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                    @livewire('application.dashboard.product.dash-invoice-product')
                     @livewire('application.dashboard.finance.dash-outpaient-bil')
+                    @livewire('application.dashboard.product.dash-invoice-product')
                     @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize')
                 @elseif (Auth::user()->roles->pluck('name')->contains('Caisse'))
                     @livewire('application.dashboard.finance.dash-outpaient-bil')
