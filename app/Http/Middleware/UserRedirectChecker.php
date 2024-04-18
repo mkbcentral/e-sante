@@ -70,6 +70,14 @@ class UserRedirectChecker
                 'consultation.hospitalize',
                 'tarification.prices'
             ],
+            'Urgence' => [
+                'main',
+                'dashboard',
+                'bill.outpatient',
+                'bill.outpatient.rapport',
+                'consultation.hospitalize',
+                'tarification.prices'
+            ],
             'Depot-Pharma'=>[
                 'main',
                 'dashboard',
