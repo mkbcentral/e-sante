@@ -77,7 +77,7 @@ class UserRedirectChecker
                 'bill.outpatient.rapport',
                 'consultation.hospitalize',
                 'tarification.prices',
-                'product.supply.add.products'
+
 
             ],
             'Depot-Pharma'=>[
@@ -86,7 +86,8 @@ class UserRedirectChecker
                 'product.list',
                 'product.supplies',
                 'product.requisitions',
-                'product.requisition'
+                'product.requisition',
+                'product.supply.add.products'
             ],
             'Nurse'=>[
                 'main',
