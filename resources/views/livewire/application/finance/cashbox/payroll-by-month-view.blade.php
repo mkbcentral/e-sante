@@ -15,7 +15,7 @@
                         <h3 class="text-uppercase">Total: {{ app_format_number($totalUSD, 1) }} USD | {{ app_format_number($totalCDF, 1) }} CDF</h3>
                     </div>
                     <div class="mr-2">
-                        <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
+                        <x-widget.list-french-month wire:model.live='month' :error="'month'" />
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pb-2 mt-2">

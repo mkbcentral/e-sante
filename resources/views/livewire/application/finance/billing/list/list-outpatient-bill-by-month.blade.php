@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group d-flex align-items-center mr-2">
                     <x-form.label value="{{ __('Mois') }}" class="mr-1" />
-                    <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
+                    <x-widget.list-french-month wire:model.live='month' :error="'month'" />
                 </div>
             </div>
             <div class="d-flex align-items-center">

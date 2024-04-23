@@ -9,10 +9,9 @@ use App\Repositories\Rate\RateRepository;
 
 class ManageConsultationRequestRepository
 {
-
     //close consultation request
     public static function closeConsultationRequest(
-        $selectedIndex,
+        $selectedIndex,/
         $month_name,
         $year
     ): void {

@@ -119,13 +119,8 @@ class ListConsultationRequestHospitalize extends Component
      * @return void
      */
     public function addToBordereau(?ConsultationRequest $consultationRequest){
-        /*
-        $this->dispatch('open-form-date-versement');
-        $this->dispatch('consultationRequestDate', $consultationRequest);
-        $consultationRequest->paid_at = Carbon::now();
-        $consultationRequest->update();
-        */
         $consultationRequest->paid_at=Carbon::now();
+        $consultationRequest->perceived_by=auth()->id();
         $consultationRequest->update();
     }
     /**
@@ -135,6 +130,7 @@ class ListConsultationRequestHospitalize extends Component
      */
     public function deleteToBordereau(?ConsultationRequest $consultationRequest){
         $consultationRequest->paid_at = null;
+        $consultationRequest->perceived_by=0;
         $consultationRequest->update();
     }
 

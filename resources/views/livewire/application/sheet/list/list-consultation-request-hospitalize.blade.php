@@ -12,7 +12,7 @@
                     <div class="mr-2 w-100">
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
-                    <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
+                    <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                 </div>
                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                         Auth::user()->roles->pluck('name')->contains('Ag') ||
@@ -45,7 +45,7 @@
                     <thead class="bg-primary">
                         <tr>
                             <th class="text-center"></th>
-                            <th class="text-center">
+                            <th class="text-start">
                                 <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
                                 </x-form.button>
                                 <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
@@ -88,8 +88,8 @@
                             <tr style="cursor: pointer;"
                                 @if ($consultationRequest->paid_at != null && $consultationRequest->paid_at == date('Y-m-d')) class="bg-warning"
                                 data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui" @endif>
-                                <td class="text-center">
-                                    @if ($consultationRequest->is_finished == true)
+                                <td class="text-start">
+                                    @if ($consultationRequest->is_finished == true && Auth::user()->roles->pluck('name')->contains('Caisse'))
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-link dropdown-icon"
                                                 data-toggle="dropdown" aria-expanded="false">
@@ -100,42 +100,38 @@
                                                 @endif
                                             </button>
                                             <div class="dropdown-menu" role="menu" style="">
-                                                @if ($consultationRequest->paid_at == false)
-                                                    <a class="dropdown-item" href="#"
+                                                @if ($consultationRequest->paid_at == null)
+                                                    <a class="dropdown-item text-navy text-bold" href="#"
                                                         wire:confirm="Etes-vous de réaliser l'operation?"
                                                         wire:click='addToBordereau({{ $consultationRequest }})'>
-                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> Ajouter au
-                                                        borderau
+                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                        <span>Ajouter auborderau</span>
                                                     </a>
                                                 @else
-                                                    @if ($consultationRequest->paid_at == true && $consultationRequest->consultationRequestCurrency)
-                                                        <a class="dropdown-item text-danger text-bold" href="#"
-                                                            wire:click='deleteToBordereau({{ $consultationRequest }})'>
-                                                            <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                            Rétirer au
-                                                            borderau
-                                                        </a>
-                                                    @else
-                                                        <a class="dropdown-item text-primary text-bold" href="#"
-                                                            wire:confirm="Etes-vous de réaliser l'operation?"
-                                                            wire:click='showEditCurrency({{ $consultationRequest }})'>
-                                                            <i class="fa fa-dollar-sign" aria-hidden="true"></i> Changer
-                                                            la
-                                                            dévise
-                                                        </a>
-                                                    @endif
+                                                    <a class="dropdown-item text-danger text-bold" href="#"
+                                                        wire:confirm="Etes-vous de réaliser l'operation?"
+                                                        wire:click='deleteToBordereau({{ $consultationRequest }})'>
+                                                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                                        <span>Rétirer au borderau</span>
+                                                    </a>
+                                                    <a class="dropdown-item text-primary text-bold" href="#"
+                                                        wire:confirm="Etes-vous de réaliser l'operation?"
+                                                        wire:click='showEditCurrency({{ $consultationRequest }})'>
+                                                        <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                                        <span>Changer ladévise</span>
+                                                    </a>
                                                 @endif
                                                 <a class="dropdown-item text-primary text-bold" href="#"
                                                     wire:click='openCautionModal({{ $consultationRequest }})'>
                                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                                   Passer caution
+                                                    Passer caution
                                                 </a>
                                             </div>
                                         </div>
                                     @endif
                                 </td>
 
-                                <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
+                                <td class="text-start">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin') ||

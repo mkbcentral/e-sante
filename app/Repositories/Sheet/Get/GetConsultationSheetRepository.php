@@ -18,7 +18,7 @@ class GetConsultationSheetRepository
     {
         return ConsultationSheet::orderBy('created_at', 'DESC')
             ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->first()?->number_sheet + 1;
     }
 
@@ -54,7 +54,7 @@ class GetConsultationSheetRepository
             })->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_sheets.*', 'subscriptions.name as subscription')
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->paginate($per_page);
     }
 

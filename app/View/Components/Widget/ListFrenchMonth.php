@@ -7,7 +7,7 @@ use App\Livewire\Helpers\Date\DateFormatHelper;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ListFrMonths extends Component
+class ListFrenchMonth extends Component
 {
     public array $listMonths=[];
     /**
@@ -23,6 +23,6 @@ class ListFrMonths extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.widget.list-fr-months');
+        return view('components.widget.list-french-months');
     }
 }

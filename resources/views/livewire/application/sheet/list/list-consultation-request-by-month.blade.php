@@ -16,7 +16,7 @@
                     <div class=" w-100">
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
-                    <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
+                    <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                 </div>
                 <div class="mr-4" style="margin-right: 40px">
                     <div class="btn-group">

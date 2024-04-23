@@ -4,6 +4,7 @@ namespace App\Repositories\Sheet\Get;
 
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
+use App\Models\Source;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,7 @@ class GetConsultationRequestRepository
             ->select('consultation_requests.*')
             ->with(['consultationSheet','rate', 'consultationSheet.source', 'consultation'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->paginate($per_page);
     }
     /**
@@ -80,7 +81,7 @@ class GetConsultationRequestRepository
             ->select('consultation_requests.*')
             ->with(['consultationSheet', 'rate', 'consultationSheet.source', 'consultation'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereDate('consultation_requests.created_at', $date)
             ->whereYear('consultation_requests.created_at', $year) //is_hospitalized
             ->paginate($per_page);
@@ -119,7 +120,7 @@ class GetConsultationRequestRepository
                 'consultationSheet', 'rate', 'consultationSheet.source', 'consultation'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->paginate($per_page);
@@ -194,7 +195,7 @@ class GetConsultationRequestRepository
                 'consultationSheet', 'rate'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->where('consultation_requests.is_hospitalized', true)
@@ -237,7 +238,7 @@ class GetConsultationRequestRepository
                 'consultationSheet','rate'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
             ->paginate($per_page);
     }
@@ -267,7 +268,7 @@ class GetConsultationRequestRepository
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereDate('consultation_requests.created_at', $date)
             ->whereYear('consultation_requests.created_at', $year)
             ->count();
@@ -281,7 +282,7 @@ class GetConsultationRequestRepository
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->count();
@@ -308,7 +309,7 @@ class GetConsultationRequestRepository
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
             ->count();
     }
@@ -330,8 +331,9 @@ class GetConsultationRequestRepository
             ->with(['consultationSheet.subscription'])
             ->select('consultation_requests.*')
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', auth()->user()->source->id)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereDate('consultation_requests.paid_at', Carbon::now())
+            ->where('perceived_by',auth()->id())
             ->where('consultation_requests.is_finished', true)
             ->where('consultation_requests.is_hospitalized', true)
             ->get();

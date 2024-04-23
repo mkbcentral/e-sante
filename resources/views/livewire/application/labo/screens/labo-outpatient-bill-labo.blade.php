@@ -10,7 +10,7 @@
                         @if ($isByDate == true)
                             <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                         @elseif($isByMonth == true)
-                            <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
+                            <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                         @elseif($isByPeriod == true)
                             <div class="d-flex align-content-center ">
                                 <div class="mr-2">

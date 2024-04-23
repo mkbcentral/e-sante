@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group d-flex">
                             <label for="my-input " class="mr-2">Mois</label>
-                            <x-widget.list-fr-months wire:model.live='month_name' :error="'month_name'" />
+                            <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                              <a class="ml-2" target="_blanck"
                                 href="{{ route('print.labo.monthly.releases', [$month_name,$subscription_id]) }}"><i
                                     class="fas fa-print"></i> Imprimer</a>

@@ -29,12 +29,4 @@
             </div>
         </div>
     </x-content.main-content-page>
-    @push('js')
-        <script class="module">
-            //Initialize Select2 Elements
-            $('.select2').select2({
-                theme: 'bootstrap4'
-            })
-        </script>
-    @endpush
 </div>

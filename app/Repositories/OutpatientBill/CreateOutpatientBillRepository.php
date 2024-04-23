@@ -19,7 +19,7 @@ class CreateOutpatientBillRepository
     public  static function create(array $inputs):OutpatientBill
     {
         return OutpatientBill::create([
-            'bill_number' => rand(100, 1000),
+            'bill_number' => rand(1000, 10000),
             'client_name' => $inputs['client_name'],
             'consultation_id' =>$inputs['consultation_id'],
             'user_id' => Auth::id(),

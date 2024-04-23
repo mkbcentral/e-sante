@@ -13,7 +13,7 @@
             </div>
             <div class="d-flex align-items-center mr-2">
                 <x-form.label value="{{ __('Mois') }}" class="mr-1" />
-                <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
+                <x-widget.list-french-month wire:model.live='month' :error="'month'" />
             </div>
         </div>
         <div class="row mt-2">
@@ -47,22 +47,5 @@
                 </div>
             </div>
         </div>
-        <div id="chart-outpatien-bill"></div>
     </div>
-    @push('js')
-        <script type="module">
-            var options = {
-                chart: {
-                    type: 'donut'
-                },
-                series: @json($amounts),
-                chartOptions: {
-                    labels: ['CDF', 'USD']
-                }
-            }
-
-            var chart = new ApexCharts(document.querySelector("#chart-outpatien-bill"), options);
-            chart.render();
-        </script>
-    @endpush
 </div>

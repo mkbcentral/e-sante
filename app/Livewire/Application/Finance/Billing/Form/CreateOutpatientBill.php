@@ -62,7 +62,6 @@ class CreateOutpatientBill extends Component
             } else {
                 $outpatientBill = CreateOutpatientBillRepository::create($inputs);
                 $this->dispatch('outpatientBill', $outpatientBill);
-                $this->dispatch('close-form-new-outpatient-bill');
                 $this->dispatch('refreshCreateOutpatientView');
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
                 $this->outpatientBill = null;
@@ -85,7 +84,6 @@ class CreateOutpatientBill extends Component
             $this->outpatientBill->currency_id = $this->currency_id == null ? null : $this->currency_id;
             $this->outpatientBill->created_at = $this->created_at;
             $this->outpatientBill->update();
-            $this->dispatch('close-form-new-outpatient-bill');
             $this->dispatch('outpatientFreshinfo');
             $this->dispatch('outpatientBillRefreshedMainView');
             $this->dispatch('refreshListItemsOupatient');
@@ -107,6 +105,7 @@ class CreateOutpatientBill extends Component
         } else {
             $this->store();
         }
+        $this->dispatch('close-form-new-outpatient-bill');
 
 
     }

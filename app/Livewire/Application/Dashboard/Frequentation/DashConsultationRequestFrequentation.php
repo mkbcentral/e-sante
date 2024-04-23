@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Dashboard\Frequentation;
 
+use App\Models\Subscription;
 use App\Repositories\Product\Get\GetConsultationRequestGroupingCounterRepository;
 use Livewire\Component;
 
@@ -22,6 +23,8 @@ class DashConsultationRequestFrequentation extends Component
 
     public function render()
     {
+        $subscription=Subscription::where('is_private', false)->get();
+
         return view('livewire.application.dashboard.frequentation.dash-consultation-request-frequentation', [
             'requests' => $this->month == '' ?
                 GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionByDate($this->date_filter)

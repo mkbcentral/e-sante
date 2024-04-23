@@ -45,19 +45,19 @@
                             </div>
                         </div>
                     </a>
-                    @if ($outpatientBill->is_validated==false)
-                        <div wire:click='cancelBill' wire:confirm="Etes-vous d'annuler?" class=" bg-pink rounded  p-1 mt-1"
+                    <div wire:click='cancelBill' wire:confirm="Etes-vous d'annuler?" class=" bg-pink rounded  p-1 mt-1"
                         style="cursor: pointer">
                         <div class="text-center">
                             <h4><i class="fas fa-times-circle"></i> Annuler</h4>
                         </div>
                     </div>
-                    <div wire:click='delete' wire:confirm="Etes-vous de supprimer?"
-                        class=" bg-danger rounded  p-1 mt-1" style="cursor: pointer">
-                        <div class="text-center">
-                            <h4><i class="fas fa-trash"></i> Supprimer</h4>
+                    @if ($outpatientBill->is_validated == false)
+                        <div wire:click='delete' wire:confirm="Etes-vous de supprimer?"
+                            class=" bg-danger rounded  p-1 mt-1" style="cursor: pointer">
+                            <div class="text-center">
+                                <h4><i class="fas fa-trash"></i> Supprimer</h4>
+                            </div>
                         </div>
-                    </div>
                     @endif
                 @endif
             </div>

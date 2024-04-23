@@ -118,7 +118,7 @@ class UserRedirectChecker
                 'bill.outpatient.rapport',
 
             ],
-            'Super-Admin'=>[
+            'IT'=>[
                 'main',
                 'dashboard',
                 'users',

@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="form-group mt-1 d-flex align-items-center ">
                 <x-form.label value="{{ __('Mois') }}" class="mr-1" />
-                <x-widget.list-fr-months wire:model.live='month' :error="'month'" />
+                <x-widget.list-french-month wire:model.live='month' :error="'month'" />
             </div>
             <x-widget.loading-circular-md />
             <x-form.button type="button" class="btn-dark" wire:click='addNew'>

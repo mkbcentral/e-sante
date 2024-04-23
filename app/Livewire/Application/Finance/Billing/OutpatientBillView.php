@@ -114,7 +114,7 @@ class OutpatientBillView extends Component
     public function cancelBill()
     {
         $this->outpatientBill = null;
-        $this->outpatientBill = null;
+        $this->isEditing=false;
     }
 
     /**
@@ -132,13 +132,15 @@ class OutpatientBillView extends Component
             if ($this->outpatientBill->otherOutpatientBill != null) {
                 $this->outpatientBill->otherOutpatientBill->delete();
             }
-            $this->outpatientBill->otherOutpatientBill->delete();
+            if ($this->outpatientBill->otherOutpatientBill !=null) {
+                $this->outpatientBill->otherOutpatientBill->delete();
+            }
             $this->outpatientBill->delete();
             $this->isEditing= false;
             $this->outpatientBill = null;
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (Exception $ex) {
-            $this->dispatch('error', ['message' => $ex->getMessage()]);
+            $this->dispatch('error', ['message' =>"Quelque chose se mal passée, Réessayer SVP !"]);
         }
     }
 
