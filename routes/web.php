@@ -17,6 +17,7 @@ use App\Livewire\Application\Finance\Cashbox\NoteMoneySendingView;
 use App\Livewire\Application\Finance\Cashbox\PayrollByMonthView;
 use App\Livewire\Application\Finance\Cashbox\PayrollView;
 use App\Livewire\Application\Finance\Product\FinanceRapport;
+use App\Livewire\Application\Labo\LaboFinanceRapport;
 use App\Livewire\Application\Labo\LaboMonthlyReleases;
 use App\Livewire\Application\Labo\MainLabo;
 use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
@@ -85,6 +86,7 @@ Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function 
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
+    Route::get('labo/finance-rapport', LaboFinanceRapport::class)->name('labo.finance.rapport');
 
     Route::get('/users', MainAdmin::class)->name('users');
     Route::get('/configuration', MainConfiguration::class)->name('configuration');
@@ -138,6 +140,8 @@ Route::prefix('print')->group(function () {
 
         //labo monthly release
         Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
+        Route::get('labo-finance-rapport', 'printLaboMonthlyReleases')->name('print.labo.finance.repport');
+
     });
 });
 

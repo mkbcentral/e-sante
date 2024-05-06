@@ -1,0 +1,44 @@
+<div class="mx-2">
+    @php
+        $amount = 0;
+    @endphp
+    <x-navigation.bread-crumb icon='fas fa-file-invoice-dollar' label='RAPPORT FINANCIER' color='text-primary'>
+        <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
+        <x-navigation.bread-crumb-item label='Rapport financier' />
+    </x-navigation.bread-crumb>
+    <x-content.main-content-page>
+        <div class="card card-outline card-primary">
+            <div class="card-body">
+                <a href="" target="_blanck">Imprimer</a>
+                <table class="table table-striped">
+                    <thead class="bg-primary">
+                        <tr>
+                            <th>NAME</th>
+                            @foreach ($months as $month)
+                                <th class="text-center">{{ $month['name'] }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($subscriptions as $subscription)
+                            <tr>
+                                <td class="text-bold">{{ $subscription->name }}</td>
+                                @foreach ($months as $month)
+                                    @php
+                                        $amount = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
+                                            $month['number'],
+                                            $subscription->id,
+                                        );
+                                    @endphp
+                                    <td class="text-right money_format {{ $amount == 0 ? 'bg-danger ' : '' }}"b>
+                                        {{ $amount==0?'-': app_format_number($amount, 1)}}
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </x-content.main-content-page>
+</div>

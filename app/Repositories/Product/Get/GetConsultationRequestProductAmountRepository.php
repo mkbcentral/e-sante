@@ -71,7 +71,9 @@ class GetConsultationRequestProductAmountRepository
         return $amount;
     }
     //getProductAmountByMonth
-    public static function getProductAmountByPeriod($startDate, $endDate, $idSubscription,$currency): int|float
+    public static function getProductAmountByPeriod(
+        $startDate, $endDate, $idSubscription,$currency
+        ): int|float
     {
         $amount = 0;
         $consultationRequests = ConsultationRequest::whereBetween('consultation_requests.created_at', [$startDate, $endDate])

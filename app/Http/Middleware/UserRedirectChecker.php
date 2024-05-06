@@ -110,7 +110,8 @@ class UserRedirectChecker
                 'labo.monthly.release',
                 'tarification.prices',
                 'product.requisitions',
-                'product.requisition'
+                'product.requisition',
+                'labo.finance.rapport'
             ],
             'Finance'=>[
                 'main',

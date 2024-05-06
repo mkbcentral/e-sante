@@ -14,6 +14,7 @@ class FinanceRapport extends Component
     }
     public function render()
     {
+
         return view('livewire.application.finance.product.finance-rapport',[
             'subsctiptions' => Subscription::query()->where('is_private',false)
                     ->where('is_activated',true)->get()

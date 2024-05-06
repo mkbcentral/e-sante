@@ -11,7 +11,7 @@
                         N° IMPOT A2029032E
                     </td>
                     <td>
-                        <b>Invoice</b> #: {{ $outpatientBill->bill_number }}<br />
+                        <b>Invoice</b> #: {{ $outpatientBill->bill_number }}-PROFORMAT<br />
                         <b>Client</b>: {{ $outpatientBill->client_name }} <br>
                         <b>Cash-ID</b>:{{ Auth::user()->name }} <br>
                         <b>At:</b> {{ $outpatientBill->created_at->format('d-m-Y H:i:s') }}<br />
