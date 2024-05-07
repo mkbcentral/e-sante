@@ -11,7 +11,7 @@ class ManageConsultationRequestRepository
 {
     //close consultation request
     public static function closeConsultationRequest(
-        $selectedIndex,/
+        $selectedIndex,
         $month_name,
         $year
     ): void {

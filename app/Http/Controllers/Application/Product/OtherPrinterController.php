@@ -80,4 +80,5 @@ class OtherPrinterController extends Controller
         )->set_option('isRemoteEnabled', true)->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
+
 }
