@@ -31,11 +31,29 @@
                                         );
                                     @endphp
                                     <td class="text-right money_format {{ $amount == 0 ? 'bg-danger ' : '' }}"b>
-                                        {{ $amount==0?'-': app_format_number($amount, 1)}}
+                                        {{ $amount == 0 ? '-' : app_format_number($amount, 1) }}
                                     </td>
                                 @endforeach
                             </tr>
                         @endforeach
+                        <tr>
+                            <td class="text-bold">PRIVE</td>
+                            @foreach ($months as $month)
+                                @php
+                                   $n1 = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonthHospitalize(
+                                        $month['number'],
+                                       1,
+                                    );
+                                    $n2 = App\Repositories\Tarif\GetAmountByTarif::getAmountoutpatientByMonth(
+                                        $month['number'],
+                                    );
+                                    $amount=$n1+$n2;
+                                @endphp
+                                <td class="text-right money_format {{ $amount == 0 ? 'bg-danger ' : '' }}"b>
+                                      {{ $amount == 0 ? '-' : app_format_number($amount, 1) }}
+                                </td>
+                            @endforeach
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -47,7 +47,8 @@
                             Autes options
                         </button>
                         <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item"  wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='fixNumerotation'>
+                            <a class="dropdown-item"  wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                             wire:click='fixNumerotation'>
                                 <i class="fas fa-list-ol"></i> Numéroter
                             </a>
                             <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='fixWithCurrentRate'>

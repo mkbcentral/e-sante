@@ -40,7 +40,8 @@ class UserRedirectChecker
                 'consultation.consult.patient',
                 'product.finance.rapport',
                 'product.invoice.report',
-                'users'
+                'users',
+                'tarification'
             ],
             'Reception' => [
                 'main',
@@ -126,7 +127,8 @@ class UserRedirectChecker
                 'configuration',
                 'navigation',
                 'files',
-                'localization'
+                'localization',
+                'tarification'
             ]
         ];
     }
