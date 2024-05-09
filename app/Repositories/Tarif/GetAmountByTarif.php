@@ -5,6 +5,7 @@ namespace App\Repositories\Tarif;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
+use App\Models\OutpatientBill;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
 
 class GetAmountByTarif
@@ -61,8 +62,12 @@ class GetAmountByTarif
     public static function getAmountoutpatientByMonth($month): int|float
     {
         $amount = 0;
-         $outpatientBills= GetOutpatientRepository::getOutpatientPatientByMonth($month);
+         $outpatientBills= OutpatientBill::orderBy('created_at', 'DESC')
+            ->whereMonth('created_at', $month)
+            ->where('is_validated', true)
+            ->get();
         $category = CategoryTarif::find(1);
+
         foreach ($outpatientBills as $outpatientBill) {
             foreach ($category->getOutpatientBillTarifItems(
                 $outpatientBill,
