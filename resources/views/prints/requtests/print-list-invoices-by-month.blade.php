@@ -44,7 +44,7 @@
             </tr>
             @if ($subscription->name == 'CNSS')
                 <tr>
-                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_cdf, 1) }} CDF</td>
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd, 1) }} CDF</td>
                 </tr>
             @else
                 <tr>

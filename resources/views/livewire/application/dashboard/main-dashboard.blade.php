@@ -21,7 +21,10 @@
                 @endif
             </div>
             <div class="col-md-6">
-                @if (Auth::user()->roles->pluck('name')->contains('Ag') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                @if (
+                    Auth::user()->roles->pluck('name')->contains('Ag') ||
+                    Auth::user()->roles->pluck('name')->contains('Admin')
+                )
                     @livewire('application.dashboard.finance.dash-consultation-request-finance')
                 @else
                     @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized')

@@ -19,6 +19,7 @@
     <script src="{{ asset('moment/moment.min.js') }}"></script>
      <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
 </head>
 
 <body
