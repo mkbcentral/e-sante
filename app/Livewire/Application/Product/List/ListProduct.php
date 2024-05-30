@@ -2,15 +2,18 @@
 
 namespace App\Livewire\Application\Product\List;
 
+use App\Exports\ProductStockExport;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Repositories\Product\Get\GetProductRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListProduct extends Component
 {
@@ -87,6 +90,20 @@ class ListProduct extends Component
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
+    }
+
+    public function exportStock(){
+        $products=Product::query()->where('is_trashed',false)->get();
+         $data = collect([]);
+        foreach ($products as $product) {
+            $data->push([
+                $product->name,
+                $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal(),
+                0,
+                $product->price,
+            ]);
+        }
+        return Excel::download(new ProductStockExport( $data), 'stock.xlsx');
     }
 
     /**

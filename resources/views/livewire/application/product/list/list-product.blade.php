@@ -38,6 +38,9 @@
                                 <a class="dropdown-item" target="_blank" href="{{ route('product.list.price.print') }}">
                                     <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste de prix
                                 </a>
+                                <a class="dropdown-item"  href="#" wire:click='exportStock'>
+                                    <i class="fas fa-file-excel    "></i> Stock sur Excel
+                                </a>
                             </div>
                         </div>
                         <x-form.button class="btn-secondary mr-2 btn-sm"

@@ -39,8 +39,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //Product::factory(50)->create();
-        */
-        $mainMenus = [
+         $mainMenus = [
             [
                 'name' => 'Dashboad',
                 'icon' => 'fas fa-chart-bar',
@@ -229,7 +228,8 @@ class DatabaseSeeder extends Seeder
                 'link' => 'files',
                 'hospital_id' => 1,
             ]
-        ];
+        ]
         SubMenu::insert($subMenus);
+        */
     }
 }
