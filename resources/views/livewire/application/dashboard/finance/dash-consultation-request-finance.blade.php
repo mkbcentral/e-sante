@@ -23,17 +23,19 @@
                     @foreach ($subscriptions as $subscription)
                         @if ($subscription->getAmountUSDBySubscription($month, $year) != 0)
                             <div class="col-12 col-sm-6 col-md-6">
-                                <div class="info-box bg-indigo">
-                                    <span class="info-box-icon bg-primary elevation-1"><i
-                                            class="fas fa-user"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text text-bold h4">{{ $subscription->name }}</span>
-                                        <span class="info-box-number h3">
-                                            USD
-                                            {{ app_format_number($subscription->getAmountUSDBySubscription($month, $year), 1) }}
-                                        </span>
+                                <a wire:navigate href="{{ route('finance.rapport.by.subscription',[$subscription,$month] ) }}">
+                                    <div class="info-box bg-indigo">
+                                        <span class="info-box-icon bg-primary elevation-1"><i
+                                                class="fas fa-user"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-bold h4">{{ $subscription->name }}</span>
+                                            <span class="info-box-number h3">
+                                                USD
+                                                {{ app_format_number($subscription->getAmountUSDBySubscription($month, $year), 1) }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         @endif
                     @endforeach

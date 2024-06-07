@@ -17,6 +17,7 @@ use App\Livewire\Application\Finance\Cashbox\NoteMoneySendingView;
 use App\Livewire\Application\Finance\Cashbox\PayrollByMonthView;
 use App\Livewire\Application\Finance\Cashbox\PayrollView;
 use App\Livewire\Application\Finance\Product\FinanceRapport;
+use App\Livewire\Application\Finance\Rapport\RapportFinanceBySubscriptionView;
 use App\Livewire\Application\Labo\LaboFinanceRapport;
 use App\Livewire\Application\Labo\LaboMonthlyReleases;
 use App\Livewire\Application\Labo\MainLabo;
@@ -81,6 +82,7 @@ Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function 
     Route::get('finance/payroll/month', PayrollByMonthView::class)->name('payroll.month');
     Route::get('finance/expense-voucher/',ExpenseVoucherView::class)->name('expense.voucher');
     Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
+    Route::get('finance/rapport/by-subscription/{subscription}/{month}',RapportFinanceBySubscriptionView::class)->name('finance.rapport.by.subscription');
 
     Route::get('labo',MainLabo::class)->name('labo.main');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');

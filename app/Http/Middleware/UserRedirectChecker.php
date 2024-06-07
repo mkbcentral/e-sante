@@ -41,7 +41,8 @@ class UserRedirectChecker
                 'product.finance.rapport',
                 'product.invoice.report',
                 'users',
-                'tarification'
+                'tarification',
+                'finance.rapport.by.subscription'
             ],
             'Reception' => [
                 'main',

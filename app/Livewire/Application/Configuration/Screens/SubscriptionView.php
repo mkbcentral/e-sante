@@ -77,15 +77,15 @@ class SubscriptionView extends Component
             if ($this->type == 'pv') {
                 $this->subscriptionToEdit->name = $this->name;
                 $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
-                $this->subscriptionToEdit->is_private = 1;
+                $this->subscriptionToEdit->is_private = true;
             } elseif ($this->type == 'ab') {
                 $this->subscriptionToEdit->name = $this->name;
                 $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
-                $this->subscriptionToEdit->is_subscriber = 1;
+                $this->subscriptionToEdit->is_subscriber = true;
             } else {
                 $this->subscriptionToEdit->name = $this->name;
                 $this->subscriptionToEdit->source_id = Source::DEFAULT_SOURCE();
-                $this->subscriptionToEdit->is_personnel = 1;
+                $this->subscriptionToEdit->is_personnel = true;
             }
             $this->subscriptionToEdit->update();
             $this->dispatch('refreshAll');
@@ -106,10 +106,17 @@ class SubscriptionView extends Component
         }
         $this->name = '';
     }
-    public function delete(Subscription $Rate)
+    public function delete(Subscription $subscription)
     {
         try {
-            $Rate->delete();
+            # code...
+            if ($subscription->consultationSheets->isEmpty()) {
+                $subscription->delete();
+                $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            }else{
+                $this->dispatch('error', ['message' => 'Actions impossible, car il des données ']);
+            }
+
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -122,7 +129,6 @@ class SubscriptionView extends Component
             } else {
                 $subscription->is_activated = true;
             }
-
             $subscription->update();
             $this->dispatch('refreshRateInfo');
             $this->dispatch('added', ['message' => 'Action bien réalisée']);

@@ -169,14 +169,22 @@ class ConsultationRequest extends Model
         }
         return $amount;
     }
+
     public function getHospitalizationAmountUSD(): int|float
     {
         $amount = 0;
         foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
             if ($this->consultationSheet->subscription->is_subscriber) {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->subscriber_price * $consultationRequestHospitalization->number_of_day;
+                $amount += $consultationRequestHospitalization
+                    ->hospitalizationRoom
+                    ->hospitalization
+                    ->subscriber_price * $consultationRequestHospitalization
+                    ->number_of_day;
             } else {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private  * $consultationRequestHospitalization->number_of_day;
+                $amount += $consultationRequestHospitalization
+                ->hospitalizationRoom
+                ->hospitalization
+                ->price_private  * $consultationRequestHospitalization->number_of_day;
             }
         }
         return $amount;
@@ -257,8 +265,9 @@ class ConsultationRequest extends Model
         return  $net_to_paid;
     }
 
-    public function getAmountCautionCDF(){
-        return $this->caution ==null?0:$this->getTotalInvoiceCDF()-$this->getCautionCDF();
+    public function getAmountCautionCDF()
+    {
+        return $this->caution == null ? 0 : $this->getTotalInvoiceCDF() - $this->getCautionCDF();
     }
 
     public function getAmountCautionUSD()
@@ -274,12 +283,12 @@ class ConsultationRequest extends Model
     public function getRequestNumberFormatted(): string
     {
         $number = '';
-        $mounth = $this->created_at->format('m');
+        $mounth = '05';
         $formattedRequestNumber = str_pad($this->request_number, 3, '0', STR_PAD_LEFT);
         if ($this->consultationSheet->subscription->is_subscriber == true) {
             $formattedMonth = format_fr_month_name($mounth);
             $substringMonth = substr($formattedMonth, 0, 3); // Change the parameters as needed
-            $number = $formattedRequestNumber . '/' . $substringMonth . '/' . $this->consultationSheet->subscription->name;
+            $number = $formattedRequestNumber . '/MAI/' . $this->consultationSheet->subscription->name;
         } else {
             $number = $formattedRequestNumber . '/' . $mounth;
         }

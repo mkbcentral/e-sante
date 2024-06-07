@@ -18,7 +18,7 @@ class Subscription extends Model
      */
     public function consultationSheets(): HasMany
     {
-        return $this->hasMany(ConsultationSheet::class, 'consultation_sheet_id', 'local_key');
+        return $this->hasMany(ConsultationSheet::class);
     }
 
     public function getAmountUSDBySubscription($month,$year):int|float{

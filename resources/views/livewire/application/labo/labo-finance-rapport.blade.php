@@ -9,7 +9,6 @@
     <x-content.main-content-page>
         <div class="card card-outline card-primary">
             <div class="card-body">
-                <a href="" target="_blanck">Imprimer</a>
                 <table class="table table-striped">
                     <thead class="bg-primary">
                         <tr>
@@ -28,6 +27,7 @@
                                         $amount = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
                                             $month['number'],
                                             $subscription->id,
+                                            1,
                                         );
                                     @endphp
                                     <td class="text-right money_format {{ $amount == 0 ? 'bg-danger ' : '' }}"b>
@@ -40,17 +40,19 @@
                             <td class="text-bold">PRIVE</td>
                             @foreach ($months as $month)
                                 @php
-                                    $n1 = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonthHospitalize(
+                                    $n1 = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonthHospitalizePrivate(
                                         $month['number'],
-                                       1,
+                                        1,
+                                        1
                                     );
-                                     $n2 = App\Repositories\Tarif\GetAmountByTarif::getAmountoutpatientByMonth(
+                                    $n2 = App\Repositories\Tarif\GetAmountByTarif::getAmountoutpatientByMonth(
                                         $month['number'],
+                                        1,
                                     );
-                                    $amount=$n1+$n2;
+                                    $amount = $n1 + $n2;
                                 @endphp
                                 <td class="text-right money_format {{ $amount == 0 ? 'bg-danger ' : '' }}"b>
-                                     {{ $amount == 0 ? '-' : app_format_number($amount, 1) }}
+                                    {{ $amount == 0 ? '-' : app_format_number($amount, 1) }}
                                 </td>
                             @endforeach
                         </tr>

@@ -1,10 +1,14 @@
 <div>
+    <div class="d-flex justify-content-center pb-2">
+        <x-widget.loading-circular-md />
+    </div>
     <div class="row">
         <div class="col-md-7">
             <div class="card">
                 <div class="card-header bg-navy">
-                    <i class="fa fa-list" aria-hidden="true"></i> GESTION DE SOUSCRIPTION
+                    <i class="fa fa-list" aria-hidden="true"></i> GESTION DES SOUSCRIPTIONS
                 </div>
+
                 <div class="card-body">
                     <table class="table table-bordered table-sm">
                         <thead class="bg-navy">
@@ -73,6 +77,11 @@
                             <x-form.input placeholder='Saisir la souscription ici et cliquer sur Entre/Enter'
                                 type='text' wire:model='name' :error="'name'" />
                             <x-errors.validation-error value='name' />
+                        </div>
+                        <div class="mt-4 d-flex justify-content-end">
+                            <x-form.button class="btn-info" type='submit'>
+                                <span>Sauvegarder</span>
+                            </x-form.button>
                         </div>
                     </form>
                 </div>
