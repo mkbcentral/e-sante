@@ -17,6 +17,7 @@ function format_fr_month_name($key): string
             break;
         case '05':
             $month = "MAI";
+            break;
         case '06':
             $month = "JUIN";
             break;
