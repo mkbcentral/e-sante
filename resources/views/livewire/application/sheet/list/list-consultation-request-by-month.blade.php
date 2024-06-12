@@ -177,7 +177,9 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+
+                                    @endif
+                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
@@ -211,7 +213,6 @@
                                                 wire:click="delete({{ $consultationRequest }})"
                                                 class="btn-sm btn-danger " />
                                         @endif
-                                    @endif
                                 </td>
 
                             </tr>
