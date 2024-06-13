@@ -14,7 +14,7 @@ class ManageConsultationRequestRepository
         $selectedIndex,
         $month_name,
         $year
-    ): void {
+    ): bool {
         $consultationRequests
             = ConsultationRequest::join(
                 'consultation_sheets',
@@ -39,6 +39,8 @@ class ManageConsultationRequestRepository
             }
             $consultationRequest->update();
         }
+
+        return $consultationRequest->is_finished;
     }
     //Delete consultation request
     public static function deleteConsultationRequest(ConsultationRequest $consultationRequest): void

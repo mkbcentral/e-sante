@@ -142,7 +142,7 @@ class ListConsultationRequestByMonth extends Component
     public function closeBilling()
     {
         try {
-            ManageConsultationRequestRepository::closeConsultationRequest(
+            $this->isClosing = ManageConsultationRequestRepository::closeConsultationRequest(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year

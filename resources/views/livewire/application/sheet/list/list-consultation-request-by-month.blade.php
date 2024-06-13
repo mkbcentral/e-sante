@@ -47,14 +47,16 @@
                             Autes options
                         </button>
                         <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item"  wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                             wire:click='fixNumerotation'>
+                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='fixNumerotation'>
                                 <i class="fas fa-list-ol"></i> Numéroter
                             </a>
-                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='fixWithCurrentRate'>
+                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='fixWithCurrentRate'>
                                 <i class="fas fa-dollar-sign"></i> Fixer taux
                             </a>
-                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#" wire:click='closeBilling'>
+                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='closeBilling'>
                                 <i class="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
                                     aria-hidden="true"></i>
                                 {{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}
@@ -177,42 +179,40 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
-
+                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        <x-form.icon-button :icon="'fas fa-capsules'"
+                                            wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                            class="btn-primary btn-sm" />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        <x-form.icon-button :icon="'fa fa-user-plus '"
+                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                            class="btn-sm btn-info " />
+                                        <x-form.icon-button :icon="'fa fa-eye '"
+                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                            class="btn-sm btn-primary " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        <x-navigation.link-icon
+                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                    @else
+                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
+                                            data-target="#edit-consultation-request"
+                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                        <x-form.icon-button :icon="'fa fa-trash '" wire:confirm='Est-vous sur de supprimer'
+                                            wire:click="delete({{ $consultationRequest }})"
+                                            class="btn-sm btn-danger " />
                                     @endif
-                                    @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                            <x-form.icon-button :icon="'fas fa-capsules'"
-                                                wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                                class="btn-primary btn-sm" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
-                                            <x-form.icon-button :icon="'fa fa-user-plus '"
-                                                wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                                class="btn-sm btn-info " />
-                                            <x-form.icon-button :icon="'fa fa-eye '"
-                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                                class="btn-sm btn-primary " />
-                                            <x-navigation.link-icon
-                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
-                                            <x-navigation.link-icon
-                                                href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                                wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                        @else
-                                            <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
-                                                data-target="#edit-consultation-request"
-                                                wire:click="edit({{ $consultationRequest }})"
-                                                class="btn-sm btn-info " />
-                                            <x-navigation.link-icon
-                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                            <x-navigation.link-icon
-                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                                :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
-                                            <x-form.icon-button :icon="'fa fa-trash '"
-                                                wire:confirm='Est-vous sur de supprimer'
-                                                wire:click="delete({{ $consultationRequest }})"
-                                                class="btn-sm btn-danger " />
-                                        @endif
+                                    @endif
+
                                 </td>
 
                             </tr>
