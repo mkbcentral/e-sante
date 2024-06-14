@@ -252,6 +252,9 @@
                     </tr>
                 </table>
                 <div class="">
+                    <div class="text-right mt-1">
+                        <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
+                    </div>
                     @if ($consultationRequest->consultationSheet->subscription->is_private)
                         <table class="">
                             <tr>
@@ -271,10 +274,6 @@
                             </tr>
                         </table>
                     @else
-                        <div class="text-right mt-1">
-                            <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
-                        </div>
-                        <br>
                         <table class="page-break">
                             <tr>
                                 <td colspan="3" style="border: none">
