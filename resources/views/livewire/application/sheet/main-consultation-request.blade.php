@@ -19,24 +19,20 @@
         </div>
         <div class="card card-primary card-outline">
             <div class="card-body">
-               <div class="d-flex justify-content-between align-items-center">
-                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" wire:click='makeIsByDate'
-                        class="btn {{ $isByDate == true ? 'btn-secondary' : '' }}">
-                        <i class="fa fa-calendar-day text-secondary" aria-hidden="true"></i> Journalière</button>
-                    <button type="button" wire:click='makeIsByMonth'
-                        class="btn {{ $isByMonth == true ? 'btn-secondary' : '' }}">
-                         <i class="fa fa-calendar-alt text-secondary" aria-hidden="true"></i> Mensuelle</button>
-                    <button type="button" wire:click='makeIsByPeriod'
-                        class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">
-                         <i class="fa fa-calendar-minus text-secondary" aria-hidden="true"></i> Périodique</button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" wire:click='makeIsByDate'
+                            class="btn {{ $isByDate == true ? 'btn-secondary' : '' }}">
+                            <i class="fa fa-calendar-day text-secondary" aria-hidden="true"></i> Journalière</button>
+                        <button type="button" wire:click='makeIsByMonth'
+                            class="btn {{ $isByMonth == true ? 'btn-secondary' : '' }}">
+                            <i class="fa fa-calendar-alt text-secondary" aria-hidden="true"></i> Mensuelle</button>
+                        <button type="button" wire:click='makeIsByPeriod'
+                            class="btn {{ $isByPeriod == true ? 'btn-secondary' : '' }}">
+                            <i class="fa fa-calendar-minus text-secondary" aria-hidden="true"></i> Périodique</button>
+                    </div>
+                    @livewire('application.finance.widget.amount-consultation-request-by-month-widget', ['selectedIndex' => $selectedIndex, 'isByDate' => $isByDate, 'isByMonth' => $isByMonth, 'isByPeriod' => $isByPeriod])
                 </div>
-                  @livewire('application.finance.widget.amount-consultation-request-by-month-widget',
-                  ['selectedIndex'=>$selectedIndex,
-                  'isByDate'=>$isByDate,
-                  'isByMonth'=>$isByMonth,
-                  'isByPeriod'=>$isByPeriod])
-               </div>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />
                 </div>

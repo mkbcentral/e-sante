@@ -96,6 +96,7 @@ class ItemTarifByCategoryWidget extends Component
             $this->idSelected = 0;
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
             $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
             $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
         } catch (\Exception $exception) {
@@ -116,6 +117,7 @@ class ItemTarifByCategoryWidget extends Component
             $this->dispatch('refreshTarifItems');
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }

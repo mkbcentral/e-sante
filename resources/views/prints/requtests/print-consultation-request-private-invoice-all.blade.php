@@ -16,10 +16,10 @@
                         @if ($consultationRequest->consultationSheet->subscription->is_subscriber)
                             <td class="text-left">
                                 <span style="font-size: 20px"><b>Invoice #:
-                                    {{ $consultationRequest->getRequestNumberFormatted() }}</b></span><br />
+                                        {{ $consultationRequest->getRequestNumberFormatted() }}</b></span><br />
                                 <b>Name</b>: {{ $consultationRequest->consultationSheet->name }} <br>
                                 <b>Received at:</b> {{ $consultationRequest->created_at->format('d-m-Y') }}<br />
-                                <b>Source:</b> {{ $consultationRequest->consultationSheet->source->name}}<br />
+                                <b>Source:</b> {{ $consultationRequest->consultationSheet->source->name }}<br />
                             </td>
                         @else
                             <td class="text-left">
@@ -270,6 +270,23 @@
                                 </td>
                             </tr>
                         </table>
+                    @else
+                        <table>
+                            <tr>
+                                <td colspan="3" style="border: none">
+                                    <table style="border: none">
+                                        <tr style="border: none">
+                                            <td style="border: none" class="text-bold text-left">
+                                                INFP&COM
+                                            </td>
+
+                                            <td style="border: none" class="text-right ">
+                                                A.G
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                     @endif
 
                 </div>

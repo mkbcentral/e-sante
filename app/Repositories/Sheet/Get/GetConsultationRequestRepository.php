@@ -42,7 +42,7 @@ class GetConsultationRequestRepository
             ->selectRaw('consultation_requests.*,subscriptions.name as subscription_name')
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
-            ->with(['consultationSheet','rate', 'consultationSheet.source', 'consultation'])
+            ->with(['consultationSheet', 'rate', 'consultationSheet.source', 'consultation'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->paginate($per_page);
@@ -116,9 +116,18 @@ class GetConsultationRequestRepository
             })
             ->selectRaw('consultation_requests.*,subscriptions.name as subscription_name')
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
-            ->with([
-                'consultationSheet', 'rate', 'consultationSheet.source', 'consultation'
-            ])
+            ->with(
+                [
+                    'consultationSheet.subscription',
+                    'consultationSheet.source',
+                    'rate',
+                    'consultation',
+                    'tarifs',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestNursings',
+                    'products'
+                ]
+            )
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereMonth('consultation_requests.created_at', $month)
@@ -149,7 +158,14 @@ class GetConsultationRequestRepository
             ->selectRaw('consultation_requests.*,subscriptions.name as subscription_name')
             ->with(
                 [
-                    'consultationSheet.subscription', 'consultationSheet.source','rate', 'consultation'
+                    'consultationSheet.subscription',
+                    'consultationSheet.source',
+                    'rate',
+                    'consultation',
+                    'tarifs',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestNursings',
+                    'products'
                 ]
             )
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
@@ -235,7 +251,7 @@ class GetConsultationRequestRepository
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
             ->with([
-                'consultationSheet','rate'
+                'consultationSheet', 'rate'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
@@ -333,7 +349,7 @@ class GetConsultationRequestRepository
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereDate('consultation_requests.paid_at', Carbon::now())
-            ->where('perceived_by',auth()->id())
+            ->where('perceived_by', auth()->id())
             ->where('consultation_requests.is_finished', true)
             ->where('consultation_requests.is_hospitalized', true)
             ->get();
@@ -345,7 +361,7 @@ class GetConsultationRequestRepository
         string $month_name,
         string $year
 
-    ):?ConsultationRequest{
+    ): ?ConsultationRequest {
         return ConsultationRequest::join(
             'consultation_sheets',
             'consultation_sheets.id',

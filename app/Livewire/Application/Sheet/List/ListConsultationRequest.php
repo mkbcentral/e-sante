@@ -28,7 +28,7 @@ class ListConsultationRequest extends Component
     #[Url(as: 'q')]
     public string $q = '';
     #[Url(as: 'sortBy')]
-    public $sortBy = 'consultation_sheets.name';
+    public $sortBy = 'consultation_requests.created_at';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 

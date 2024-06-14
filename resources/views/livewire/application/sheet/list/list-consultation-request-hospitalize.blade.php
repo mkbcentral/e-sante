@@ -45,13 +45,13 @@
                     <thead class="bg-primary">
                         <tr>
                             <th class="text-center"></th>
-                            <th class="text-start">
-                                <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
-                                </x-form.button>
-                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                            <th class="" wire:click="sortSheet('consultation_requests.created_at')">
+                                <span>Date</span>
+                                <x-form.sort-icon sortField="consultation_requests.created_at" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
-                            <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
+                            <th class="text-center" wire:click="sortSheet('request_number')">
+                                <span>
                                     @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
                                             Auth::user()->roles->pluck('name')->contains('Ag') ||
                                             Auth::user()->roles->pluck('name')->contains('Caisse') ||
@@ -60,14 +60,13 @@
                                     @else
                                         N° FICHE
                                     @endif
-
-                                </x-form.button>
+                                </span>
                                 <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
-                            <th>
-                                <x-form.button class="text-white" wire:click="sortSheet('name')">NOM
-                                    COMPLET</x-form.button>
-                                <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                            <th wire:click="sortSheet('consultation_sheets.name')">
+                                <span>NOM COMPLET</span>
+                                <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
@@ -87,47 +86,32 @@
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;"
                                 @if ($consultationRequest->paid_at != null && $consultationRequest->paid_at == date('Y-m-d')) class="bg-warning"
-                                data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui" @endif>
+                                data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui"
+                                @elseif ($consultationRequest->is_paid==true) class="bg-pink" @endif>
                                 <td class="text-start">
                                     @if ($consultationRequest->is_finished == true && Auth::user()->roles->pluck('name')->contains('Caisse'))
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-link dropdown-icon"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                                @if ($consultationRequest->paid_at == true || $consultationRequest->consultationRequestCurrency)
-                                                    <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                                @else
-                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                @endif
-                                            </button>
-                                            <div class="dropdown-menu" role="menu" style="">
-                                                @if ($consultationRequest->paid_at == null)
-                                                    <a class="dropdown-item text-navy text-bold" href="#"
-                                                        wire:confirm="Etes-vous de réaliser l'operation?"
-                                                        wire:click='addToBordereau({{ $consultationRequest }})'>
-                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                                        <span>Ajouter auborderau</span>
-                                                    </a>
-                                                @else
-                                                    <a class="dropdown-item text-danger text-bold" href="#"
-                                                        wire:confirm="Etes-vous de réaliser l'operation?"
-                                                        wire:click='deleteToBordereau({{ $consultationRequest }})'>
-                                                        <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                        <span>Rétirer au borderau</span>
-                                                    </a>
-                                                    <a class="dropdown-item text-primary text-bold" href="#"
-                                                        wire:confirm="Etes-vous de réaliser l'operation?"
-                                                        wire:click='showEditCurrency({{ $consultationRequest }})'>
-                                                        <i class="fa fa-dollar-sign" aria-hidden="true"></i>
-                                                        <span>Changer ladévise</span>
-                                                    </a>
-                                                @endif
-                                                <a class="dropdown-item text-primary text-bold" href="#"
-                                                    wire:click='openCautionModal({{ $consultationRequest }})'>
-                                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                                    Passer caution
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <x-others.dropdown title=""
+                                            icon="{{ $consultationRequest->is_paid == true ? 'fa fa-check text-success' : 'fa fa-ellipsis-v' }}">
+                                            @if ($consultationRequest->paid_at == null)
+                                                <x-others.dropdown-link iconLink='fa fa-plus-circle'
+                         p                           labelText='Ajouter auborderau' href="#"
+                                                    wire:confirm="Etes-vous de réaliser l'operation?"
+                                                    class="text-primary"
+                                                    wire:click='addToBordereau({{ $consultationRequest }})' />
+                                            @else
+                                                <x-others.dropdown-link iconLink='fa fa-times'
+                                                    labelText='Retirer au borderau' href="#" class="text-danger"
+                                                    wire:confirm="Etes-vous de réaliser l'operation?"
+                                                    wire:click='deleteToBordereau({{ $consultationRequest }})' />
+                                                <x-others.dropdown-link iconLink='fa fa-dollar-sign'
+                                                    labelText='Changer ladévise' href="#"
+                                                    wire:confirm="Etes-vous de réaliser l'operation?"
+                                                    wire:click='showEditCurrency({{ $consultationRequest }})' />
+                                            @endif
+                                            <x-others.dropdown-link iconLink='fa fa-plus-square'
+                                                labelText=' Passer caution' href="#"
+                                                wire:click='openCautionModal({{ $consultationRequest }})' />
+                                        </x-others.dropdown>
                                     @endif
                                 </td>
 
@@ -137,7 +121,8 @@
                                         Auth::user()->roles->pluck('name')->contains('Admin') ||
                                         Auth::user()->roles->pluck('name')->contains('Caisse') ||
                                         Auth::user()->roles->pluck('name')->contains('Finance'))
-                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                                    <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}
+                                    </td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
                                     </td>

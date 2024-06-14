@@ -19,50 +19,28 @@
                     <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                 </div>
                 <div class="mr-4" style="margin-right: 40px">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fa fa-print" aria-hidden="true"></i>
-                            Impression
-                        </button>
-                        <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item" target="_blank"
-                                href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}">
-                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Toute les factures
-                            </a>
-                            <a class="dropdown-item" target="_blank"
-                                href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}">
-                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste sans bon
-                            </a>
-                            <a class="dropdown-item" target="_blank"
-                                href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}">
-                                <i class="fa fa-file-excel" aria-hidden="true"></i> Relevé des factures
-                            </a>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fas fa-cogs"></i>
-                            Autes options
-                        </button>
-                        <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                                wire:click='fixNumerotation'>
-                                <i class="fas fa-list-ol"></i> Numéroter
-                            </a>
-                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                                wire:click='fixWithCurrentRate'>
-                                <i class="fas fa-dollar-sign"></i> Fixer taux
-                            </a>
-                            <a class="dropdown-item" wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                                wire:click='closeBilling'>
-                                <i class="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
-                                    aria-hidden="true"></i>
-                                {{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}
-                            </a>
-                        </div>
-                    </div>
+                    <x-others.dropdown title="Impressions" icon="fa fa-print">
+                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Toute les factures'
+                            href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"
+                            target='_blank' />
+                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Relevé des factures'
+                            href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}" target='_blank' />
+                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Liste sans bon'
+                            href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}"
+                            target='_blank' />
+                    </x-others.dropdown>
+                    <x-others.dropdown title="Autes options" icon="fas fa-cogs">
+                        <x-others.dropdown-link iconLink='fas fa-list-ol' labelText='Numéroter'
+                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                            wire:click='fixNumerotation' />
+                        <x-others.dropdown-link iconLink='fas fa-dollar-sign' labelText='Fixer taux'
+                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                            wire:click='fixWithCurrentRate' />
+                        <x-others.dropdown-link iconLink="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
+                            labelText="{{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}"
+                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                            wire:click='closeBilling' />
+                    </x-others.dropdown>
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
@@ -73,30 +51,25 @@
             @else
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
-                        <tr>
-                            <th>#</th>
-                            <th class="text-center">
-                                <x-form.button class="text-white"
-                                    wire:click="sortSheet('consultation_requests.created_at')">Date
-                                </x-form.button>
-                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                        <tr class="cursor-hand">
+                            <th class="text-center">#</th>
+                            <th class="text-center" wire:click="sortSheet('consultation_requests.created_at')">
+                                <span>Date</span>
+                                <x-form.sort-icon sortField="consultation_requests.created_at" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
-                            <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('consultation_requests.id')">
-                                    @if (Auth::user()->roles->pluck('request_number')->contains('Admin') ||
-                                            Auth::user()->roles->pluck('name')->contains('Ag'))
-                                        N° FACTURE
-                                    @else
-                                        N° FICHE
-                                    @endif
-
-                                </x-form.button>
+                            <th class="text-center" wire:click="sortSheet('request_number')">
+                                @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                    N° FACTURE
+                                @else
+                                    N° FICHE
+                                @endif
                                 <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
-                            <th>
-                                <x-form.button class="text-white" wire:click="sortSheet('consultation_sheets.name')">NOM
-                                    COMPLET</x-form.button>
-                                <x-form.sort-icon sortField="name" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                            <th wire:click="sortSheet('consultation_sheets.name')">
+                                <span>NOM COMPLET</span>
+                                <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
@@ -179,38 +152,40 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
-                                     @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                        <x-form.icon-button :icon="'fas fa-capsules'"
-                                            wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
-                                            class="btn-primary btn-sm" />
-                                    @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
-                                        <x-form.icon-button :icon="'fa fa-user-plus '"
-                                            wire:click="openVitalSignForm({{ $consultationRequest }})"
-                                            class="btn-sm btn-info " />
-                                        <x-form.icon-button :icon="'fa fa-eye '"
-                                            wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                            class="btn-sm btn-primary " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                    @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
-                                        <x-navigation.link-icon
-                                            href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
-                                            :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                    @else
-                                        <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
-                                            data-target="#edit-consultation-request"
-                                            wire:click="edit({{ $consultationRequest }})" class="btn-sm btn-info " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                            wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        <x-navigation.link-icon
-                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
-                                        <x-form.icon-button :icon="'fa fa-trash '" wire:confirm='Est-vous sur de supprimer'
-                                            wire:click="delete({{ $consultationRequest }})"
-                                            class="btn-sm btn-danger " />
-                                    @endif
+                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                            <x-form.icon-button :icon="'fas fa-capsules'"
+                                                wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
+                                                class="btn-primary btn-sm" />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                            <x-form.icon-button :icon="'fa fa-user-plus '"
+                                                wire:click="openVitalSignForm({{ $consultationRequest }})"
+                                                class="btn-sm btn-info " />
+                                            <x-form.icon-button :icon="'fa fa-eye '"
+                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
+                                                class="btn-sm btn-primary " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                            <x-navigation.link-icon
+                                                href="{{ route('labo.subscriber', $consultationRequest) }}"
+                                                wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                        @else
+                                            <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
+                                                data-target="#edit-consultation-request"
+                                                wire:click="edit({{ $consultationRequest }})"
+                                                class="btn-sm btn-info " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                                :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                            <x-form.icon-button :icon="'fa fa-trash '"
+                                                wire:confirm='Est-vous sur de supprimer'
+                                                wire:click="delete({{ $consultationRequest }})"
+                                                class="btn-sm btn-danger " />
+                                        @endif
                                     @endif
 
                                 </td>

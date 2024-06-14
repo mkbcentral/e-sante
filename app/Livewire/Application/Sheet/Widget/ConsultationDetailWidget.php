@@ -27,6 +27,7 @@ class ConsultationDetailWidget extends Component
             $this->consultationRequest->consultation_id = $val;
             $this->consultationRequest->update();
             $this->isEditing = false;
+            $this->dispatch('refreshAmount');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

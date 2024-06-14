@@ -52,6 +52,7 @@ class HospitalizationItemWidget extends Component
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
@@ -60,7 +61,8 @@ class HospitalizationItemWidget extends Component
     {
         try {
             $consultationRequestHospitalization->delete();
-            $this->dispatch('refreshDetail');;
+            $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

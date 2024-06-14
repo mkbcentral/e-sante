@@ -15,6 +15,7 @@ class AmountConsultationRequestByMonthWidget extends Component
         'isByDate' => 'getIsDate',
         'isByMonth' => 'getIsMonth',
         'isByPeriod' => 'getIsPeriod',
+        'refreshAmount'=>'$refresh'
     ];
     public int $selectedIndex;
     public string $month_name = '';

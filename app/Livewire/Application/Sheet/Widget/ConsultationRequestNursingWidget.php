@@ -64,6 +64,7 @@ class ConsultationRequestNursingWidget extends Component
             $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
             $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
             $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
@@ -73,7 +74,8 @@ class ConsultationRequestNursingWidget extends Component
     {
         try {
             $consultationRequestNersing->delete();
-            $this->dispatch('refreshDetail');;
+            $this->dispatch('refreshDetail');
+            $this->dispatch('refreshAmount');
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

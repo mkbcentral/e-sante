@@ -14,9 +14,16 @@ class ConsultationRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'request_number', 'consultation_sheet_id',
-        'consultation_id', 'rate_id', 'consulted_by',
-        'printed_by', 'validated_by', 'has_a_shipping_ticket', 'is_hospitalized', 'paid_at', 'created_at'
+        'request_number',
+        'consultation_sheet_id',
+        'consultation_id',
+        'rate_id',
+        'consulted_by',
+        'printed_by',
+        'validated_by',
+        'has_a_shipping_ticket',
+        'is_hospitalized',
+        'paid_at', 'created_at'
     ];
 
 
@@ -55,7 +62,6 @@ class ConsultationRequest extends Model
     {
         return $this->belongsToMany(Diagnostic::class)->withPivot(['id']);
     }
-
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('id', 'qty', 'dosage');
@@ -159,12 +165,19 @@ class ConsultationRequest extends Model
         $amount = 0;
         foreach ($this->consultationRequestHospitalizations as $consultationRequestHospitalization) {
             if ($this->consultationSheet->subscription->is_subscriber) {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom
-                    ->hospitalization->subscriber_price *
-                    $consultationRequestHospitalization->number_of_day * $this->rate->rate;
+                $amount += $consultationRequestHospitalization
+                    ->hospitalizationRoom
+                    ->hospitalization
+                    ->subscriber_price *
+                    $consultationRequestHospitalization
+                    ->number_of_day * $this->rate->rate;
             } else {
-                $amount += $consultationRequestHospitalization->hospitalizationRoom->hospitalization->price_private
-                    * $consultationRequestHospitalization->number_of_day * $this->rate->rate;
+                $amount += $consultationRequestHospitalization
+                    ->hospitalizationRoom
+                    ->hospitalization
+                    ->price_private
+                    * $consultationRequestHospitalization
+                    ->number_of_day * $this->rate->rate;
             }
         }
         return $amount;
@@ -182,9 +195,10 @@ class ConsultationRequest extends Model
                     ->number_of_day;
             } else {
                 $amount += $consultationRequestHospitalization
-                ->hospitalizationRoom
-                ->hospitalization
-                ->price_private  * $consultationRequestHospitalization->number_of_day;
+                    ->hospitalizationRoom
+                    ->hospitalization
+                    ->price_private  *
+                    $consultationRequestHospitalization->number_of_day;
             }
         }
         return $amount;
@@ -288,7 +302,7 @@ class ConsultationRequest extends Model
         if ($this->consultationSheet->subscription->is_subscriber == true) {
             $formattedMonth = format_fr_month_name($mounth);
             $substringMonth = substr($formattedMonth, 0, 4); // Change the parameters as needed
-            $number = $formattedRequestNumber . '/'. $substringMonth.'/' . $this->consultationSheet->subscription->name;
+            $number = $formattedRequestNumber . '/' . $substringMonth . '/' . $this->consultationSheet->subscription->name;
         } else {
             $number = $formattedRequestNumber . '/' . $mounth;
         }

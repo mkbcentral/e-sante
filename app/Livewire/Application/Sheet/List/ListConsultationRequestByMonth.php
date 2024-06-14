@@ -2,12 +2,9 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
-use App\Models\Hospital;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
-use App\Repositories\Sheet\Get\GetConsultationSheetRepository;
 use App\Repositories\Sheet\Get\ManageConsultationRequestRepository;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +15,7 @@ use Livewire\WithPagination;
 class ListConsultationRequestByMonth extends Component
 {
     use WithPagination;
+
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
         'listSheetRefreshed' => '$refresh',
@@ -31,7 +29,7 @@ class ListConsultationRequestByMonth extends Component
     #[Url(as: 'q')]
     public string $q = '';
     #[Url(as: 'sortBy')]
-    public $sortBy = 'consultation_sheets.name';
+    public $sortBy = 'consultation_requests.created_at';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
     public $isClosing = false;
@@ -138,7 +136,9 @@ class ListConsultationRequestByMonth extends Component
         }
     }
 
-
+    /**
+     * Close blling
+     */
     public function closeBilling()
     {
         try {
@@ -152,7 +152,9 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-
+    /**
+     * Delele bill
+     */
     public function delete(ConsultationRequest $consultationRequest)
     {
         try {
@@ -162,7 +164,9 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-
+    /**
+     * Fixing numerotation of billing
+     */
     public function fixWithCurrentRate()
     {
         try {
@@ -176,7 +180,9 @@ class ListConsultationRequestByMonth extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-
+    /**
+     * Check if bills are closing
+     */
     public function checkIsClosin()
     {
         $consultationRequestPrinted

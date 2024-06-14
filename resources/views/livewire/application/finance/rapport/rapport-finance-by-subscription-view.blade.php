@@ -10,7 +10,7 @@
             $amount_consultation = 0;
             $amount_nursing = 0;
             $amount_hospitalization = 0;
-            $total = 0;
+            $total_tarif = 0;
 
             $amount_consultation = App\Repositories\Tarif\GetAmountByTarif::getAmountConsultationByMonth(
                 $month,
@@ -58,7 +58,7 @@
                         </tr>
                         @foreach ($categories as $index => $category)
                             @php
-                                $amount = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
+                                $amount_tarif = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
                                     $month,
                                     $subscription->id,
                                     $category->id,
@@ -67,11 +67,11 @@
                             <tr>
                                 <td>{{ $category->name }}</td>
                                 <td class="text-right">
-                                    {{ $amount == 0 ? '-' : app_format_number($amount, 1) }} USD
+                                    {{ $amount_tarif == 0 ? '-' : app_format_number($amount_tarif, 1) }} USD
                                 </td>
                             </tr>
                             @php
-                                $total += $amount;
+                                $total_tarif += $amount_tarif;
                             @endphp
                         @endforeach
                         <tr>
@@ -97,7 +97,7 @@
                             <td class="text-right">TOTAL</td>
                             <td class="text-right">
                                 {{ app_format_number(
-                                    $total + $amount_pharma + $amount_consultation + $amount_nursing + $amount_hospitalization,
+                                    $total_tarif + $amount_pharma + $amount_consultation + $amount_nursing + $amount_hospitalization,
                                     1,
                                 ) }}
                                 USD

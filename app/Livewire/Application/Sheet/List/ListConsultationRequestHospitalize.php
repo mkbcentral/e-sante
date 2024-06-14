@@ -28,7 +28,7 @@ class ListConsultationRequestHospitalize extends Component
     #[Url(as: 'q')]
     public string $q = '';
     #[Url(as: 'sortBy')]
-    public $sortBy = 'consultation_sheets.name';
+    public $sortBy = 'consultation_requests.created_at';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
@@ -120,6 +120,7 @@ class ListConsultationRequestHospitalize extends Component
      */
     public function addToBordereau(?ConsultationRequest $consultationRequest){
         $consultationRequest->paid_at=Carbon::now();
+        $consultationRequest->is_paid = true;
         $consultationRequest->perceived_by=auth()->id();
         $consultationRequest->update();
     }
@@ -131,6 +132,7 @@ class ListConsultationRequestHospitalize extends Component
     public function deleteToBordereau(?ConsultationRequest $consultationRequest){
         $consultationRequest->paid_at = null;
         $consultationRequest->perceived_by=0;
+        $consultationRequest->is_paid = false;
         $consultationRequest->update();
     }
 

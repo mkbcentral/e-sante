@@ -23,7 +23,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
                 </div>
@@ -32,28 +32,23 @@
                 </div>
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
-                        <tr>
+                        <tr class="cursor-hand">
                             <th class="text-center">#</th>
-                            <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('created_at')">Date
-                                </x-form.button>
-                                <x-form.sort-icon sortField="created_at" :sortAsc="$sortAsc" :sortBy="$sortBy" />
+                            <th class="text-center" wire:click="sortSheet('consultation_requests.created_at')">
+                                <span>Date</span>
+                                <x-form.sort-icon sortField="consultation_requests.created_at" :sortAsc="$sortAsc"
+                                    :sortBy="$sortBy" />
                             </th>
-                            <th class="text-center">
-                                <x-form.button class="text-white" wire:click="sortSheet('request_number')">
-                                    @if (Auth::user()->roles->pluck('request_number')->contains('Admin') ||
-                                            Auth::user()->roles->pluck('name')->contains('Ag'))
-                                        N° FACTURE
-                                    @else
-                                        N° FICHE
-                                    @endif
-
-                                </x-form.button>
+                            <th class="text-center" wire:click="sortSheet('request_number')">
+                                @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                    N° FACTURE
+                                @else
+                                    N° FICHE
+                                @endif
                                 <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
-                            <th>
-                                <x-form.button class="text-white" wire:click="sortSheet('consultation_sheets.name')">NOM
-                                    COMPLET</x-form.button>
+                            <th wire:click="sortSheet('consultation_sheets.name')">
+                                <span>NOM COMPLET</span>
                                 <x-form.sort-icon sortField="consultation_sheets.name" :sortAsc="$sortAsc"
                                     :sortBy="$sortBy" />
                             </th>
@@ -64,7 +59,6 @@
                                     Auth::user()->roles->pluck('name')->contains('Admin'))
                                 <th class="text-right">MONTANT</th>
                             @endif
-
                             <th class="text-center">SUSCRIPTION</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
