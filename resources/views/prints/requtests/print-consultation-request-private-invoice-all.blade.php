@@ -271,6 +271,10 @@
                             </tr>
                         </table>
                     @else
+                        <div class="page-break text-right mt-1">
+                            <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
+                        </div>
+                        <br>
                         <table>
                             <tr>
                                 <td colspan="3" style="border: none">
@@ -290,9 +294,6 @@
                     @endif
 
                 </div>
-            </div>
-            <div class="page-break text-right mt-1">
-                <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
             </div>
         @endif
     @endforeach
