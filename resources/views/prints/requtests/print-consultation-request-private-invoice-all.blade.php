@@ -252,9 +252,6 @@
                     </tr>
                 </table>
                 <div class="">
-                    <div class="text-right mt-1">
-                        <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
-                    </div>
                     @if ($consultationRequest->consultationSheet->subscription->is_private)
                         <table class="">
                             <tr>
@@ -274,14 +271,29 @@
                             </tr>
                         </table>
                     @else
-                        <table class="page-break">
+                     <table class="">
                             <tr>
                                 <td colspan="3" style="border: none">
                                     <table style="border: none">
                                         <tr style="border: none">
                                             <td style="border: none" class="text-bold text-left">
-                                                INFP&COM
+                                                </td>
+
+                                            <td style="border: none" class="text-right ">
+                                               <span class="">Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
                                             </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="">
+                            <tr>
+                                <td colspan="3" style="border: none">
+                                    <table style="border: none">
+                                        <tr style="border: none">
+                                            <td style="border: none" class="text-bold text-left">
+                                                INFO&COM </td>
 
                                             <td style="border: none" class="text-right ">
                                                 A.G
@@ -290,9 +302,14 @@
                                     </table>
                                 </td>
                             </tr>
+                        </table>
+
                     @endif
 
                 </div>
+            </div>
+            <div class="page-break text-right mt-1">
+
             </div>
         @endif
     @endforeach
