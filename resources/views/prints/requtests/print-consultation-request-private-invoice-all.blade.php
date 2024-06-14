@@ -271,11 +271,11 @@
                             </tr>
                         </table>
                     @else
-                        <div class="page-break text-right mt-1">
+                        <div class="text-right mt-1">
                             <span class="" sty>Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
                         </div>
                         <br>
-                        <table>
+                        <table class="page-break">
                             <tr>
                                 <td colspan="3" style="border: none">
                                     <table style="border: none">
