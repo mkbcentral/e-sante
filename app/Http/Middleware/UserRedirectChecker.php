@@ -119,7 +119,25 @@ class UserRedirectChecker
                 'main',
                 'dashboard',
                 'bill.outpatient.rapport',
-
+                'payroll',
+                'payroll.month',
+                'expense.voucher',
+                'note.money.seding',
+                'print.payroll.month',
+                'expense.voucher',
+                'note.money.seding'
+            ],
+            'Finance-F' => [
+                'main',
+                'dashboard',
+                'bill.outpatient.rapport',
+                'payroll',
+                'payroll.month',
+                'expense.voucher',
+                'note.money.seding',
+                'print.payroll.month',
+                'expense.voucher',
+                'note.money.seding'
             ],
             'IT'=>[
                 'main',

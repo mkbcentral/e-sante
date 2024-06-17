@@ -3,6 +3,7 @@
 use App\Http\Controllers\Application\Navigation\AppNavigationController;
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
+use App\Http\Controllers\Application\Print\Finance\PayrollPrintController;
 use App\Http\Controllers\Application\Product\OtherPrinterController;
 use App\Http\Controllers\Application\Product\ProductInvoicePrinterController;
 use App\Http\Controllers\Application\Product\ProductPrinterController;
@@ -136,14 +137,17 @@ Route::prefix('print')->group(function () {
         Route::get('tarif-list-price/{type}/{categoryTarif?}', 'printListPriceTarif')->name('print.tarification.prices');
         Route::get('product-finance-repport/{month}', 'printProductFinanceRapportByMonth')->name('print.product.finance.repport');
 
-
-        //payroll
-        Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
-
         //labo monthly release
         Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
         Route::get('labo-finance-rapport', 'printLaboMonthlyReleases')->name('print.labo.finance.repport');
 
+    });
+
+    Route::controller(PayrollPrintController::class)->group(function(){
+        //payroll
+        Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
+        Route::get('payroll-month/{month}/{source}/{category}/{currency}/', 'printPayrollByMonth')->name('print.payroll.month');
+        Route::get('payroll-date/{date}/{source}/{category}/{currency}/', 'printPayrollByDate')->name('print.payroll.date');
     });
 });
 

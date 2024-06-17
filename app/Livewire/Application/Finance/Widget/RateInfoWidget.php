@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Finance\Widget;
 
 use App\Models\Rate;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class RateInfoWidget extends Component

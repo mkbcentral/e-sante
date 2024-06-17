@@ -45,22 +45,6 @@ class OtherPrinterController extends Controller
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
     }
-
-    public function printPayroll($id)
-    {
-        $payroll = Payroll::find($id);
-        $payroll->is_valided=true;
-        $payroll->update();
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView(
-            'prints.finance.payroll.print-payroll',
-            compact([
-                'payroll'
-            ])
-        )->set_option('isRemoteEnabled', true);
-        return $pdf->stream();
-    }
-
     //Print labo monthly release
     public function printLaboMonthlyReleases($month, $subscription_id)
     {

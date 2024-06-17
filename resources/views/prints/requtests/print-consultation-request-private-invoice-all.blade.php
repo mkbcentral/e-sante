@@ -271,16 +271,16 @@
                             </tr>
                         </table>
                     @else
-                     <table class="">
+                        <table class="">
                             <tr>
                                 <td colspan="3" style="border: none">
                                     <table style="border: none">
                                         <tr style="border: none">
                                             <td style="border: none" class="text-bold text-left">
-                                                </td>
+                                            </td>
 
                                             <td style="border: none" class="text-right ">
-                                               <span class="">Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
+                                                <span class="">Fait àLubumbashi, Le {{ date('d/m/Y') }}</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -303,7 +303,6 @@
                                 </td>
                             </tr>
                         </table>
-
                     @endif
 
                 </div>

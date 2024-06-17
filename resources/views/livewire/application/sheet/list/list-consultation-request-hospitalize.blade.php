@@ -87,14 +87,14 @@
                             <tr style="cursor: pointer;"
                                 @if ($consultationRequest->paid_at != null && $consultationRequest->paid_at == date('Y-m-d')) class="bg-warning"
                                 data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui"
-                                @elseif ($consultationRequest->is_paid==true) class="bg-pink" @endif>
+                                @elseif ($consultationRequest->is_paid == true) class="bg-pink" @endif>
                                 <td class="text-start">
                                     @if ($consultationRequest->is_finished == true && Auth::user()->roles->pluck('name')->contains('Caisse'))
                                         <x-others.dropdown title=""
                                             icon="{{ $consultationRequest->is_paid == true ? 'fa fa-check text-success' : 'fa fa-ellipsis-v' }}">
                                             @if ($consultationRequest->paid_at == null)
                                                 <x-others.dropdown-link iconLink='fa fa-plus-circle'
-                         p                           labelText='Ajouter auborderau' href="#"
+                                                    labelText='Ajouter auborderau' href="#"
                                                     wire:confirm="Etes-vous de réaliser l'operation?"
                                                     class="text-primary"
                                                     wire:click='addToBordereau({{ $consultationRequest }})' />

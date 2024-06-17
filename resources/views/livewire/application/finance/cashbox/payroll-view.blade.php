@@ -1,4 +1,4 @@
-<div  class="card">
+<div class="card">
     @livewire('application.finance.cashbox.forms.new-pay-roll-view')
     @livewire('application.finance.cashbox.list.list-payroll-items-view')
     <x-navigation.bread-crumb icon='fa fa-file' label='ETAT DE PAIE' color="text-success">
@@ -13,17 +13,43 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-content-center">
-                        <x-form.button :icon="'fa fa-user-plus'" type="button" class="btn-success" wire:click='openAddModal'>
-                            <i class="fa fa-file" aria-hidden="true"></i> Créer...
+                        <x-form.button type="button" class="btn-danger" wire:click='openAddModal'>
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Créer...
                         </x-form.button>
 
                     </div>
-                    <div class="badge badge-info">
-                        <h3 class="text-uppercase">Total: {{ app_format_number($totalUSD, 1) }} USD | {{ app_format_number($totalCDF, 1) }} CDF</h3>
+                    <div class="badge badge-primary">
+                        <h3 class="text-uppercase"><i class="fas fa-coins    "></i> Total:
+                            {{ app_format_number($totalUSD, 1) }} USD |
+                            {{ app_format_number($totalCDF, 1) }} CDF</h3>
                     </div>
-                    <div class="mr-2">
-                         <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
+
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center ml-4">
+                        <span class="mr-2">Date</span>
+                        <x-form.input type='date' wire:model.live='date_filter' :error="'date_filter'" />
                     </div>
+                    <div class="d-flex align-items-center ml-4">
+                        <span class="mr-2">Source</span>
+                        <x-widget.finance.source-payroll wire:model.live='source' :error="'source'" />
+                    </div>
+                    <div class="d-flex align-items-center ml-4">
+                        <span class="mr-2">Categorie</span>
+                        <x-widget.finance.category-payroll wire:model.live='category' :error="'category'" />
+                    </div>
+                    <div class="d-flex  ml-2 mt-4">
+                        <span class="mr-2">Devise</span>
+                        <x-widget.finance.fin-currency wire:model.live="currency_id" />
+                    </div>
+                    <x-others.dropdown title="Expoter" icon="fas fa-file-export">
+                        <x-others.dropdown-link iconLink='fa fa-file-excel' labelText='Sous Excel' href="#"
+                            wire:click='exportToExcel' />
+                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Sous pdf'
+                            href="{{ route('print.payroll.date', [$date_filter, $source, $category, $currency_id]) }}"
+                            target='_blanck' />
+                    </x-others.dropdown>
+
                 </div>
                 <div class="d-flex justify-content-center pb-2 mt-2">
                     <x-widget.loading-circular-md />
@@ -36,15 +62,18 @@
                             <th class="text-center">Numéro</th>
                             <th>Description</th>
                             <th class="text-center">Nbre</th>
-                            <th class="text-right">Montant</th>
-                                <th class="text-center">STATUS</th>
+                            <th class="text-right">M.T USD</th>
+                            <th class="text-right">M.T CDF</th>
+                            <th class="text-right">Source</th>
+                            <th class="text-right">MOTIF</th>
+                            <th class="text-center">STATUS</th>
                             <th class=" text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if ($payRolls->isEmpty())
                             <tr>
-                                <td colspan="8"> <x-errors.data-empty /></td>
+                                <td colspan="12"> <x-errors.data-empty /></td>
                             </tr>
                         @else
                             @foreach ($payRolls as $index => $payRoll)
@@ -54,8 +83,24 @@
                                     <td class="text-center">{{ $payRoll->number }}</td>
                                     <td>{{ $payRoll->description }}</td>
                                     <td class="text-center">{{ $payRoll->getCouterPayRollItems() }}</td>
-                                    <td class="text-right">{{ app_format_number($payRoll->getPayrollTotalAmount(), 1) }}
-                                        {{ $payRoll->currency->name }}</td>
+                                    <td class="text-right">
+                                        @if ($payRoll->currency->name == 'USD')
+                                            {{ app_format_number($payRoll->getPayrollTotalAmount(), 1) }}
+                                            {{ $payRoll->currency->name }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="text-right">
+                                        @if ($payRoll->currency->name == 'CDF')
+                                            {{ app_format_number($payRoll->getPayrollTotalAmount(), 1) }}
+                                            {{ $payRoll->currency->name }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="text-right">{{ $payRoll->payrollSource->name }}</td>
+                                    <td class="text-right">{{ $payRoll->categorySpendMoney->name }}</td>
                                     <td class="text-center">
                                         @if ($payRoll->is_valided == true)
                                             <span class="badge badge-success">Cloturé</span>
@@ -64,23 +109,29 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        @if ($payRoll->is_valided == true)
-                                            <x-form.icon-button :icon="'fa fa-sync '" class="btn-sm btn-info"
-                                                wire:click='addItems({{ $payRoll }})' />
-                                            <x-navigation.link-icon href="{{ route('print.payroll', $payRoll) }}"
-                                                target="_blank" :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
-                                        @else
-                                            <x-form.icon-button :icon="'fa fa-sync '" class="btn-sm btn-info"
-                                                wire:click='addItems({{ $payRoll }})' />
-                                            <x-form.icon-button :icon="'fa fa-pen '" class="btn-sm btn-info"
-                                                wire:click='edit({{ $payRoll }})' />
-                                            <x-navigation.link-icon href="{{ route('print.payroll', $payRoll) }}"
-                                                target="_blank" :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
-                                            <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
-                                                wire:confirm="Etes-vous sûre de supprimer ?"
-                                                wire:click='delete({{ $payRoll }})' />
-                                        @endif
+                                        <x-others.dropdown icon="fa fa-ellipsis-v">
 
+                                            @if ($payRoll->is_valided == true)
+                                                <x-others.dropdown-link iconLink='fa fa-eye' labelText='Details'
+                                                    href="#" wire:click='addItems({{ $payRoll }})' />
+                                                <x-others.dropdown-link iconLink="fa fa-print" labelText="Imprimer"
+                                                    href="{{ route('print.payroll', $payRoll) }}" target="_blank" />
+                                                <x-others.dropdown-link iconLink='fa fa-times' labelText='Annuler'
+                                                    wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                                    wire:click='validatePayroll({{ $payRoll }})' />
+                                            @else
+                                                <x-others.dropdown-link iconLink='fa fa-eye' labelText='Details'
+                                                    href="#" wire:click='addItems({{ $payRoll }})' />
+                                                <x-others.dropdown-link iconLink='fa fa-pen' labelText='Editer'
+                                                    wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                                    wire:click='edit({{ $payRoll }})' />
+                                                <x-others.dropdown-link iconLink="fa fa-print" labelText="Imprimer"
+                                                    href="{{ route('print.payroll', $payRoll) }}" target="_blank" />
+                                                <x-others.dropdown-link iconLink='fa fa-trash' labelText='Supprimer'
+                                                    wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                                    wire:click='delete({{ $payRoll }})' />
+                                            @endif
+                                        </x-others.dropdown>
                                     </td>
                                 </tr>
                             @endforeach

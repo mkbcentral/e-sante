@@ -88,7 +88,6 @@ class NewPayRollView extends Component
     {
         return view('livewire.application.finance.cashbox.forms.new-pay-roll-view', [
             'categories' => CategorySpendMoney::all(),
-            'currencies' => Currency::all(),
             'payrollSources'=>PayrollSource::all()
         ]);
     }
