@@ -22,7 +22,7 @@
                 @foreach ($consultationRequests as $index => $consultationRequest)
                     <tr class="money_format">
                         <td class="text-center">{{ $index + 1 }}</td>
-                        <td>{{ $consultationRequest->consultationSheet->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $consultationRequest->created_at->format('d/m/Y') }}</td>
                         <td>{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                         <td class="">{{ $consultationRequest->consultationSheet?->name }}</td>
                         <td class="text-right money_format">
