@@ -4,7 +4,7 @@
         $total_usd = 0;
     @endphp
     <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
-    <h4 class="text-center text-bold mt-2">RELEVE DES FACTURES {{ $subscription->name }}
+    <h4 class="text-center text-bold mt-2">RELEVE CORRIGE DES FACTURES {{ $subscription->name }}
         {{ format_fr_month_name($month) }} 2024 </h4>
     <table class="table table-striped table-sm ">
         <thead class="bg-dark text-white text-uppercase ">
