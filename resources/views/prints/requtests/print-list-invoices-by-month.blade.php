@@ -48,10 +48,10 @@
                 </tr>
             @else
                 <tr>
-                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_cdf, 1) }} CDF</td>
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_cdf-8000, 1) }} CDF</td>
                 </tr>
                 <tr>
-                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd, 1) }} USD</td>
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd-2.85, 1) }} USD</td>
                 </tr>
             @endif
 
@@ -60,9 +60,9 @@
     </table>
     <div class="text-left">
         @if ($subscription->name == 'CNSS')
-            <h6>NB: {{ ucfirst(app_format_number_letter($total_usd)) }} Dollars américains </h6>
+            <h6>NB: {{ ucfirst(app_format_number_letter($total_usd-2.85)) }} Dollars américains </h6>
         @else
-            <h6>NB: {{ ucfirst(app_format_number_letter($total_cdf)) }} Fancs congolais </h6>
+            <h6>NB: {{ ucfirst(app_format_number_letter($total_cdf-8000)) }} Fancs congolais </h6>
         @endif
     </div>
     <div class="text-right">
