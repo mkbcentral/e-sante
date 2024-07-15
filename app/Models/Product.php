@@ -172,7 +172,7 @@ class Product extends Model
     public function getOutputPharmancy(): int|float
     {
 
-        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest();
+        return $this->getNumberProductInvoice();
     }
 
     public function getStockPharma(): int|float
