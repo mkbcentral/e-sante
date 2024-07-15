@@ -137,8 +137,8 @@ class Product extends Model
      */
     public function getNumberProducByConsultationRequest(): int|float
     {
-        $currentDate = Carbon::create('2024', 7, 1);
-        $startDate = $currentDate->copy()->startOfMonth()->addDays(10); //Retourner la 14;
+        $currentDate = Carbon::now();
+        $startDate = $currentDate->copy()->startOfMonth()->addDays(1); //Retourner la 14;
         //dd($this->id);
         return ConsultationRequest::query()
             ->join(
