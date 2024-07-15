@@ -27,6 +27,12 @@ class ConsultationRequest extends Model
     ];
 
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
+
+
 
     public function rate(): BelongsTo
     {

@@ -5,9 +5,11 @@ namespace App\Livewire\Application\Product\Form;
 use App\Livewire\Forms\ProductForm;
 use App\Models\Hospital;
 use App\Models\Product;
+use App\Models\Source;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ProductFormView extends Component
@@ -48,18 +50,33 @@ class ProductFormView extends Component
     {
         $this->validate();
         try {
-            $fields=$this->form->all();
+            $fields = $this->form->all();
 
-            $fields['hospital_id']=Hospital::DEFAULT_HOSPITAL();
-            $fields['source_id']=auth()->user()->source->id;
-            if
-            ($fields['product_family_id']==null) {
-                $fields['product_family_id']=1;
+            $fields['hospital_id'] = Hospital::DEFAULT_HOSPITAL();
+            $fields['source_id'] = auth()->user()->source->id;
+            if ($fields['product_family_id'] == null) {
+                $fields['product_family_id'] = 1;
+            }
+            if (
+                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->source_id == Source::GOLF_ID
+            ) {
+                $fields['pharma_g_stk'] = $this->form->initial_quantity;
+            } else if (
+                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->source_id == Source::VILLE_ID
+            ) {
+                $fields['pharma_v_stk'] = $this->form->initial_quantity;
+            } elseif (
+                Auth::user()->roles->pluck('name')->contains('Depot-Pharma') &&
+                Auth::user()->source_id == Source::GOLF_ID
+            ) {
+                $fields['initial_quantity'] = $this->form->initial_quantity;
             }
             Product::create($fields);
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
     }
@@ -74,10 +91,26 @@ class ProductFormView extends Component
         try {
             $fields = $this->form->all();
             $fields['source_id'] = auth()->user()->source->id;
+            if (
+                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->source_id == Source::GOLF_ID
+            ) {
+                $fields['pharma_g_stk'] = $this->form->initial_quantity;
+            } else if (
+                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->source_id == Source::VILLE_ID
+            ) {
+                $fields['pharma_v_stk'] = $this->form->initial_quantity;
+            } elseif(
+                Auth::user()->roles->pluck('name')->contains('Depot-Pharma') &&
+                Auth::user()->source_id == Source::GOLF_ID
+            ) {
+                $fields['initial_quantity'] = $this->form->initial_quantity;
+            }
             $this->product->update($fields);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
     }
@@ -88,9 +121,9 @@ class ProductFormView extends Component
      */
     public function handlerSubmit(): void
     {
-        if ($this->product==null){
+        if ($this->product == null) {
             $this->store();
-        }else{
+        } else {
             $this->update();
         }
         $this->dispatch('refreshListProducr');
@@ -101,9 +134,10 @@ class ProductFormView extends Component
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
 
-     public function mount(){
-        $this->form->expiration_date= date('M-m-d');
-     }
+    public function mount()
+    {
+        $this->form->expiration_date = date('M-m-d');
+    }
     public function render()
     {
         return view('livewire.application.product.form.product-form-view');

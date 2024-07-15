@@ -44,7 +44,8 @@
             </tr>
             @if ($subscription->name == 'CNSS')
                 <tr>
-                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd, 1) }} USD</td>
+                    $tot_cnss=
+                    <td colspan="5" class="text-right h6 text-bold">{{ app_format_number($total_usd, 0) }} USD</td>
                 </tr>
             @else
                 <tr>
@@ -60,7 +61,7 @@
     </table>
     <div class="text-left">
         @if ($subscription->name == 'CNSS')
-            <h6>NB: {{ ucfirst(app_format_number_letter($total_usd)) }} Dollars américains </h6>
+            <h6>NB: {{ ucfirst(app_format_number_letter($total_usd+1,0)) }} Dollars américains </h6>
         @else
             <h6>NB: {{ ucfirst(app_format_number_letter($total_cdf)) }} Fancs congolais </h6>
         @endif

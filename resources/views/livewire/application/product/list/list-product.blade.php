@@ -38,7 +38,7 @@
                                 <a class="dropdown-item" target="_blank" href="{{ route('product.list.price.print') }}">
                                     <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste de prix
                                 </a>
-                                <a class="dropdown-item"  href="#" wire:click='exportStock'>
+                                <a class="dropdown-item" href="#" wire:click='exportStock'>
                                     <i class="fas fa-file-excel    "></i> Stock sur Excel
                                 </a>
                             </div>
@@ -109,15 +109,14 @@
                                     <td class="text-center">
                                         {{ $index + 1 }}
                                     </td>
-                                    <td class="text-uppercase {{ $is_trashed==true?'bg-warning ':'' }}">{{ $product->name }}
+                                    <td class="text-uppercase {{ $is_trashed == true ? 'bg-warning ' : '' }}">
+                                        {{ $product->name }}
                                         <span class="text-bold text-pink">{{ $product->abbreviation }}</span>
                                     </td>
-                                    <td class="text-center">{{ $product->initial_quantity }}</td>
-                                    <td class="text-center">{{ $product->getNumberProductSupply() }}</td>
-                                    <td class="text-center">{{ $product->getTotalOutputProducts() }}</td>
-                                    <td class=" {{ $product?->getProductStockStatus() }} text-center ">
-                                        {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}
-                                    </td>
+                                    <td class="text-center">{{ $product->getInitQuantity() }}</td>
+                                    <td class="text-center">{{ $product->getInputPharmacy() }}</td>
+                                    <td class="text-center">{{ $product->getOutputPharmancy() }}</td>
+                                    <td class="text-center">{{ $product->getStockPharma() }}</td>
                                     <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td

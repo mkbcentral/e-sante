@@ -9,31 +9,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 
 class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'butch_number', 'initial_quantity', 'name',
-        'price', 'expiration_date', 'product_family_id', 'product_category_id',
-        'hospital_id', 'is_specialty', 'source_id', 'is_trashed', 'created_by', 'updated_by'
+        'butch_number',
+        'initial_quantity',
+        'pharma_g_stk',
+        'pharma_v_stk',
+        'pharma_klz_stk',
+        'name',
+        'price',
+        'expiration_date',
+        'product_family_id',
+        'product_category_id',
+        'hospital_id',
+        'is_specialty',
+        'source_id',
+        'is_trashed',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
         'expiration_date' => 'datetime'
     ];
-
-    public function getInitialQuantityAttribute($value): int
-    {
-        $number = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source->name == Source::GOLF) {
-            $number = $value;
-        } else {
-            $number =  0;
-        }
-        return $number;
-    }
 
     public function source(): BelongsTo
     {
@@ -97,11 +100,26 @@ class Product extends Model
     {
         return $this->hasMany(ProductRequisitionProduct::class);
     }
+
+    public function getInitQuantity()
+    {
+        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source_id == Source::GOLF_ID) {
+            return $this->pharma_g_stk;
+        } else if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source_id == Source::VILLE_ID) {
+            return  $this->pharma_v_stk;
+        } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma') && Auth::user()->source_id == Source::GOLF_ID) {
+            return  $this->initial_quantity;
+        }
+    }
+
     /**
      * Sortie sur toutes les factures en cash
+     * Nous allons réinitiliser les  à partir du 14 juillet
      */
     public function getNumberProductInvoice(): int|float
     {
+        $currentDate = Carbon::now();
+        $startDate = $currentDate->copy()->startOfMonth()->addDays(13); //Retourner la 14;
         return ProductInvoice::query()
             ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
             ->join('users', 'users.id', 'product_invoices.user_id')
@@ -109,14 +127,19 @@ class Product extends Model
             ->where('product_invoices.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('product_invoices.user_id', Auth::id())
             ->where('users.source_id', Auth::user()->source->id)
-            ->where('is_valided', true)
+            ->where('product_invoices.is_valided', true)
+            ->whereDate('product_invoices.created_at', '>=', $startDate)
             ->sum('product_product_invoice.qty');
     }
     /**
      * Sortie sur les factures des privés hospitalisé, abonées et personels
+     * Nous allons réinitiliser les  à partir du 14 juille
      */
     public function getNumberProducByConsultationRequest(): int|float
     {
+        $currentDate = Carbon::create('2024', 7, 1);
+        $startDate = $currentDate->copy()->startOfMonth()->addDays(10); //Retourner la 14;
+        //dd($this->id);
         return ConsultationRequest::query()
             ->join(
                 'consultation_request_product',
@@ -132,11 +155,54 @@ class Product extends Model
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->where('consultation_request_product.created_by', Auth::id())
+            ->whereDate('consultation_requests.created_at', '>=', $startDate)
             ->sum('consultation_request_product.qty');
     }
+
     /**
-     * get number of product by supply
+     * Retouner la quantité disponible d'un produit à la pharmacie
+     * (QuantitIni+QuantiteReq) - '(SortieAmbu+SortieFactAbn+ortieFactHost)
+     * @return  int|float
      */
+    public function getInputPharmacy(): int|float
+    {
+        return ($this->getOutputFromRequisition());
+    }
+
+    public function getOutputPharmancy(): int|float
+    {
+
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest();
+    }
+
+    public function getStockPharma(): int|float
+    {
+        return ($this->getInitQuantity() + $this->getInputPharmacy()) - $this->getOutputPharmancy();
+    }
+
+    /**
+     * Reoutner la quantité requisitionnée par service
+     * @return int|float
+     */
+    public function getOutputFromRequisition(): int|float
+    {
+        $quantity = 0;
+        $inputs = ProductRequisitionProduct::query()
+            ->join('products', 'products.id', 'product_requisition_products.product_id')
+            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
+            ->where('product_requisitions.source_id', Auth::user()->source_id)
+            ->where('product_requisitions.user_id', Auth::id())
+            ->where('product_requisitions.agent_service_id', Auth::user()->agent_service_id)
+            ->with(['product'])
+            ->where('product_requisition_products.product_id', $this->id)
+            ->get();
+        foreach ($inputs as $input) {
+            $quantity += $input->quantity;
+        }
+        return $quantity;
+    }
+
+    /*
     public function getNumberProductSupply(): int|float
     {
         return ProductSupply::query()
@@ -145,36 +211,22 @@ class Product extends Model
             ->where('product_supply_products.product_id', $this->id)
             ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('product_supplies.user_id', Auth::id())
-            ->whereMonth('product_supplies.created_at', date('m'))
+            //->whereMonth('product_supplies.created_at', date('m'))
             ->where('product_supplies.is_valided', true)
             ->sum('product_supply_products.quantity');
     }
     /**
      * Sortie sur chaque requisition faite par le service
-     */
-    public function getOutputFormRequisition(): int|float
-    {
-        $quantity = 0;
-        $inputs = ProductRequisitionProduct::query()
-            ->join('products', 'products.id', 'product_requisition_products.product_id')
-            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
-            ->with(['product'])
-            ->where('product_requisition_products.product_id', $this->id)
-            ->get();
 
-        foreach ($inputs as $input) {
-            $quantity += $input->quantity;
-        }
-        return $quantity;
-    }
+
     /**
      * Sortie sur chaque requisition faite par le service à partir du mois de mars jusqu'à la fin de l'année
-     */
+
     public function getOutputRequisitionWithMarchToEndOfYear()
     {
         $quantity = 0;
         $startDate = date('Y') . '-04-01'; // March 1st of the current year
-       $endDate = date('Y') . '-12-31'; // December 31st of the current year
+        $endDate = date('Y') . '-12-31'; // December 31st of the current year
         $inputs = ProductRequisitionProduct::query()
             ->join('products', 'products.id', 'product_requisition_products.product_id')
             ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
@@ -182,7 +234,7 @@ class Product extends Model
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
             ->where('product_requisitions.is_valided', true)
-            ->whereMonth('product_requisition_products.created_at', [$startDate, $endDate])
+            //->whereMonth('product_requisition_products.created_at', [$startDate, $endDate])
             ->get();
         foreach ($inputs as $input) {
             $quantity += $input->quantity;
@@ -223,7 +275,7 @@ class Product extends Model
     }
     /**
      * get total output products
-     */
+
     public function getTotalOutputProducts(): int|float
     {
         $number = 0;
@@ -238,14 +290,12 @@ class Product extends Model
     }
     /**
      * Stotck global
-     */
+
     public function getAmountStockGlobal(): int|float
     {
         return    $number = $this->getTotalInputProducts() - $this->getTotalOutputProducts();;
     }
-    /**
-     * get product stock status
-     */
+    /*
     public function getProductStockStatus(): string
     {
         $status = '';
@@ -276,4 +326,5 @@ class Product extends Model
         }
         return $status;
     }
+    */
 }

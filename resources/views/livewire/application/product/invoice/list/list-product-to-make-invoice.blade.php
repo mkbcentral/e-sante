@@ -33,8 +33,8 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
                         </td>
-                        <td class="{{ $product->getAmountStockGlobal() <= 5 ? 'bg-danger ' : '' }} text-center">
-                            {{ $product->getAmountStockGlobal() <= 0 ? 0 : $product->getAmountStockGlobal() }}</td>
+                        <td class="{{ $product->getStockPharma() <= 5 ? 'bg-danger ' : '' }} text-center">
+                            {{ $product->getStockPharma() <= 0 ? 0 : $product->getStockPharma() }}</td>
                         <td class="text-right">{{ $product->created_at->format('d/M/Y') }}</td>
                     </tr>
                 @endforeach

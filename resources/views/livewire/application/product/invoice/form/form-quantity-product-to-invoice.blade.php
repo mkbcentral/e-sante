@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 @if ($product != null)
-                    @if ($product->getAmountStockGlobal() <= 0)
+                    @if ($product->getStockPharma() <= 0)
                         <div class="text-center">
                             <h3 class="text-bold text-danger">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error
