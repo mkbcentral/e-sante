@@ -138,8 +138,8 @@ class Product extends Model
     public function getNumberProducByConsultationRequest(): int|float
     {
         $currentDate = Carbon::now();
-        $startDate = $currentDate->copy()->startOfMonth()->addDays(1); //Retourner la 14;
-        //dd($this->id);
+        $startDate = $currentDate->copy()->startOfMonth()->addDays(13); //Retourner la 14;
+        //dd($startDate);
         return ConsultationRequest::query()
             ->join(
                 'consultation_request_product',
@@ -172,7 +172,7 @@ class Product extends Model
     public function getOutputPharmancy(): int|float
     {
 
-        return $this->getNumberProductInvoice();
+        return $this->getNumberProductInvoice()+$this->getNumberProducByConsultationRequest();
     }
 
     public function getStockPharma(): int|float
