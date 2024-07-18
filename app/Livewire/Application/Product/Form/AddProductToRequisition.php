@@ -29,6 +29,7 @@ class AddProductToRequisition extends Component
         $this->productRequisition = $productRequisition;
         $this->isEditing = $isEditing;
 
+
         if ($this->isEditing == true) {
             $this->formTitle = 'Modifier un produit à la réquisition';
             $productRequisitionProduct = ProductRequisitionProduct::
@@ -36,12 +37,14 @@ class AddProductToRequisition extends Component
             ->where('product_id', $product->id)
             ->first();
             $this->quantity = $productRequisitionProduct->quantity;
-            $this->quantity_available = $productRequisitionProduct->quantity_available;
+            $this->quantity_available = $product->getGlobalStock();
+
         }else{
             $this->quantity = 0;
-            $this->quantity_available = 0;
+            $this->quantity_available = $product->getGlobalStock();
 
         }
+
     }
 
     public function store()

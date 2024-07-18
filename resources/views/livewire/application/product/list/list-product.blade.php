@@ -114,9 +114,9 @@
                                         <span class="text-bold text-pink">{{ $product->abbreviation }}</span>
                                     </td>
                                     <td class="text-center">{{ $product->getInitQuantity() }}</td>
-                                    <td class="text-center">{{ $product->getInputPharmacy() }}</td>
-                                    <td class="text-center">{{ $product->getOutputPharmancy() }}</td>
-                                    <td class="text-center">{{ $product->getStockPharma() }}</td>
+                                    <td class="text-center">{{ $product->getGlobalInput() }}</td>
+                                    <td class="text-center">{{ $product->getGlobalOutput() }}</td>
+                                    <td class="text-center">{{ $product->getGlobalStock() }}</td>
                                     <td class="text-right">{{ $product->price }} Fc</td>
                                     <td class="text-right">{{ $product->expiration_date }}</td>
                                     <td
