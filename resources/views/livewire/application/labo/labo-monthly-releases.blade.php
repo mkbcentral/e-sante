@@ -8,8 +8,8 @@
             $n1 = 0;
             $n2 = 0;
             $total = 0;
+            $counter = 0;
         @endphp
-
         <div class="card card-outline card-primary">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -22,8 +22,8 @@
                         <div class="form-group d-flex">
                             <label for="my-input " class="mr-2">Mois</label>
                             <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
-                             <a class="ml-2" target="_blanck"
-                                href="{{ route('print.labo.monthly.releases', [$month_name,$subscription_id]) }}"><i
+                            <a class="ml-2" target="_blanck"
+                                href="{{ route('print.labo.monthly.releases', [$month_name, $subscription_id]) }}"><i
                                     class="fas fa-print"></i> Imprimer</a>
                         </div>
 
@@ -100,18 +100,22 @@
                                                     ->count();
                                                 $total = $n1 + $n2;
                                             }
-
                                         @endphp
                                         <td>
-                                            {{ $total==0?'-':$total }}
+                                            {{ $total == 0 ? '-' : $total }}
                                         </td>
+                                        @php
+                                            $counter += $total;
+                                        @endphp
                                     @endforeach
+
                                 </tr>
                             @endforeach
 
                         </tbody>
                     </table>
                 </div>
+                <H2>Nombre: {{ $counter }}</H2>
             </div>
         </div>
     </x-content.main-content-page>
