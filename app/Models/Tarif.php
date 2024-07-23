@@ -27,9 +27,19 @@ class Tarif extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles(): BelongsToMany
+    public function consultationRequests(): BelongsToMany
     {
         return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty']);
+    }
+
+    /**
+     * The OutpatientBills that belong to the Tarif
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function outpatientBills(): BelongsToMany
+    {
+        return $this->belongsToMany(OutpatientBill::class)->withPivot(['id', 'qty']);
     }
 
     /**
@@ -50,8 +60,10 @@ class Tarif extends Model
      * @param  mixed $qty
      * @return void
      */
-    public function getPricePrivateOutpatientBillCaculateUSD(OutpatientBill $outpatientBill, int $qty)
-    {
+    public function getPricePrivateOutpatientBillCaculateUSD(
+        OutpatientBill $outpatientBill,
+        int $qty
+    ): float|int {
         return $this->price_private * $qty;
     }
 
@@ -62,7 +74,7 @@ class Tarif extends Model
      * @param  mixed $qty
      * @return void
      */
-    public function getPricePrivateOutpatientBillCDF(OutpatientBill $outpatientBill)
+    public function getPricePrivateOutpatientBillCDF(OutpatientBill $outpatientBill): float|int
     {
         return $this->price_private * $outpatientBill->rate->rate;
     }
@@ -74,7 +86,7 @@ class Tarif extends Model
      * @param  mixed $qty
      * @return void
      */
-    public function getPricePrivateOutpatientBillCalculateCDF(OutpatientBill $outpatientBill, int $qty)
+    public function getPricePrivateOutpatientBillCalculateCDF(OutpatientBill $outpatientBill, int $qty): float|int
     {
         return ($this->price_private * $qty) * $outpatientBill->rate->rate;
     }

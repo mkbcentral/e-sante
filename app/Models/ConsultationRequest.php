@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class ConsultationRequest extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'request_number',
         'consultation_sheet_id',
@@ -25,20 +24,13 @@ class ConsultationRequest extends Model
         'is_hospitalized',
         'paid_at', 'created_at'
     ];
-
-
     protected $casts = [
         'created_at' => 'datetime',
     ];
-
-
-
-
     public function rate(): BelongsTo
     {
         return $this->belongsTo(Rate::class, 'rate_id');
     }
-
     public function consultationSheet(): BelongsTo
     {
         return $this->belongsTo(ConsultationSheet::class, 'consultation_sheet_id');

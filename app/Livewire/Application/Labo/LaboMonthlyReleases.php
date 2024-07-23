@@ -35,6 +35,7 @@ class LaboMonthlyReleases extends Component
         return view('livewire.application.labo.labo-monthly-releases', [
             'tarifs' => Tarif::query()->where('category_tarif_id', 1)
                 ->orderBy('name', 'asc')
+                ->with(['outpatientBills', 'consultationRequests'])
                 ->get(),
             'days' => DateFormatHelper::getListDateForMonth($this->month_name, $this->year)
         ]);

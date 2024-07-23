@@ -8,7 +8,8 @@
             $n1 = 0;
             $n2 = 0;
             $total = 0;
-            $counter = 0;
+            $total_count = 0;
+            $item_count = 0;
         @endphp
         <div class="card card-outline card-primary">
             <div class="card-body">
@@ -40,6 +41,7 @@
                                 @foreach ($days as $day)
                                     <th>{{ (new DateTime($day))->format('d') }}</th>
                                 @endforeach
+                                <th class="text-center">NBRE</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,73 +51,44 @@
                                     <td>
                                         {{ strlen($tarif->getNameOrAbbreviation()) > 10 ? substr($tarif->getNameOrAbbreviation(), 0, 10) . '...' : $tarif->getNameOrAbbreviation() }}
                                     </td>
-                                    @foreach ($days as $day)
+                                    @foreach ($days as $i => $r_day)
                                         @php
-                                            if ($subscription_id != '') {
-                                                $n1 = DB::table('consultation_request_tarif')
-                                                    ->join(
-                                                        'consultation_requests',
-                                                        'consultation_requests.id',
-                                                        'consultation_request_tarif.consultation_request_id',
-                                                    )
-                                                    ->join(
-                                                        'consultation_sheets',
-                                                        'consultation_sheets.id',
-                                                        'consultation_requests.consultation_sheet_id',
-                                                    )
-                                                    ->where('consultation_sheets.subscription_id', $subscription_id)
-                                                    ->whereDate('consultation_requests.created_at', $day)
-                                                    ->where('consultation_request_tarif.tarif_id', $tarif->id)
-                                                    ->count();
-                                                if ($subscription_id == 1) {
-                                                    $n2 = DB::table('outpatient_bill_tarif')
-                                                        ->join(
-                                                            'outpatient_bills',
-                                                            'outpatient_bills.id',
-                                                            'outpatient_bill_tarif.outpatient_bill_id',
-                                                        )
-                                                        ->whereDate('outpatient_bills.created_at', $day)
-                                                        ->where('outpatient_bill_tarif.tarif_id', $tarif->id)
-                                                        ->count();
-                                                }
-                                                $total = $n1 + $n2;
-                                            } else {
-                                                $n1 = DB::table('consultation_request_tarif')
-                                                    ->join(
-                                                        'consultation_requests',
-                                                        'consultation_requests.id',
-                                                        'consultation_request_tarif.consultation_request_id',
-                                                    )
-                                                    ->whereDate('consultation_requests.created_at', $day)
-                                                    ->where('consultation_request_tarif.tarif_id', $tarif->id)
-                                                    ->count();
-                                                $n2 = DB::table('outpatient_bill_tarif')
-                                                    ->join(
-                                                        'outpatient_bills',
-                                                        'outpatient_bills.id',
-                                                        'outpatient_bill_tarif.outpatient_bill_id',
-                                                    )
-                                                    ->whereDate('outpatient_bills.created_at', $day)
-                                                    ->where('outpatient_bill_tarif.tarif_id', $tarif->id)
-                                                    ->count();
-                                                $total = $n1 + $n2;
-                                            }
+                                            $n1 = App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByDay(
+                                                $subscription_id,
+                                                $r_day,
+                                                $tarif->id,
+                                            );
+                                            $n2 = App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByDay(
+                                                $r_day,
+                                                $tarif->id,
+                                            );
+                                            $total = $n1 + $n2;
                                         @endphp
                                         <td>
                                             {{ $total == 0 ? '-' : $total }}
                                         </td>
-                                        @php
-                                            $counter += $total;
-                                        @endphp
                                     @endforeach
-
+                                    @php
+                                        $item_count =
+                                            App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByMonth(
+                                                $subscription_id,
+                                                $month_name,
+                                                $tarif->id,
+                                            ) +
+                                            App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByMonth(
+                                                $month_name,
+                                                $tarif->id,
+                                            );
+                                        $total_count += $item_count;
+                                    @endphp
+                                    <td class="text-center bg-danger">{{ $item_count }}</td>
                                 </tr>
                             @endforeach
 
                         </tbody>
                     </table>
                 </div>
-                <H2>Nombre: {{ $counter }}</H2>
+                <H2>Nombre: {{ $total_count }}</H2>
             </div>
         </div>
     </x-content.main-content-page>

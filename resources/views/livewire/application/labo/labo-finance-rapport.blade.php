@@ -9,7 +9,7 @@
     <x-content.main-content-page>
         <div class="card card-outline card-primary">
             <div class="card-body">
-                <table class="table table-striped">
+                <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr>
                             <th>NAME</th>
