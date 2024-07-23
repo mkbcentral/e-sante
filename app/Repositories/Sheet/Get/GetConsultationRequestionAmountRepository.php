@@ -365,7 +365,8 @@ class GetConsultationRequestionAmountRepository
 
         $amount = 0;
         foreach ($consultationRequests as  $consultationRequest) {
-            if ($consultationRequest->currency_id != null && $consultationRequest->currency->name == "CDF") {
+            if ($consultationRequest->currency_id != null
+            && $consultationRequest->currency->name == "CDF") {
                 $amount += $consultationRequest->getTotalInvoiceCDF();
             } else {
                 $amount += $consultationRequest?->consultationRequestCurrency?->amount_cdf;
