@@ -105,7 +105,7 @@
             <tbody>
                 @foreach ($consultationRequests as $index => $consultationRequest)
                     <tr style="cursor: pointer;" id="row1" class="border border-dark">
-                        <td class="text-center">{{ $consultationRequest->id }}</td>
+                        <td class="text-center">{{ $consultationRequest->request_number }}</td>
                         <td>{{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}</td>
                         <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                         <td>{{ $consultationRequest->consultationSheet->name }}</td>
@@ -144,7 +144,7 @@
                 @endforeach
                 <tr class="text-uppercase text-bold h4">
                     <td colspan="4" class="text-right">Total</td>
-                    <td class="text-right">{{ app_format_number(293, 1) }}</td>
+                    <td class="text-right">{{ app_format_number($total_cons_usd, 1) }}</td>
                     <td class="text-right">{{ app_format_number($total_cons_cdf, 1) }}</td>
                 </tr>
             </tbody>
