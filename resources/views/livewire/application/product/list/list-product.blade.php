@@ -106,7 +106,7 @@
                                 <tr style="cursor: pointer;"
                                     class="{{ $product->price == 0 ? 'bg-warning ' : '' }}
                                         {{ $product?->name == $products[$index + 1]?->name ? 'bg-dark ' : '' }} ">
-                                    <td class="text-center">
+                                    <td class="text-center {{ $product->getGlobalStock()==0?'bg-danger':'' }}">
                                         {{ $index + 1 }}
                                     </td>
                                     <td class="text-uppercase {{ $is_trashed == true ? 'bg-warning ' : '' }}">

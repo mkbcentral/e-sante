@@ -123,7 +123,7 @@ class Product extends Model
     public function getNumberProductInvoice(): int|float
     {
         $currentDate = Carbon::now();
-        $startDate = $currentDate->copy()->startOfMonth()->addDays(13); //Retourner la 14;
+        $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
         return ProductInvoice::query()
             ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
             ->join('users', 'users.id', 'product_invoices.user_id')
@@ -132,7 +132,7 @@ class Product extends Model
             ->where('product_invoices.user_id', Auth::id())
             ->where('users.source_id', Auth::user()->source->id)
             ->where('product_invoices.is_valided', true)
-            ->whereDate('product_invoices.created_at', '>=', $startDate)
+            ->where('product_invoices.created_at', '>=', $startDate)
             ->sum('product_product_invoice.qty');
     }
     /**
@@ -142,7 +142,7 @@ class Product extends Model
     public function getNumberProducByConsultationRequest(): int|float
     {
         $currentDate = Carbon::now();
-        $startDate = $currentDate->copy()->startOfMonth()->addDays(13); //Retourner la 14;
+        $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
         return ConsultationRequest::query()
             ->join(
                 'consultation_request_product',
@@ -303,9 +303,9 @@ class Product extends Model
     public function getGlobalStock()
     {
         if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            return $this->getStockPharma();
+            return $this->getStockPharma()<=0?0: $this->getStockPharma();
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            return  $this->getStockDedpotQuantity();
+            return  $this->getStockDedpotQuantity()<=0?0: $this->getStockDedpotQuantity();
         }
     }
 }
