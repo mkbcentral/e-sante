@@ -45,10 +45,14 @@ class ListProductToAddInRequisition extends Component
     public function render()
     {
         return view('livewire.application.product.list.list-product-to-add-in-requisition', [
-            'products' => GetProductRepository::getProductListExceptFamilyAndCategory(
+            'products' => GetProductRepository::getList(
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,
+                null,
+                null,
+                50,
+                false
             )
         ]);
     }
