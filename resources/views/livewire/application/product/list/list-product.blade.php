@@ -27,33 +27,28 @@
                             <x-widget.list-product-family-widget wire:model.live="family_id" :error="'family_id'" />
                         </div>
                     </div>
-                    <div class="d-flex align-content-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                                Exporter
-                            </button>
-                            <div class="dropdown-menu" role="menu" style="">
-                                <a class="dropdown-item" target="_blank" href="{{ route('product.list.price.print') }}">
-                                    <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste de prix
-                                </a>
-                                <a class="dropdown-item" href="#" wire:click='exportStock'>
-                                    <i class="fas fa-file-excel    "></i> Stock sur Excel
-                                </a>
-                            </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            Exporter
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" target="_blank" href="{{ route('product.list.price.print') }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Liste de prix
+                            </a>
+                            <a class="dropdown-item" href="#" wire:click='exportStock'>
+                                <i class="fas fa-file-excel    "></i> Stock sur Excel
+                            </a>
                         </div>
-                        <x-form.button class="btn-secondary mr-2 btn-sm"
+                    </div>
+                    <div class="d-flex align-content-center">
+                        <x-form.button class="btn-secondary "
                             wire:click="openCreationModal"><x-icons.icon-plus-circle />
                             Nouveau produit</x-form.button>
-                        <x-form.button class="btn-info btn-sm" wire:click="getTrached">
-                            <i class="{{ $is_trashed == true ? 'fas fa-sync ' : 'fas fa-box-open' }}  "></i>
-                            {{ $is_trashed == true ? 'Actualiser' : ' Mon archive' }}
-                        </x-form.button>
-
                     </div>
                 </div>
-                <table class="table table-bordered table-sm mt-0">
+                <table class="table table-bordered table-sm">
                     <thead class="bg-pink text-white">
                         <tr class="">
                             <th>#</th>
@@ -106,7 +101,9 @@
                                 <tr style="cursor: pointer;"
                                     class="{{ $product->price == 0 ? 'bg-warning ' : '' }}
                                         {{ $product?->name == $products[$index + 1]?->name ? 'bg-dark ' : '' }} ">
-                                    <td class="text-center {{ $product->getGlobalStock()==0?'bg-danger':'' }}">
+                                    <td class="text-center {{ $product->getGlobalStock() == 0 ? 'bg-danger' : '' }}"
+                                        @if ($product->getGlobalStock() == 0) data-toggle="tooltip"
+                                        data-placement="top"title="Stock vide" @endif>
                                         {{ $index + 1 }}
                                     </td>
                                     <td class="text-uppercase {{ $is_trashed == true ? 'bg-warning ' : '' }}">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\Product\Get\GetProductRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class Product extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'butch_number',
         'initial_quantity',
@@ -29,22 +29,25 @@ class Product extends Model
         'is_specialty',
         'source_id',
         'is_trashed',
-        'created_by',
-        'updated_by'
     ];
 
     protected $casts = [
         'expiration_date' => 'datetime'
     ];
 
+    public function getExpirationDateAttribute($value): string
+    {
+        return Carbon::parse($value)->toFormattedDate();
+    }
+
     public function source(): BelongsTo
     {
-        return $this->belongsTo(Source::class);
+        return $this->belongsTo(Source::class,'source_id');
     }
 
     public function hospital(): BelongsTo
     {
-        return $this->belongsTo(Hospital::class);
+        return $this->belongsTo(Hospital::class,'hospital_id');
     }
 
     public function productFamily(): BelongsTo
@@ -61,14 +64,21 @@ class Product extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
-    public function getExpirationDateAttribute($value): string
-    {
-        return Carbon::parse($value)->toFormattedDate();
-    }
+
 
     public function productInvoices(): BelongsToMany
     {
         return $this->belongsToMany(ProductInvoice::class)->withPivot('id', 'qty');
+    }
+
+    /**
+     * The consultationRequests that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function consultationRequests(): BelongsToMany
+    {
+        return $this->belongsToMany(ConsultationRequest::class)->withPivot('id', 'qty', 'dosage');
     }
 
     /**
@@ -117,12 +127,25 @@ class Product extends Model
     }
 
     /**
+     * Sortie sur toutes les factures en cash périodiquement
+     * Nous allons réinitiliser les  à partir du 14 juillet
+     */
+    public function getNumberProductInvoiceByPeriod(?string $date, ?string $startDate, ?string $endDate): int|float
+    {
+        return GetProductRepository::getNumberProductOutputOnProductInvoice(
+            $this->id,
+            $date,
+            $startDate,
+            $endDate
+        );
+    }
+
+     /**
      * Sortie sur toutes les factures en cash
      * Nous allons réinitiliser les  à partir du 14 juillet
      */
     public function getNumberProductInvoice(): int|float
     {
-        $currentDate = Carbon::now();
         $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
         return ProductInvoice::query()
             ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
@@ -141,7 +164,6 @@ class Product extends Model
      */
     public function getNumberProducByConsultationRequest(): int|float
     {
-        $currentDate = Carbon::now();
         $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
         return ConsultationRequest::query()
             ->join(
@@ -157,12 +179,10 @@ class Product extends Model
             ->where('consultation_request_product.product_id', $this->id)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
-            ->where('consultation_request_product.created_by', Auth::id())
-            ->where('consultation_requests.is_hospitalized', false)
             ->whereDate('consultation_requests.created_at', '>=', $startDate)
             ->sum('consultation_request_product.qty');
-    }
 
+    }
     /**
      * Reoutner la quantité requisitionnée par service
      * @return int|float
@@ -176,6 +196,42 @@ class Product extends Model
             ->where('product_requisitions.source_id', Auth::user()->source_id)
             ->where('product_requisitions.user_id', Auth::id())
             ->where('product_requisitions.agent_service_id', Auth::user()->agent_service_id)
+            ->where('product_requisition_products.product_id', $this->id)
+            ->where('product_requisitions.is_valided', true)
+            ->get();
+        foreach ($inputs as $input) {
+            $quantity += $input->quantity;
+        }
+        return $quantity;
+    }
+    /**
+     * Approvisionnenet stock principale à partir du 15/07/2024
+     * @return int|float
+     */
+    public function getNumberProductSupply(): int|float
+    {
+        $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
+        return ProductSupply::query()
+            ->join('product_supply_products', 'product_supply_products.product_supply_id', 'product_supplies.id')
+            ->join('users', 'users.id', 'product_supplies.user_id')
+            ->where('product_supply_products.product_id', $this->id)
+            ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('product_supplies.user_id', Auth::id())
+            ->where('product_supplies.created_at', '>=', $startDate)
+            ->where('product_supplies.is_valided', true)
+            ->sum('product_supply_products.quantity');
+    }
+    /**
+     * Reoutner la quantité requisitionnée pour tout les service
+     * @return int|float
+     */
+    public function getRequisitioFoAllServicesProducts(): int|float
+    {
+        $quantity = 0;
+        $inputs = ProductRequisitionProduct::query()
+            ->join('products', 'products.id', 'product_requisition_products.product_id')
+            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
+            ->whereIn('product_requisitions.source_id', [Source::GOLF_ID, Source::VILLE_ID])
             ->with(['product'])
             ->where('product_requisition_products.product_id', $this->id)
             ->where('product_requisitions.is_valided', true)
@@ -185,6 +241,8 @@ class Product extends Model
         }
         return $quantity;
     }
+
+
     /**
      * Retouner la quantité disponible d'un produit à la pharmacie
      * (QuantitIni+QuantiteReq) - '(SortieAmbu+SortieFactAbn+ortieFactHost)
@@ -209,47 +267,6 @@ class Product extends Model
     public function getStockPharma(): int|float
     {
         return ($this->getInitQuantity() + $this->getInputPharmacy()) - $this->getOutputPharmancy();
-    }
-
-
-    /**
-     * Approvisionnenet stock principale à partir du 15/07/2024
-     * @return int|float
-     */
-    public function getNumberProductSupply(): int|float
-    {
-        //$currentDate = Carbon::now();
-        //$startDate = $currentDate->copy()->startOfMonth()->addDays(13); //Retourner la 14;
-        return ProductSupply::query()
-            ->join('product_supply_products', 'product_supply_products.product_supply_id', 'product_supplies.id')
-            ->join('users', 'users.id', 'product_supplies.user_id')
-            ->where('product_supply_products.product_id', $this->id)
-            ->where('users.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('product_supplies.user_id', Auth::id())
-            //->whereMonth('product_supplies.created_at', '>=', $startDate)
-            ->where('product_supplies.is_valided', true)
-            ->sum('product_supply_products.quantity');
-    }
-
-    /**
-     * Reoutner la quantité requisitionnée pour tout les service
-     * @return int|float
-     */
-    public function getRequisitioFoAllServicesProducts(): int|float
-    {
-        $quantity = 0;
-        $inputs = ProductRequisitionProduct::query()
-            ->join('products', 'products.id', 'product_requisition_products.product_id')
-            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
-            ->whereIn('product_requisitions.source_id', [Source::GOLF_ID,Source::VILLE_ID])
-            ->with(['product'])
-            ->where('product_requisition_products.product_id', $this->id)
-            ->where('product_requisitions.is_valided', true)
-            ->get();
-        foreach ($inputs as $input) {
-            $quantity += $input->quantity;
-        }
-        return $quantity;
     }
 
     /**

@@ -29,6 +29,7 @@ use App\Livewire\Application\Navigation\Mainnavigation;
 use App\Livewire\Application\Sheet\MainSheet;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Application\Patient\FolderPatient;
+use App\Livewire\Application\Product\Invoice\List\ListProductStockForInvoicePage;
 use App\Livewire\Application\Product\Invoice\MainProductInvoice;
 use App\Livewire\Application\Product\Invoice\MainProductInvoiceReport;
 use App\Livewire\Application\Tarification\TarifView;
@@ -54,7 +55,7 @@ use App\Livewire\Application\Sheet\MainConsultationRequestHospitalize;
 |
 */
 
-Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function () {
+Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function () {
     Route::get('/', AppNavigationController::class)->name('main');
     Route::get('/dashboard', MainDashboard::class)->name('dashboard');
     Route::get('/sheet', MainSheet::class)->name('sheet');
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function 
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');
     Route::get('product/list', ListProduct::class)->name('product.list');
     Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
+    Route::get('product/invoice/stock', ListProductStockForInvoicePage::class)->name('product.invoice.stock');
     Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
     Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
@@ -79,13 +81,13 @@ Route::middleware(['auth', 'verified','user.redirect.checker'])->group(function 
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
 
-    Route::get('finance/payroll/',PayrollView::class)->name('payroll');
+    Route::get('finance/payroll/', PayrollView::class)->name('payroll');
     Route::get('finance/payroll/month', PayrollByMonthView::class)->name('payroll.month');
-    Route::get('finance/expense-voucher/',ExpenseVoucherView::class)->name('expense.voucher');
+    Route::get('finance/expense-voucher/', ExpenseVoucherView::class)->name('expense.voucher');
     Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
-    Route::get('finance/rapport/by-subscription/{subscription}/{month}',RapportFinanceBySubscriptionView::class)->name('finance.rapport.by.subscription');
+    Route::get('finance/rapport/by-subscription/{subscription}/{month}', RapportFinanceBySubscriptionView::class)->name('finance.rapport.by.subscription');
 
-    Route::get('labo',MainLabo::class)->name('labo.main');
+    Route::get('labo', MainLabo::class)->name('labo.main');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
@@ -140,15 +142,12 @@ Route::prefix('print')->group(function () {
         //labo monthly release
         Route::get('labo-monthly-releases/{month}/{subscription_id}', 'printLaboMonthlyReleases')->name('print.labo.monthly.releases');
         Route::get('labo-finance-rapport', 'printLaboMonthlyReleases')->name('print.labo.finance.repport');
-
     });
 
-    Route::controller(PayrollPrintController::class)->group(function(){
+    Route::controller(PayrollPrintController::class)->group(function () {
         //payroll
         Route::get('payroll/{id}', 'printPayroll')->name('print.payroll');
         Route::get('payroll-month/{month}/{source}/{category}/{currency}/', 'printPayrollByMonth')->name('print.payroll.month');
         Route::get('payroll-date/{date}/{source}/{category}/{currency}/', 'printPayrollByDate')->name('print.payroll.date');
     });
 });
-
-

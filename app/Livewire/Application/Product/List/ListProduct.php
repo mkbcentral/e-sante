@@ -134,7 +134,7 @@ class ListProduct extends Component
     public function render()
     {
         return view('livewire.application.product.list.list-product', [
-            'products' => GetProductRepository::getProductList(
+            'products' => GetProductRepository::getList(
                 $this->q,
                 $this->sortBy,
                 $this->sortAsc,

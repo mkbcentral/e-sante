@@ -62,7 +62,8 @@ class UserRedirectChecker
                 'product.purcharse',
                 'product.finance.rapport',
                 'product.invoice.report',
-                'product.requisition'
+                'product.requisition',
+                'product.invoice.stock',
             ],
             'Caisse'=>[
                 'main',
