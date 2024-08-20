@@ -59,12 +59,11 @@ class ConsultationRequestPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            //->where('consultation_requests.has_a_shipping_ticket', false)
             ->orderBy('consultation_sheets.name', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', 1)
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->get();

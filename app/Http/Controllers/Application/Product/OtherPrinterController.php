@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Application\Product;
 use App\Http\Controllers\Controller;
 use App\Livewire\Helpers\Date\DateFormatHelper;
 use App\Models\CategoryTarif;
-use App\Models\Payroll;
+
 use App\Models\Subscription;
 use App\Models\Tarif;
 use Illuminate\Support\Facades\App;
