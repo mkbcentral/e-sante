@@ -44,11 +44,16 @@ class ListProductWithItemAdding extends Component
     {
         return view('livewire.application.product.list.list-product-with-item-adding',
             [
-                'products' => GetProductRepository::getProductListExceptFamilyAndCategory(
+                'products'
+                => GetProductRepository::getList(
                     $this->q,
                     $this->sortBy,
                     $this->sortAsc,
-                )
+                    null,
+                    null,
+                    20,
+                    false
+                ),
             ]
         );
     }
