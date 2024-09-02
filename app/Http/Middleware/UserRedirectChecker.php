@@ -16,7 +16,6 @@ class UserRedirectChecker
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(auth()->user()->roles()->pluck('name'));
         $cucrrentRouteName = Route::currentRouteName();
         if (in_array(
             $cucrrentRouteName,

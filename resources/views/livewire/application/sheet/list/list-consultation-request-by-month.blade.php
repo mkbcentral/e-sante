@@ -20,27 +20,37 @@
                 </div>
                 <div class="mr-4" style="margin-right: 40px">
                     <x-others.dropdown title="Impressions" icon="fa fa-print">
-                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Toute les factures'
-                            href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"
-                            target='_blank' />
-                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Relevé des factures'
-                            href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}" target='_blank' />
-                        <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Liste sans bon'
-                            href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}"
-                            target='_blank' />
+                        @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                            <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Toute les factures'
+                                href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"
+                                target='_blank' />
+                            <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Relevé des factures'
+                                href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}"
+                                target='_blank' />
+                        @elseif (Auth::user()->roles->pluck('name')->contains('Labo'))
+                            <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Rapport labo'
+                                href="{{ route('list.labo.month', [$selectedIndex, $month_name]) }}" target='_blank' />
+                        @else
+                            <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Liste sans bon'
+                                href="{{ route('consultation.request.lits.has_a_shipping_ticket', [$selectedIndex, $month_name]) }}"
+                                target='_blank' />
+                        @endif
                     </x-others.dropdown>
-                    <x-others.dropdown title="Autes options" icon="fas fa-cogs">
-                        <x-others.dropdown-link iconLink='fas fa-list-ol' labelText='Numéroter'
-                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                            wire:click='fixNumerotation' />
-                        <x-others.dropdown-link iconLink='fas fa-dollar-sign' labelText='Fixer taux'
-                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                            wire:click='fixWithCurrentRate' />
-                        <x-others.dropdown-link iconLink="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
-                            labelText="{{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}"
-                            wire:confirm="Est-vous sur de réaliser l'opération" href="#"
-                            wire:click='closeBilling' />
-                    </x-others.dropdown>
+                    @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                        <x-others.dropdown title="Autes options" icon="fas fa-cogs">
+                            <x-others.dropdown-link iconLink='fas fa-list-ol' labelText='Numéroter'
+                                wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='fixNumerotation' />
+                            <x-others.dropdown-link iconLink='fas fa-dollar-sign' labelText='Fixer taux'
+                                wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='fixWithCurrentRate' />
+                            <x-others.dropdown-link
+                                iconLink="fa {{ $isClosing == true ? 'fa-times' : 'fa-check-double' }}"
+                                labelText="{{ $isClosing == true ? 'Annuler clorture' : 'Cloturer' }}"
+                                wire:confirm="Est-vous sur de réaliser l'opération" href="#"
+                                wire:click='closeBilling' />
+                        </x-others.dropdown>
+                    @endif
                 </div>
             </div>
             <div class="d-flex justify-content-center pb-2">

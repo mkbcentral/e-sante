@@ -71,7 +71,7 @@ class CategoryTarif extends Model
         $price = 0;
         if ($consultationRequest->consultationSheet->subscription->is_subscriber) {
             $price=
-            
+
             ($tarif->subscriber_price * $qty) * $consultationRequest->rate->rate;
         } else {
             $price = ($tarif->price_private * $qty) * $consultationRequest->rate->rate;

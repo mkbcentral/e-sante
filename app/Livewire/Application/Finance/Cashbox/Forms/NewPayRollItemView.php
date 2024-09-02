@@ -21,7 +21,7 @@ class NewPayRollItemView extends Component
     public $agent_service_id;
     #[Rule('required', message: 'Nom obligatoire')]
     public $name;
-    #[Rule('required', message: 'Cateorie obligatoire')]
+    #[Rule('required', message: 'Montant obligatoire')]
     #[Rule('numeric', message: 'Format numeric invalide')]
     public $amount;
 

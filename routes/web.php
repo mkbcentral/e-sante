@@ -103,6 +103,7 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
 //Printing route
 Route::prefix('print')->group(function () {
     Route::controller(OutpatientBillPrinterController::class)->group(function () {
+
         Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
         Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
         Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
@@ -121,8 +122,13 @@ Route::prefix('print')->group(function () {
         Route::get('consultation-request-private-/{id}', 'printPrivateInvoiceByDate')->name('consultation.request.private.invoice');
         Route::get('consultation-requests-has-not-shipping-ticket/{subscriptionId}/{month}', 'printConsultationRequestHasNotShippingTicket')
             ->name('consultation.request.lits.has_a_shipping_ticket');
-        Route::get('list-invoices-by-monthj/{subscriptionId}/{month}', 'printListInvoicesByMonth')
+
+        Route::get('list-invoices-by-month/{subscriptionId}/{month}', 'printListInvoicesByMonth')
             ->name('list.invoices.month');
+
+        Route::get('list-labo-by-month/{subscriptionId}/{month}', 'printListILaboByMonth')
+        ->name('list.labo.month');
+
         Route::get('monthly-frequentation/{month?}/{year?}', 'printMonthlyFrequentation')
             ->name('monthly.frequentation');
         Route::get('monthly-frequentation-hospitalize/{month?}/{year?}', 'printMonthlyFrequentationHospitalize')

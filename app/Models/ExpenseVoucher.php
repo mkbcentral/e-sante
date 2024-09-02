@@ -17,7 +17,8 @@ class ExpenseVoucher extends Model
         'amount',
         'is_valided',
         'agent_service_id',
-        'category_spend_money'
+        'category_spend_money_id',
+        'currency_id'
     ];
 
     /**
@@ -38,5 +39,15 @@ class ExpenseVoucher extends Model
     public function categorySpendMoney(): BelongsTo
     {
         return $this->belongsTo(CategorySpendMoney::class, 'category_spend_money');
+    }
+
+    /**
+     * Get the currency that owns the ExpenseVoucher
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }
