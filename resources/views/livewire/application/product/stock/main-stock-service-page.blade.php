@@ -45,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($products->isEmpty())
+                        @if ($products == null)
                          <tr>
                                 <td colspan="8">
                                     <x-errors.data-empty />
