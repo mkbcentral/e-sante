@@ -45,7 +45,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $index => $product)
+                        @if ($products->isEmpty())
+                         <tr>
+                                <td colspan="8">
+                                    <x-errors.data-empty />
+                                </td>
+                            </tr>
+                        @else
+                         @foreach ($products as $index => $product)
                             <tr>
                                 <td class="text-center">{{ $index + 1 }}</td>
                                 <td>{{ $product->name }}</td>
@@ -70,6 +77,8 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @endif
+
                     </tbody>
                 </table>
             </div>
