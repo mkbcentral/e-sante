@@ -82,8 +82,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4 d-flex justify-content-center align-items-center">
+            @if ($products != null)
+                <div class="mt-4 d-flex justify-content-center align-items-center">
                 {{ $products->links('livewire::bootstrap') }}</div>
+            @endif
+
         </div>
     </x-content.main-content-page>
     @push('js')
