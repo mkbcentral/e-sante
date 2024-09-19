@@ -26,6 +26,7 @@ use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
 use App\Livewire\Application\Labo\Screens\MakeLaboOutpatientBillView;
 use App\Livewire\Application\Localization\MainLocalization;
 use App\Livewire\Application\Navigation\Mainnavigation;
+use App\Livewire\Application\Product\Stock\MainStockServicePage;
 use App\Livewire\Application\Sheet\MainSheet;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Application\Patient\FolderPatient;
@@ -77,6 +78,8 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
     Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
     Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
     Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
+
+    Route::get('product/stock/service', MainStockServicePage::class)->name('product.stock.service');
 
     Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
     Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');

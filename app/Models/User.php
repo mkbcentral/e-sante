@@ -114,6 +114,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductSupply::class);
     }
+    /**
+     * Get the stockService associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function stockService(): HasOne
+    {
+        return $this->hasOne(related: StockService::class);
+    }
    /**
     * The mainMenus that belong to the User
     *

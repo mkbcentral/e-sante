@@ -3,14 +3,14 @@
          <div>
              <h5>#Invoice:{{ $productInvoice->number }}</h5>
              <h5>
-                 <i class="fa fa-user" aria-hidden="true"></i> {{ $productInvoice->client }}
+                 <i class="fa fa-user" aria-hidden="true"></i> Client: {{ $productInvoice->client }}
              </h5>
              <h5>
                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                 {{ $productInvoice->created_at->format('d/m/Y H:i:s') }}
+                 Date: {{ $productInvoice->created_at->format('d/m/Y') }}
              </h5>
              <h5>
-                 <i class="fa fa-user-check" aria-hidden="true"></i> {{ $productInvoice?->user?->name }}
+                 <i class="fa fa-user-check" aria-hidden="true"></i>Use: {{ $productInvoice?->user?->name }}
              </h5>
          </div>
          <div>

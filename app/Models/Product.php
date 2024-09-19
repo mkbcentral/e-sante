@@ -17,9 +17,6 @@ class Product extends Model
     protected $fillable = [
         'butch_number',
         'initial_quantity',
-        'pharma_g_stk',
-        'pharma_v_stk',
-        'pharma_klz_stk',
         'name',
         'price',
         'expiration_date',
@@ -38,6 +35,15 @@ class Product extends Model
     public function getExpirationDateAttribute($value): string
     {
         return Carbon::parse($value)->toFormattedDate();
+    }
+    /**
+     * The stockServices that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stockServices(): BelongsToMany
+    {
+        return $this->belongsToMany(related: StockService::class)->withPivot('id', 'qty', 'is_trashed');
     }
 
     public function source(): BelongsTo
@@ -109,8 +115,6 @@ class Product extends Model
     {
         return $this->hasMany(ProductRequisitionProduct::class);
     }
-
-
     /**
      * Quantité initial
      * @return mixed
@@ -125,7 +129,6 @@ class Product extends Model
             return  $this->initial_quantity;
         }
     }
-
     /**
      * Sortie sur toutes les factures en cash périodiquement
      * Nous allons réinitiliser les  à partir du 14 juillet
@@ -139,7 +142,6 @@ class Product extends Model
             $endDate
         );
     }
-
      /**
      * Sortie sur toutes les factures en cash
      * Nous allons réinitiliser les  à partir du 14 juillet
@@ -241,8 +243,6 @@ class Product extends Model
         }
         return $quantity;
     }
-
-
     /**
      * Retouner la quantité disponible d'un produit à la pharmacie
      * (QuantitIni+QuantiteReq) - '(SortieAmbu+SortieFactAbn+ortieFactHost)

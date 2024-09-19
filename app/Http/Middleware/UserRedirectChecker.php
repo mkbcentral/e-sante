@@ -41,7 +41,8 @@ class UserRedirectChecker
                 'product.invoice.report',
                 'users',
                 'tarification',
-                'finance.rapport.by.subscription'
+                'finance.rapport.by.subscription',
+                'labo.finance.rapport'
             ],
             'Reception' => [
                 'main',
@@ -63,6 +64,7 @@ class UserRedirectChecker
                 'product.invoice.report',
                 'product.requisition',
                 'product.invoice.stock',
+                'product.stock.service'
             ],
             'Caisse'=>[
                 'main',
