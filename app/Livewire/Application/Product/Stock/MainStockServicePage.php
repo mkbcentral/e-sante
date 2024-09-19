@@ -71,7 +71,7 @@ class MainStockServicePage extends Component
     public function render()
     {
         return view('livewire.application.product.stock.main-stock-service-page',[
-            'products'=> Auth::user()->stockService->products()
+            'products'=> Auth::user()->stockService?->products()
                 ->where('name','like','%'.$this->q.'%')
                 ->paginate(20)
         ]);
