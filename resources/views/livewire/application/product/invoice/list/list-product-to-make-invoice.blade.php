@@ -28,7 +28,7 @@
                 @foreach ($products as $index => $product)
                     <tr wire:key='{{ $product->id }}' class="cursor-hand" data-toggle="modal"
                         data-target="#form-quntity-product-invoice"
-                        wire:click='openFormQuantityModal({{ $product }})' data-toggle="tooltip"
+                        wire:click='openFormQuantityModal({{ $product }},{{  $product->getStockPharma($product->pivot->qty) }})' data-toggle="tooltip"
                         data-placement="top" title="({{ $product->name }})">
                         <td>{{ $index + 1 }}</td>
                         <td>{{ strlen($product->pivot->qty) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}

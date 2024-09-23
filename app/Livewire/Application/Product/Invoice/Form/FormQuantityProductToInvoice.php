@@ -21,10 +21,12 @@ class FormQuantityProductToInvoice extends Component
 
     public ?Product $product;
     public ?ProductInvoice $productInvoice;
-    public function getProduct(?Product $product,?ProductInvoice $productInvoice){
+    public $stockQty = 0;
+    public function getProduct(?Product $product,?ProductInvoice $productInvoice,$qty){
 
         $this->product = $product;
         $this->productInvoice =$productInvoice;
+        $this->stockQty = $qty;
     }
 
     public function addProductToInvoice()

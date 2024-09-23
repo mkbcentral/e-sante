@@ -47,10 +47,10 @@ class ListProductToMakeInvoice extends Component
     }
 
 
-    public function openFormQuantityModal(Product $product){
+    public function openFormQuantityModal(Product $product,$qty){
 
         $this->dispatch('open-form-quntity-product-invoice');
-        $this->dispatch('productInvoice', $product, $this->productInvoice);
+        $this->dispatch('productInvoice', $product, $this->productInvoice,$qty);
     }
 
     public function mount(?ProductInvoice $productInvoice){
