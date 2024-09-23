@@ -33,7 +33,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ strlen($product->pivot->qty) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
                         </td>
-                        <td class="{{ $product->getStockPharma() <= 5 ? 'bg-danger ' : '' }} text-center">
+                        <td class="{{ $product->getStockPharma($product->pivot->qty) <= 5 ? 'bg-danger ' : '' }} text-center">
                             {{ $product->getStockPharma($product->pivot->qty) <= 0 ? 0 : $product->getStockPharma($product->pivot->qty) }}</td>
                         <td class="text-right">{{ $product->created_at->format('d/M/Y') }}</td>
                     </tr>
