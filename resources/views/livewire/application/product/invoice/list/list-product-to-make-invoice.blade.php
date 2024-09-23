@@ -31,7 +31,7 @@
                         wire:click='openFormQuantityModal({{ $product }})' data-toggle="tooltip"
                         data-placement="top" title="({{ $product->name }})">
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ strlen($product->name) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
+                        <td>{{ strlen($product->pivot->qty) > 20 ? substr($product->name, 0, 20) . '...' : $product->name }}
                         </td>
                         <td class="{{ $product->getStockPharma() <= 5 ? 'bg-danger ' : '' }} text-center">
                             {{ $product->getStockPharma() <= 0 ? 0 : $product->getStockPharma() }}</td>

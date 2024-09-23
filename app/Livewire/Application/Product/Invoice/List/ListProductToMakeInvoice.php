@@ -5,6 +5,7 @@ namespace App\Livewire\Application\Product\Invoice\List;
 use App\Models\Product;
 use App\Models\ProductInvoice;
 use App\Repositories\Product\Get\GetProductRepository;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -59,15 +60,12 @@ class ListProductToMakeInvoice extends Component
     public function render()
     {
         return view('livewire.application.product.invoice.list.list-product-to-make-invoice',[
-            'products'=> GetProductRepository::getList(
-                $this->q,
-                $this->sortBy,
-                $this->sortAsc,
-                null,
-                null,
-                25,
-                false
-            )
+            'products'=>
+            Auth::user()->stockService?->products()
+                ->where('name', 'like', '%' . $this->q . '%')
+                ->wherePivot('is_trashed', false)
+                ->orderBy('name', 'ASC')
+                ->paginate(30)
         ]);
     }
 }
