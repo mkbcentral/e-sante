@@ -64,9 +64,9 @@
                                         {{ $product->pivot->qty }}
                                     @endif
                                 </td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">{{ $product->pivot->qty }}</td>
+                                <td class="text-center">{{ $product->getGlobalInput() }}</td>
+                                <td class="text-center">{{ $product->getGlobalOutput() }}</td>
+                                <td class="text-center">{{ $product->getGlobalStock( $product->pivot->qty) }}</td>
                                 <td class="text-right">{{ $product->price }} Fc</td>
                                 <td class="text-center">
                                     <x-form.icon-button :icon="'fa fa-edit '" class="btn-sm btn-info"

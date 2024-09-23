@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -48,12 +49,12 @@ class Product extends Model
 
     public function source(): BelongsTo
     {
-        return $this->belongsTo(Source::class,'source_id');
+        return $this->belongsTo(Source::class, 'source_id');
     }
 
     public function hospital(): BelongsTo
     {
-        return $this->belongsTo(Hospital::class,'hospital_id');
+        return $this->belongsTo(Hospital::class, 'hospital_id');
     }
 
     public function productFamily(): BelongsTo
@@ -142,22 +143,21 @@ class Product extends Model
             $endDate
         );
     }
-     /**
+
+    /**
      * Sortie sur toutes les factures en cash
      * Nous allons réinitiliser les  à partir du 14 juillet
      */
     public function getNumberProductInvoice(): int|float
     {
         $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
-        return ProductInvoice::query()
-            ->join('product_product_invoice', 'product_product_invoice.product_invoice_id', 'product_invoices.id')
-            ->join('users', 'users.id', 'product_invoices.user_id')
+        $date = Auth::user()?->stockService?->created_at;
+        $date == null ? $startDate = date(format: 'Y-m-d') : $startDate = Carbon::create($date?->format('Y'), $date?->format('m'), $date->format('d'));
+        return DB::table(table: 'product_product_invoice')
+            ->join('product_invoices', 'product_invoices.id', 'product_product_invoice.product_invoice_id')
             ->where('product_product_invoice.product_id', $this->id)
-            ->where('product_invoices.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('product_invoices.user_id', Auth::id())
-            ->where('users.source_id', Auth::user()->source->id)
-            ->where('product_invoices.is_valided', true)
-            ->where('product_invoices.created_at', '>=', $startDate)
+            ->where('product_product_invoice.created_at', '>=', $startDate)
             ->sum('product_product_invoice.qty');
     }
     /**
@@ -167,44 +167,35 @@ class Product extends Model
     public function getNumberProducByConsultationRequest(): int|float
     {
         $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
-        return ConsultationRequest::query()
-            ->join(
-                'consultation_request_product',
-                'consultation_request_product.consultation_request_id',
-                'consultation_requests.id'
-            )
-            ->join(
-                'consultation_sheets',
-                'consultation_sheets.id',
-                'consultation_requests.consultation_sheet_id'
-            )
-            ->where('consultation_request_product.product_id', $this->id)
-            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
-            ->whereDate('consultation_requests.created_at', '>=', $startDate)
-            ->sum('consultation_request_product.qty');
-
+        $date = Auth::user()?->stockService?->created_at;
+        $date == null ? $startDate = date('Y-m-d') : $startDate = Carbon::create($date?->format('Y'), $date?->format('m'), $date->format('d'));
+        return DB::table('consultation_request_product')
+            ->where('created_by', Auth::id())
+            ->where('product_id', $this->id)
+            ->where('created_at', '>=', $startDate)
+            ->sum('qty');
     }
+
+
     /**
      * Reoutner la quantité requisitionnée par service
      * @return int|float
      */
     public function getRequisitionByServiceProducts(): int|float
     {
-        $quantity = 0;
-        $inputs = ProductRequisitionProduct::query()
-            ->join('products', 'products.id', 'product_requisition_products.product_id')
-            ->join('product_requisitions', 'product_requisitions.id', 'product_requisition_products.product_requisition_id')
-            ->where('product_requisitions.source_id', Auth::user()->source_id)
+        $startDate = Carbon::create(2024, 7, 14); //Retourner la 14;
+        $date = Auth::user()?->stockService?->created_at;
+        $date == null ? $startDate = date(format: 'Y-m-d') : $startDate = Carbon::create($date?->format('Y'), $date?->format('m'), $date->format('d'));
+        return DB::table(table: 'product_requisition_products')
+            ->join(
+                'product_requisitions',
+                'product_requisitions.id',
+                operator: 'product_requisition_products.product_requisition_id'
+            )
+            ->where('product_requisition_products.product_id', operator: $this->id)
             ->where('product_requisitions.user_id', Auth::id())
-            ->where('product_requisitions.agent_service_id', Auth::user()->agent_service_id)
-            ->where('product_requisition_products.product_id', $this->id)
-            ->where('product_requisitions.is_valided', true)
-            ->get();
-        foreach ($inputs as $input) {
-            $quantity += $input->quantity;
-        }
-        return $quantity;
+            ->where('product_requisition_products.created_at', '>=', $startDate)
+            ->sum('product_requisition_products.quantity');
     }
     /**
      * Approvisionnenet stock principale à partir du 15/07/2024
@@ -253,10 +244,14 @@ class Product extends Model
         return ($this->getRequisitionByServiceProducts());
     }
 
+    /**
+     * Les sorties de la pharmacie et autres service
+     * @return int|float
+     */
     public function getOutputPharmancy(): int|float
     {
 
-        return $this->getNumberProductInvoice()+$this->getNumberProducByConsultationRequest();
+        return $this->getNumberProductInvoice() + $this->getNumberProducByConsultationRequest();
     }
     /**
      * Stock disponible de la pharmacie
@@ -264,16 +259,17 @@ class Product extends Model
      * Summary of getStockPharma
      * @return int|float
      */
-    public function getStockPharma(): int|float
+    public function getStockPharma(int $initQty): int|float
     {
-        return ($this->getInitQuantity() + $this->getInputPharmacy()) - $this->getOutputPharmancy();
+        return ($initQty + $this->getInputPharmacy()) - $this->getOutputPharmancy();
     }
 
     /**
      * Quntité entrée en stock
      * @return int|float
      */
-    public function getInputStock():int|float{
+    public function getInputStock(): int|float
+    {
         return ($this->getNumberProductSupply());
     }
 
@@ -294,35 +290,50 @@ class Product extends Model
      */
     public function getStockDedpotQuantity(): int|float
     {
-        return ($this->getInitQuantity() + $this->getInputStock())-$this->getOutputStock();
+        return ($this->getInitQuantity() + $this->getInputStock()) - $this->getOutputStock();
     }
 
+    /**
+     * Quantité total des entrées
+     * @return float|int
+     */
     public function getGlobalInput()
     {
+        $qty = 0;
         if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            return $this->getInputPharmacy();
+            $qty= $this->getInputPharmacy();
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            return  $this->getInputStock();
+            $qty=  $this->getInputStock();
         }
+        return $qty;
     }
-
+    /**
+     * Quantité total des sorties
+     * @return float|int
+     */
     public function getGlobalOutput()
     {
+        $qty = 0;
         if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            return $this->getOutputPharmancy();
+            $qty= $this->getOutputPharmancy();
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            return  $this->getOutputStock();
+            $qty=  $this->getOutputStock();
         }
+        return $qty;
     }
-
-
-
-    public function getGlobalStock()
+    /**
+     * Stock total des produits
+     * @param int $initQty
+     * @return float|int
+     */
+    public function getGlobalStock(int $initQty=0)
     {
+        $qty=0;
         if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            return $this->getStockPharma()<=0?0: $this->getStockPharma();
+            $qty= $this->getStockPharma($initQty) <= 0 ? 0 : $this->getStockPharma($initQty);
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            return  $this->getStockDedpotQuantity()<=0?0: $this->getStockDedpotQuantity();
+            $qty=  $this->getStockDedpotQuantity() <= 0 ? 0 : $this->getStockDedpotQuantity();
         }
+        return $qty;
     }
 }

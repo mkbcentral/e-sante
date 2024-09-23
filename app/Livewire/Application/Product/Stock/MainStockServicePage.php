@@ -59,7 +59,15 @@ class MainStockServicePage extends Component
 
     public function delete($id){
         try {
-            MakeQueryBuilderHelper::delete('product_stock_service','id',$id);
+            MakeQueryBuilderHelper::update(
+                'product_stock_service',
+                'product_id',
+                $id,
+                [
+                    'is_trashed' => true
+                ]
+            );
+            //MakeQueryBuilderHelper::delete('product_stock_service','id',$id);
         } catch (\Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
@@ -73,6 +81,8 @@ class MainStockServicePage extends Component
         return view('livewire.application.product.stock.main-stock-service-page',[
             'products'=> Auth::user()->stockService?->products()
                 ->where('name','like','%'.$this->q.'%')
+                ->wherePivot('is_trashed',false)
+                ->orderBy('name','ASC')
                 ->paginate(20)
         ]);
     }

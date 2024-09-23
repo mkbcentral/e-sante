@@ -105,8 +105,14 @@ class MedicalPrescription extends Component
 
     }
 
+    /**
+     * Summary of saveData
+     * @param array $item
+     * @return void
+     */
     public function saveData(array $item): void
     {
+        //dd(Auth::id());
         MakeQueryBuilderHelper::create('consultation_request_product', [
             'consultation_request_id' => $this->consultationRequest->id,
             'product_id' => $item['product_id'],
