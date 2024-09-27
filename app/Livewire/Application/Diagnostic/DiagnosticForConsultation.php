@@ -5,7 +5,6 @@ namespace App\Livewire\Application\Diagnostic;
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ConsultationRequest;
 use App\Models\Diagnostic;
-use App\Models\Hospital;
 use App\Repositories\Sheet\Get\GetDiagnosticRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -56,6 +55,7 @@ class DiagnosticForConsultation extends Component
             'diagnostic_id' => $this->diagnosticsSelected,
         ]);
         $this->dispatch('refreshConsulting');
+        $this->dispatch('refreshDiagnosticItems');
         $this->dispatch('refreshDiagnosticData');
         $this->dispatch('added', ['message' => 'Action bien réalisée']);
     }

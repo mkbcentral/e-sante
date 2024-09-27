@@ -1,15 +1,11 @@
 <div>
     @if ($consultationRequest)
-        <h4>   <i class="fas fa-capsules"></i> Prescription médicale</h4>
         <table class="table table-bordered table-sm">
             <thead class="bg-primary">
                 <tr>
                     <th class="">PRODUIT</th>
                     <th class="text-center">NBRE</th>
-                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
-                        <th class="text-right">P.U</th>
-                        <th class="text-right">P.T</th>
-                    @endif
+                    <th class="text-center">Posologie</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -30,18 +26,19 @@
                             @endif
 
                         </td>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
-                            <td class="text-right">
-                                {{ app_format_number($product->price, 1) }}
-                            </td>
-                            <td class="text-right">
-                                {{ app_format_number($product->price * $product->pivot->qty, 1) }}
-                            </td>
-                        @endif
+                         <td class="">
+                             @if ($isEditing && $idSelected == $product->pivot->id)
+                                <x-form.input type='text'  wire:model='dosage'
+                                    wire:keydown.enter='update' :error="'dosage'" />
+                            @else
+                                {{ $product->pivot->dosage == null ? 'Nom défini' : $product->pivot->dosage}}
+                            @endif
+
+                        </td>
                         <td class="text-center">
                             @if ($consultationRequest->is_printed == false)
                                 <x-form.edit-button-icon
-                                    wire:click="edit({{ $product->pivot->id }},{{ $product->pivot->qty }},{{ $product->id }})"
+                                    wire:click="edit({{ $product->pivot->id }})"
                                     class="btn-sm btn-primary" />
                                 <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
                                     wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
@@ -50,18 +47,6 @@
                         </td>
                     </tr>
                 @endforeach
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') || Auth::user()->roles->pluck('name')->contains('Admin'))
-                    <tr class="bg-secondary">
-                        <td colspan="4" class="text-right">
-                            <span class="text-bold text-lg"> TOTAL:
-                                {{ app_format_number(
-                                    $currency == 'USD' ? $consultationRequest->getTotalProductUSD() : $consultationRequest->getTotalProductCDF(),
-                                    1,
-                                ) }}
-                                Fc</span>
-                        </td>
-                    </tr>
-                @endif
             </tbody>
         </table>
     @endif

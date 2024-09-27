@@ -3,6 +3,7 @@
 namespace App\Livewire\Application\Sheet\Widget;
 
 use App\Models\ConsultationRequest;
+use App\Models\ConsultationSheet;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,6 +13,7 @@ class AntecedentMedical extends Component
 {
     protected $listeners = ['consultationRequest' => 'getConsultation'];
     public ?ConsultationRequest $consultationRequest;
+    public ?ConsultationSheet $consultationSheet;
 
     /**
      * Get Consultation Request if listener emitted in parent view
@@ -21,6 +23,7 @@ class AntecedentMedical extends Component
     public function getConsultation(ConsultationRequest $consultationRequest): void
     {
         $this->consultationRequest = $consultationRequest;
+        $this->consultationSheet = ConsultationSheet::find($consultationRequest->consultationSheet->id);
     }
 
     /**

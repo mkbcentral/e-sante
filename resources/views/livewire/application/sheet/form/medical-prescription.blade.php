@@ -1,5 +1,6 @@
 <div>
-    <x-modal.build-modal-fixed idModal='form-medical-prescription' size='xl' headerLabel="PRESCRIPTION MEDICALE"
+    <x-modal.build-modal-fixed idModal='form-medical-prescription' size='xl'
+     headerLabel="PRESCRIPTION MEDICALE"
         headerLabelIcon='fa fa-folder-plus'>
         @if ($consultationRequest != null)
             <div class="card">
@@ -21,7 +22,7 @@
                                         MEDICAL</span></div>
                                 <div class="card-body">
                                     @if ($consultationRequest)
-                                        @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest'=>$consultationRequest])
+                                        @livewire('application.product.widget.products-with-consultation-item-widget', ['consultationRequest' => $consultationRequest])
                                     @endif
                                 </div>
                             </div>
@@ -31,7 +32,7 @@
                                 <div class="card-header"><span><i class="fas fa-pen"></i>PRESCRIR UN PRODUIT</span>
                                 </div>
                                 <div CLASS="card-body">
-                                    @foreach ($productsForm as $index => $vital)
+                                    @foreach ($productsForm as $index => $prod)
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -53,7 +54,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="form-group">
+                                                    @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                                        <div class="form-group">
                                                         <x-form.label value="{{ __('Posologie') }}" />
                                                         <x-form.input type='text' placeholder="1x 1ce/jour"
                                                             wire:model.blur='productsForm.{{ $index }}.dosage'
@@ -62,6 +64,18 @@
                                                             wire:keydown.shift='addNewProductToForm'
                                                             :error="'productsForm.{{ $index }}.dosage'" />
                                                     </div>
+                                                    @else
+                                                        <div class="form-group">
+                                                        <x-form.label value="{{ __('Date Liv') }}" />
+                                                        <x-form.input type='date'
+                                                            wire:model.blur='productsForm.{{ $index }}.created_at'
+                                                            wire:keydown.escape='removeProductToForm({{ $index }})'
+                                                            wire:keydown.enter='addProductItems'
+                                                            wire:keydown.shift='addNewProductToForm'
+                                                            :error="'productsForm.{{ $index }}.created_at'" />
+                                                    </div>
+                                                    @endif
+
                                                     <x-form.icon-button :icon="'fa fa-times '"
                                                         wire:click="removeProductToForm({{ $index }})"
                                                         class="btn-danger mt-3 ml-2" />
@@ -89,12 +103,12 @@
     @push('js')
         <script type="module">
             //Close modal
-            window.addEventListener('close-vital-sign-form', e => {
+            window.addEventListener('close-prod-sign-form', e => {
                 $('#form-medical-prescription').modal('hide')
             });
 
             //Close modal
-            window.addEventListener('close-vital-sign-form', e => {
+            window.addEventListener('close-prod-sign-form', e => {
                 $('#form-medical-prescription').modal('hide')
             });
         </script>

@@ -5,9 +5,11 @@ namespace App\Repositories\Tarif;
 use App\Models\Hospital;
 use App\Models\Tarif;
 use Illuminate\Support\Collection;
+use Livewire\WithPagination;
 
 class GetListTarifRepository
 {
+    use WithPagination;
     private static string $query;
 
     public static function getSimpleTarifByCategory(int $cateryId): Collection
@@ -20,7 +22,7 @@ class GetListTarifRepository
             ->get();
     }
 
-    public static function getListTarifByCategory(int $categoryid, string $q, string $sortBy, bool $sortAsc): Collection
+    public static function getListTarifByCategory(int $categoryid, string $q, string $sortBy, bool $sortAsc): mixed
     {
         SELF::$query = $q;
         return Tarif::join('category_tarifs', 'category_tarifs.id', 'tarifs.category_tarif_id')
@@ -36,7 +38,6 @@ class GetListTarifRepository
             ->select('tarifs.*')
             ->where('tarifs.is_changed', false)
             ->where('category_tarifs.hospital_id', Hospital::DEFAULT_HOSPITAL())
-            //->where('category_tarifs.source_id', auth()->user()->source->id)
             ->get();
     }
 

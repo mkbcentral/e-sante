@@ -22,11 +22,20 @@ class MedicalPrescription extends Component
      */
     public function getDefaultArrayData(): array
     {
-        return [
-            'product_id' => 0,
-            'qty' => 1,
-            'dosage' => ''
-        ];
+        if(Auth::user()->roles->pluck('name')->contains('Doctor')){
+            return [
+                'product_id' => 0,
+                'qty' => 1,
+                'dosage' => ''
+            ];
+        }else{
+            return [
+                'product_id' => 0,
+                'qty' => 1,
+                'created_at' => date('Y-m-d')
+            ];
+        }
+
     }
 
     /**
@@ -69,35 +78,36 @@ class MedicalPrescription extends Component
      */
     public function addProductItems(): void
     {
-        try {
-            //Loop in array form data to get all products items
-            foreach ($this->productsForm as $item) {
-                //Check if input form is empty or value equal 0
-                if ($item['product_id'] == 0 && $item['qty'] == 0) {
-                    $this->dispatch('error', ['message' => 'Valeur saisie invalide']);
-                } else {
-                    //Get product items by id in arryu
-                    $data = MakeQueryBuilderHelper::getSingleDataWithTowWhereClause(
-                        'consultation_request_product',
-                        'consultation_request_id',
-                        'product_id',
-                        $this->consultationRequest->id,
-                        $item['product_id']
-                    );
-                    //Check if product item exist
-                    if ($data) {
-                        if ($data->product_id == $item['product_id'] and $data->consultation_request_id == $this->consultationRequest->id) {
-                            $product = Product::find($item['product_id']);
-                            $this->dispatch('error', ['message' => $product->name . ' déjà prescrit']);
-                        } else {
-                            $this->saveData($item);
-                        }
+        //Loop in array form data to get all products items
+        foreach ($this->productsForm as $item) {
+            //Check if input form is empty or value equal 0
+            if ($item['product_id'] == 0 && $item['qty'] == 0) {
+                $this->dispatch('error', ['message' => 'Valeur saisie invalide']);
+            } else {
+                //Get product items by id in arryu
+                $data = MakeQueryBuilderHelper::getSingleDataWithTowWhereClause(
+                    'consultation_request_product',
+                    'consultation_request_id',
+                    'product_id',
+                    $this->consultationRequest->id,
+                    $item['product_id']
+                );
+                //Check if product item exist
+                if ($data) {
+                    if ($data->product_id == $item['product_id'] and $data->consultation_request_id == $this->consultationRequest->id) {
+                        $product = Product::find($item['product_id']);
+                        $this->dispatch('error', ['message' => $product->name . ' déjà prescrit']);
                     } else {
-                        //Save items data in DB
                         $this->saveData($item);
                     }
+                } else {
+                    //Save items data in DB
+                    $this->saveData($item);
                 }
             }
+        }
+        try {
+
         } catch (\Exception $exception) {
             //Get message error exception
             $this->dispatch('error', ['message' => 'Une erreur se produite']);
@@ -112,14 +122,26 @@ class MedicalPrescription extends Component
      */
     public function saveData(array $item): void
     {
-        //dd(Auth::id());
-        MakeQueryBuilderHelper::create('consultation_request_product', [
-            'consultation_request_id' => $this->consultationRequest->id,
-            'product_id' => $item['product_id'],
-            'qty' => $item['qty'],
-            'dosage' => $item['dosage'],
-            'created_by' => Auth::id()
-        ]);
+        if (Auth::user()->roles->pluck('name')->contains('Doctor')) {
+            MakeQueryBuilderHelper::create('consultation_request_product', [
+                'consultation_request_id' => $this->consultationRequest->id,
+                'product_id' => $item['product_id'],
+                'qty' => $item['qty'],
+                'dosage' => $item['dosage'],
+                'created_by' => Auth::id()
+            ]);
+        } else {
+            MakeQueryBuilderHelper::create('consultation_request_product', [
+                'consultation_request_id' => $this->consultationRequest->id,
+                'product_id' => $item['product_id'],
+                'qty' => $item['qty'],
+                'created_at' => $item['created_at'],
+                'created_by' => Auth::id()
+            ]);
+        }
+
+
+
         $this->dispatch('refreshProductItems');
         $this->dispatch('listSheetRefreshed');
         $this->dispatch('added', ['message' => 'Action bien réalisée']);

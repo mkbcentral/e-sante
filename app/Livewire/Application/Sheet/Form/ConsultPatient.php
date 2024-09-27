@@ -12,9 +12,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ConsultPatient extends Component
 {
+    use WithPagination;
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
         'refreshConsulting' => '$refresh'

@@ -1,7 +1,5 @@
 <div>
-    <x-modal.build-modal-fixed
-        idModal='form-product' bg="bg-pink"
-        size='lg' headerLabel="{!!$product==null?'CREER UN NOUVEAU PRODUIT':'METTRE A JOUR FICHE UN PRODUIT' !!}"
+    <x-modal.build-modal-fixed idModal='form-product' bg="bg-pink" size='lg' headerLabel="{!! $product == null ? 'CREER UN NOUVEAU PRODUIT' : 'METTRE A JOUR FICHE UN PRODUIT' !!}"
         headerLabelIcon='fa fa-folder-plus'>
         <form wire:submit='handlerSubmit'>
             <div class="row">
@@ -49,7 +47,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <x-form.label value="{{ __('Categorie') }}" />
-                        <x-widget.list-product-category-widget wire:model.live="form.product_category_id" :error="'form.product_category_id'"/>
+                        <x-widget.list-product-category-widget wire:model.live="form.product_category_id"
+                            :error="'form.product_category_id'" />
                         <x-errors.validation-error value='form.product_category_id' />
                     </div>
                 </div>
@@ -58,20 +57,22 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <x-form.label value="{{ __('Famille') }}" />
-                        <x-widget.list-product-family-widget wire:model.live="form.product_family_id" :error="'form.product_family_id'"/>
+                        <x-widget.list-product-family-widget wire:model.live="form.product_family_id"
+                            :error="'form.product_family_id'" />
                         <x-errors.validation-error value='form.product_family_id' />
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <x-form.button class="btn-secondary" type='submit'><i class="fa fa-save"></i> Sauvegarder</x-form.button>
+                <x-form.button class="btn-secondary" type='submit'><i class="fa fa-save"></i>
+                    Sauvegarder</x-form.button>
             </div>
         </form>
     </x-modal.build-modal-fixed>
     @push('js')
         <script type="module">
             //Open create new sheet modal
-            window.addEventListener('close-product-form',e=>{
+            window.addEventListener('close-product-form', e => {
                 $('#form-product').modal('hide')
             });
         </script>

@@ -29,7 +29,11 @@
                                 <x-form.input type='number' wire:model.blur='quantity' :error="'quantity'" />
                                 <x-errors.validation-error value='quantity' />
                             </div>
-
+                            <div class="form-group">
+                                <x-form.label value="{{ __('Date de livraison') }}" />
+                                <x-form.input type='date' wire:model='created_at' :error="'created_at'" />
+                                <x-errors.validation-error value='created_at' />
+                            </div>
                             <div class="d-flex justify-content-end">
                                 <x-form.button class="btn-primary" type='submit'><i class="fa fa-save"></i> Sauvegarder
                                 </x-form.button>

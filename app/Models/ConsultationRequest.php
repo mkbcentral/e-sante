@@ -112,6 +112,7 @@ class ConsultationRequest extends Model
     {
         return $this->hasOne(ConsultationRequestCurrency::class);
     }
+
     /**
      * Get the caution associated with the ConsultationRequest
      *

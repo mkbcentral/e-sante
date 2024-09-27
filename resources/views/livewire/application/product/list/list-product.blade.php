@@ -20,7 +20,7 @@
                     <div class="d-flex align-items-center">
                         <div class="form-group mr-2">
                             <x-form.label value="{{ __('Catégorie') }}" class="text-pink" />
-                            <x-widget.list-product-category-widget wire:model.live="category_id" :error="'category_id'" />
+                            <x-widget.list-product-category-filter-widget wire:model.live="category_id" :error="'category_id'" />
                         </div>
                         <div class="form-group">
                             <x-form.label value="{{ __('Famille') }}" class="text-pink" />

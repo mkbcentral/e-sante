@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
     Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
     Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
     Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
-    Route::get('consultation/consult-patient/{consultationRequestId}', MainConsultPatient::class)->name('consultation.consult.patient');
+    Route::get('consultation/consult-patient/{consultationRequestId}', action: MainConsultPatient::class)->name('consultation.consult.patient');
 
     Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');

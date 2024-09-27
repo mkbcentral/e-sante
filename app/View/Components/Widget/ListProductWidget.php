@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 class ListProductWidget extends Component
 {
     use WithPagination;
-    public ?Collection  $listProduct;
+    public mixed  $listProduct;
     /**
      * Create a new component instance.
      */

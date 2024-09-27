@@ -150,7 +150,14 @@ class UserRedirectChecker
                 'files',
                 'localization',
                 'tarification'
-            ]
+            ],'Doctor'=>[
+                'main',
+                'dashboard',
+                'consultations.request.list',
+                'consultation.hospitalize',
+                'consultation.consult.patient',
+                'sheet',
+            ],
         ];
     }
 }

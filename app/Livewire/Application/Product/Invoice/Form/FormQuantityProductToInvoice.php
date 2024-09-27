@@ -18,6 +18,7 @@ class FormQuantityProductToInvoice extends Component
 
     #[Rule('required', message: 'La quantité est obligatoire')]
     public $quantity;
+    public $created_at;
 
     public ?Product $product;
     public ?ProductInvoice $productInvoice;
@@ -43,7 +44,8 @@ class FormQuantityProductToInvoice extends Component
                 MakeQueryBuilderHelper::create('product_product_invoice', [
                     'product_invoice_id' => $this->productInvoice->id,
                     'product_id' => $this->product->id,
-                    'qty'=>$this->quantity
+                    'qty'=>$this->quantity,
+                    'created_at' => $this->created_at,
                 ]);
                 $this->dispatch('itemsProductInvoiceRefreshed');
                 $this->dispatch('productInvoiceRefreshedMainView');
@@ -54,6 +56,10 @@ class FormQuantityProductToInvoice extends Component
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
+    }
+
+    public function mount(){
+        $this->created_at = date('Y-m-d');
     }
 
     public function render()

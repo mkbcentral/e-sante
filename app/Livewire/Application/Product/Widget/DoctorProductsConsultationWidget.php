@@ -4,32 +4,18 @@ namespace App\Livewire\Application\Product\Widget;
 
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Models\ConsultationRequest;
-use App\Models\Currency;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class ProductsWithConsultationItemWidget extends Component
+class DoctorProductsConsultationWidget extends Component
 {
     protected $listeners = [
         'refreshProductItems' => '$refresh',
-        'consultationRequestProductItems' => 'getConsultationRequest'
     ];
     public ?ConsultationRequest $consultationRequest;
     public int $idSelected = 0, $qty = 1, $idProduct = 0;
+    public $dosage;
     public bool $isEditing = false;
-    public string $currency=Currency::DEFAULT_CURRENCY;
-
-    /**
-     * Get consultation if consultationRequest listener emitted
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-    public function getConsultationRequest(?ConsultationRequest $consultationRequest): void
-    {
-        $this->consultationRequest = $consultationRequest;
-    }
     /**
      * Mounted component
      * @param ConsultationRequest|null $consultationRequest
@@ -37,7 +23,7 @@ class ProductsWithConsultationItemWidget extends Component
      */
     public function mount(ConsultationRequest $consultationRequest): void
     {
-        $this->consultationRequest=$consultationRequest;
+        $this->consultationRequest = $consultationRequest;
     }
 
     /**
@@ -47,12 +33,15 @@ class ProductsWithConsultationItemWidget extends Component
      * @param $productId
      * @return void
      */
-    public function edit(int $id, int $qty, $productId,): void
+    public function edit(int $id): void
     {
-        $this->qty = $qty;
         $this->idSelected = $id;
-        $this->idProduct = $productId;
         $this->isEditing = true;
+        $data = DB::table('consultation_request_product')->where('id', $id)->first();
+        $this->idProduct = $data->product_id;
+        $this->qty = $data->qty;
+        $this->dosage = $data->dosage;
+
     }
 
     /**
@@ -66,15 +55,10 @@ class ProductsWithConsultationItemWidget extends Component
                 'consultation_request_product',
                 'id',
                 $this->idSelected,
-                ['qty' => $this->qty]
+                ['qty' => $this->qty, 'dosage' => $this->dosage]
             );
             $this->isEditing = false;
             $this->idSelected = 0;
-            $this->dispatch('listSheetRefreshed');
-            $this->dispatch('refreshDetail');
-            $this->dispatch('refreshAmount');
-            $this->dispatch('consultationRequestItemsTarif', $this->consultationRequest);
-            $this->dispatch('consultationRequestProductItems', $this->consultationRequest);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
 
@@ -104,13 +88,8 @@ class ProductsWithConsultationItemWidget extends Component
         }
     }
 
-    /**
-     * Render component
-     * @return Application|Factory|View|\Illuminate\Foundation\Application
-     */
     public function render()
     {
-
-        return view('livewire.application.product.widget.products-with-consultation-item-widget');
+        return view('livewire.application.product.widget.doctor-products-consultation-widget');
     }
 }

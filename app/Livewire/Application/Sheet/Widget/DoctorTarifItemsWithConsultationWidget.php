@@ -4,12 +4,9 @@ namespace App\Livewire\Application\Sheet\Widget;
 
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class TarifItemsWithConsultationWidget extends Component
+class DoctorTarifItemsWithConsultationWidget extends Component
 {
     protected $listeners = [
         'refreshItemsTarifWidget' => 'getSelectedCategoryTarif',
@@ -62,13 +59,9 @@ class TarifItemsWithConsultationWidget extends Component
             $this->dispatch('error', ['message' => $exception->getMessage()]);
         }
     }
-    /**
-     * Render component
-     * @return Application|Factory|View|\Illuminate\Foundation\Application
-     */
     public function render()
     {
-        return view('livewire.application.sheet.widget.tarif-items-with-consultation-widget', [
+        return view('livewire.application.sheet.widget.doctor-tarif-items-with-consultation-widget',[
             'tarifs' => GetConsultationRequestRepository::getConsultationTarifItemByCategoryTarif($this->consultationRequestId, $this->tarifId)
         ]);
     }
