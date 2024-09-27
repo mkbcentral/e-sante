@@ -2,7 +2,7 @@
 <div class="card">
     <div class="card-body">
       <div class="d-flex justify-content-center">
-          <h3 class="text-bold">FICHE DE CONSULTATION N°  {{$consultationSheet?->number_sheet.'/'.$consultationSheet?->subscription->name}} DU </h3>
+          <h3 class="text-bold">FICHE DE CONSULTATION N°  {{$consultationSheet?->number_sheet.'/'.$consultationSheet?->subscription->name}}</h3>
       </div>
         <hr>
         <div class="row invoice-info">

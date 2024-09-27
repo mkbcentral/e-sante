@@ -15,7 +15,7 @@
         @endif
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between   align-items-center ">
-                @if (Auth::user()->roles->pluck('name')->contains('Doctor') || Auth::user()->roles->pluck('name')->contains('Nurse'))
+                @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
                     @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
                 @elseif (Auth::user()->roles->pluck('name')->contains('Nurse'))
                     @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
