@@ -36,8 +36,6 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-
-
                     <div class="form-group">
                         <x-form.label value="{{ __('Date Expiration') }}" />
                         <x-form.input type='date' wire:model.blur='form.expiration_date' :error="'form.expiration_date'" />

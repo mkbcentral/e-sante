@@ -1,7 +1,7 @@
 <div>
     <div wire:ignore>
         @props(['error'])
-        <select {{ $attributes }} class="form-control select2 @error($error) is-invalid @enderror">
+        <select {{ $attributes }} class="form-control @error($error) is-invalid @enderror">
             <option value="">Choisir</option>
             @foreach ($categories as $cat)
                 <option class="text-uppercase" value="{{ $cat->id }}">{{ $cat->name }}</option>
