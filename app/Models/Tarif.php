@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tarif extends Model
@@ -29,7 +29,7 @@ class Tarif extends Model
      */
     public function consultationRequests(): BelongsToMany
     {
-        return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty']);
+        return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty', 'result']);
     }
 
     /**

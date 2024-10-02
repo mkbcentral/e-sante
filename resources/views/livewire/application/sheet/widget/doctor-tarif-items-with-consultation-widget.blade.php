@@ -23,7 +23,7 @@
                                     {{ $tarif->abbreviation == null ? $tarif->name : $tarif->abbreviation }}
                                 </td>
                                 <td class="text-center">{{ $tarif->qty }}</td>
-                                <td></td>
+                                <td>{{ $tarif->->pivot->result }}</td>
                                 <td class="text-center">
                                     <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
                                         wire:click="showDeleteDialog({{ $tarif->id }})" class="btn-sm btn-danger" />
