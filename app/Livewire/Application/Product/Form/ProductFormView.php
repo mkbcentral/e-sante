@@ -91,22 +91,6 @@ class ProductFormView extends Component
         try {
             $fields = $this->form->all();
             $fields['source_id'] = auth()->user()->source->id;
-            if (
-                Auth::user()->roles->pluck('name')->contains('Pharma') &&
-                Auth::user()->source_id == Source::GOLF_ID
-            ) {
-                $fields['pharma_g_stk'] = $this->form->initial_quantity;
-            } else if (
-                Auth::user()->roles->pluck('name')->contains('Pharma') &&
-                Auth::user()->source_id == Source::VILLE_ID
-            ) {
-                $fields['pharma_v_stk'] = $this->form->initial_quantity;
-            } elseif(
-                Auth::user()->roles->pluck('name')->contains('Depot-Pharma') &&
-                Auth::user()->source_id == Source::GOLF_ID
-            ) {
-                $fields['initial_quantity'] = $this->form->initial_quantity;
-            }
             $this->product->update($fields);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->dispatch('close-product-form');

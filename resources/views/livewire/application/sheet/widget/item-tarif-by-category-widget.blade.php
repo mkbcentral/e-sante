@@ -1,7 +1,21 @@
 <div wire:ignore.self>
     @foreach ($categoriesTarif as $index => $categoryTarif)
         @if (!$categoryTarif->getConsultationTarifItems($consultationRequest, $categoryTarif)->isEmpty())
-            <h5 class="text-danger text-bold">{{ $categoryTarif->name }}</h5>
+            <div class="d-flex justify-content-between">
+                <h5 class="text-danger text-bold">{{ $categoryTarif->name }}</h5>
+                <x-form.button class="btn-warning btn-sm" type='button' wire:click='newTarifItem({{ $categoryTarif->id }})'>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </x-form.button>
+            </div>
+            @if ($categoryIdSelected == $categoryTarif->id && $is_add == true)
+                <select class="form-control" wire:model.live='idTarifToAdd'>
+                    @foreach ($categoryTarif->tarifs as $t)
+                        <option value="{{ $t->id }}" class="text-uppercase">
+                            {{ $t->abbreviation == null ? $t->name : $t->abbreviation }}
+                        </option>
+                    @endforeach
+                </select>
+            @endif
             <table class="table table-bordered table-sm">
                 <thead class="bg-primary">
                     <tr>
@@ -29,7 +43,7 @@
                                         @endforeach
                                     </select>
                                 @else
-                                    - {{ $item->name }}
+                                    - {{ $item->abbreviation == '' ? $item->name : $item->abbreviation }}
                                 @endif
                             </td>
                             <td class="text-uppercase text-center">
@@ -91,4 +105,17 @@
             </table>
         @endif
     @endforeach
+    @push('js')
+        <script type="module">
+            $(function() {
+                //Initialize Select2 Elements
+                $('.selectTarif2').select2({
+                    theme: 'bootstrap4'
+                }).on('change', function(e) {
+                    console.log(e.target.value);
+                    @this.set('idTarif', e.target.value);
+                });
+            })
+        </script>
+    @endpush
 </div>

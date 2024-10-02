@@ -1,5 +1,5 @@
 <div>
-    <x-modal.build-modal-fixed idModal='consultation-detail' size='lg' headerLabel="DETAILS DE LA CONSULTATION"
+    <x-modal.build-modal-fixed idModal='consultation-detail' size='xl' headerLabel="DETAILS DE LA CONSULTATION"
         headerLabelIcon='fa fa-folder-plus'>
         <div class="d-flex justify-content-center">
             <x-widget.loading-circular-md />

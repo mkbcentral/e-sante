@@ -311,4 +311,15 @@ class ConsultationRequest extends Model
         }
         return $number;
     }
+
+    public function getBgStatus(): string
+    {
+        $bg='';
+        if (auth()->user()->roles->pluck('name')->contains('Admin')) {
+            $bg= $this->getTotalInvoiceUSD() == $this->getConsultationPriceUSD()
+                                        ? 'bg-danger'
+                                    : '';
+        }
+        return $bg;
+    }
 }

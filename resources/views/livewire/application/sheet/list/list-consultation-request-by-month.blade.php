@@ -97,7 +97,9 @@
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;"
                                 {{ $consultationRequest?->consultationSheet?->name == $consultationRequest[$index + 1]?->consultationSheet?->name ? 'bg-dark ' : '' }}>
-                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td
+                                    class="text-center">
+                                    {{ $index + 1 }}</td>
                                 <td class="text-center"><a href="#"
                                         wire:click="openDetailConsultationModal({{ $consultationRequest }})">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</a>
                                 </td>
@@ -125,8 +127,7 @@
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td
-                                        class="text-right {{ $consultationRequest->getTotalInvoiceCDF() == 28000 ? 'bg-danger' : '' }}">
+                                    <td class="text-right {{ $consultationRequest->getBgStatus()}}">
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),

@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Application\Sheet\Widget;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\CategoryTarif;
-use App\Models\ConsultationRequest;
+use App\Models\Tarif;
+use Livewire\Component;
 use App\Models\Currency;
 use App\Models\Hospital;
-use App\Models\Tarif;
-use App\Repositories\Tarif\GetListTarifRepository;
+use App\Models\CategoryTarif;
 use Illuminate\Support\Collection;
-use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+use App\Models\ConsultationRequest;
+use App\Repositories\Tarif\GetListTarifRepository;
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 
 class ItemTarifByCategoryWidget extends Component
 {
@@ -19,10 +20,12 @@ class ItemTarifByCategoryWidget extends Component
         'consultationRequestItemsTarif' => 'getConsultationRequest'
     ];
     public ConsultationRequest $consultationRequest;
-    public int $idSelected = 0, $qty = 1, $idTarif = 0;
+    public int $idSelected = 0, $qty = 1, $idTarif = 0,$idTarifToAdd;
     public bool $isEditing = false;
     public ?Collection $tarifs;
     public ?Tarif $tarif;
+    public $categoryIdSelected=0;
+    public $is_add = false;
 
     public string $currencyName = Currency::DEFAULT_CURRENCY;
 
@@ -37,6 +40,11 @@ class ItemTarifByCategoryWidget extends Component
         $this->currencyName = $currency;
     }
 
+    public function newTarifItem($categoryId){
+        $this->categoryIdSelected=$categoryId;
+        $this->is_add=true;
+    }
+
     /**
      * Call update function if IdTarif updated (Clicked)
      * @return void
@@ -44,6 +52,28 @@ class ItemTarifByCategoryWidget extends Component
     public function updatedIdTarif(): void
     {
         $this->update();
+    }
+
+    public function updatedIdTarifToAdd($val){
+        try {
+            $data = DB::table('consultation_request_tarif')
+                ->where('consultation_request_id', $this->consultationRequest->id)
+                ->where('tarif_id', $val)
+                ->first();
+            if ($data) {
+                  $tarif = Tarif::find($val);
+                    $this->dispatch('error', ['message' => $tarif->name . ' déjà administré']);
+            } else {
+              MakeQueryBuilderHelper::create('consultation_request_tarif', [
+            'consultation_request_id' => $this->consultationRequest->id,
+            'tarif_id' => $val,
+        ]);
+        $this->dispatch('added', ['message' => 'Action bien réalisée']);
+            }
+            $this->dispatch('refreshConultPatient');
+        } catch (\Exception $exception) {
+            $this->dispatch('error', ['message' => $exception->getMessage()]);
+        }
     }
 
     public function getConsultationRequest(?ConsultationRequest $consultationRequest)
@@ -64,6 +94,7 @@ class ItemTarifByCategoryWidget extends Component
     {
         $this->idSelected = $id;
         $this->isEditing = true;
+        $this->is_add = false;
         $this->qty = $qty;
         $this->idTarif = $idTarif;
         $this->tarifs = GetListTarifRepository::getSimpleTarifByCategory($categoryId);
@@ -93,6 +124,7 @@ class ItemTarifByCategoryWidget extends Component
             }
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->isEditing = false;
+            $this->is_add = false;
             $this->idSelected = 0;
             $this->dispatch('listSheetRefreshed');
             $this->dispatch('refreshDetail');

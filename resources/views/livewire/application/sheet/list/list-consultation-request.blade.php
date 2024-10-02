@@ -67,7 +67,7 @@
                     <tbody>
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;">
-                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td class="text-center ">{{ $index + 1 }}</td>
                                 <td class="">{{ $consultationRequest->created_at->format('d/m/Y H:i:s') }}</td>
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
@@ -84,7 +84,7 @@
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td class="text-right">
+                                    <td class="text-right {{ $consultationRequest->getBgStatus()}}">
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
