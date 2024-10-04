@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Application\Labo\Screens;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\CategoryTarif;
-use App\Models\ConsultationRequest;
 use Exception;
 use Livewire\Component;
+use App\Models\CategoryTarif;
+use App\Models\ConsultationRequest;
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 
 class ListItemsLabo extends Component
 {
@@ -18,7 +18,7 @@ class ListItemsLabo extends Component
     public ?CategoryTarif $categroryTarif;
     public bool $isEditing=false;
     public $idTarif;
-    public $result,$qty;
+    public $result,$qty, $unit, $normal_value;
     public $tarifData;
 
 
@@ -28,6 +28,8 @@ class ListItemsLabo extends Component
         $this->tarifData=MakeQueryBuilderHelper::getSingleData('consultation_request_tarif','id',$id);
         $this->qty=$this->tarifData->qty;
         $this->result = $this->tarifData->result;
+        $this->normal_value = $this->tarifData->normal_value;
+        $this->unit = $this->tarifData->unit;
     }
 
     public function update(){
@@ -35,6 +37,8 @@ class ListItemsLabo extends Component
             MakeQueryBuilderHelper::update('consultation_request_tarif','id',$this->idTarif,[
                 'qty'=>$this->qty,
                 'result' => $this->result,
+                'unit' => $this->unit,
+                'normal_value' => $this->normal_value,
             ]);
             $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             $this->isEditing=false;

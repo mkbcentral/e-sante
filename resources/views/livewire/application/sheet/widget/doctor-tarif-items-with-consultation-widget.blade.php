@@ -8,11 +8,13 @@
                 </span>
             @else
                 <table class="table table-bordered table-sm">
-                    <thead class="thead-light">
+                    <thead class="bg-primary">
                         <tr>
                             <th>Examen</th>
                             <th class="text-center">Nbre</th>
                             <th>Résultat</th>
+                            <th>VN</th>
+                            <th>Unité</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -24,10 +26,19 @@
                                 </td>
                                 <td class="text-center">{{ $tarif->qty }}</td>
                                 <td>{{ $tarif->result }}</td>
-                                <td class="text-center">
-                                    <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
-                                        wire:click="showDeleteDialog({{ $tarif->id }})" class="btn-sm btn-danger" />
+                                <td>{{ $tarif->normal_value }}</td>
+                                <td>{{ $tarif->unit }}</td>
 
+                                <td class="text-center">
+                                    @if ($tarif->result == null)
+                                        <button class="btn btn-link btn-sm"
+                                            wire:click="showDeleteDialog({{ $tarif->id }})">
+                                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                        </button>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

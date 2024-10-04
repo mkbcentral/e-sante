@@ -14,8 +14,7 @@
                             </span>
                         </button>
                     </div>
-                    @if (Auth::user()->roles->pluck('name')->contains('Reception') ||
-                            Auth::user()->roles->pluck('name')->contains('Nurse'))
+                    @if (Auth::user()->roles->pluck('name')->contains('Reception') || Auth::user()->roles->pluck('name')->contains('Nurse'))
                         <x-form.button class="btn-primary mt-1" wire:click="newSheet">
                             <x-icons.icon-plus-circle />
                             Nouvelle fiche
@@ -63,8 +62,7 @@
                                 <td class="text-right">{{ $sheet->phone }}</td>
                                 <td class="text-right text-bold text-uppercase">{{ $sheet->subscription }}</td>
                                 <td class="text-center">
-                                    @if (Auth::user()->roles->pluck('name')->contains('Reception') ||
-                                            Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                    @if (Auth::user()->roles->pluck('name')->contains('Reception') || Auth::user()->roles->pluck('name')->contains('Nurse'))
                                         <x-form.icon-button :icon="'fa fa-user-plus'"
                                             wire:click="newRequestForm({{ $sheet }})" class="btn-sm btn-info" />
                                         <x-form.edit-button-icon wire:click="edit({{ $sheet }})"
@@ -73,6 +71,9 @@
                                             wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                         <x-form.delete-button-icon wire:click="showDeleteDialog({{ $sheet }})"
                                             class="btn-sm btn-danger" />
+                                    @else
+                                        <x-navigation.link-icon href="{{ route('patient.folder', $sheet->id) }}"
+                                            wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                     @endif
                                 </td>
                             </tr>

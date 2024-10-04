@@ -1,8 +1,8 @@
-@props(['consultationSheet'])
 <div class="card">
     <div class="card-body">
+        @props(['consultationSheet','title'=>'FICHE DE CONSULTATION','icon'=>''])
       <div class="d-flex justify-content-center">
-          <h3 class="text-bold">FICHE DE CONSULTATION N°  {{$consultationSheet?->number_sheet.'/'.$consultationSheet?->subscription->name}}</h3>
+          <h3 class="text-bold"> <i class="{{$icon}}" aria-hidden="true"></i> {{$title}} N°  {{$consultationSheet?->number_sheet.'/'.$consultationSheet?->subscription->name}}</h3>
       </div>
         <hr>
         <div class="row invoice-info">

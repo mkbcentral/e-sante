@@ -29,7 +29,7 @@ class Tarif extends Model
      */
     public function consultationRequests(): BelongsToMany
     {
-        return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty', 'result']);
+        return $this->belongsToMany(ConsultationRequest::class,)->withPivot(['id', 'qty', 'result', 'normal_value', 'unit']);
     }
 
     /**

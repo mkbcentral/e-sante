@@ -26,22 +26,23 @@
                             @endif
 
                         </td>
-                         <td class="">
-                             @if ($isEditing && $idSelected == $product->pivot->id)
-                                <x-form.input type='text'  wire:model='dosage'
-                                    wire:keydown.enter='update' :error="'dosage'" />
+                        <td class="">
+                            @if ($isEditing && $idSelected == $product->pivot->id)
+                                <x-form.input type='text' wire:model='dosage' wire:keydown.enter='update'
+                                    :error="'dosage'" />
                             @else
-                                {{ $product->pivot->dosage == null ? 'Nom défini' : $product->pivot->dosage}}
+                                {{ $product->pivot->dosage == null ? 'Nom défini' : $product->pivot->dosage }}
                             @endif
 
                         </td>
                         <td class="text-center">
                             @if ($consultationRequest->is_printed == false)
-                                <x-form.edit-button-icon
-                                    wire:click="edit({{ $product->pivot->id }})"
-                                    class="btn-sm btn-primary" />
-                                <x-form.delete-button-icon wire:confirm="Etes-vous sûr de supprimer ?"
-                                    wire:click="delete({{ $product->pivot->id }})" class="btn-sm btn-danger" />
+                                <button class="btn btn-link btn-sm" wire:click="edit({{ $product->pivot->id }})">
+                                    <i class="fa fa-pen text-info" aria-hidden="true"></i>
+                                </button>
+                                <button class="btn btn-link btn-sm" wire:click="delete({{ $product->pivot->id }})">
+                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                </button>
 
                             @endif
                         </td>

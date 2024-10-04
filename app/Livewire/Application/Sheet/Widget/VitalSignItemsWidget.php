@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Application\Sheet\Widget;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\ConsultationRequest;
 use Livewire\Component;
+use App\Models\ConsultationRequest;
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 
 class VitalSignItemsWidget extends Component
 {
@@ -29,7 +29,7 @@ class VitalSignItemsWidget extends Component
     public function delete($id): void
     {
         try {
-            MakeQueryBuilderHelper::delete('consultation_request_diagnostic', 'id', $id,);
+            MakeQueryBuilderHelper::delete('consultation_request_vital_sign', 'id', $id,);
             $this->dispatch('item-deleted', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

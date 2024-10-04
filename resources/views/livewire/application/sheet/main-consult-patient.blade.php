@@ -42,7 +42,7 @@
                         <i class="fa fa-file"></i>
                         Antecedents médicaux
                     </x-form.button>
-                     <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
+                    <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
                         <i class="fa fa-eye"></i>
                         Nuering
                     </x-form.button>
@@ -81,7 +81,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
                             <div>
                                 @livewire('application.sheet.form.new-consultation-comment', ['consultationRequest' => $consultationRequest])
@@ -91,7 +91,7 @@
                             @livewire('application.sheet.form.consult-patient', ['consultationRequest' => $consultationRequest, 'selectedIndex' => $selectedIndex])
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         @livewire('application.sheet.widget.vital-sign-items-widget', ['consultationRequest' => $consultationRequest])
                         @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
                             @livewire('application.sheet.widget.dignostic-itmes-widget', ['consultationRequest' => $consultationRequest])

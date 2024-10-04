@@ -6,7 +6,7 @@
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
         <div class="row ">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><span class="text-bold">Nom: </span>{{$consultationRequest->consultationSheet->name}}</h5><br>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 @livewire('application.labo.screens.list-items-labo',['consultationRequest'=>$consultationRequest])
             </div>
         </div>

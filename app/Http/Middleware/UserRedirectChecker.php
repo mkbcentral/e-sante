@@ -49,7 +49,9 @@ class UserRedirectChecker
                 'dashboard',
                 'sheet',
                 'consultations.request.list',
-                'tarification.prices'
+                'tarification.prices',
+                'patient.folder',
+                'patient.folder.detail'
             ],
             'Pharma' => [
                 'main',
@@ -102,6 +104,7 @@ class UserRedirectChecker
                 'product.requisitions',
                 'consultation.consult.patient',
                 'product.requisition',
+                'patient.folder',
                 'sheet',
             ],
             'Labo'=>[
@@ -156,7 +159,10 @@ class UserRedirectChecker
                 'consultations.request.list',
                 'consultation.hospitalize',
                 'consultation.consult.patient',
+                'patient.folder',
                 'sheet',
+                'tarification.prices',
+                'patient.folder.detail'
             ],
         ];
     }

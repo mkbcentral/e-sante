@@ -23,7 +23,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                                 @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                                         Auth::user()->roles->pluck('name')->contains('Ag') ||
                                         Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td class="text-right {{ $consultationRequest->getBgStatus()}}">
+                                    <td class="text-right {{ $consultationRequest->getBgStatus() }}">
                                         @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
@@ -131,6 +131,13 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                            <x-navigation.link-icon
+                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                            <x-navigation.link-icon
+                                                href="{{ route('patient.folder', $consultationRequest->consultationSheet->id) }}"
+                                                wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                         @else
                                             <x-form.icon-button :icon="'fa fa-pen '" data-toggle="modal"
                                                 data-target="#edit-consultation-request"

@@ -2,7 +2,7 @@
     <h4 class="">Signes vitaux</h4>
     <div class="card">
         <div class="card-body">
-            @if ($consultationRequest->diagnostics->isEmpty())
+            @if ($consultationRequest->vitalSigns->isEmpty())
                 <span class=" text-danger">
                     <h6 class="text-center"> Aucun signe vital</h6>
                 </span>

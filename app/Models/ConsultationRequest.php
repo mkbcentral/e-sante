@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ConsultationRequest extends Model
 {
@@ -53,7 +53,8 @@ class ConsultationRequest extends Model
 
     public function tarifs(): BelongsToMany
     {
-        return $this->belongsToMany(Tarif::class)->withPivot(['id', 'qty']);
+        return $this->belongsToMany(Tarif::class)
+            ->withPivot(['id', 'qty','result', 'normal_value', 'unit']);
     }
 
     public function diagnostics(): BelongsToMany
