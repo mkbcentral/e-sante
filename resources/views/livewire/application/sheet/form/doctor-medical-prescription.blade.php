@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <x-form.label value="{{ __('Produits') }}" />
+                            <x-form.label value="{{ __('Produits à prescrire') }}" />
                             <x-widget.list-product-widget wire:model.blur='product_id' :error="'product_id'" />
                         </div>
                     </div>

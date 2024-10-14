@@ -1,10 +1,8 @@
 <div>
-    @livewire('application.diagnostic.diagnostic-for-consultation')
     @livewire('application.sheet.widget.consultation-request-detail')
-    @livewire('application.sheet.widget.antecedent-medical')
     @livewire('application.sheet.form.medical-prescription')
     @livewire('application.sheet.form.new-consultation-request-nursing')
-    <x-navigation.bread-crumb icon='fas fa-notes-medical' label="CONSULTATION DU PATIENT DU ">
+    <x-navigation.bread-crumb icon='fas fa-notes-medical' label="CONSULTATION DU PATIENT">
         <x-navigation.bread-crumb-item label='Dashboard' link='dashboard' isLinked=true />
         <x-navigation.bread-crumb-item label='Liste patients' link='consultations.request.list' isLinked=true />
         <x-navigation.bread-crumb-item label='Consultation patient' />
@@ -15,33 +13,25 @@
         @endif
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between   align-items-center ">
-                @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
-                    @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
-                @elseif (Auth::user()->roles->pluck('name')->contains('Nurse'))
-                    @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
-                    @livewire('application.widgets.input-check-box-mark-finished-widget', ['consultationRequest' => $consultationRequest])
-                @else
-                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                            Auth::user()->roles->pluck('name')->contains('Ag') ||
-                            Auth::user()->roles->pluck('name')->contains('Admin'))
-                        <div class="bg-navy p-1 rounded-lg ml-2">
-                            <h3 wire:loading.class="d-none"><span>Montant:</span>
-                                <span class="money_format">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span>
-                                |
-                                <span class="money_format">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
-                            </h3>
-                        </div>
-                    @endif
+                @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
+                @livewire('application.widgets.input-check-box-mark-finished-widget', ['consultationRequest' => $consultationRequest])
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                        Auth::user()->roles->pluck('name')->contains('Ag') ||
+                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                    <div class="bg-navy p-1 rounded-lg ml-2">
+                        <h3 wire:loading.class="d-none"><span>Montant:</span>
+                            <span class="money_format">
+                                {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 0) }} FC</span>
+                            |
+                            <span class="money_format">
+                                {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 0) }} $</span>
+                        </h3>
+                    </div>
                 @endif
             </div>
             <div>
                 @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
-                    <x-form.button wire:click="openAntecedentMedicalModal" class="btn-info  mr-1" type='button'>
-                        <i class="fa fa-file"></i>
-                        Antecedents médicaux
-                    </x-form.button>
+
                     <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
                         <i class="fa fa-eye"></i>
                         Nuering

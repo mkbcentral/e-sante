@@ -10,7 +10,7 @@
             <div class="col-sm-4 invoice-col">
                 <h4 class="text-uppercase text-primary"><b>Identités</b></h4>
                 <div class="h6">
-                    <b>Noms:</b> <span class="text-uppercase">{{$consultationSheet?->name}}</span><br>
+                    <b>Noms:</b> <span class="text-uppercase text-danger text-bold">{{$consultationSheet?->name}}</span><br>
                     <b>Genre:</b> {{$consultationSheet?->gender}}<br>
                     <b>Age:</b> {{$consultationSheet?->getPatientAge($consultationSheet?->date_of_birth)}}<br>
                     <b>Type:</b> {{$consultationSheet?->typePatient?->name}}

@@ -98,6 +98,13 @@
                                                     wire:confirm="Etes-vous de réaliser l'operation?"
                                                     class="text-primary"
                                                     wire:click='addToBordereau({{ $consultationRequest }})' />
+                                            @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                                <x-navigation.link-icon
+                                                    href="{{ route('dr.consultation.consult.patient', $consultationRequest->id) }}"
+                                                    wire:navigate :icon="'fas fa-stethoscope'" class="btn btn-sm  btn-success " />
+                                                <x-navigation.link-icon
+                                                    href="{{ route('patient.folder', $consultationRequest->consultationSheet->id) }}"
+                                                    wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />
                                             @else
                                                 <x-others.dropdown-link iconLink='fa fa-times'
                                                     labelText='Retirer au borderau' href="#" class="text-danger"

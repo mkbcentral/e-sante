@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Application\Sheet\Widget;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\ConsultationRequest;
 use Livewire\Component;
+use App\Models\ConsultationRequest;
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 
 class DignosticItmesWidget extends Component
 {
@@ -23,13 +23,27 @@ class DignosticItmesWidget extends Component
         $this->consultationRequest = $consultationRequest;
     }
     /**
-     * Delete tarif item in this widget
+     * Delete diagnostic item in this widget
      * @return void
      */
-    public function delete($id): void
+    public function deleteDiagnostic($id): void
     {
         try {
             MakeQueryBuilderHelper::delete('consultation_request_diagnostic', 'id', $id,);
+            $this->dispatch('item-deleted', ['message' => 'Action bien réalisée']);
+        } catch (\Exception $exception) {
+            $this->dispatch('error', ['message' => $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * Delete tarif item in this widget
+     * @return void
+     */
+    public function deleteSymptom($id): void
+    {
+        try {
+            MakeQueryBuilderHelper::delete('consultation_request_symptom', 'id', $id,);
             $this->dispatch('item-deleted', ['message' => 'Action bien réalisée']);
         } catch (\Exception $exception) {
             $this->dispatch('error', ['message' => $exception->getMessage()]);

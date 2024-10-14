@@ -1,5 +1,6 @@
 <div>
     @if ($consultationRequest)
+        <h4 class="text-uppercase">Liste des produits prescrits</h4>
         <table class="table table-bordered table-sm">
             <thead class="bg-primary">
                 <tr>

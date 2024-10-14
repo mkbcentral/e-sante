@@ -23,7 +23,9 @@
                 <x-navigation.tab-link :icon="'fa fa-hand-holding-usd'" :name="'Catégories depenses'" :link="'category-spend'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Type caisse'" :link="'cash-category'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Source dépense'" :link="'source-payroll'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Categoriie diagnostics'" :link="'cat-diagnostics'" :active="''" />
                 <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Diagnostics'" :link="'diagnostics'" :active="''" />
+                <x-navigation.tab-link :icon="'fa fa-wallet'" :name="'Symptome'" :link="'symptoms'" :active="''" />
             </x-navigation.tab-header>
             <div class="card-body">
                 <div class="tab-content">
@@ -78,10 +80,15 @@
                     <div class="tab-pane " id="source-payroll">
                         @livewire('application.configuration.screens.source-payroll-view')
                     </div>
+                     <div class="tab-pane " id="cat-diagnostics">
+                        @livewire('application.configuration.screens.category-diagnostic-view')
+                    </div>
                      <div class="tab-pane " id="diagnostics">
                         @livewire('application.configuration.screens.diagnostic-view')
                     </div>
-
+                    <div class="tab-pane " id="symptoms">
+                        @livewire('application.configuration.screens.symptom-view')
+                    </div>
                 </div>
             </div>
     </x-content.main-content-page>

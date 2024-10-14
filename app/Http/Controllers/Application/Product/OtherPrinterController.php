@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Application\Product;
 
+use App\Models\Tarif;
+use App\Models\Consultation;
+use App\Models\Subscription;
+use App\Models\CategoryTarif;
+use App\Models\Hospitalization;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use App\Livewire\Helpers\Date\DateFormatHelper;
-use App\Models\CategoryTarif;
-
-use App\Models\Subscription;
-use App\Models\Tarif;
-use Illuminate\Support\Facades\App;
 
 class OtherPrinterController extends Controller
 {
@@ -21,11 +22,15 @@ class OtherPrinterController extends Controller
             $categoryTarif = null;
             $categoryTarifs = CategoryTarif::query()->orderBy('name', 'ASC')->get();
         }
+        $consultations=Consultation::whereIn('id',[1,4,5])->get();
+        $hospitalizations = Hospitalization::whereIn('id', [1, 2, 3,4,7,8])->get();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
             'prints.tarifs.print-list-price',
             compact([
-                'categoryTarif', 'categoryTarifs', 'type_data'
+                'categoryTarif', 'categoryTarifs', 'type_data',
+                'consultations',
+                'hospitalizations'
             ])
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();

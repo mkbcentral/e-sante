@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> DIAGNOSTICS</h4>
+                   <h4 class="text-secondary"><i class="fa fa-list" aria-hidden="true"></i> SYMPTOMES ET PLAINTES</h4>
                     <div class="form-group d-flex align-items-center">
                         <x-form.label class="mr-2" value="{{ __('Categorie') }}" for='cat-id-filter' />
                         <select class="form-control" wire:model.live='category_filter' id="cat-id-filter">
@@ -14,6 +14,7 @@
                         </select>
                     </div>
                 </div>
+
                 <table class="table table-bordered table-sm">
                     <thead class="bg-dark">
                         <tr>
@@ -24,23 +25,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($dignostics->isEmpty())
+                        @if ($symptoms->isEmpty())
                             <tr>
                                 <td colspan="4" class="text-center">
                                     <x-errors.data-empty />
                                 </td>
                             </tr>
                         @else
-                            @foreach ($dignostics as $index => $dignostic)
+                            @foreach ($symptoms as $index => $symptom)
                                 <tr style="cursor: pointer;" id="row1">
                                     <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>{{ $dignostic->name }}</td>
-                                    <td>{{ $dignostic?->categoryDiagnostic?->name }}</td>
+                                    <td>{{ $symptom->name }}</td>
+                                    <td>{{ $symptom?->categoryDiagnostic?->name }}</td>
                                     <td class="text-center">
-                                        <x-form.edit-button-icon wire:click="edit({{ $dignostic }})"
+                                        <x-form.edit-button-icon wire:click="edit({{ $symptom }})"
                                             class="btn-sm btn-primary" />
                                         <x-form.delete-button-icon wire:confirm="Etes-vous de supprimer?"
-                                            wire:click="delete({{ $dignostic }})" class="btn-sm btn-danger" />
+                                            wire:click="delete({{ $symptom }})" class="btn-sm btn-danger" />
                                     </td>
                                 </tr>
                             @endforeach
@@ -48,7 +49,7 @@
                     </tbody>
                 </table>
                 <div class="mt-4 d-flex justify-content-center align-items-center">
-                    {{ $dignostics->links('livewire::bootstrap') }}
+                    {{ $symptoms->links('livewire::bootstrap') }}
                 </div>
             </div>
         </div>
@@ -70,7 +71,7 @@
                     </div>
                     <div class="form-group">
                         <x-form.label value="{{ __('Description') }}" />
-                        <x-form.input placeholder='Saisir le dignostic ici et cliquer sur Entre/Enter' type='text'
+                        <x-form.input placeholder='Saisir le symptome ici et cliquer sur Entre/Enter' type='text'
                             wire:model='name' :error="'name'" />
                         <x-errors.validation-error value='name' />
                     </div>

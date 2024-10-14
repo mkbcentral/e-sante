@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Diagnostic extends Model
@@ -13,7 +13,8 @@ class Diagnostic extends Model
 
     protected $fillable = [
         'name',
-        'hospital_id'
+        'hospital_id',
+        'category_diagnostic_id'
     ];
     /**
      * Get the hospital that owns the Diagnostic
@@ -33,5 +34,15 @@ class Diagnostic extends Model
     public function consultationRequests(): BelongsToMany
     {
         return $this->belongsToMany(related: ConsultationRequest::class)->withPivot(['id']);
+    }
+
+    /**
+     * Get the categoryDiagnostic that owns the Diagnostic
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categoryDiagnostic(): BelongsTo
+    {
+        return $this->belongsTo(CategoryDiagnostic::class, 'category_diagnostic_id');
     }
 }

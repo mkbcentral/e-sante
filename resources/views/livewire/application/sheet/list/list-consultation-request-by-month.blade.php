@@ -182,9 +182,9 @@
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
                                          @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
-                                            <x-navigation.link-icon
-                                                href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
-                                                wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
+                                             <x-navigation.link-icon
+                                                href="{{ route('dr.consultation.consult.patient', $consultationRequest->id) }}"
+                                                wire:navigate :icon="'fas fa-stethoscope'" class="btn btn-sm  btn-success " />
                                             <x-navigation.link-icon
                                                 href="{{ route('patient.folder', $consultationRequest->consultationSheet->id) }}"
                                                 wire:navigate :icon="'fa fa-folder-open'" class="btn-sm btn-warning" />

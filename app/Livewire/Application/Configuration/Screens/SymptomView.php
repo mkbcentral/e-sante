@@ -3,51 +3,50 @@
 namespace App\Livewire\Application\Configuration\Screens;
 
 use Exception;
+use App\Models\Symptom;
 use Livewire\Component;
-use App\Models\Hospital;
 use App\Models\Diagnostic;
 use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
 use App\Models\CategoryDiagnostic;
 
-class DiagnosticView extends Component
+class SymptomView extends Component
 {
     use WithPagination;
     #[Rule('required', message: 'Désignation obligatoire', onUpdate: false)]
     public $name = '';
     #[Rule('required', message: 'Désignation obligatoire', onUpdate: false)]
     public $category_diagnostic_id;
-    public $category_filter=0;
+    public $category_filter = 0;
 
-    public ?Diagnostic $diagnosticToEdit = null;
+    public ?Symptom $symptoomToEdit = null;
     public string $formLabel = 'CREATION DIAGNOSTIC';
     public function store()
     {
         $this->validate();
         try {
-            Diagnostic::create([
+            Symptom::create([
                 'name' => $this->name,
                 'category_diagnostic_id' => $this->category_diagnostic_id,
-                'hospital_id' => Hospital::DEFAULT_HOSPITAL()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-    public function edit(?Diagnostic $diagnostic)
+    public function edit(?Symptom $symptom)
     {
-        $this->diagnosticToEdit = $diagnostic;
-        $this->name = $this->diagnosticToEdit->name;
+        $this->symptoomToEdit = $symptom;
+        $this->name = $this->symptoomToEdit->name;
         $this->formLabel = 'EDITION DIAGNOSTIC';
     }
     public function update()
     {
         $this->validate();
         try {
-            $this->diagnosticToEdit->name = $this->name;
-            $this->diagnosticToEdit->category_diagnostic_id = $this->category_diagnostic_id;
-            $this->diagnosticToEdit->update();
-            $this->diagnosticToEdit = null;
+            $this->symptoomToEdit->name = $this->name;
+            $this->symptoomToEdit->category_diagnostic_id = $this->category_diagnostic_id;
+            $this->symptoomToEdit->update();
+            $this->symptoomToEdit = null;
             $this->formLabel = 'CREATION DIAGNOSTIC';
         } catch (Exception $ex) {
             $this->dispatch('error', ['message' => $ex->getMessage()]);
@@ -55,7 +54,7 @@ class DiagnosticView extends Component
     }
     public function handlerSubmit()
     {
-        if ($this->diagnosticToEdit == null) {
+        if ($this->symptoomToEdit == null) {
             $this->store();
             $this->dispatch('added', ['message' => 'Action bien réalisée']);
         } else {
@@ -64,11 +63,11 @@ class DiagnosticView extends Component
         }
         $this->name = '';
     }
-    public function delete(Diagnostic $diagnostic)
+    public function delete(Diagnostic $symptom)
     {
         try {
-            if ($diagnostic->consultationRequests->isEmpty()) {
-                $diagnostic->delete();
+            if ($symptom->consultationRequests->isEmpty()) {
+                $symptom->delete();
                 $this->dispatch('updated', ['message' => 'Action bien réalisée']);
             } else {
                 $this->dispatch('error', ['message' => 'Action impossible']);
@@ -77,15 +76,15 @@ class DiagnosticView extends Component
             $this->dispatch('error', ['message' => $ex->getMessage()]);
         }
     }
-    public function mount(){
-        $this->category_filter=CategoryDiagnostic::first()->id;
+    public function mount()
+    {
+        $this->category_filter = CategoryDiagnostic::first()->id;
     }
     public function render()
     {
-        return view('livewire.application.configuration.screens.diagnostic-view', [
-            'dignostics' => Diagnostic::orderBy('name', 'asc')
-                ->where('hospital_id', Hospital::DEFAULT_HOSPITAL())
-                ->where('category_diagnostic_id',$this->category_filter)
+        return view('livewire.application.configuration.screens.symptom-view', [
+            'symptoms' => Symptom::orderBy('name', 'ASC')
+                ->where('category_diagnostic_id', $this->category_filter)
                 ->paginate(10),
             'categories' => CategoryDiagnostic::all()
         ]);

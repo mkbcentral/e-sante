@@ -21,6 +21,7 @@ use App\Livewire\Application\Localization\MainLocalization;
 use App\Livewire\Application\Sheet\MainConsultationRequest;
 use App\Livewire\Application\Finance\Product\FinanceRapport;
 use App\Livewire\Application\Patient\FolderReuestDetailPage;
+use App\Livewire\Application\Sheet\DoctorConsultPatientPage;
 use App\Livewire\Application\Configuration\MainConfiguration;
 use App\Livewire\Application\Labo\Screens\LaboSubscriberView;
 use App\Livewire\Application\Finance\Billing\OutpatientBillView;
@@ -69,6 +70,7 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
     Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
     Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
     Route::get('consultation/consult-patient/{consultationRequestId}', action: MainConsultPatient::class)->name('consultation.consult.patient');
+    Route::get('consultation/dr-consult-patient/{consultationRequestId}', action: DoctorConsultPatientPage::class)->name('dr.consultation.consult.patient');
 
     Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');
@@ -108,7 +110,6 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
 //Printing route
 Route::prefix('print')->group(function () {
     Route::controller(OutpatientBillPrinterController::class)->group(function () {
-
         Route::get('out-patient-bill/{outPatientBill}/{currency}', 'printOutPatientBill')->name('outPatientBill.print');
         Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
         Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');

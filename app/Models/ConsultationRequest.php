@@ -61,6 +61,10 @@ class ConsultationRequest extends Model
     {
         return $this->belongsToMany(Diagnostic::class)->withPivot(['id']);
     }
+    public function symptoms(): BelongsToMany
+    {
+        return $this->belongsToMany(Symptom::class)->withPivot(['id']);
+    }
     /**
      * Summary of products
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

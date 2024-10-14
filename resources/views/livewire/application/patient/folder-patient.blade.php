@@ -15,7 +15,7 @@
                             @foreach ($months as $month)
                                 <tr>
                                     <td scope="row">
-                                        <a href="{{ route('patient.folder.detail', [$consultationSheet->id,$month['number']]) }}"><i class="fa fa-calendar-day" aria-hidden="true"></i>
+                                        <a wire:navigate href="{{ route('patient.folder.detail', [$consultationSheet->id,$month['number']]) }}"><i class="fa fa-calendar-day" aria-hidden="true"></i>
                                             {{ $month['name'] }}</a>
                                     </td>
                                 </tr>

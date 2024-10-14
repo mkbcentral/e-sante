@@ -158,7 +158,7 @@ class UserRedirectChecker
                 'dashboard',
                 'consultations.request.list',
                 'consultation.hospitalize',
-                'consultation.consult.patient',
+                'dr.consultation.consult.patient',
                 'patient.folder',
                 'sheet',
                 'tarification.prices',

@@ -2,17 +2,19 @@
 
 namespace App\Livewire\Application\Sheet\Form;
 
-use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
-use App\Models\ConsultationRequest;
 use App\Models\Tarif;
-use App\Repositories\Tarif\GetListTarifRepository;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\CategoryTarif;
+use Illuminate\Support\Facades\DB;
+use App\Models\ConsultationRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
+use App\Repositories\Tarif\GetListTarifRepository;
+use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
+use App\Repositories\Tarif\GetCategoryTarifRepository;
 
 class ConsultPatient extends Component
 {
@@ -83,15 +85,28 @@ class ConsultPatient extends Component
     }
 
     /**
+     * Change index item selection on category tarif
+     * @param CategoryTarif $category
+     * @return void
+     */
+    public  function changeIndex(CategoryTarif $category): void
+    {
+        $this->selectedIndex = $category->id;
+    }
+
+    /**
      * Mounted compoenent
      * @param ConsultationRequest $consultationRequest
      * @param int $selectedIndex
      * @return void
      */
-    public function mount(ConsultationRequest $consultationRequest, int $selectedIndex): void
+    public function mount(ConsultationRequest $consultationRequest): void
     {
-        $this->selectedIndex = $selectedIndex;
         $this->consultationRequest = $consultationRequest;
+        $category = CategoryTarif::where('name', 'like', '%LABO%')->first();
+        if ($category) {
+            $this->selectedIndex = $category->id;
+        }
     }
 
     /**
@@ -114,6 +129,7 @@ class ConsultPatient extends Component
     public function render()
     {
         return view('livewire.application.sheet.form.consult-patient', [
+            'categories' => GetCategoryTarifRepository::getListCategories(),
             'tarifs' => GetListTarifRepository::getListTarifByCategory($this->selectedIndex, $this->q, $this->sortBy, $this->sortAsc)
         ]);
     }
