@@ -1,8 +1,7 @@
 <div>
-       <h4 class=""><i class="fa fa-file" aria-hidden="true"></i> Historique</h4>
+    <h4 class=""><i class="fa fa-file" aria-hidden="true"></i> Historique</h4>
     <div class="card">
         <div class="card-body">
-
             @if ($consultationRequest->diagnostics->isEmpty() && $consultationRequest->symptoms->isEmpty())
                 <span class=" text-danger">
                     <h6 class="text-center"> Aucun diagnostic et symptomes</h6>
@@ -11,20 +10,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4 class="">Symptomes et plaintes</h4>
-                        <ul>
-                            @foreach ($consultationRequest->diagnostics as $daignostic)
-                                <li class="">
-                                    {{ $daignostic->name }}
-                                    <i class="fas fa-times text-danger "
-                                        wire:confirm="Etês-vous sûre de réaliser l'opération ?"
-                                        wire:click="deleteDiagnostic({{ $daignostic->pivot->id }})"
-                                        style="cursor: pointer"></i>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h4 class="">Diagnostics</h4>
                         <ul>
                             @foreach ($consultationRequest->symptoms as $symptom)
                                 <li class="">
@@ -36,6 +21,21 @@
                                 </li>
                             @endforeach
                         </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="">Diagnostics</h4>
+                        <ul>
+                            @foreach ($consultationRequest->diagnostics as $daignostic)
+                                <li class="">
+                                    {{ $daignostic->name }}
+                                    <i class="fas fa-times text-danger "
+                                        wire:confirm="Etês-vous sûre de réaliser l'opération ?"
+                                        wire:click="deleteDiagnostic({{ $daignostic->pivot->id }})"
+                                        style="cursor: pointer"></i>
+                                </li>
+                            @endforeach
+                        </ul>
+
                     </div>
 
                 </div>
