@@ -1,5 +1,5 @@
 <div>
-    <h4 class="">Signes vitaux</h4>
+    <h4 class=""><i class="fa fa-file" aria-hidden="true"></i> Signes vitaux</h4>
     <div class="card">
         <div class="card-body">
             @if ($consultationRequest->vitalSigns->isEmpty())
