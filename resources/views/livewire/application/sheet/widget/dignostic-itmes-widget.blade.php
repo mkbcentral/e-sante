@@ -1,14 +1,15 @@
 <div>
     <div class="card">
         <div class="card-body">
-            @if ($consultationRequest->diagnostics->isEmpty())
+             <h4 class="">Symptomes et plaintes</h4>
+            @if ($consultationRequest->diagnostics->isEmpty() && $consultationRequest->symptoms->isEmpty())
                 <span class=" text-danger">
-                    <h6 class="text-center"> Aucun diagnostic</h6>
+                    <h6 class="text-center"> Aucun diagnostic et symptomes</h6>
                 </span>
             @else
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="">Symptomes et plaintes</h4>
+
                         <ul>
                             @foreach ($consultationRequest->diagnostics as $daignostic)
                                 <li class="">
