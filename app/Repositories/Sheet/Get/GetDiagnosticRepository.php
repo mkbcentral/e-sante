@@ -20,22 +20,24 @@ class GetDiagnosticRepository
      * Get list diagnostic by hospital id List
      * @return Collection
      */
-    public static function getDiagnosticListByCategory(int $id): Collection
+    public static function getDiagnosticListByCategory(int $id,string $search): mixed
     {
         return Diagnostic::where('hospital_id', Hospital::DEFAULT_HOSPITAL())
                 ->where('category_diagnostic_id',$id)
                 ->orderBy('name','ASC')
-                ->get();
+                ->where('name','LIKE',"%$search%")
+                ->paginate(20);
     }
 
     /**
      * Get list diagnostic by hospital id List
      * @return Collection
      */
-    public static function getSymptomticListByCategory(int $id): Collection
+    public static function getSymptomticListByCategory(int $id,string $search): mixed
     {
         return Symptom::where('category_diagnostic_id', $id)
             ->orderBy('name', 'ASC')
-            ->get();
+            ->where('name', 'LIKE', "%$search%")
+            ->paginate(20);
     }
 }

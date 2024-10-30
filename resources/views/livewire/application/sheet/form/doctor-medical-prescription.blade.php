@@ -1,6 +1,6 @@
 <div>
     @if ($consultationRequest != null)
-        <h4> <i class="fas fa-capsules"></i> Prescription médicale</h4>
+        <h4 class="text-secondary"> <i class="fas fa-capsules"></i> Prescription médicale</h4>
         <div class="card">
             <div class="card-body">
                 <div class="row">

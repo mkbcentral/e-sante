@@ -18,6 +18,7 @@
                     <div class="row">
                         <div class="col-md-6 text-danger">
                             <h3> Paintes & Symptomes</h3>
+                            <input class="form-control w-75 mb-4" wire:model.live="search_symptom" placeholder="Rechercher ici...">
                             @foreach ($symptoms as $symptom)
                                 <!-- checkbox -->
                                 <div class="form-group clearfix">
@@ -33,6 +34,7 @@
                         </div>
                         <div class="col-md-6 text-primary">
                             <h3> Diagnostics</h3>
+                            <input class="form-control w-75 mb-4" wire:model.live="search_diagnostic" placeholder="Rechercher ici...">
                             @foreach ($diagnostics as $diagnostic)
                                 <!-- checkbox -->
                                 <div class="form-group clearfix">

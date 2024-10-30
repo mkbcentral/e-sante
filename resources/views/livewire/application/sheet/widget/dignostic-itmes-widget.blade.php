@@ -1,5 +1,5 @@
 <div>
-    <h4 class=""><i class="fa fa-file" aria-hidden="true"></i> Historique</h4>
+    <h4 class="text-secondary"><i class="fa fa-file" aria-hidden="true"></i> Historique</h4>
     <div class="card">
         <div class="card-body">
             @if ($consultationRequest->diagnostics->isEmpty() && $consultationRequest->symptoms->isEmpty())
@@ -9,10 +9,10 @@
             @else
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="">Symptomes et plaintes</h4>
+                        <h4 class="text-danger">Symptomes et plaintes</h4>
                         <ul>
                             @foreach ($consultationRequest->symptoms as $symptom)
-                                <li class="">
+                                <li class="text-danger">
                                     {{ $symptom->name }}
                                     <i class="fas fa-times text-danger "
                                         wire:confirm="Etês-vous sûre de réaliser l'opération ?"
@@ -23,10 +23,10 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h4 class="">Diagnostics</h4>
+                        <h4 class="text-primary">Diagnostics</h4>
                         <ul>
                             @foreach ($consultationRequest->diagnostics as $daignostic)
-                                <li class="">
+                                <li class="text-primary">
                                     {{ $daignostic->name }}
                                     <i class="fas fa-times text-danger "
                                         wire:confirm="Etês-vous sûre de réaliser l'opération ?"

@@ -8,25 +8,33 @@
     <x-content.main-content-page>
         <div class="row">
             <div class="col-md-7 card">
-                <x-form.button wire:click="openAntecedentMedicalModal" class="btn-dark" type='button'>
-                    <i class="fa fa-file"></i>
-                    Antecedents médicaux
-                </x-form.button>
+                @if ($consultationSheet != null)
+                    <x-widget.patient.card-patient-info :consultationSheet='$consultationSheet' />
+                @endif
+                <h3>Plaintes et autres</h3>
                 @livewire('application.sheet.form.new-consultation-comment', ['consultationRequest' => $consultationRequest])
-                <div class="d-flex justify-content-end">
-                      @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
-                </div>
                 @livewire('application.diagnostic.diagnostic-for-consultation', ['consultationRequest' => $consultationRequest])
-                @livewire('application.sheet.form.consult-patient', ['consultationRequest' => $consultationRequest])
+                    @livewire('application.sheet.form.doctor-consult-patient', ['consultationRequest' => $consultationRequest])
             </div>
             <div class="col-md-5">
                 <div class="card mt-2">
                     <div class="card-body">
-                        @if ($consultationSheet != null)
-                            <x-widget.patient.card-patient-info :consultationSheet='$consultationSheet' />
-                        @endif
+                        <div class="text-right">
+                           <div class="d-flex justify-content-between">
+                               <x-form.button wire:click="openParaClinicsPage"
+                                              class="btn-danger mb-2" type='button'>
+                                   <i class="fa fa-file"></i>
+                                   Paracliniques
+                               </x-form.button>
+                               <x-form.button wire:click="openAntecedentMedicalModal"
+                                              class="btn-dark mb-2" type='button'>
+                                   <i class="fa fa-file"></i>
+                                   Antecedents médicaux
+                               </x-form.button>
+                           </div>
+                            @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
+                        </div>
                         @livewire('application.sheet.widget.vital-sign-items-widget', ['consultationRequest' => $consultationRequest])
-
                         @livewire('application.sheet.widget.dignostic-itmes-widget', ['consultationRequest' => $consultationRequest])
                         @livewire('application.sheet.widget.doctor-tarif-items-with-consultation-widget', [
                             'consultationRequest' => $consultationRequest,
@@ -52,6 +60,10 @@
             window.addEventListener('open-consultation-request-nursing', e => {
                 $('#form-consultation-request-nursing').modal('show')
             });
+            //Open medical prescription modal
+            window.addEventListener('open-consultation-para-clinics', e => {
+                $('#doctor-para-clinics').modal('show')
+            })
         </script>
     @endpush
 </div>

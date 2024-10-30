@@ -53,6 +53,12 @@ class DoctorConsultPatientPage extends Component
         $this->dispatch('open-consultation-request-nursing');
         $this->dispatch('consultationRequestNursing', $this->consultationRequest);
     }
+
+    public function openParaClinicsPage(): void
+    {
+        $this->dispatch('open-consultation-para-clinics');
+        $this->dispatch('consultationRequestPara', $this->consultationRequest);
+    }
     /**
      * Mounted component
      * @return void

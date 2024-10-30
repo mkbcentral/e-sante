@@ -30,58 +30,32 @@
                 @endif
             </div>
             <div>
-                @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
-
-                    <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
-                        <i class="fa fa-eye"></i>
-                        Nuering
-                    </x-form.button>
-                @else
-                    <x-form.button wire:click="openDetailConsultationModal" class="btn-secondary  mr-1" type='button'>
-                        <i class="fa fa-eye"></i>
-                        Visualiser
-                    </x-form.button>
-                    <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
-                        <i class="fa fa-eye"></i>
-                        Nuering
-                    </x-form.button>
-                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
+                <x-form.button wire:click="openNursingModal" class="btn-danger  mr-1" type='button'>
+                    <i class="fa fa-eye"></i>
+                    Nuering
+                </x-form.button>
+                <x-form.button wire:click="openDetailConsultationModal" class="btn-secondary  mr-1" type='button'>
+                    <i class="fa fa-eye"></i>
+                    Visualiser
+                </x-form.button>
+                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
                             Auth::user()->roles->pluck('name')->contains('Ag') ||
                             Auth::user()->roles->pluck('name')->contains('Admin'))
-                        <x-navigation.link-icon
-                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                            :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
-                    @endif
+                    <x-navigation.link-icon
+                        href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                        :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
                 @endif
             </div>
         </div>
         <div class="card mt-2">
-            <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                    @foreach ($categories as $category)
-                        <li class="nav-item">
-                            <a wire:click='changeIndex({{ $category }})'
-                                class="nav-link {{ $selectedIndex == $category->id ? 'active' : '' }} "
-                                href="#inscription" data-toggle="tab">
-                                &#x1F4C2; {{ $category->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
-                            <div>
-                                @livewire('application.sheet.form.new-consultation-comment', ['consultationRequest' => $consultationRequest])
-                            </div>
-                        @endif
+                    <div class="col-md-7">
                         <div class="mt-2">
                             @livewire('application.sheet.form.consult-patient', ['consultationRequest' => $consultationRequest, 'selectedIndex' => $selectedIndex])
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         @livewire('application.sheet.widget.vital-sign-items-widget', ['consultationRequest' => $consultationRequest])
                         @if (Auth::user()->roles->pluck('name')->contains('Doctor'))
                             @livewire('application.sheet.widget.dignostic-itmes-widget', ['consultationRequest' => $consultationRequest])
@@ -99,7 +73,6 @@
                         @livewire('application.sheet.form.doctor-medical-prescription', ['consultationRequest' => $consultationRequest])
                     </div>
                 </div>
-
             </div>
         </div>
     </x-content.main-content-page>

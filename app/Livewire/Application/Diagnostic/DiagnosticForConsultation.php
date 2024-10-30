@@ -13,12 +13,14 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application;
 use App\Livewire\Helpers\Query\MakeQueryBuilderHelper;
 use App\Repositories\Sheet\Get\GetDiagnosticRepository;
+use PhpParser\Node\Scalar\String_;
 
 class DiagnosticForConsultation extends Component
 {
     public ?ConsultationRequest $consultationRequest;
     public int $diagnosticSelected, $symptomSelected;
     public int $selectedIndex=0;
+    public  string $search_diagnostic='',$search_symptom='';
 
     public function changeSelectedIndex(int $index){
         $this->selectedIndex=$index;
@@ -118,8 +120,8 @@ class DiagnosticForConsultation extends Component
     public function render()
     {
         return view('livewire.application.diagnostic.diagnostic-for-consultation', [
-            'diagnostics' => GetDiagnosticRepository::getDiagnosticListByCategory($this->selectedIndex),
-            'symptoms' => GetDiagnosticRepository::getSymptomticListByCategory($this->selectedIndex),
+            'diagnostics' => GetDiagnosticRepository::getDiagnosticListByCategory($this->selectedIndex, $this->search_diagnostic),
+            'symptoms' => GetDiagnosticRepository::getSymptomticListByCategory($this->selectedIndex, $this->search_symptom),
             "categoryDiagnostics" => CategoryDiagnostic::all(),
         ]);
     }
