@@ -46,6 +46,7 @@ use App\Livewire\Application\Finance\Rapport\RapportFinanceBySubscriptionView;
 use App\Livewire\Application\Product\Invoice\List\ListProductStockForInvoicePage;
 use App\Http\Controllers\Application\Print\Finance\OutpatientBillPrinterController;
 use App\Http\Controllers\Application\Print\ConsultationRequest\ConsultationRequestPrinterController;
+use App\Livewire\Application\Lab\LaboDailyReleases;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
     Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
+    Route::get('labo/daily-release', LaboDailyReleases::class)->name('labo.daily.release');
     Route::get('labo/finance-rapport', LaboFinanceRapport::class)->name('labo.finance.rapport');
 
     Route::get('/users', MainAdmin::class)->name('users');
@@ -133,7 +135,7 @@ Route::prefix('print')->group(function () {
             ->name('list.invoices.month');
 
         Route::get('list-labo-by-month/{subscriptionId}/{month}', 'printListILaboByMonth')
-        ->name('list.labo.month');
+            ->name('list.labo.month');
 
         Route::get('monthly-frequentation/{month?}/{year?}', 'printMonthlyFrequentation')
             ->name('monthly.frequentation');

@@ -68,7 +68,7 @@ class UserRedirectChecker
                 'product.invoice.stock',
                 'product.stock.service'
             ],
-            'Caisse'=>[
+            'Caisse' => [
                 'main',
                 'dashboard',
                 'bill.outpatient',
@@ -86,7 +86,7 @@ class UserRedirectChecker
 
 
             ],
-            'Depot-Pharma'=>[
+            'Depot-Pharma' => [
                 'main',
                 'dashboard',
                 'product.list',
@@ -95,7 +95,7 @@ class UserRedirectChecker
                 'product.requisition',
                 'product.supply.add.products'
             ],
-            'Nurse'=>[
+            'Nurse' => [
                 'main',
                 'dashboard',
                 'consultations.request.list',
@@ -107,7 +107,7 @@ class UserRedirectChecker
                 'patient.folder',
                 'sheet',
             ],
-            'Labo'=>[
+            'Labo' => [
                 'main',
                 'dashboard',
                 'consultation.hospitalize',
@@ -118,9 +118,10 @@ class UserRedirectChecker
                 'tarification.prices',
                 'product.requisitions',
                 'product.requisition',
-                'labo.finance.rapport'
+                'labo.finance.rapport',
+                'labo.daily.release'
             ],
-            'Finance'=>[
+            'Finance' => [
                 'main',
                 'dashboard',
                 'bill.outpatient.rapport',
@@ -144,7 +145,7 @@ class UserRedirectChecker
                 'expense.voucher',
                 'note.money.seding'
             ],
-            'IT'=>[
+            'IT' => [
                 'main',
                 'dashboard',
                 'users',
@@ -153,7 +154,8 @@ class UserRedirectChecker
                 'files',
                 'localization',
                 'tarification'
-            ],'Doctor'=>[
+            ],
+            'Doctor' => [
                 'main',
                 'dashboard',
                 'consultations.request.list',

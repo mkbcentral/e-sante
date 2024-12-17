@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Application\Labo;
+namespace App\Livewire\Application\Lab;
 
 use App\Livewire\Helpers\Date\DateFormatHelper;
 use App\Models\Subscription;
 use App\Models\Tarif;
 use Livewire\Component;
 
-class LaboMonthlyReleases extends Component
+class LaboDailyReleases extends Component
 {
     public string $month_name, $year;
     public $subscription_id = "";
@@ -31,12 +31,12 @@ class LaboMonthlyReleases extends Component
     }
     public function render()
     {
-        return view('livewire.application.labo.labo-monthly-releases', [
+        return view('livewire.application.lab.labo-daily-releases', [
             'tarifs' => Tarif::query()->where('category_tarif_id', 1)
                 ->orderBy('name', 'asc')
                 ->with(['outpatientBills', 'consultationRequests'])
                 ->get(),
-            'months' => DateFormatHelper::getFrMonths()
+            'days' => DateFormatHelper::getListDateForMonth($this->month_name, $this->year)
         ]);
     }
 }

@@ -14,12 +14,20 @@
         <div class="card card-outline card-primary">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5>Année:2023</h5>
+                    <h5>Mois de: {{ format_fr_month_name($month_name) . '/' . $subscriptionName }}</h5>
                     <div class="d-flex align-items-center">
                         <div class="form-group d-flex mr-2">
                             <x-form.label value="{{ __('Type ') }}" class="mr-2" />
                             <x-widget.list-subscription-widget wire:model.live='subscription_id' :error="'subscription_id'" />
                         </div>
+                        <div class="form-group d-flex">
+                            <label for="my-input " class="mr-2">Mois</label>
+                            <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
+                            <a class="ml-2" target="_blanck"
+                                href="{{ route('print.labo.monthly.releases', [$month_name, $subscription_id]) }}"><i
+                                    class="fas fa-print"></i> Imprimer</a>
+                        </div>
+
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pb-2">
@@ -30,8 +38,8 @@
                         <thead class="bg-primary">
                             <tr>
                                 <th>EXAMEN</th>
-                                @foreach ($months as $month)
-                                    <th>{{ $month['name'] }}</th>
+                                @foreach ($days as $day)
+                                    <th>{{ (new DateTime($day))->format('d') }}</th>
                                 @endforeach
                                 <th class="text-center">NBRE</th>
                             </tr>
@@ -43,35 +51,32 @@
                                     <td>
                                         {{ strlen($tarif->getNameOrAbbreviation()) > 10 ? substr($tarif->getNameOrAbbreviation(), 0, 10) . '...' : $tarif->getNameOrAbbreviation() }}
                                     </td>
-                                    @foreach ($months as $month)
+                                    @foreach ($days as $i => $r_day)
                                         @php
-                                            //Privé hospitalisés et abonnées
-                                            $n1 = App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByMonth(
+                                            $n1 = App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByDay(
                                                 $subscription_id,
-                                                $month['number'],
+                                                $r_day,
                                                 $tarif->id,
                                             );
-                                            //Privé hambulatoire
-                                            $n2 = App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByMonth(
-                                                $month['number'],
+                                            $n2 = App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByDay(
+                                                $r_day,
                                                 $tarif->id,
                                             );
                                             $total = $n1 + $n2;
                                         @endphp
-
                                         <td>
                                             {{ $total == 0 ? '-' : $total }}
                                         </td>
                                     @endforeach
                                     @php
                                         $item_count =
-                                            App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByYear(
+                                            App\Repositories\Labo\MonthlyReleaseRepository::getConsultationRequestReleaseByMonth(
                                                 $subscription_id,
-                                                '2024',
+                                                $month_name,
                                                 $tarif->id,
                                             ) +
-                                            App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByYear(
-                                                '2024',
+                                            App\Repositories\Labo\MonthlyReleaseRepository::getOutpatientReleaseByMonth(
+                                                $month_name,
                                                 $tarif->id,
                                             );
                                         $total_count += $item_count;

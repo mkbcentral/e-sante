@@ -17,7 +17,7 @@ class MonthlyReleaseRepository
         string $subscription_id,
         string $day,
         int $tarif_id,
-    ):float|int {
+    ): float|int {
         return
             DB::table('consultation_request_tarif')
             ->join(
@@ -76,6 +76,41 @@ class MonthlyReleaseRepository
             ->count();
     }
 
+    /**
+     * Retourner les consommations par mois
+     * @param string $subscription_id
+     * @param string $year
+     * @param int $tarif_id
+     * @return float|int
+     */
+    public static function getConsultationRequestReleaseByYear(
+        string $subscription_id,
+        string $year,
+        int $tarif_id,
+    ): float|int {
+        return
+            DB::table('consultation_request_tarif')
+            ->join(
+                'consultation_requests',
+                'consultation_requests.id',
+                'consultation_request_tarif.consultation_request_id',
+            )
+            ->join(
+                'consultation_sheets',
+                'consultation_sheets.id',
+                'consultation_requests.consultation_sheet_id',
+            )
+            ->when(
+                $subscription_id,
+                function ($query, $f) {
+                    return $query->where('consultation_sheets.subscription_id', $f);
+                }
+            )
+            ->whereYear('consultation_requests.created_at', $year)
+            ->where('consultation_request_tarif.tarif_id', $tarif_id)
+            ->count();
+    }
+
 
     /**
      * Summary of getOutpatientReleaseByDay
@@ -86,7 +121,7 @@ class MonthlyReleaseRepository
     public static function getOutpatientReleaseByDay(
         string $day,
         int $tarif_id
-    ):float|int{
+    ): float|int {
         return DB::table('outpatient_bill_tarif')
             ->join(
                 'outpatient_bills',
@@ -109,6 +144,21 @@ class MonthlyReleaseRepository
                 'outpatient_bill_tarif.outpatient_bill_id',
             )
             ->whereMonth('outpatient_bills.created_at', $month)
+            ->where('outpatient_bill_tarif.tarif_id', $tarif_id)
+            ->count();
+    }
+
+    public static function getOutpatientReleaseByYear(
+        string $year,
+        int $tarif_id
+    ): float|int {
+        return DB::table('outpatient_bill_tarif')
+            ->join(
+                'outpatient_bills',
+                'outpatient_bills.id',
+                'outpatient_bill_tarif.outpatient_bill_id',
+            )
+            ->whereYear('outpatient_bills.created_at', $year)
             ->where('outpatient_bill_tarif.tarif_id', $tarif_id)
             ->count();
     }
