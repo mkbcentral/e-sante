@@ -22,13 +22,15 @@ class OtherPrinterController extends Controller
             $categoryTarif = null;
             $categoryTarifs = CategoryTarif::query()->orderBy('name', 'ASC')->get();
         }
-        $consultations=Consultation::whereIn('id',[1,4,5])->get();
-        $hospitalizations = Hospitalization::whereIn('id', [1, 2, 3,4,7,8])->get();
+        $consultations = Consultation::whereIn('id', [1, 4, 5])->get();
+        $hospitalizations = Hospitalization::whereIn('id', [1, 2, 3, 4, 7, 8])->get();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
             'prints.tarifs.print-list-price',
             compact([
-                'categoryTarif', 'categoryTarifs', 'type_data',
+                'categoryTarif',
+                'categoryTarifs',
+                'type_data',
                 'consultations',
                 'hospitalizations'
             ])
@@ -54,20 +56,22 @@ class OtherPrinterController extends Controller
     public function printLaboMonthlyReleases($month, $subscription_id)
     {
         $days
-        = DateFormatHelper::getListDateForMonth($month,'2024');
-        $tarifs= Tarif::query()->where('category_tarif_id', 1)
+            = DateFormatHelper::getListDateForMonth($month, '2024');
+        $tarifs = Tarif::query()->where('category_tarif_id', 1)
             ->orderBy('name', 'asc')
             ->get();
-        $subscription=Subscription::find($subscription_id);
+        $subscription = Subscription::find($subscription_id);
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
             'prints.labo.print-labo-monthly-release',
             compact([
                 'month',
-                'days','tarifs', 'subscription','subscription_id'
+                'days',
+                'tarifs',
+                'subscription',
+                'subscription_id'
             ])
         )->set_option('isRemoteEnabled', true)->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
-
 }

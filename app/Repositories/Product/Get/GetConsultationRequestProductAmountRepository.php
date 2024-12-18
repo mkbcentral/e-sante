@@ -8,6 +8,7 @@ use App\Models\Source;
 
 class GetConsultationRequestProductAmountRepository
 {
+
     /**
      * Get consultation request product amount
      * @return int|float
@@ -39,7 +40,7 @@ class GetConsultationRequestProductAmountRepository
      * Get consultation request product amount
      * @return int|float
      */
-    public static function getProductAmountByMonth($month, $year, $idSubscription,$currency): int|float
+    public static function getProductAmountByMonth($month, $year, $idSubscription, $currency): int|float
     {
         $amount = 0;
         $consultationRequests = ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
@@ -59,7 +60,8 @@ class GetConsultationRequestProductAmountRepository
                     'consultationRequestHospitalizations.hospitalizationRoom',
                     'tarifs',
                     'products'
-                ])
+                ]
+            )
             ->get();
         foreach ($consultationRequests as $consultationRequest) {
             if ($currency == 'CDF') {
@@ -70,11 +72,23 @@ class GetConsultationRequestProductAmountRepository
         }
         return $amount;
     }
+    public static function getProductCountByMonth($month, $year, $idSubscription): int|float
+    {
+        return ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            //->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->count();
+    }
     //getProductAmountByMonth
     public static function getProductAmountByPeriod(
-        $startDate, $endDate, $idSubscription,$currency
-        ): int|float
-    {
+        $startDate,
+        $endDate,
+        $idSubscription,
+        $currency
+    ): int|float {
         $amount = 0;
         $consultationRequests = ConsultationRequest::whereBetween('consultation_requests.created_at', [$startDate, $endDate])
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
@@ -121,4 +135,21 @@ class GetConsultationRequestProductAmountRepository
         return $amount;
     }
 
+    /**
+     * Get consultation request product amount
+     * @return int|float
+     */
+    public static function getProductCountHospitalize($month, $year, $idSubscription): int|float
+    {
+        return  ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_sheets.subscription_id', $idSubscription)
+            ->whereYear('consultation_requests.created_at', $year)
+            ->where('consultation_requests.is_hospitalized', true)
+            ->select('consultation_requests.*')
+            ->with(['consultation', 'rate'])
+            ->count();
+    }
 }

@@ -23,7 +23,8 @@ class ConsultationRequestPrinterController extends Controller
             'prints.requtests.print-consultation-request-private-invoice',
             compact([
                 'consultationRequest',
-                'categories', 'currency'
+                'categories',
+                'currency'
             ])
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
@@ -36,7 +37,7 @@ class ConsultationRequestPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.request_number', 'ASC')
+            ->orderBy('consultation_requests.created_at', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
@@ -83,7 +84,10 @@ class ConsultationRequestPrinterController extends Controller
         $pdf->loadView(
             'prints.requtests.print-monthly-frequentation',
             compact([
-                'consultationRequestsAll', 'month', 'year', 'sources'
+                'consultationRequestsAll',
+                'month',
+                'year',
+                'sources'
             ])
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
@@ -91,14 +95,16 @@ class ConsultationRequestPrinterController extends Controller
 
     public function printMonthlyFrequentationHospitalize($month, $year)
     {
-        $consultationRequestsAll = GetConsultationRequestGroupingCounterRepository::
-        getConsultationRequestGroupingBySubscriptionHospitalizeByAllSource($month, $year, Source::GOLF_ID);
+        $consultationRequestsAll = GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionHospitalizeByAllSource($month, $year, Source::GOLF_ID);
         $sources = Source::all();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView(
             'prints.requtests.print-monthly-frequentation-hospitalize',
             compact([
-                'consultationRequestsAll', 'month', 'year', 'sources'
+                'consultationRequestsAll',
+                'month',
+                'year',
+                'sources'
             ])
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
@@ -107,7 +113,7 @@ class ConsultationRequestPrinterController extends Controller
     public function printListILaboByMonth($subscriptionId, $month)
     {
         $year = date('Y');
-        $categoryTarif=CategoryTarif::find(1);
+        $categoryTarif = CategoryTarif::find(1);
         $subscription = Subscription::find($subscriptionId);
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
