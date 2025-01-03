@@ -14,7 +14,7 @@
                             </span>
                         </button>
                     </div>
-                    @if (Auth::user()->roles->pluck('name')->contains('Reception') || Auth::user()->roles->pluck('name')->contains('Nurse'))
+                    @if (Auth::user()->roles->pluck('name')->contains('RECEPTION') || Auth::user()->roles->pluck('name')->contains('NURSE'))
                         <x-form.button class="btn-primary mt-1" wire:click="newSheet">
                             <x-icons.icon-plus-circle />
                             Nouvelle fiche
