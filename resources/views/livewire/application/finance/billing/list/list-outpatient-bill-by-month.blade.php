@@ -20,13 +20,24 @@
                     <x-form.label value="{{ __('Date') }}" class="mr-1" />
                     <x-form.input type='date' wire:model.live='date' :error="'date'" />
                 </div>
-                <div class="form-group d-flex align-items-center mr-2">
-                    <x-form.label value="{{ __('Mois') }}" class="mr-1" />
-                    <x-widget.list-french-month wire:model.live='month' :error="'month'" />
+                <div class=" d-flex align-items-center">
+                    <div class="form-group d-flex align-items-center mr-2">
+                        <x-form.label value="{{ __('Année') }}" class="mr-1" />
+                        <x-widget.list-years wire:model.live='year' :error="'year'" />
+                    </div>
+                    <div class="form-group d-flex align-items-center mr-2">
+                        <x-form.label value="{{ __('Mois') }}" class="mr-1" />
+                        <x-widget.list-french-month wire:model.live='month' :error="'month'" />
+                    </div>
+
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <div>
+                <div class="form-group d-flex align-items-center ml-2">
+                    <x-form.label value="{{ __('Date versment') }}" class="mr-1" />
+                    <x-form.input type='date' wire:model.live='date_versement' :error="'date_versement'" />
+                </div>
+                <div class="form-group align-items-center mr-2">
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-print"></i>
                             Imprimer </button>
@@ -36,16 +47,11 @@
                         </button>
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" target="_blanck"
-                                href="{{ route('rapport.date.outPatientBill.print', [$date,$date_versement]) }}"><i
+                                href="{{ route('rapport.date.outPatientBill.print', [$date, $date_versement]) }}"><i
                                     class="fas fa-file-pdf"></i> Bordereau de versement</a>
                         </div>
                     </div>
                 </div>
-                <div class="form-group d-flex align-items-center ml-2">
-                    <x-form.label value="{{ __('Date versment') }}" class="mr-1" />
-                    <x-form.input type='date' wire:model.live='date_versement' :error="'date_versement'" />
-                </div>
-
             </div>
         </div>
         <div wire:loading.class='d-none'>
@@ -63,7 +69,7 @@
                 <tbody>
                     @if ($listBill->isEmpty())
                         <tr>
-                            <td colspan="5" class="text-center">Aucune données trpuvée</td>
+                            <td colspan="6" class="text-center">Aucune données trpuvée</td>
                         </tr>
                     @else
                         @foreach ($listBill as $index => $bill)

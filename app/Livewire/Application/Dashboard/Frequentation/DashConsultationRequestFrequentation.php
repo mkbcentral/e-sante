@@ -8,26 +8,41 @@ use Livewire\Component;
 
 class DashConsultationRequestFrequentation extends Component
 {
-    public $date_filter = '', $month, $year;
+    public $date = '', $month, $year;
 
-    public function updatedDateFilter()
+    protected $listeners = [
+        'updatedDateData' => 'getDate',
+        'updatedMonthData' => 'getMonth',
+        'updatedYearData' => 'getYear',
+    ];
+    public function getDate(string $date)
     {
+        $this->date = $date;
         $this->month = '';
     }
-
-    public function mount()
+    public function getMonth($month)
     {
-        $this->date_filter = date('Y-m-d');
-        $this->year = date('Y');
+        $this->month = $month;
+        $this->date = '';
+    }
+    public function getYear($year)
+    {
+        $this->year = $year;
     }
 
+    public function mount(String $date, $month, $year)
+    {
+        $this->date = $date;
+        $this->month = $month;
+        $this->year = $year;
+    }
     public function render()
     {
-        $subscription=Subscription::where('is_private', false)->get();
+        $subscription = Subscription::where('is_private', false)->get();
 
         return view('livewire.application.dashboard.frequentation.dash-consultation-request-frequentation', [
             'requests' => $this->month == '' ?
-                GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionByDate($this->date_filter)
+                GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionByDate($this->date)
                 : GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionByMonth($this->month, $this->year)
         ]);
     }

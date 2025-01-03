@@ -8,6 +8,7 @@ use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -31,7 +32,6 @@ class ListConsultationRequestHospitalize extends Component
     public $sortBy = 'consultation_requests.created_at';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
-
     /**
      * getCurrencyName
      * Get currency name
@@ -42,7 +42,6 @@ class ListConsultationRequestHospitalize extends Component
     {
         $this->currencyName = $currency;
     }
-
     /**
      * Open detail consultation model view
      * emit consultationRequest listner to load data after modal detail opened
@@ -59,6 +58,17 @@ class ListConsultationRequestHospitalize extends Component
     }
 
     /**
+     * Open vital sign modal
+     * @param ConsultationRequest $consultationRequest
+     * @return void
+     */
+    public  function openVitalSignForm(ConsultationRequest $consultationRequest): void
+    {
+        $this->dispatch('open-vital-sign-form');
+        $this->dispatch('consultationRequest', $consultationRequest);
+    }
+
+    /**
      * Get Consultation Sheet if listener emitted in parent veiew
      * @param int $selectedIndex
      * @return void
@@ -68,27 +78,53 @@ class ListConsultationRequestHospitalize extends Component
         $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
+
+    public function addToBordereau(?ConsultationRequest $consultationRequest)
+    {
+        $consultationRequest->paid_at = Carbon::now();
+        $consultationRequest->is_paid = true;
+        $consultationRequest->currency_id = Currency::DEFAULT_ID_CURRENCY;
+        $consultationRequest->perceived_by = Auth::id();
+        $consultationRequest->update();
+    }
     /**
-     * Open medical prescription modal
-     * @param ConsultationRequest $consultationRequest
+     * Delete from Bordereau
+     * @param ConsultationRequest|null $consultationRequest
      * @return void
      */
-    public function openPrescriptionMedicalModal(ConsultationRequest $consultationRequest): void
+    public function deleteToBordereau(?ConsultationRequest $consultationRequest)
     {
-        $this->dispatch('open-medical-prescription');
-        $this->dispatch('consultationRequest', $consultationRequest);
-        $this->dispatch('updated', ['message' => 'Action bien réalisée']);
+        $consultationRequest->paid_at = null;
+        $consultationRequest->currency_id = null;
+        $consultationRequest->perceived_by = 0;
+        $consultationRequest->is_paid = false;
+        if ($consultationRequest->consultationRequestCurrency != null) {
+            $consultationRequest->consultationRequestCurrency->delete();
+        }
+        $consultationRequest->update();
     }
 
     /**
-     * Open vital sign modal
-     * @param ConsultationRequest $consultationRequest
+     * Open edit consultation currency modal
+     * @param ConsultationRequest|null $consultationRequest
      * @return void
      */
-    public  function openVitalSignForm(ConsultationRequest $consultationRequest): void
+    public function showEditCurrency(?ConsultationRequest $consultationRequest)
     {
-        $this->dispatch('open-vital-sign-form');
-        $this->dispatch('consultationRequest', $consultationRequest);
+        $this->dispatch('open-edit-consultation-request-currency');
+        $this->dispatch('currencyConsultationRequest', $consultationRequest);
+    }
+    /**
+     * Open edit consultation currency modal
+     * @param ConsultationRequest|null $consultationRequest
+     * @return void
+     */
+
+
+    public function openCautionModal(ConsultationRequest $consultationRequest)
+    {
+        $this->dispatch('consultationRequestionCaution', $consultationRequest);
+        $this->dispatch('open-form-caution');
     }
 
     /**
@@ -103,60 +139,6 @@ class ListConsultationRequestHospitalize extends Component
         }
         $this->sortBy = $value;
     }
-    /**
-     * Open edit consultation modal
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-    public function edit(?ConsultationRequest $consultationRequest)
-    {
-        $this->dispatch('selectedConsultationRequest', $consultationRequest);
-        $this->dispatch('open-edit-consultation');
-    }
-    /**
-     * Open edit consultation currency modal
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-    public function addToBordereau(?ConsultationRequest $consultationRequest){
-        $consultationRequest->paid_at=Carbon::now();
-        $consultationRequest->is_paid = true;
-        $consultationRequest->perceived_by=auth()->id();
-        $consultationRequest->update();
-    }
-    /**
-     * Delete from Bordereau
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-    public function deleteToBordereau(?ConsultationRequest $consultationRequest){
-        $consultationRequest->paid_at = null;
-        $consultationRequest->perceived_by=0;
-        $consultationRequest->is_paid = false;
-        $consultationRequest->update();
-    }
-
-    /**
-     * Open edit consultation currency modal
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-    public function showEditCurrency(?ConsultationRequest $consultationRequest){
-        $this->dispatch('open-edit-consultation-request-currency');
-        $this->dispatch('currencyConsultationRequest',$consultationRequest);
-    }
-    /**
-     * Open edit consultation currency modal
-     * @param ConsultationRequest|null $consultationRequest
-     * @return void
-     */
-
-
-    public function openCautionModal(ConsultationRequest $consultationRequest){
-        $this->dispatch('consultationRequestionCaution',$consultationRequest);
-        $this->dispatch('open-form-caution');
-    }
-
 
     public  function mount(int $selectedIndex): void
     {
@@ -164,14 +146,11 @@ class ListConsultationRequestHospitalize extends Component
         $this->month_name = date('m');
         $this->year = date('Y');
     }
-    /**
-     * Render view
-     * @return void
-     */
     public function render()
     {
         return view('livewire.application.sheet.list.list-consultation-request-hospitalize', [
-            'listConsultationRequest' => GetConsultationRequestRepository::getConsultationRequestHospitalized(
+            'listConsultationRequest' =>
+            GetConsultationRequestRepository::getConsultationRequestHospitalized(
                 $this->selectedIndex,
                 $this->q,
                 $this->sortBy,

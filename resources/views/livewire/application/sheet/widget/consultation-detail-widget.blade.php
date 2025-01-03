@@ -15,22 +15,18 @@
                 </span>
             @endif
         </td>
-        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                Auth::user()->roles->pluck('name')->contains('Admin'))
-            <td class="text-right">
-                @if ($consultationRequest->is_consultation_paid == true)
-                    {{ app_format_number(0, 1) }}
-                @else
-                    {{ app_format_number(
-                        $currencyName == 'USD'
-                            ? $consultationRequest->getConsultationPriceUSD()
-                            : $consultationRequest->getConsultationPriceCDF(),
-                        1,
-                    ) }}
-                @endif
-            </td>
-        @endif
+        @can('finance-view')
+            @if ($consultationRequest->is_consultation_paid == true)
+                {{ app_format_number(0, 1) }}
+            @else
+                {{ app_format_number(
+                    $currencyName == 'USD'
+                        ? $consultationRequest->getConsultationPriceUSD()
+                        : $consultationRequest->getConsultationPriceCDF(),
+                    1,
+                ) }}
+            @endif
+        @endcan
         <td class="text-center">
             @if ($consultationRequest->is_printed == false)
                 @if (!$consultationRequest->is_consultation_paid)

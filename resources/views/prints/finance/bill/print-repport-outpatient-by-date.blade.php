@@ -3,14 +3,14 @@
         <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
         <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
         <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT
-            {{ Auth::user()->roles->pluck('name')->contains('Caisse')?'AMBULATOIRE':'URGENCES' }}
-             </h4>
+            {{ Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX)? 'AMBULATOIRE': 'URGENCES' }}
+        </h4>
         <table class="table table-bordered  table-sm">
             <thead class="bg-secondary text-white text-uppercase">
                 <tr>
                     <th class="text-center">#</th>
                     <th>Date admise</th>
-                     <th class="text-center">#Invoice</th>
+                    <th class="text-center">#Invoice</th>
                     <th>Cleint</th>
                     <th class="text-right">MT USD</th>
                     <th class="text-right">MT CDF</th>
@@ -70,7 +70,7 @@
                 @endif
             </tbody>
         </table>
-        <table class="table table-light {{!$consultationRequests->isEmpty()? 'page-break':'' }}">
+        <table class="table table-light {{ !$consultationRequests->isEmpty() ? 'page-break' : '' }}">
             <tr>
                 <td>PERECEPTION</td>
                 <td class="text-right">CAISSE</td>
@@ -82,84 +82,84 @@
         </table>
     </div>
     @if (!$consultationRequests->isEmpty())
-         <div>
-        @php
-            $amount_cdf=0;
-            $amount_usd=0;
-        @endphp
-        <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
-        <div class="text-right"><span>Fait à Lubumbashi, Le {{$dateToMorrow }}</span></div>
-        <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT HOSPITALISES</h4>
+        <div>
+            @php
+                $amount_cdf = 0;
+                $amount_usd = 0;
+            @endphp
+            <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
+            <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
+            <h4 class="text-center text-bold mt-2">BORDEREAU DE VERSEMENT HOSPITALISES</h4>
 
-        <table class="table table-bordered  table-sm">
-            <thead class="bg-secondary text-white text-uppercase">
-                <tr>
-                    <th class="text-center">#</th>
-                    <th>Date</th>
-                    <th class="text-center">N° Fracture</th>
-                    <th>Cleint</th>
-                    <th class="text-right">MT USD</th>
-                    <th class="text-right">MT CDF</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($consultationRequests as $index => $consultationRequest)
-                    <tr style="cursor: pointer;" id="row1" class="border border-dark">
-                        <td class="text-center">{{ $consultationRequest->request_number }}</td>
-                        <td>{{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}</td>
-                        <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
-                        <td>{{ $consultationRequest->consultationSheet->name }}</td>
-                        <td class="text-right money_format">
-                            @if ($consultationRequest->currency)
-                                @if ($consultationRequest->currency->name == 'USD')
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 1) }}
-                                @else
-                                    -
-                                @endif
-                            @else
-                                @if ($consultationRequest->consultationRequestCurrency)
-                                    {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_usd, 1) }}
-                                @else
-                                    -
-                                @endif
-                            @endif
-                        </td>
-                        <td class="text-right money_format">
-                            @if ($consultationRequest->currency)
-                                @if ($consultationRequest->currency->name == 'CDF')
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) }}
-                                @else
-                                    -
-                                @endif
-                            @else
-                                @if ($consultationRequest->consultationRequestCurrency)
-                                    {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_cdf, 1) }}
-                                @else
-                                    -
-                                @endif
-                            @endif
-
-                        </td>
+            <table class="table table-bordered  table-sm">
+                <thead class="bg-secondary text-white text-uppercase">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Date</th>
+                        <th class="text-center">N° Fracture</th>
+                        <th>Cleint</th>
+                        <th class="text-right">MT USD</th>
+                        <th class="text-right">MT CDF</th>
                     </tr>
-                @endforeach
-                <tr class="text-uppercase text-bold h4">
-                    <td colspan="4" class="text-right">Total</td>
-                    <td class="text-right">{{ app_format_number($total_cons_usd, 1) }}</td>
-                    <td class="text-right">{{ app_format_number($total_cons_cdf, 1) }}</td>
+                </thead>
+                <tbody>
+                    @foreach ($consultationRequests as $index => $consultationRequest)
+                        <tr style="cursor: pointer;" id="row1" class="border border-dark">
+                            <td class="text-center">{{ $consultationRequest->request_number }}</td>
+                            <td>{{ $consultationRequest->created_at->format('d-m-Y H:i:s') }}</td>
+                            <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
+                            <td>{{ $consultationRequest->consultationSheet->name }}</td>
+                            <td class="text-right money_format">
+                                @if ($consultationRequest->currency)
+                                    @if ($consultationRequest->currency->name == 'USD')
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceUSD(), 1) }}
+                                    @else
+                                        -
+                                    @endif
+                                @else
+                                    @if ($consultationRequest->consultationRequestCurrency)
+                                        {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_usd, 1) }}
+                                    @else
+                                        -
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="text-right money_format">
+                                @if ($consultationRequest->currency)
+                                    @if ($consultationRequest->currency->name == 'CDF')
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) }}
+                                    @else
+                                        -
+                                    @endif
+                                @else
+                                    @if ($consultationRequest->consultationRequestCurrency)
+                                        {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_cdf, 1) }}
+                                    @else
+                                        -
+                                    @endif
+                                @endif
+
+                            </td>
+                        </tr>
+                    @endforeach
+                    <tr class="text-uppercase text-bold h4">
+                        <td colspan="4" class="text-right">Total</td>
+                        <td class="text-right">{{ app_format_number($total_cons_usd, 1) }}</td>
+                        <td class="text-right">{{ app_format_number($total_cons_cdf, 1) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-light">
+                <tr>
+                    <td>PERECEPTION</td>
+                    <td class="text-right">CAISSE</td>
                 </tr>
-            </tbody>
-        </table>
-        <table class="table table-light">
-            <tr>
-                <td>PERECEPTION</td>
-                <td class="text-right">CAISSE</td>
-            </tr>
-            <tr>
-                <td>{{ Auth::user()->name }}</td>
-                <td class="text-right">GEORGETTE KAMWANYA</td>
-            </tr>
-        </table>
-    </div>
+                <tr>
+                    <td>{{ Auth::user()->name }}</td>
+                    <td class="text-right">GEORGETTE KAMWANYA</td>
+                </tr>
+            </table>
+        </div>
     @endif
 
 </x-print-layout>

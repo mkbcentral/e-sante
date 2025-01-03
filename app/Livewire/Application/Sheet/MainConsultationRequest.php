@@ -51,18 +51,17 @@ class MainConsultationRequest extends Component
 
     public function mount()
     {
-        $subscription= Subscription::where('name', 'like', 'PRIVE')->first();
+        $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
         if ($subscription) {
             $this->selectedIndex = $subscription->id;
-        }else{
-            $this->selectedIndex=0;
+        } else {
+            $this->selectedIndex = 0;
         }
 
-        if (Auth::user()->roles->pluck('name')->contains('Admin')) {
-           $this->isByMonth=true;
+        if (Auth::user()->roles->pluck('name')->contains('ADMIN')) {
+            $this->isByMonth = true;
             $this->isByDate = false;
         }
-
     }
     /**
      * Render component

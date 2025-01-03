@@ -7,18 +7,38 @@ use Livewire\Component;
 
 class DashConsultationRequestHospitalized extends Component
 {
-    public  $month, $year;
+    public $date = '', $month, $year;
 
-    public function mount()
+    protected $listeners = [
+        'updatedDateData' => 'getDate',
+        'updatedMonthData' => 'getMonth',
+        'updatedYearData' => 'getYear',
+    ];
+    public function getDate(string $date)
     {
-        $this->month = date('m');
-        $this->year = date('Y');
+        $this->date = $date;
+        $this->month = '';
+    }
+    public function getMonth($month)
+    {
+        $this->month = $month;
+        $this->date = '';
+    }
+    public function getYear($year)
+    {
+        $this->year = $year;
     }
 
+    public function mount(String $date, $month, $year)
+    {
+        $this->date = $date;
+        $this->month = date('m');
+        $this->year = $year;
+    }
     public function render()
     {
-        return view('livewire.application.dashboard.frequentation.dash-consultation-request-hospitalized',[
-            'requests'=> GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionHospitalize($this->month, $this->year)
+        return view('livewire.application.dashboard.frequentation.dash-consultation-request-hospitalized', [
+            'requests' => GetConsultationRequestGroupingCounterRepository::getConsultationRequestGroupingBySubscriptionHospitalize($this->month, $this->year)
         ]);
     }
 }

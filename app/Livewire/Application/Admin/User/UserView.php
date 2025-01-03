@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Admin\User;
 
+use App\Enums\RoleType;
 use App\Models\User;
 use App\Repositories\User\GetUserRepository;
 use Exception;
@@ -14,9 +15,9 @@ class UserView extends Component
     use WithPagination;
     protected $listeners = [
         'refreshUserList' => '$refresh',
-        'deleteUserListener'=>'delete'
+        'deleteUserListener' => 'delete'
     ];
-    public ?User $user=null;
+    public ?User $user = null;
     //
     #[Url(as: 'q')]
     public $q = '';
@@ -25,16 +26,19 @@ class UserView extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
-    public function edit(?User $user){
-        $this->dispatch('selectedUser',$user);
+    public function edit(?User $user)
+    {
+        $this->dispatch('selectedUser', $user);
         $this->dispatch('open-form-create-user');
     }
-    public function showDeleteDialog(User $user){
-        $this->user=$user;
+    public function showDeleteDialog(User $user)
+    {
+        $this->user = $user;
         $this->dispatch('delete-user-dialog');
     }
 
-    public function openRoleViewModal(){
+    public function openRoleViewModal()
+    {
         $this->dispatch('open-form-role');
     }
 
@@ -46,8 +50,8 @@ class UserView extends Component
 
     public function openRoleUserViewModal(User $user)
     {
-        $this->user=$user;
-        $this->dispatch('roleUser',$user);
+        $this->user = $user;
+        $this->dispatch('roleUser', $user);
         $this->dispatch('open-form--user-role');
     }
 
@@ -58,7 +62,8 @@ class UserView extends Component
         $this->dispatch('open-user-link-modal');
     }
 
-    public function delete(){
+    public function delete()
+    {
         try {
             $this->user->delete();
             $this->dispatch('user-deleted', ['message' => 'Action bien réalisée']);
@@ -78,10 +83,13 @@ class UserView extends Component
         }
         $this->sortBy = $value;
     }
+
+    public function mount() {}
+
     public function render()
     {
-        return view('livewire.application.admin.user.user-view',[
-            'users'=>GetUserRepository::getListUsers($this->q,$this->sortBy,$this->sortAsc)
+        return view('livewire.application.admin.user.user-view', [
+            'users' => GetUserRepository::getListUsers($this->q, $this->sortBy, $this->sortAsc)
         ]);
     }
 }

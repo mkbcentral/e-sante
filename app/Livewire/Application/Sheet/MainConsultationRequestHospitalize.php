@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Application\Sheet;
 
+use App\Enums\RoleType;
 use App\Models\Subscription;
 use App\Repositories\Subscription\Get\GetSubscriptionRepository;
 use Illuminate\Support\Facades\Auth;
@@ -38,10 +39,10 @@ class MainConsultationRequestHospitalize extends Component
 
     public function render()
     {
-        return view('livewire.application.sheet.main-consultation-request-hospitalize',[
-            'subscriptions' => Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                 Auth::user()->roles->pluck('name')->contains('Finance') ||
-            Auth::user()->roles->pluck('name')->contains('Finance')?
+        return view('livewire.application.sheet.main-consultation-request-hospitalize', [
+            'subscriptions' => Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX) ||
+                Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_RECIPES) ||
+                Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_EXPENSES) ?
                 GetSubscriptionRepository::getAllSubscriptionListPrivateOnly() :
                 GetSubscriptionRepository::getAllSubscriptionList()
         ]);

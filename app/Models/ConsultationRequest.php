@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,10 +23,12 @@ class ConsultationRequest extends Model
         'validated_by',
         'has_a_shipping_ticket',
         'is_hospitalized',
-        'paid_at', 'created_at'
+        'paid_at',
+        'created_at'
     ];
     protected $casts = [
         'created_at' => 'datetime',
+        'paid_at' => 'datetime'
     ];
     public function rate(): BelongsTo
     {
@@ -54,7 +57,7 @@ class ConsultationRequest extends Model
     public function tarifs(): BelongsToMany
     {
         return $this->belongsToMany(Tarif::class)
-            ->withPivot(['id', 'qty','result', 'normal_value', 'unit']);
+            ->withPivot(['id', 'qty', 'result', 'normal_value', 'unit']);
     }
 
     public function diagnostics(): BelongsToMany
@@ -150,7 +153,7 @@ class ConsultationRequest extends Model
     {
         $price = 0;
         if ($this->consultationSheet->subscription->is_subscriber) {
-            $price =   $this->consultation->subscriber_price * $this->rate->rate;
+            $price = $this->consultation->subscriber_price * $this->rate->rate;
         } else {
             $price = $this->consultation->price_private * $this->rate->rate;
         }
@@ -161,9 +164,9 @@ class ConsultationRequest extends Model
     {
         $price = 0;
         if ($this->consultationSheet->subscription->is_subscriber) {
-            $price =  $this->consultation->subscriber_price;
+            $price = $this->consultation->subscriber_price;
         } else {
-            $price =  $this->consultation->price_private;
+            $price = $this->consultation->price_private;
         }
         return $price;
     }
@@ -205,7 +208,7 @@ class ConsultationRequest extends Model
                 $amount += $consultationRequestHospitalization
                     ->hospitalizationRoom
                     ->hospitalization
-                    ->price_private  *
+                    ->price_private *
                     $consultationRequestHospitalization->number_of_day;
             }
         }
@@ -284,7 +287,7 @@ class ConsultationRequest extends Model
             ($this->getConsultationPriceUSD() + $total) +
             $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD() :
             $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD();
-        return  $net_to_paid;
+        return $net_to_paid;
     }
 
     public function getAmountCautionCDF()
@@ -319,12 +322,89 @@ class ConsultationRequest extends Model
 
     public function getBgStatus(): string
     {
-        $bg='';
+        $bg = '';
         if (auth()->user()->roles->pluck('name')->contains('Admin')) {
-            $bg= $this->getTotalInvoiceUSD() == $this->getConsultationPriceUSD()
-                                        ? 'bg-danger'
-                                    : '';
+            $bg = $this->getTotalInvoiceUSD() == $this->getConsultationPriceUSD()
+                ? 'bg-danger'
+                : '';
         }
         return $bg;
+    }
+
+    public function scopeFilter(Builder $query, string $currency): Builder
+    {
+        return $query
+            ->join(
+                'consultation_sheets',
+                'consultation_sheets.id',
+                'consultation_requests.consultation_sheet_id'
+            )
+            ->join(
+                'consultation_request_product',
+                'consultation_requests.id',
+                'consultation_request_product.consultation_request_id'
+            )
+            ->join(
+                'products',
+                'products.id',
+                'consultation_request_product.product_id'
+            )
+            ->join(
+                'consultation_request_tarif',
+                'consultation_requests.id',
+                'consultation_request_tarif.consultation_request_id'
+            )
+            ->join(
+                'tarifs',
+                'tarifs.id',
+                'consultation_request_tarif.tarif_id'
+            )
+            ->join(
+                'consultation_request_nersings',
+                'consultation_requests.id',
+                'consultation_request_nersings.consultation_request_id'
+            )
+            ->join(
+                'consultation_request_hospitalizations',
+                'consultation_requests.id',
+                'consultation_request_hospitalizations.consultation_request_id'
+            )
+            ->join(
+                'hospitalization_rooms',
+                'hospitalization_rooms.id',
+                'consultation_request_hospitalizations.hospitalization_room_id'
+            )
+            ->join(
+                'hospitalizations',
+                'hospitalizations.id',
+                'hospitalization_rooms.hospitalization_id'
+            )
+            ->join(
+                'rates',
+                'rates.id',
+                'consultation_requests.rate_id'
+            )
+            ->where('consultation_requests.currency_id', $currency)
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
+            ->where('consultation_requests.is_hospitalized', true)
+            ->where('consultation_requests.is_finished', true)
+            ->selectRaw(
+                $currency == 1 ?
+                    'SUM(
+                    (tarifs.price_private * consultation_request_tarif.qty) + 
+                    (consultation_request_nersings.amount * consultation_request_nersings.number)+
+                    (hospitalizations.price_private * consultation_request_hospitalizations.number_of_day)+
+                    (products.price * consultation_request_product.qty/rates.rate)
+                ) as total_amount' :
+                    'SUM(
+                    ((tarifs.price_private * consultation_request_tarif.qty) + 
+                    (consultation_request_nersings.amount * consultation_request_nersings.number)+
+                    (hospitalizations.price_private * consultation_request_hospitalizations.number_of_day)
+                    *rates.rate)+
+                    (products.price * consultation_request_product.qty)
+                ) as total_amount'
+
+            );
     }
 }

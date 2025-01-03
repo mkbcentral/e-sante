@@ -63,7 +63,6 @@ class GetConsultationRequestRepository
         bool   $sortAsc,
         int    $per_page = 10,
         string $date,
-        string $year,
 
     ): mixed {
         SELF::$keytoSearch = $q;
@@ -82,8 +81,7 @@ class GetConsultationRequestRepository
             ->with(['consultationSheet', 'rate', 'consultationSheet.source', 'consultation'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
-            ->whereDate('consultation_requests.created_at', $date)
-            ->whereYear('consultation_requests.created_at', $year) //is_hospitalized
+            ->whereDate('consultation_requests.created_at', $date) //is_hospitalized
             ->paginate($per_page);
     }
     /**
@@ -208,7 +206,8 @@ class GetConsultationRequestRepository
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
             ->with([
-                'consultationSheet', 'rate'
+                'consultationSheet',
+                'rate'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
@@ -251,7 +250,8 @@ class GetConsultationRequestRepository
             ->orderBy($sortBy, $sortAsc ? 'ASC' : 'DESC')
             ->select('consultation_requests.*')
             ->with([
-                'consultationSheet', 'rate'
+                'consultationSheet',
+                'rate'
             ])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
@@ -279,14 +279,12 @@ class GetConsultationRequestRepository
     public static function getCountConsultationRequestByDate(
         int    $idSubscription,
         string $date,
-        string $year,
     ): int|float {
         return ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $idSubscription)
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->where('consultation_sheets.source_id', Source::DEFAULT_SOURCE())
             ->whereDate('consultation_requests.created_at', $date)
-            ->whereYear('consultation_requests.created_at', $year)
             ->count();
     }
 

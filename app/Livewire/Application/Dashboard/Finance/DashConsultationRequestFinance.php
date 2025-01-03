@@ -7,28 +7,34 @@ use Livewire\Component;
 
 class DashConsultationRequestFinance extends Component
 {
-    public $month, $year;
     public $dataChart = [], $labelsChart = [];
+    public $date = '', $month, $year;
 
-    public function updatedDateFilter()
+    protected $listeners = [
+        'updatedDateData' => 'getDate',
+        'updatedMonthData' => 'getMonth',
+        'updatedYearData' => 'getYear',
+    ];
+    public function getDate(string $date)
     {
+        $this->date = $date;
         $this->month = '';
     }
-
-    public function mount()
+    public function getMonth($month)
     {
+        $this->month = $month;
+        $this->date = '';
+    }
+    public function getYear($year)
+    {
+        $this->year = $year;
+    }
+
+    public function mount(String $date, $month, $year)
+    {
+        $this->date = $date;
         $this->month = date('m');
-        $this->year = date('Y');
-        $subscriptions = Subscription::where('is_private', false)
-            ->orderBy('name', 'asc')
-            ->where('is_personnel', false)->get();
-        foreach ($subscriptions as $subscription) {
-            $amount = $subscription->getAmountUSDBySubscription($this->month, $this->year);
-            if ($amount != 0) {
-                $this->dataChart[] = floor($amount);
-                $this->labelsChart[] = $subscription->name;
-            }
-        }
+        $this->year = $year;
     }
 
     public function render()

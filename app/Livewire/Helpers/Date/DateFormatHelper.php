@@ -84,7 +84,7 @@ class DateFormatHelper
         ];
     }
     //Get years aléatoires
-    public function getYearsAleatoire(): array
+    public static function getYears(): array
     {
         return [
             '2022',
@@ -95,7 +95,8 @@ class DateFormatHelper
             '2027',
             '2028',
             '2029',
-            '2030'
+            '2030',
+            '2031',
         ];
     }
 

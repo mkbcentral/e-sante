@@ -122,9 +122,9 @@ class Product extends Model
      */
     public function getInitQuantity()
     {
-        if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source_id == Source::GOLF_ID) {
+        if (Auth::user()->roles->pluck('name')->contains('PHARMA') && Auth::user()->source_id == Source::GOLF_ID) {
             return $this->pharma_g_stk;
-        } else if (Auth::user()->roles->pluck('name')->contains('Pharma') && Auth::user()->source_id == Source::VILLE_ID) {
+        } else if (Auth::user()->roles->pluck('name')->contains('PHARMA') && Auth::user()->source_id == Source::VILLE_ID) {
             return  $this->pharma_v_stk;
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma') && Auth::user()->source_id == Source::GOLF_ID) {
             return  $this->initial_quantity;
@@ -300,10 +300,10 @@ class Product extends Model
     public function getGlobalInput()
     {
         $qty = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            $qty= $this->getInputPharmacy();
+        if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
+            $qty = $this->getInputPharmacy();
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            $qty=  $this->getInputStock();
+            $qty =  $this->getInputStock();
         }
         return $qty;
     }
@@ -314,10 +314,10 @@ class Product extends Model
     public function getGlobalOutput()
     {
         $qty = 0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            $qty= $this->getOutputPharmancy();
+        if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
+            $qty = $this->getOutputPharmancy();
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            $qty=  $this->getOutputStock();
+            $qty =  $this->getOutputStock();
         }
         return $qty;
     }
@@ -326,13 +326,13 @@ class Product extends Model
      * @param int $initQty
      * @return float|int
      */
-    public function getGlobalStock(int $initQty=0)
+    public function getGlobalStock(int $initQty = 0)
     {
-        $qty=0;
-        if (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            $qty= $this->getStockPharma($initQty) <= 0 ? 0 : $this->getStockPharma($initQty);
+        $qty = 0;
+        if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
+            $qty = $this->getStockPharma($initQty) <= 0 ? 0 : $this->getStockPharma($initQty);
         } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
-            $qty=  $this->getStockDedpotQuantity() <= 0 ? 0 : $this->getStockDedpotQuantity();
+            $qty =  $this->getStockDedpotQuantity() <= 0 ? 0 : $this->getStockDedpotQuantity();
         }
         return $qty;
     }

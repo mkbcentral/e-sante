@@ -32,7 +32,7 @@
                             @endforeach
                         </div>
                         <div>
-                            @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                            @if ( Auth::user()->roles->pluck('name')->contains('ADMIN') || Auth::user()->roles->pluck('name')->contains('AG'))
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-link dropdown-icon " data-toggle="dropdown"
                                         aria-expanded="false">

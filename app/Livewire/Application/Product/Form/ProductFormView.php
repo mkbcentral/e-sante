@@ -58,12 +58,12 @@ class ProductFormView extends Component
                 $fields['product_family_id'] = 1;
             }
             if (
-                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->roles->pluck('name')->contains('PHARMA') &&
                 Auth::user()->source_id == Source::GOLF_ID
             ) {
                 $fields['pharma_g_stk'] = $this->form->initial_quantity;
             } else if (
-                Auth::user()->roles->pluck('name')->contains('Pharma') &&
+                Auth::user()->roles->pluck('name')->contains('PHARMA') &&
                 Auth::user()->source_id == Source::VILLE_ID
             ) {
                 $fields['pharma_v_stk'] = $this->form->initial_quantity;

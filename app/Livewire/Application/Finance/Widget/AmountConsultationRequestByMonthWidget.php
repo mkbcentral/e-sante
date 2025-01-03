@@ -15,7 +15,7 @@ class AmountConsultationRequestByMonthWidget extends Component
         'isByDate' => 'getIsDate',
         'isByMonth' => 'getIsMonth',
         'isByPeriod' => 'getIsPeriod',
-        'refreshAmount'=>'$refresh'
+        'refreshAmount' => '$refresh'
     ];
     public int $selectedIndex;
     public string $month_name = '';
@@ -33,7 +33,7 @@ class AmountConsultationRequestByMonthWidget extends Component
     public function getMonth($month)
     {
         $this->month_name = $month;
-        $this->isByDate=false;
+        $this->isByDate = false;
         $this->isByPeriod = false;
     }
     /**
@@ -101,32 +101,32 @@ class AmountConsultationRequestByMonthWidget extends Component
         $total_cdf = 0;
         $total_usd = 0;
         if (
-            Auth::user()->roles->pluck('name')->contains('Ag') ||
-            Auth::user()->roles->pluck('name')->contains('Admin')
+            Auth::user()->roles->pluck('name')->contains('AG') ||
+            Auth::user()->roles->pluck('name')->contains('ADMIN')
         ) {
-            if ($this->isByDate==true) {
+            if ($this->isByDate == true) {
                 $total_cdf = GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex);
                 $total_usd = GetConsultationRequestionAmountRepository::getTotalByDateUSD($this->date_filter, $this->selectedIndex);
-            } elseif ($this->isByPeriod==true) {
-                $total_cdf= GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date, $this->end_date, $this->selectedIndex);
+            } elseif ($this->isByPeriod == true) {
+                $total_cdf = GetConsultationRequestionAmountRepository::getTotalPeriodCDF($this->start_date, $this->end_date, $this->selectedIndex);
                 $total_usd = GetConsultationRequestionAmountRepository::getTotalPeriodUSD($this->start_date, $this->end_date, $this->selectedIndex);
             } else {
                 $total_cdf = GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceCDF($this->month_name, $this->year, $this->selectedIndex);
                 $total_usd = GetConsultationRequestionAmountRepository::getTotalByMonthAllSourceUSD($this->month_name, $this->year, $this->selectedIndex);
             }
-        } elseif (Auth::user()->roles->pluck('name')->contains('Pharma')) {
-            if ($this->isByDate==true) {
+        } elseif (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
+            if ($this->isByDate == true) {
                 $total_product_amount_cdf = GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'CDF');
                 $total_product_amount_usd = GetConsultationRequestProductAmountRepository::getProductAmountByDay($this->date_filter, $this->selectedIndex, 'USD');
-            } elseif ($this->isByPeriod==true) {
+            } elseif ($this->isByPeriod == true) {
                 $total_product_amount_cdf = GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'CDF');
                 $total_product_amount_usd =
-                GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'USD');
+                    GetConsultationRequestProductAmountRepository::getProductAmountByPeriod($this->start_date, $this->end_date, $this->selectedIndex, 'USD');
             } else {
                 $total_product_amount_cdf = GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'CDF');
                 $total_product_amount_usd = GetConsultationRequestProductAmountRepository::getProductAmountByMonth($this->month_name, $this->year, $this->selectedIndex, 'USD');
             }
-        }else{
+        } else {
             if ($this->isByDate == true) {
                 $total_cdf = GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex);
                 $total_usd = GetConsultationRequestionAmountRepository::getTotalByDateCDF($this->date_filter, $this->selectedIndex);

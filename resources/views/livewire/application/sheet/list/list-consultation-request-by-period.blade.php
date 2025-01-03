@@ -45,7 +45,7 @@
                                     :sortBy="$sortBy" />
                             </th>
                             <th class="text-center" wire:click="sortSheet('request_number')">
-                                @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                @if (Auth::user()->roles->pluck('name')->contains('ADMIN') || Auth::user()->roles->pluck('name')->contains('AG'))
                                     N° FACTURE
                                 @else
                                     N° FICHE
@@ -59,9 +59,9 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                            @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                    Auth::user()->roles->pluck('name')->contains('AG') ||
+                                    Auth::user()->roles->pluck('name')->contains('ADMIN'))
                                 <th class="text-right">MONTANT</th>
                             @endif
                             <th class="text-center">SUSCRIPTION</th>
@@ -74,9 +74,9 @@
                             <tr style="cursor: pointer;">
                                 <td class="text-center">{{ $index + 1 }}</td>
                                 <td class="text-center">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}</td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
@@ -87,11 +87,11 @@
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
 
                                 </td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
                                     <td class="text-right">
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        @if (Auth::user()->roles->pluck('name')->contains('PHARMA'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
                                                 1,
@@ -119,7 +119,7 @@
                                     @if ($consultationRequest->is_printed == true)
                                         Cloturé
                                     @else
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        @if (Auth::user()->roles->pluck('name')->contains('PHARMA'))
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
@@ -133,7 +133,7 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('LABO'))
                                             <x-navigation.link-icon
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />

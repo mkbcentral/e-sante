@@ -36,7 +36,7 @@
                     <tbody>
                         @if ($listBill->isEmpty())
                             <tr>
-                                <td colspan="8" class="text-center"> <x-errors.data-empty /></td>
+                                <td colspan="9" class="text-center"> <x-errors.data-empty /></td>
                             </tr>
                         @else
                             @foreach ($listBill as $index => $bill)

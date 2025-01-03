@@ -127,12 +127,10 @@ class ListConsultationRequest extends Component
                 $this->sortAsc,
                 20,
                 $this->date_filter,
-                $this->year
             ),
             'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByDate(
                 $this->selectedIndex,
                 $this->date_filter,
-                $this->year
             )
         ]);
     }

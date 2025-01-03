@@ -14,21 +14,24 @@
 
             $amount_consultation = App\Repositories\Tarif\GetAmountByTarif::getAmountConsultationByMonth(
                 $month,
+                $year,
                 $subscription->id,
             );
 
             $amount_nursing = App\Repositories\Tarif\GetAmountByTarif::getAmountNursingByMonth(
                 $month,
+                $year,
                 $subscription->id,
             );
 
             $amount_hospitalization = App\Repositories\Tarif\GetAmountByTarif::getAmountHospitalizationByMonth(
                 $month,
+                $year,
                 $subscription->id,
             );
             $amount_pharma = App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository::getProductAmountByMonth(
                 $month,
-                '2024',
+                $year,
                 $subscription->id,
                 'USD',
             );

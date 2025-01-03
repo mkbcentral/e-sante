@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\RoleType;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,143 +30,31 @@ class UserRedirectChecker
 
     public function userAccessRole()
     {
+        $routes = [];
+        foreach (auth()->user()->mainMenus as $mainMenu) {
+            $routes[] = $mainMenu->link;
+        }
+        foreach (auth()->user()->subMenus as $subMenu) {
+            $routes[] = $subMenu->link;
+        }
         return [
-            'Admin' => [
-                'main',
-                'dashboard',
-                'sheet',
-                'consultations.request.list',
-                'tarification.prices',
-                'consultation.consult.patient',
-                'product.finance.rapport',
-                'product.invoice.report',
-                'users',
-                'tarification',
-                'finance.rapport.by.subscription',
-                'labo.finance.rapport'
-            ],
-            'Reception' => [
-                'main',
-                'dashboard',
-                'sheet',
-                'consultations.request.list',
-                'tarification.prices',
-                'patient.folder',
-                'patient.folder.detail'
-            ],
-            'Pharma' => [
-                'main',
-                'dashboard',
-                'product.invoice',
-                'product.list',
-                'consultations.request.list',
-                'consultation.hospitalize',
-                'product.requisitions',
-                'product.purcharse',
-                'product.finance.rapport',
-                'product.invoice.report',
-                'product.requisition',
-                'product.invoice.stock',
-                'product.stock.service'
-            ],
-            'Caisse' => [
-                'main',
-                'dashboard',
-                'bill.outpatient',
-                'bill.outpatient.rapport',
-                'consultation.hospitalize',
-                'tarification.prices'
-            ],
-            'Urgence' => [
-                'main',
-                'dashboard',
-                'bill.outpatient',
-                'bill.outpatient.rapport',
-                'consultation.hospitalize',
-                'tarification.prices',
+            RoleType::ADMIN => $routes,
+            RoleType::FINANCE => $routes,
+            RoleType::PHARMA => $routes,
+            RoleType::FINANCE_RECIPES => $routes,
+            RoleType::FINANCE_EXPENSES => $routes,
+            RoleType::RECEPTION => $routes,
+            RoleType::NURSE => $routes,
+            RoleType::DOCTOR => $routes,
+            RoleType::MONEY_BOX => $routes,
+            RoleType::DEPOSIT_PHARMA => $routes,
+            RoleType::AG => $routes,
+            RoleType::RADIO => $routes,
+            RoleType::LABO => $routes,
+            RoleType::EMERGENCY => $routes,
+            RoleType::IT => $routes,
+            RoleType::CHIEF_NURSE => $routes,
 
-
-            ],
-            'Depot-Pharma' => [
-                'main',
-                'dashboard',
-                'product.list',
-                'product.supplies',
-                'product.requisitions',
-                'product.requisition',
-                'product.supply.add.products'
-            ],
-            'Nurse' => [
-                'main',
-                'dashboard',
-                'consultations.request.list',
-                'consultation.hospitalize',
-                'tarification.prices',
-                'product.requisitions',
-                'consultation.consult.patient',
-                'product.requisition',
-                'patient.folder',
-                'sheet',
-            ],
-            'Labo' => [
-                'main',
-                'dashboard',
-                'consultation.hospitalize',
-                'labo.main',
-                'labo.subscriber',
-                'labo.outpatientBill',
-                'labo.monthly.release',
-                'tarification.prices',
-                'product.requisitions',
-                'product.requisition',
-                'labo.finance.rapport',
-                'labo.daily.release'
-            ],
-            'Finance' => [
-                'main',
-                'dashboard',
-                'bill.outpatient.rapport',
-                'payroll',
-                'payroll.month',
-                'expense.voucher',
-                'note.money.seding',
-                'print.payroll.month',
-                'expense.voucher',
-                'note.money.seding'
-            ],
-            'Finance-F' => [
-                'main',
-                'dashboard',
-                'bill.outpatient.rapport',
-                'payroll',
-                'payroll.month',
-                'expense.voucher',
-                'note.money.seding',
-                'print.payroll.month',
-                'expense.voucher',
-                'note.money.seding'
-            ],
-            'IT' => [
-                'main',
-                'dashboard',
-                'users',
-                'configuration',
-                'navigation',
-                'files',
-                'localization',
-                'tarification'
-            ],
-            'Doctor' => [
-                'main',
-                'dashboard',
-                'consultations.request.list',
-                'consultation.hospitalize',
-                'dr.consultation.consult.patient',
-                'patient.folder',
-                'sheet',
-                'tarification.prices',
-                'patient.folder.detail'
-            ],
         ];
     }
 }

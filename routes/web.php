@@ -59,54 +59,50 @@ use App\Livewire\Application\Lab\LaboDailyReleases;
 |
 */
 
-Route::middleware(['auth', 'verified', 'user.redirect.checker'])->group(function () {
-    Route::get('/', AppNavigationController::class)->name('main');
-    Route::get('/dashboard', MainDashboard::class)->name('dashboard');
-    Route::get('/sheet', MainSheet::class)->name('sheet');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::middleware(['user.redirect.checker'])->group(function () {
+        Route::get('/', AppNavigationController::class)->name('main');
+        Route::get('/dashboard', MainDashboard::class)->name('dashboard');
+        Route::get('/sheet', MainSheet::class)->name('sheet');
+        Route::get('tarification', TarifView::class)->name('tarification');
+        Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
+        Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
+        Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
+        Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
+        Route::get('product/list', ListProduct::class)->name('product.list');
+        Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
+        Route::get('product/invoice/stock', ListProductStockForInvoicePage::class)->name('product.invoice.stock');
+        Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
+        Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
+        Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
+        Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
+        Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
+        Route::get('product/stock/service', MainStockServicePage::class)->name('product.stock.service');
+        Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
+        Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
+        Route::get('finance/payroll/', PayrollView::class)->name('payroll');
+        Route::get('finance/payroll/month', PayrollByMonthView::class)->name('payroll.month');
+        Route::get('finance/expense-voucher/', ExpenseVoucherView::class)->name('expense.voucher');
+        Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
+        Route::get('labo', MainLabo::class)->name('labo.main');
+        Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
+        Route::get('labo/daily-release', LaboDailyReleases::class)->name('labo.daily.release');
+        Route::get('labo/finance-rapport', LaboFinanceRapport::class)->name('labo.finance.rapport');
+        Route::get('/users', MainAdmin::class)->name('users');
+        Route::get('/configuration', MainConfiguration::class)->name('configuration');
+        Route::get('/navigation', Mainnavigation::class)->name('navigation');
+        Route::get('/files', FileManagerView::class)->name('files');
+        Route::get('/localization', MainLocalization::class)->name('localization');
+    });
+
     Route::get('/patient/folder/{sheetId}', FolderPatient::class)->name('patient.folder');
     Route::get('/patient/folder/details/{sheetId}/{month}', FolderReuestDetailPage::class)->name('patient.folder.detail');
-    Route::get('tarification', TarifView::class)->name('tarification');
-
-    Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
-    Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
-    Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
     Route::get('consultation/consult-patient/{consultationRequestId}', action: MainConsultPatient::class)->name('consultation.consult.patient');
     Route::get('consultation/dr-consult-patient/{consultationRequestId}', action: DoctorConsultPatientPage::class)->name('dr.consultation.consult.patient');
-
-    Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
     Route::get('product/supply/add-products/{productSupply}', AddProductsInSupply::class)->name('product.supply.add.products');
-    Route::get('product/list', ListProduct::class)->name('product.list');
-    Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
-    Route::get('product/invoice/stock', ListProductStockForInvoicePage::class)->name('product.invoice.stock');
-    Route::get('product/purcharse', ProductPurchaseView::class)->name('product.purcharse');
-    Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
-    Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
-    Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
-    Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
-
-    Route::get('product/stock/service', MainStockServicePage::class)->name('product.stock.service');
-
-    Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
-    Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');
-
-    Route::get('finance/payroll/', PayrollView::class)->name('payroll');
-    Route::get('finance/payroll/month', PayrollByMonthView::class)->name('payroll.month');
-    Route::get('finance/expense-voucher/', ExpenseVoucherView::class)->name('expense.voucher');
-    Route::get('finance/money-sending/', NoteMoneySendingView::class)->name('note.money.seding');
-    Route::get('finance/rapport/by-subscription/{subscription}/{month}', RapportFinanceBySubscriptionView::class)->name('finance.rapport.by.subscription');
-
-    Route::get('labo', MainLabo::class)->name('labo.main');
+    Route::get('finance/rapport/by-subscription/{subscription}/{month}/{year}', RapportFinanceBySubscriptionView::class)->name('finance.rapport.by.subscription');
     Route::get('labo-subscriber/{consultationRequest}', LaboSubscriberView::class)->name('labo.subscriber');
     Route::get('labo-private/{outpatientBill}', MakeLaboOutpatientBillView::class)->name('labo.outpatientBill');
-    Route::get('labo/monthly-release', LaboMonthlyReleases::class)->name('labo.monthly.release');
-    Route::get('labo/daily-release', LaboDailyReleases::class)->name('labo.daily.release');
-    Route::get('labo/finance-rapport', LaboFinanceRapport::class)->name('labo.finance.rapport');
-
-    Route::get('/users', MainAdmin::class)->name('users');
-    Route::get('/configuration', MainConfiguration::class)->name('configuration');
-    Route::get('/navigation', Mainnavigation::class)->name('navigation');
-    Route::get('/files', FileManagerView::class)->name('files');
-    Route::get('/localization', MainLocalization::class)->name('localization');
 });
 
 //Printing route

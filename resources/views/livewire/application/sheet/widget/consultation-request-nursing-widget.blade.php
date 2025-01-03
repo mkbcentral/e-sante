@@ -4,9 +4,9 @@
             <tr>
                 <th>DESIGNATION</th>
                 <th class="text-center">NBRE</th>
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
                     <th class="text-right">PU</th>
                     <th class="text-right">PT</th>
                 @endif
@@ -25,31 +25,25 @@
                             <x-form.input type='text' wire:model='numberToEdit' wire:keydown.enter='update'
                                 :error="'numberToEdit'" />
                         </td>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                        @can('finance-view')
                             <td>
                                 <x-form.input type='text' wire:model='priceToEdit' wire:keydown.enter='update'
                                     :error="'priceToEdit'" />
                             </td>
-                        @endif
+                        @endcan
                     @else
                         <td>{{ $consultationRequestNursing->name }}</td>
                         <td class="text-center" style="width: 50px">{{ $consultationRequestNursing->number }}</td>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                        @can('finance-view')
                             <td class="text-right">
                                 {{ app_format_number(
                                     $currencyName == 'USD' ? $consultationRequestNursing->getAmountUSD() : $consultationRequestNursing->getAmountCDF(),
                                     1,
                                 ) }}
                             </td>
-                        @endif
+                        @endcan
                     @endif
-                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                            Auth::user()->roles->pluck('name')->contains('Ag') ||
-                            Auth::user()->roles->pluck('name')->contains('Admin'))
+                    @can('finance-view')
                         <td class="text-right">
                             {{ app_format_number(
                                 $currencyName == 'USD'
@@ -58,7 +52,7 @@
                                 1,
                             ) }}
                         </td>
-                    @endif
+                    @endcan
                     <td class="text-center">
                         @if ($consultationRequest->is_printed == false)
                             <x-form.edit-button-icon
@@ -71,9 +65,7 @@
                     </td>
                 </tr>
             @endforeach
-            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                    Auth::user()->roles->pluck('name')->contains('Ag') ||
-                    Auth::user()->roles->pluck('name')->contains('Admin'))
+            @can('finance-view')
                 <tr class="bg-secondary">
                     <td colspan="4" class="text-right">
                         <span class="text-bold text-lg"> TOTAL:
@@ -84,7 +76,7 @@
                         </span>
                     </td>
                 </tr>
-            @endif
+            @endcan
         </tbody>
     </table>
 </div>

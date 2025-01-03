@@ -12,13 +12,13 @@
             <li class="nav-item mr-4">
                 @livewire('application.finance.widget.rate-info-widget')
             </li>
-            @if(Auth::user()->roles->pluck('name')->contains('Admin')|| Auth::user()->roles->pluck('name')->contains('Ag'))
+            @if ( Auth::user()->roles->pluck('name')->contains('ADMIN') || Auth::user()->roles->pluck('name')->contains('AG'))
                 <li class="nav-item mr-4">
-                <div class="form-group d-flex align-items-center">
-                    <label class="mr-2">Devise</label>
-                    @livewire('application.finance.widget.currency-widget')
-                </div>
-            </li>
+                    <div class="form-group d-flex align-items-center">
+                        <label class="mr-2">Devise</label>
+                        @livewire('application.finance.widget.currency-widget')
+                    </div>
+                </li>
             @endif
             <li class="nav-item mr-4">
                 @livewire('application.setting.switch-theme-widget')

@@ -26,7 +26,7 @@ class LoginView extends Component
         try {
             if (AuthUserRepository::login($data)) {
                 $this->dispatch('updated', ['message' => "Connexion bien établie !"]);
-                return $this->redirect('/', navigate: true);;
+                return $this->redirect('/dashboard', navigate: true);;
             } else {
                 $this->dispatch('error', ['message' => "'Email ou mot de password incorrect.'"]);
             }

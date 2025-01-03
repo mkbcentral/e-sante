@@ -12,28 +12,48 @@
                     <div class="mr-2 w-100">
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
-                    <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                 </div>
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                        Auth::user()->roles->pluck('name')->contains('Admin') ||
-                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                        Auth::user()->roles->pluck('name')->contains('Finance'))
+                @can('finance-view')
                     <div class="bg-navy p-1 rounded-lg pr-2">
                         <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                <span class="money_format">CDF:
-                                    {{ app_format_number($total_product_amount_cdf, 1) }}</span>
-                                |
-                                <span class="money_format">USD:
-                                    {{ app_format_number($total_product_amount_usd, 1) }}</span>
-                            @else
-                                <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
-                                <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
-                            @endif
+                            <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                            <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+
                         </h3>
                     </div>
-                @endif
+                @elsecan('money-box-view')
+                    <div class="bg-navy p-1 rounded-lg pr-2">
+                        <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                            <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
+                            <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
+
+                        </h3>
+                    </div>
+                @endcan
+
+                @can('pharma-actions')
+                    <div class="bg-navy p-1 rounded-lg pr-2">
+                        <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
+                            <span class="money_format">CDF:
+                                {{ app_format_number($total_product_amount_cdf, 1) }}</span>
+                            |
+                            <span class="money_format">USD:
+                                {{ app_format_number($total_product_amount_usd, 1) }}</span>
+                        </h3>
+                    </div>
+                @endcan
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div class="form-group d-flex align-items-center mr-2">
+                            <x-form.label value="{{ __('Mois') }}" class="mr-1" />
+                            <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
+                        </div>
+                        <div class="form-group d-flex align-items-center mr-2">
+                            <x-form.label value="{{ __('Année') }}" class="mr-1" />
+                            <x-widget.list-years wire:model.live='year' :error="'year'" />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
@@ -52,14 +72,14 @@
                             </th>
                             <th class="text-center" wire:click="sortSheet('request_number')">
                                 <span>
-                                    @if (Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                            Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                            Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                            Auth::user()->roles->pluck('name')->contains('Finance'))
+                                    @can('finance-view')
+                                        N° FACTURE
+                                    @elsecan('money-box-view')
                                         N° FACTURE
                                     @else
                                         N° FICHE
-                                    @endif
+                                    @endcan
+
                                 </span>
                                 <x-form.sort-icon sortField="request_number" :sortAsc="$sortAsc" :sortBy="$sortBy" />
                             </th>
@@ -70,13 +90,9 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                    Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                    Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                    Auth::user()->roles->pluck('name')->contains('Finance'))
+                            @can('finance-hospitalize')
                                 <th class="text-right">MONTANT</th>
-                            @endif
+                            @endcan
                             <th class="text-center">SUSCRIPTION</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
@@ -89,7 +105,7 @@
                                 data-toggle="tooltip" data-placement="top" title="Facture soldée ajoud'hui"
                                 @elseif ($consultationRequest->is_paid == true) class="bg-pink" @endif>
                                 <td class="text-start">
-                                    @if ($consultationRequest->is_finished == true && Auth::user()->roles->pluck('name')->contains('Caisse'))
+                                    @if ($consultationRequest->is_finished == true && Auth::user()->roles->pluck('name')->contains('MONEY_BOX'))
                                         <x-others.dropdown title=""
                                             icon="{{ $consultationRequest->is_paid == true ? 'fa fa-check text-success' : 'fa fa-ellipsis-v' }}">
                                             @if ($consultationRequest->paid_at == null)
@@ -123,44 +139,42 @@
                                 </td>
 
                                 <td class="text-start">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                        Auth::user()->roles->pluck('name')->contains('Finance'))
+                                @can('finance-view')
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}
                                     </td>
                                 @else
                                     <td class="text-center">{{ $consultationRequest->consultationSheet->number_sheet }}
                                     </td>
-                                @endif
+                                @endcan
                                 <td class="text-uppercase">{{ $consultationRequest->consultationSheet->name }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                        Auth::user()->roles->pluck('name')->contains('Caisse') ||
-                                        Auth::user()->roles->pluck('name')->contains('Finance'))
-                                    <td class="text-right text-bold">
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
-                                            {{ app_format_number(
-                                                $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
-                                                1,
-                                            ) .
-                                                ' ' .
-                                                $currencyName }}
-                                        @else
-                                            {{ app_format_number(
-                                                $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
-                                                1,
-                                            ) .
-                                                ' ' .
-                                                $currencyName }}
-                                        @endif
-                                    </td>
-                                @endif
+                                <td class="text-right">
+                                    @can('finance-view')
+                                        {{ app_format_number(
+                                            $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
+                                            1,
+                                        ) .
+                                            ' ' .
+                                            $currencyName }}
+                                    @elsecan('pharma-actions')
+                                        {{ app_format_number(
+                                            $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                            1,
+                                        ) .
+                                            ' ' .
+                                            $currencyName }}
+                                    @elsecan('money-box-view')
+                                        {{ app_format_number(
+                                            $currencyName == 'CDF' ? $consultationRequest->getTotalInvoiceCDF() : $consultationRequest->getTotalInvoiceUSD(),
+                                            1,
+                                        ) .
+                                            ' ' .
+                                            $currencyName }}
+                                    @endcan
+                                </td>
+
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>
                                 <td
@@ -172,11 +186,11 @@
                                     @if ($consultationRequest->is_printed == true)
                                         Cloturé
                                     @else
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        @can('pharma-actions')
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        @elsecan('nurse-actions')
                                             <x-form.icon-button :icon="'fa fa-user-plus '"
                                                 wire:click="openVitalSignForm({{ $consultationRequest }})"
                                                 class="btn-sm btn-info " />
@@ -186,18 +200,17 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        @elsecan('labo-actions')
                                             <x-navigation.link-icon
-                                                href="{{ route('labo.subscriber', $consultationRequest) }}"
-                                                wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Caisse') || Auth::user()->roles->pluck('name')->contains('Admin'))
+                                                href="{{ route('labo.subscriber', $consultationRequest) }}" wire:navigate
+                                                :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
+                                        @elsecan('money-box-view')
                                             @if ($consultationRequest->is_finished == true)
                                                 <x-navigation.link-icon
                                                     href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                                     :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                             @endif
-                                        @else
-                                        @endif
+                                        @endcan
                                     @endif
                                 </td>
                             </tr>

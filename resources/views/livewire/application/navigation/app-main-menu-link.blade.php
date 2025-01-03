@@ -9,7 +9,7 @@
     </div>
     <div class="row mt-0">
         @if (Auth::user()->mainMenus->isEmpty())
-            @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+            @if ( Auth::user()->roles->pluck('name')->contains(RoleType::EMERGENCY))
                 <a wire:click='makeLoadingState' href="{{ route('users') }}" wire:navigate>
                     <div class="info-box zoom">
                         <span class="info-box-icon bg-dark  elevation-1">
@@ -23,7 +23,7 @@
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
-                </a>Auth::user()->roles->pluck('name')->contains('Caisse')
+                </a> Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX)
             @endif
         @else
             @foreach (Auth::user()->mainMenus()->orderBy('name')->get() as $mainMenu)

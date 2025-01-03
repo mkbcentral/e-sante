@@ -3,7 +3,8 @@
         @if (!$categoryTarif->getConsultationTarifItems($consultationRequest, $categoryTarif)->isEmpty())
             <div class="d-flex justify-content-between">
                 <h5 class="text-danger text-bold">{{ $categoryTarif->name }}</h5>
-                <x-form.button class="btn-warning btn-sm" type='button' wire:click='newTarifItem({{ $categoryTarif->id }})'>
+                <x-form.button class="btn-warning btn-sm" type='button'
+                    wire:click='newTarifItem({{ $categoryTarif->id }})'>
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </x-form.button>
             </div>
@@ -21,9 +22,9 @@
                     <tr>
                         <th class="">DESIGNATION</th>
                         <th class="text-center">NOMBRE</th>
-                        @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                Auth::user()->roles->pluck('name')->contains('Admin'))
+                        @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                Auth::user()->roles->pluck('name')->contains('AG') ||
+                                Auth::user()->roles->pluck('name')->contains('ADMIN'))
                             <th class="text-right">P.U CDF</th>
                             <th class="text-right">P.T CDF</th>
                         @endif
@@ -54,9 +55,9 @@
                                     {{ $item->qty }}
                                 @endif
                             </td>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                            @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                    Auth::user()->roles->pluck('name')->contains('AG') ||
+                                    Auth::user()->roles->pluck('name')->contains('ADMIN'))
                                 <td class="text-right">
                                     {{ app_format_number(
                                         $currencyName == 'USD'
@@ -86,21 +87,17 @@
                             </td>
                         </tr>
                     @endforeach
-                    @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                            Auth::user()->roles->pluck('name')->contains('Ag') ||
-                            Auth::user()->roles->pluck('name')->contains('Admin'))
-                        <tr class="bg-secondary">
-                            <td colspan="4" class="text-right">
-                                <span class="text-bold text-lg"> TOTAL:
-                                    {{ app_format_number(
-                                        $currencyName == 'USD'
-                                            ? $categoryTarif->getTotalTarifInvoiceByCategoryUSD($consultationRequest, $categoryTarif)
-                                            : $categoryTarif->getTotalTarifInvoiceByCategoryCDF($consultationRequest, $categoryTarif),
-                                        1,
-                                    ) }}</span>
-                            </td>
-                        </tr>
-                    @endif
+                    @can('finance-view')
+                        <td colspan="4" class="text-right">
+                            <span class="text-bold text-lg"> TOTAL:
+                                {{ app_format_number(
+                                    $currencyName == 'USD'
+                                        ? $categoryTarif->getTotalTarifInvoiceByCategoryUSD($consultationRequest, $categoryTarif)
+                                        : $categoryTarif->getTotalTarifInvoiceByCategoryCDF($consultationRequest, $categoryTarif),
+                                    1,
+                                ) }}</span>
+                        </td>
+                    @endcan
                 </tbody>
             </table>
         @endif

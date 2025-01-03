@@ -1,15 +1,16 @@
 <div class="card" wire:poll.15s>
     <div class="card-body">
         <div class="card-header">
-            <h4 class="text-secondary">
-                <i class="fas fa-chart-bar"></i>
-                {{ $month == '' ? ' RECETTES JOURNALIERES HOSPITALISES' : ' TAUX DE RECETTES MENSUELLES HOSPITALISES' }}
-            </h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="text-center h4">
+                    {{ $month == '' ? ' RECETTES JOURNALIERES HOSPITALISES' : ' TAUX DE RECETTES MENSUELLES HOSPITALISES' }}
+                </p>
+            </div>
+
         </div>
         <div class="row mt-2">
             <div class="col-12 col-sm-6 col-md-6">
                 <div class="info-box bg-teal">
-                    <span class="info-box-icon bg-navy elevation-1"><i class="fas fa-dollar-sign"></i></span>
                     <div class="info-box-content">
                         <x-widget.loading-circular-md :color="'text-white'" />
                         <div wire:loading.class='d-none'>
@@ -19,11 +20,13 @@
                             </span>
                         </div>
                     </div>
+                    <a href="{{ route('consultation.hospitalize') }}" wire:navigate class="small-box-footer">Voir
+                        détails
+                        <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-6">
                 <div class="info-box bg-teal">
-                    <span class="info-box-icon bg-navy elevation-1"><i class="fas fa-dollar-sign"></i></span>
                     <div class="info-box-content">
                         <x-widget.loading-circular-md :color="'text-white'" />
                         <div wire:loading.class="d-none">
@@ -33,6 +36,9 @@
                             </span>
                         </div>
                     </div>
+                    <a href="{{ route('consultation.hospitalize') }}" wire:navigate class="small-box-footer">Voir
+                        détails
+                        <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>

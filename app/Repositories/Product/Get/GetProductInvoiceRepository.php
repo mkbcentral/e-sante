@@ -42,10 +42,11 @@ class GetProductInvoiceRepository
         return $total;
     }
 
-    public static function getTotalInvoiceByMonth(string $month): int|float
+    public static function getTotalInvoiceByMonth(string $month, string $year = '2025'): int|float
     {
         $invoices = ProductInvoice::orderBy('created_at', 'DESC')
             ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->where('is_valided', true)
             ->get();
         $total = 0;

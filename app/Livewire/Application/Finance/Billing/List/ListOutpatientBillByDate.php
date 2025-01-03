@@ -99,8 +99,8 @@ class ListOutpatientBillByDate extends Component
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-date', [
             'listBill' => GetOutpatientRepository::getOutpatientPatientByDate($this->date_filter),
-            'tota_cdf' => GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date_filter),
-            'tota_usd' => GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date_filter),
+            'tota_cdf' => GetOutpatientRepository::getTotalBillByDate($this->date_filter, 'CDF'),
+            'tota_usd' => GetOutpatientRepository::getTotalBillByDate($this->date_filter, 'USD'),
             'counter_by_month' => GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date_filter)
         ]);
     }

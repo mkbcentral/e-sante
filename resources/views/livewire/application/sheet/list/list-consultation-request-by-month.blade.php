@@ -6,28 +6,38 @@
     <div class="card mt-2">
         <div class="card-body">
             <div class="d-flex justify-content-between align-content-center">
-                <div class="h5 text-secondary">
-                    ({{ $request_number > 1
-                        ? $request_number .
-                            ' Factures                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
-                        : $request_number . ' Facture réalisée' }})
-                </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex">
+                    <div class="h5 text-secondary">
+                        ({{ $request_number > 1
+                            ? $request_number .
+                                ' Factures                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                            : $request_number . ' Facture réalisée' }})
+                    </div>
                     <div class=" w-100">
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
-                    <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
                 </div>
+                <div class="d-flex align-items-center">
+                    <div class="form-group d-flex align-items-center mr-2">
+                        <x-form.label value="{{ __('Mois') }}" class="mr-1" />
+                        <x-widget.list-french-month wire:model.live='month_name' :error="'month_name'" />
+                    </div>
+                    <div class="form-group d-flex align-items-center mr-2">
+                        <x-form.label value="{{ __('Année') }}" class="mr-1" />
+                        <x-widget.list-years wire:model.live='year' :error="'year'" />
+                    </div>
+                </div>
+
                 <div class="mr-4" style="margin-right: 40px">
                     <x-others.dropdown title="Impressions" icon="fa fa-print">
-                        @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                        @if (Auth::user()->roles->pluck('name')->contains('ADMIN'))
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Toute les factures'
                                 href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"
                                 target='_blank' />
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Relevé des factures'
                                 href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}"
                                 target='_blank' />
-                        @elseif (Auth::user()->roles->pluck('name')->contains('Labo'))
+                        @elseif (Auth::user()->roles->pluck('name')->contains('LABO'))
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Rapport labo'
                                 href="{{ route('list.labo.month', [$selectedIndex, $month_name]) }}" target='_blank' />
                         @else
@@ -36,7 +46,7 @@
                                 target='_blank' />
                         @endif
                     </x-others.dropdown>
-                    @if (Auth::user()->roles->pluck('name')->contains('Admin'))
+                    @if (Auth::user()->roles->pluck('name')->contains('ADMIN'))
                         <x-others.dropdown title="Autes options" icon="fas fa-cogs">
                             <x-others.dropdown-link iconLink='fas fa-list-ol' labelText='Numéroter'
                                 wire:confirm="Est-vous sur de réaliser l'opération" href="#"
@@ -69,7 +79,7 @@
                                     :sortBy="$sortBy" />
                             </th>
                             <th class="text-center" wire:click="sortSheet('request_number')">
-                                @if (Auth::user()->roles->pluck('name')->contains('Admin') || Auth::user()->roles->pluck('name')->contains('Ag'))
+                                @if (Auth::user()->roles->pluck('name')->contains('ADMIN') || Auth::user()->roles->pluck('name')->contains('AG'))
                                     N° FACTURE
                                 @else
                                     N° FICHE
@@ -83,9 +93,9 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                    Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                    Auth::user()->roles->pluck('name')->contains('Admin'))
+                            @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                    Auth::user()->roles->pluck('name')->contains('AG') ||
+                                    Auth::user()->roles->pluck('name')->contains('ADMIN'))
                                 <th class="text-right">MONTANT</th>
                             @endif
                             <th class="text-center">SUSCRIPTION</th>
@@ -97,16 +107,15 @@
                         @foreach ($listConsultationRequest as $index => $consultationRequest)
                             <tr style="cursor: pointer;"
                                 {{ $consultationRequest?->consultationSheet?->name == $consultationRequest[$index + 1]?->consultationSheet?->name ? 'bg-dark ' : '' }}>
-                                <td
-                                    class="text-center">
+                                <td class="text-center">
                                     {{ $index + 1 }}</td>
                                 <td class="text-center"><a href="#"
                                         wire:click="openDetailConsultationModal({{ $consultationRequest }})">{{ $consultationRequest->created_at->format('d/m/Y h:i') }}</a>
                                 </td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin') ||
-                                        Auth::user()->roles->pluck('name')->contains('Labo'))
+                                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                                        Auth::user()->roles->pluck('name')->contains('ADMIN') ||
+                                        Auth::user()->roles->pluck('name')->contains('LABO'))
                                     <td class="text-center">{{ $consultationRequest->getRequestNumberFormatted() }}/
                                         <span
                                             class="text-danger">{{ $consultationRequest->consultationSheet->source->name }}</span>
@@ -124,11 +133,11 @@
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
-                                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                                        Auth::user()->roles->pluck('name')->contains('Admin'))
-                                    <td class="text-right {{ $consultationRequest->getBgStatus()}}">
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
+                                    <td class="text-right {{ $consultationRequest->getBgStatus() }}">
+                                        @if (Auth::user()->roles->pluck('name')->contains('PHARMA'))
                                             {{ app_format_number(
                                                 $currencyName == 'CDF' ? $consultationRequest->getTotalProductCDF() : $consultationRequest->getTotalProductUSD(),
                                                 1,
@@ -163,7 +172,7 @@
                                             href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                                             :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
-                                        @if (Auth::user()->roles->pluck('name')->contains('Pharma'))
+                                        @if (Auth::user()->roles->pluck('name')->contains('PHARMA'))
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
@@ -177,12 +186,12 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Labo'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('LABO'))
                                             <x-navigation.link-icon
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                         @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
-                                             <x-navigation.link-icon
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                            <x-navigation.link-icon
                                                 href="{{ route('dr.consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-stethoscope'" class="btn btn-sm  btn-success " />
                                             <x-navigation.link-icon

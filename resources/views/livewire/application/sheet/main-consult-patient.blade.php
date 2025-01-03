@@ -15,9 +15,9 @@
             <div class="d-flex justify-content-between   align-items-center ">
                 @livewire('application.widgets.input-check-box-hospitalize-widget', ['consultationRequest' => $consultationRequest])
                 @livewire('application.widgets.input-check-box-mark-finished-widget', ['consultationRequest' => $consultationRequest])
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                        Auth::user()->roles->pluck('name')->contains('Ag') ||
-                        Auth::user()->roles->pluck('name')->contains('Admin'))
+                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
                     <div class="bg-navy p-1 rounded-lg ml-2">
                         <h3 wire:loading.class="d-none"><span>Montant:</span>
                             <span class="money_format">
@@ -38,9 +38,9 @@
                     <i class="fa fa-eye"></i>
                     Visualiser
                 </x-form.button>
-                @if (Auth::user()->roles->pluck('name')->contains('Pharma') ||
-                            Auth::user()->roles->pluck('name')->contains('Ag') ||
-                            Auth::user()->roles->pluck('name')->contains('Admin'))
+                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                        Auth::user()->roles->pluck('name')->contains('ADMIN'))
                     <x-navigation.link-icon
                         href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
                         :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />

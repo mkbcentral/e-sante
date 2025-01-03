@@ -2,14 +2,8 @@
     <div class="card-header">
         <div class="d-flex justify-content-between">
             <p class="text-center h4 text-secondary">
-                <strong><i class="fas fa-chart-bar"></i>
-                    RECETTES MENSUELLE DES ABONNES
-                </strong>
+                RECETTES DES ABONNES
             </p>
-            <div class="d-flex align-items-center mr-2">
-                <x-form.label value="{{ __('Mois') }}" class="mr-1" />
-                <x-widget.list-french-month wire:model.live='month' :error="'month'" />
-            </div>
         </div>
     </div>
     <div class="card-body">
@@ -17,16 +11,15 @@
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
             </div>
-            <div id="chart"></div>
             @if (!$subscriptions->isEmpty())
                 <div class="row mt-2">
                     @foreach ($subscriptions as $subscription)
                         @if ($subscription->getAmountUSDBySubscription($month, $year) != 0)
                             <div class="col-12 col-sm-6 col-md-6">
-                                <a wire:navigate href="{{ route('finance.rapport.by.subscription',[$subscription,$month] ) }}">
-                                    <div class="info-box bg-indigo">
-                                        <span class="info-box-icon bg-primary elevation-1"><i
-                                                class="fas fa-user"></i></span>
+                                <a wire:navigate
+                                    href="{{ route('finance.rapport.by.subscription', [$subscription, $month, $year]) }}">
+                                    <div class="info-box bg-navy">
+
                                         <div class="info-box-content">
                                             <span class="info-box-text text-bold h4">{{ $subscription->name }}</span>
                                             <span class="info-box-number h3">

@@ -16,7 +16,7 @@ class ListOutpatientBillByMonth extends Component
         'currencyName' => 'getCurrencyName',
         'refreshListBill' => '$refresh'
     ];
-    public string $month, $date, $date_versement;
+    public string $month, $date, $date_versement, $year;
     public bool $isByDate = true;
 
     public function updatedDate($val): void
@@ -62,7 +62,8 @@ class ListOutpatientBillByMonth extends Component
     {
         $this->month = date('m');
         $this->date = date('Y-m-d');
-        $this->date_versement=Carbon::tomorrow()->format('Y-m-d');
+        $this->year = date('Y');
+        $this->date_versement = Carbon::tomorrow()->format('Y-m-d');
     }
     public function render()
     {
@@ -71,11 +72,11 @@ class ListOutpatientBillByMonth extends Component
                 GetOutpatientRepository::getOutpatientPatientByDate($this->date) :
                 GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
             'tota_cdf' =>  $this->isByDate ?
-                GetOutpatientRepository::getTotalBillByDateGroupByCDF($this->date) :
-                GetOutpatientRepository::getTotalBillByMonthGroupByCDF($this->month),
+                GetOutpatientRepository::getTotalBillByDate($this->date, 'CDF') :
+                GetOutpatientRepository::getTotalBillByMonth($this->month, $this->year, 'CDF'),
             'tota_usd' => $this->isByDate ?
-                GetOutpatientRepository::getTotalBillByDateGroupByUSD($this->date) :
-                GetOutpatientRepository::getTotalBillByMonthGroupByUSD($this->month),
+                GetOutpatientRepository::getTotalBillByDate($this->date, 'USD') :
+                GetOutpatientRepository::getTotalBillByMonth($this->month, $this->year, 'USD'),
             'counter_by_month' => $this->isByDate ?
                 GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date) :
                 GetOutpatientRepository::getCountOfOutpatientBillByMonth($this->month),
