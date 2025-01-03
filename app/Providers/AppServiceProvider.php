@@ -60,6 +60,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('radio-actions', function () {
             return Auth::user()->roles()->pluck('name')->contains(RoleType::RADIO);
         });
+        Gate::define('reception-actions', function () {
+            return Auth::user()->roles()->pluck('name')->contains(RoleType::RECEPTION);
+        });
 
 
 

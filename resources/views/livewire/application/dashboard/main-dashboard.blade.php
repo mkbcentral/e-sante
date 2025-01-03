@@ -98,7 +98,26 @@
                 </div>
             </div>
         @endcan
-        @can('nurse-actions')
+        @can('reception-actions')
+            <div class="row">
+                <div class="col-md-6">
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
+                </div>
+                <div class="col-md-6">
+
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
+                </div>
+            </div>
+        @endcan
+        @can('labo-actions')
             <div class="row">
                 <div class="col-md-6">
                     @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [
