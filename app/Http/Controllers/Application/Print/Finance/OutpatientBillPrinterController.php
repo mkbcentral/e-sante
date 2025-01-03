@@ -26,27 +26,34 @@ class OutpatientBillPrinterController extends Controller
             'prints.finance.bill.print-outpatient-bill',
             compact([
                 'outpatientBill',
-                'currency', 'categories'
+                'currency',
+                'categories'
             ])
         )->set_option('isRemoteEnabled', true);
         return $pdf->stream();
     }
 
-    public function printRapportByDateOutpatientBill($date,$date_versement)
+    public function printRapportByDateOutpatientBill($date, $date_versement)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
         $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
-        $total_cdf = GetOutpatientRepository::getTotalBillByDateGroupByCDF($date);
-        $total_usd = GetOutpatientRepository::getTotalBillByDateGroupByUSD($date);
+        $total_cdf = GetOutpatientRepository::getTotalBillByDate($date, 'CDF');
+        $total_usd = GetOutpatientRepository::getTotalBillByDate($date, 'USD');
         $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
         $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
-        $dateToMorrow =(new DateTime($date_versement))->format('d/m/Y');
+        $dateToMorrow = (new DateTime($date_versement))->format('d/m/Y');
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-date', compact(
             [
-                'listBill', 'date', 'total_cdf', 'total_usd', 'consultationRequests',
-                'total_cons_usd', 'total_cons_cdf', 'dateToMorrow'
+                'listBill',
+                'date',
+                'total_cdf',
+                'total_usd',
+                'consultationRequests',
+                'total_cons_usd',
+                'total_cons_cdf',
+                'dateToMorrow'
             ]
         ));
         return $pdf->stream();
@@ -55,8 +62,8 @@ class OutpatientBillPrinterController extends Controller
     public function printRapportByMonthOutpatientBill($month)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByMonth($month);
-        $total_cdf = GetOutpatientRepository::getTotalBillByMonthGroupByCDF($month);
-        $total_usd = GetOutpatientRepository::getTotalBillByMonthGroupByUSD($month);
+        $total_cdf = GetOutpatientRepository::getTotalBillByMonth($month, '2025', 'CDF');
+        $total_usd = GetOutpatientRepository::getTotalBillByMonth($month, '2025 ', 'USD');
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-month', compact(
             ['listBill', 'month', 'total_cdf', 'total_usd']
