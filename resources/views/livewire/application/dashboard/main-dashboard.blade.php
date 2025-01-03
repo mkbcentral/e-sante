@@ -117,7 +117,7 @@
                 </div>
             </div>
         @endcan
-        @can('labo-actions')
+        @can('nurse-actions')
             <div class="row">
                 <div class="col-md-6">
                     @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [
