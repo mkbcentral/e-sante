@@ -68,7 +68,7 @@ class ProductFormView extends Component
             ) {
                 $fields['pharma_v_stk'] = $this->form->initial_quantity;
             } elseif (
-                Auth::user()->roles->pluck('name')->contains('Depot-Pharma') &&
+                Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA') &&
                 Auth::user()->source_id == Source::GOLF_ID
             ) {
                 $fields['initial_quantity'] = $this->form->initial_quantity;

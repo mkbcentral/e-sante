@@ -126,7 +126,7 @@ class Product extends Model
             return $this->pharma_g_stk;
         } else if (Auth::user()->roles->pluck('name')->contains('PHARMA') && Auth::user()->source_id == Source::VILLE_ID) {
             return  $this->pharma_v_stk;
-        } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma') && Auth::user()->source_id == Source::GOLF_ID) {
+        } else if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA') && Auth::user()->source_id == Source::GOLF_ID) {
             return  $this->initial_quantity;
         }
     }
@@ -302,7 +302,7 @@ class Product extends Model
         $qty = 0;
         if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
             $qty = $this->getInputPharmacy();
-        } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+        } else if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA')) {
             $qty =  $this->getInputStock();
         }
         return $qty;
@@ -316,7 +316,7 @@ class Product extends Model
         $qty = 0;
         if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
             $qty = $this->getOutputPharmancy();
-        } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+        } else if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA')) {
             $qty =  $this->getOutputStock();
         }
         return $qty;
@@ -331,7 +331,7 @@ class Product extends Model
         $qty = 0;
         if (Auth::user()->roles->pluck('name')->contains('PHARMA')) {
             $qty = $this->getStockPharma($initQty) <= 0 ? 0 : $this->getStockPharma($initQty);
-        } else if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+        } else if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA')) {
             $qty =  $this->getStockDedpotQuantity() <= 0 ? 0 : $this->getStockDedpotQuantity();
         }
         return $qty;

@@ -17,7 +17,7 @@
                         <x-form.button :icon="'fa fa-user-plus'" type="button" class="btn-success" wire:click='openAddModal'>
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Nouvelle demande
                         </x-form.button>
-                        @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                        @if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA'))
                             <x-form.button type="button" class="btn-primary" wire:click='refreshList'>
                                 <i class="fa fa-sync" aria-hidden="true  "></i> Actualiser
                             </x-form.button>
@@ -29,7 +29,7 @@
                     </div>
                     <x-widget.loading-circular-md />
                     <div class="d-flex justify-content-between align-items-center">
-                        @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                        @if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA'))
                             <div class="form-group mt-1 d-flex align-items-center">
                                 <x-form.label value="{{ __('Service') }}" class="mr-1" />
                                 <x-widget.list-agent-service-widget wire:model.live='agent_service_id'
@@ -77,7 +77,7 @@
                                         {{ $requisition->is_valided ? 'Livré' : 'En cours' }}</td>
                                     <td class="text-center">
                                         @if ($requisition->is_valided)
-                                            @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                                            @if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA'))
                                                 <x-form.button
                                                     class=" {{ $requisition->is_valided ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
                                                     type='button' wire:click='changeStatus({{ $requisition }})'
@@ -87,7 +87,7 @@
                                                 </x-form.button>
                                             @endif
                                         @else
-                                            @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                                            @if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA'))
                                                 <x-navigation.link-icon class="btn btn-sm btn-primary"
                                                     href="{{ route('product.requisition', $requisition) }}"
                                                     wire:navigate :icon="'fa fa-eye'" />
@@ -102,7 +102,7 @@
                                             <x-form.icon-button :icon="'fa fa-trash '" class="btn-sm btn-danger"
                                                 wire:confirm="Etes-vous sûre de supprimer ?"
                                                 wire:click='delete({{ $requisition }})' />
-                                            @if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma'))
+                                            @if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA'))
                                                 <x-form.button
                                                     class=" {{ $requisition->is_valided ? 'btn-warning  ' : 'btn-secondary  ' }} btn-sm"
                                                     type='button' wire:click='changeStatus({{ $requisition }})'
@@ -114,9 +114,8 @@
                                         @endif
                                         @if ($requisition->is_valided)
                                             <x-navigation.link-icon
-                                            href="{{ route('product.requisition.print', [$requisition->id]) }}"
-                                            :icon="'fa fa-print'"
-                                            class="btn btn-sm   btn-secondary" />
+                                                href="{{ route('product.requisition.print', [$requisition->id]) }}"
+                                                :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                         @endif
 
                                     </td>

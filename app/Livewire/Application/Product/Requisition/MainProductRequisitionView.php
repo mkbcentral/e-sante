@@ -82,7 +82,8 @@ class MainProductRequisitionView extends Component
     /**
      * Show the detail of the product requisition
      */
-    public function showDetailModal(ProductRequisition $productRequisition  ){
+    public function showDetailModal(ProductRequisition $productRequisition)
+    {
         $this->dispatch('productRequisitionDetail', $productRequisition);
         $this->dispatch('open-form-product-requisition-detail');
     }
@@ -94,7 +95,7 @@ class MainProductRequisitionView extends Component
 
     public function render()
     {
-        if (Auth::user()->roles->pluck('name')->contains('Depot-Pharma')) {
+        if (Auth::user()->roles->pluck('name')->contains('DEPOSIT_PHARMA')) {
             $productRequisitions = $this->agent_service_id == null ?
                 ProductRequisition::orderBy('created_at', 'desc')
                 ->whereMonth('created_at', $this->month)
