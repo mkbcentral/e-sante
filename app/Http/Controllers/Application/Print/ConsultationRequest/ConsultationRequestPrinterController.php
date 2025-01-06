@@ -30,9 +30,8 @@ class ConsultationRequestPrinterController extends Controller
         return $pdf->stream();
     }
 
-    public function printListInvoicesByMonth($subscriptionId, $month)
+    public function printListInvoicesByMonth($subscriptionId, $month, $year)
     {
-        $year = date('Y');
         $subscription = Subscription::find($subscriptionId);
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')

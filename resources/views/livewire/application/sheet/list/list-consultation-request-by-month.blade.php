@@ -33,10 +33,10 @@
 
                         @if (Auth::user()->roles->pluck('name')->contains('ADMIN'))
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Toute les factures'
-                                href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name]) }}"
+                                href="{{ route('consultation.request.month.all.print', [$selectedIndex, $month_name, $year]) }}"
                                 target='_blank' />
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Relevé des factures'
-                                href="{{ route('list.invoices.month', [$selectedIndex, $month_name]) }}"
+                                href="{{ route('list.invoices.month', [$selectedIndex, $month_name, $year]) }}"
                                 target='_blank' />
                         @elseif (Auth::user()->roles->pluck('name')->contains('LABO'))
                             <x-others.dropdown-link iconLink='fa fa-file-pdf' labelText='Rapport labo'

@@ -71,9 +71,8 @@ class OutpatientBillPrinterController extends Controller
         return $pdf->stream();
     }
 
-    public function pridntAllConsultationRequestBydate($subscriptionId, $date)
+    public function pridntAllConsultationRequestBydate($subscriptionId, $date, $year)
     {
-        $year = date('Y');
         $categories = CategoryTarif::all();
         $currency = 'CDF';
         $consultationRequests = ConsultationRequest::query()

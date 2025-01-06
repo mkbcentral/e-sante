@@ -113,7 +113,7 @@ Route::prefix('print')->group(function () {
         Route::get('rapport-date-out-patient-bill/{date}/{dateVersement}', 'printRapportByDateOutpatientBill')->name('rapport.date.outPatientBill.print');
         Route::get('rapport-month-out-patient-bill/{month}', 'printRapportByMonthOutpatientBill')->name('rapport.month.outPatientBill.print');
         Route::get('print-all-date/{subscriptionId}/{date}', 'pridntAllConsultationRequestBydate')->name('consultation.request.date.all.print');
-        Route::get('print-all-month/{subscriptionId}/{month}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
+        Route::get('print-all-month/{subscriptionId}/{month}/{year}', 'pridntAllConsultationRequestByMonth')->name('consultation.request.month.all.print');
         Route::get('print-all-period/{subscriptionId}/{startDate}/{endDate}', 'pridntAllConsultationRequestBetweenDate')->name('consultation.request.period.print');
     });
     Route::controller(ProductPrinterController::class)->group(function () {
@@ -128,7 +128,7 @@ Route::prefix('print')->group(function () {
         Route::get('consultation-requests-has-not-shipping-ticket/{subscriptionId}/{month}', 'printConsultationRequestHasNotShippingTicket')
             ->name('consultation.request.lits.has_a_shipping_ticket');
 
-        Route::get('list-invoices-by-month/{subscriptionId}/{month}', 'printListInvoicesByMonth')
+        Route::get('list-invoices-by-month/{subscriptionId}/{month}/{year}', 'printListInvoicesByMonth')
             ->name('list.invoices.month');
 
         Route::get('list-labo-by-month/{subscriptionId}/{month}', 'printListILaboByMonth')
