@@ -26,7 +26,8 @@ class NewConsultationSheet extends Component
     public ?ConsultationSheet $sheet = null;
     public $formatedSheetNumber = '';
     public bool  $has_a_shipping_ticket = false;
-    public $subscription_id=0;
+    public $subscription_id = 0;
+    public $consultation_id = 0;
 
     /**
      * Get subscription selected in parent component
@@ -55,7 +56,7 @@ class NewConsultationSheet extends Component
     {
         $this->sheet = $sheet;
         $this->form->fill($sheet->toArray());
-        $this->subscription_id=$sheet->subscription->id;
+        $this->subscription_id = $sheet->subscription->id;
     }
 
     /**
@@ -79,8 +80,7 @@ class NewConsultationSheet extends Component
                 $inpusoutpatientBill = [];
                 $sheet = CreateSheetRepository::create($fields);
                 CreateNewConsultationRequestRepository::create([
-                    'request_number' => CreateNewConsultationRequestRepository::
-                        generateConsultationRequetNumber($this->selectedIndex, date('m')),
+                    'request_number' => CreateNewConsultationRequestRepository::generateConsultationRequetNumber($this->selectedIndex, date('m')),
                     'consultation_sheet_id' => $sheet->id,
                     'consultation_id' => $this->form->consultation_id,
                     'has_a_shipping_ticket' => $this->has_a_shipping_ticket

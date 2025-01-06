@@ -132,11 +132,11 @@
                                 <div class="form-group">
                                     <x-form.label value="{{ __('Type consultation') }}" />
                                     <x-widget.list-consultation-widget wire:model.blur='form.consultation_id'
-                                        :error="'consultation_id'" />
-                                    <x-errors.validation-error value='consultation_id' />
+                                        :error="'form.consultation_id'" />
+                                    <x-errors.validation-error value='form.consultation_id' />
                                 </div>
                             </div>
-                             <div class="col-md-4">
+                            <div class="col-md-4">
                                 @if ($sheet != null)
                                     <div class="form-group">
                                         <x-form.label value="{{ __('Type ') }}" />
@@ -159,8 +159,8 @@
                                 <div class="form-group">
                                     <x-form.label value="{{ __('Type consultation') }}" />
                                     <x-widget.list-consultation-widget wire:model.blur='form.consultation_id'
-                                        :error="'consultation_id'" />
-                                    <x-errors.validation-error value='consultation_id' />
+                                        :error="'form.consultation_id'" />
+                                    <x-errors.validation-error value='form.consultation_id' />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -177,9 +177,9 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <x-form.label value="{{ __('Type consultation') }}" />
-                                    <x-widget.list-consultation-widget wire:model.blur='form.consultation_id'
-                                        :error="'consultation_id'" />
-                                    <x-errors.validation-error value='consultation_id' />
+                                    <x-widget.list-consultation-widget wire:model='form.consultation_id'
+                                        :error="'form.consultation_id'" />
+                                    <x-errors.validation-error value='form.consultation_id' />
                                 </div>
                             </div>
                             <div class="col-md-6">
