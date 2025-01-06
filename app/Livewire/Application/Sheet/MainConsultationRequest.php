@@ -16,6 +16,7 @@ class MainConsultationRequest extends Component
         'refreshConsulting' => '$refresh'
     ];
     public int $selectedIndex;
+    public string $selectedSubscriptionUrl = '';
     public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
     public function makeIsByDate()
     {
@@ -51,13 +52,16 @@ class MainConsultationRequest extends Component
 
     public function mount()
     {
-        $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
-        if ($subscription) {
-            $this->selectedIndex = $subscription->id;
+        if ($this->selectedSubscriptionUrl != '') {
+            $this->selectedIndex = Subscription::where('name', $this->selectedSubscriptionUrl)->first()->id;
         } else {
-            $this->selectedIndex = 0;
+            $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
+            if ($subscription) {
+                $this->selectedIndex = $subscription->id;
+            } else {
+                $this->selectedIndex = 0;
+            }
         }
-
         if (Auth::user()->roles->pluck('name')->contains('ADMIN')) {
             $this->isByMonth = true;
             $this->isByDate = false;

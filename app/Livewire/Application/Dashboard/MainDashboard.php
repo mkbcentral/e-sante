@@ -10,10 +10,12 @@ class MainDashboard extends Component
 
     public function updatedDate($date)
     {
+        $this->month = null;
         $this->dispatch('updatedDateData', $date);
     }
     public function updatedMonth($month)
     {
+        $this->date = '';
         $this->dispatch('updatedMonthData', $month);
     }
     public function updatedYear($year)

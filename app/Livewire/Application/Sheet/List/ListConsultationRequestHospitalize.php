@@ -159,6 +159,11 @@ class ListConsultationRequestHospitalize extends Component
                 $this->month_name,
                 $this->year,
             ),
+            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year,
+            ),
             'total_cdf' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
             'total_usd' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex, 'USD'),
             'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountHospitalize($this->month_name, $this->year, $this->selectedIndex, 'CDF'),

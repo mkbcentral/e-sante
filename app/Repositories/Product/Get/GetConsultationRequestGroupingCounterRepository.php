@@ -86,7 +86,9 @@ class GetConsultationRequestGroupingCounterRepository
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->where('consultation_requests.is_hospitalized', true)
-            ->selectRaw('COUNT(consultation_requests.id) as number, subscriptions.name as subscription_name')
+            ->selectRaw(
+                'COUNT(consultation_requests.id) as number,subscriptions.name as subscription_name'
+            )
             ->groupBy('subscriptions.name')
             ->where('consultation_sheets.source_id', auth()->user()->source->id)
             ->get();
@@ -118,8 +120,8 @@ class GetConsultationRequestGroupingCounterRepository
     public  static  function getConsultationRequestGroupingBySubscriptionHospitalizeByAllSource($month, $year): Collection
     {
         return  ConsultationRequest::join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
-        ->join('subscriptions', 'subscriptions.id', 'consultation_sheets.subscription_id')
-        ->whereMonth('consultation_requests.created_at', $month)
+            ->join('subscriptions', 'subscriptions.id', 'consultation_sheets.subscription_id')
+            ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
             ->where('consultation_requests.is_hospitalized', true)
             ->selectRaw('COUNT(consultation_requests.id) as number, subscriptions.name as subscription_name')

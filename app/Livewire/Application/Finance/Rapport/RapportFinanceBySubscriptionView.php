@@ -12,6 +12,7 @@ class RapportFinanceBySubscriptionView extends Component
 
     public Subscription $subscription;
     public string $month;
+    public string $year;
 
     public function mount() {}
 

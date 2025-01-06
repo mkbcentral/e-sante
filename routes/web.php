@@ -60,14 +60,15 @@ use App\Livewire\Application\Lab\LaboDailyReleases;
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', AppNavigationController::class)->name('main');
+    Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
     Route::middleware(['user.redirect.checker'])->group(function () {
-        Route::get('/', AppNavigationController::class)->name('main');
         Route::get('/dashboard', MainDashboard::class)->name('dashboard');
         Route::get('/sheet', MainSheet::class)->name('sheet');
         Route::get('tarification', TarifView::class)->name('tarification');
         Route::get('tarification/prices', PriceList::class)->name('tarification.prices');
-        Route::get('consultations-request-list', MainConsultationRequest::class)->name('consultations.request.list');
-        Route::get('consultation/hospitalize', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
+        Route::get('consultations-request-list/{selectedSubscriptionUrl?}', MainConsultationRequest::class)->name('consultations.request.list');
+        Route::get('consultation/hospitalize/{selectedSubscriptionUrl?}', MainConsultationRequestHospitalize::class)->name('consultation.hospitalize');
         Route::get('product/supplies', ProductSupplyView::class)->name('product.supplies');
         Route::get('product/list', ListProduct::class)->name('product.list');
         Route::get('product/invoice/raport', MainProductInvoiceReport::class)->name('product.invoice.report');
@@ -76,7 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('product/requisitions', MainProductRequisitionView::class)->name('product.requisitions');
         Route::get('product/invoice', MainProductInvoice::class)->name('product.invoice');
         Route::get('product/finance-rapport', FinanceRapport::class)->name('product.finance.rapport');
-        Route::get('product-requistion/{productRequisition}', ProductRequisitionItemsView::class)->name('product.requisition');
+
         Route::get('product/stock/service', MainStockServicePage::class)->name('product.stock.service');
         Route::get('billing/outpatient', OutpatientBillView::class)->name('bill.outpatient');
         Route::get('billing/outpatient/rapport', MainOutPatientBillReport::class)->name('bill.outpatient.rapport');

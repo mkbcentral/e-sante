@@ -14,6 +14,7 @@ class MainConsultationRequestHospitalize extends Component
         'refreshConsulting' => '$refresh'
     ];
     public int $selectedIndex;
+    public string $selectedSubscriptionUrl = '';
     public bool $isByDate = true, $isByMonth = false, $isByPeriod = false;
     /**
      * Change Subscription Selected
@@ -28,11 +29,15 @@ class MainConsultationRequestHospitalize extends Component
 
     public function mount()
     {
-        $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
-        if ($subscription) {
-            $this->selectedIndex = $subscription->id;
+        if ($this->selectedSubscriptionUrl != '') {
+            $this->selectedIndex = Subscription::where('name', $this->selectedSubscriptionUrl)->first()->id;
         } else {
-            $this->selectedIndex = 0;
+            $subscription = Subscription::where('name', 'like', 'PRIVE')->first();
+            if ($subscription) {
+                $this->selectedIndex = $subscription->id;
+            } else {
+                $this->selectedIndex = 0;
+            }
         }
     }
 

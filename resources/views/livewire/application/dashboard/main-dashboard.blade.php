@@ -3,7 +3,7 @@
         <x-navigation.bread-crumb-item label='Dashboard' />
     </x-navigation.bread-crumb>
     <x-content.main-content-page>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
             <div class="d-flex align-items-center mr-2">
                 <x-form.label value="{{ __('Date') }}" class="mr-1" />
                 <x-form.input type='date' wire:model.live='date' :error="'date_filter'" />
@@ -16,6 +16,30 @@
                 <div class="d-flex align-items-center mr-2">
                     <x-form.label value="{{ __('Année') }}" class="mr-1" />
                     <x-widget.list-years wire:model.live='year' :error="'year'" />
+                </div>
+                <div>
+                    <button type="button" class="btn btn-link dropdown-icon" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa fa-print" aria-hidden="true"></i>
+                        Impression
+                    </button>
+                    <div class="dropdown-menu" role="menu" style="">
+                        @if ($date != '')
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('monthly.frequentation.hospitalize', [$date, $year]) }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Freq journalière
+                            </a>
+                        @elseif ($month != '')
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('monthly.frequentation.hospitalize', [$month, $year]) }}">
+                                <i class="fa fa-file-pdf" aria-hidden="true"></i> Freq Mensuelle
+                            </a>
+                        @endif
+                        <a class="dropdown-item" target="_blank"
+                            href="{{ route('monthly.frequentation.hospitalize', [$month, $year]) }}">
+                            <i class="fa fa-file-pdf" aria-hidden="true"></i> Hospitalisés
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

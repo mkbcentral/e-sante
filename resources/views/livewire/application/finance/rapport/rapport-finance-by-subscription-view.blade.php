@@ -56,13 +56,15 @@
                         <tr>
                             <td>CONSULTATION</td>
                             <td class="text-right">
-                                {{ $amount_consultation == 0 ? '-' : app_format_number($amount_consultation, 1) }} USD
+                                {{ $amount_consultation == 0 ? app_format_number(0, 1) : app_format_number($amount_consultation, 1) }}
+                                USD
                             </td>
                         </tr>
                         @foreach ($categories as $index => $category)
                             @php
                                 $amount_tarif = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
                                     $month,
+                                    $year,
                                     $subscription->id,
                                     $category->id,
                                 );
@@ -70,7 +72,8 @@
                             <tr>
                                 <td>{{ $category->name }}</td>
                                 <td class="text-right">
-                                    {{ $amount_tarif == 0 ? '-' : app_format_number($amount_tarif, 1) }} USD
+                                    {{ $amount_tarif == 0 ? app_format_number(0, 1) : app_format_number($amount_tarif, 1) }}
+                                    USD
                                 </td>
                             </tr>
                             @php
@@ -80,20 +83,22 @@
                         <tr>
                             <td>PHARMACIE</td>
                             <td class="text-right">
-                                {{ $amount_pharma == 0 ? '-' : app_format_number($amount_pharma, 1) }} USD
+                                {{ $amount_pharma == 0 ? app_format_number(0, 1) : app_format_number($amount_pharma, 1) }}
+                                USD
                             </td>
                         </tr>
                         <tr>
                             <td>HOSPITALISATION</td>
                             <td class="text-right">
-                                {{ $amount_hospitalization == 0 ? '-' : app_format_number($amount_hospitalization, 1) }}
+                                {{ $amount_hospitalization == 0 ? app_format_number(0, 1) : app_format_number($amount_hospitalization, 1) }}
                                 USD
                             </td>
                         </tr>
                         <tr>
                             <td>NURSING</td>
                             <td class="text-right">
-                                {{ $amount_nursing == 0 ? '-' : app_format_number($amount_nursing, 1) }} USD
+                                {{ $amount_nursing == 0 ? app_format_number(0, 1) : app_format_number($amount_nursing, 1) }}
+                                USD
                             </td>
                         </tr>
                         <tr class="bg-dark text-bold h3">

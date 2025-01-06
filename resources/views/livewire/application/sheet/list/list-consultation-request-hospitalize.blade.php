@@ -9,7 +9,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <div class="d-flex  align-items-center">
-                    <div class="mr-2 w-100">
+                    <div class="h5 text-secondary mr-2">
+                        ({{ $request_number > 1
+                            ? $request_number .
+                                ' Hospitalisations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                            : $request_number . ' Hospitalisation réalisée' }})
+                    </div>
+                    <div>
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
                 </div>
@@ -26,11 +32,9 @@
                         <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>
                             <span class="money_format">CDF: {{ app_format_number($total_cdf, 1) }}</span> |
                             <span class="money_format">USD: {{ app_format_number($total_usd, 1) }}</span>
-
                         </h3>
                     </div>
                 @endcan
-
                 @can('pharma-actions')
                     <div class="bg-navy p-1 rounded-lg pr-2">
                         <h3 wire:loading.class="d-none"><i class="fas fa-coins ml-2"></i>

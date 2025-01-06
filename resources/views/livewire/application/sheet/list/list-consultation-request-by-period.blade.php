@@ -7,7 +7,10 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <div class="d-flex align-items-center">
-                    <div class="mr-2 w-100">
+                    <div class="h5 text-secondary">
+                        ({{ $request_number > 1 ? $request_number . ' Demandes réalisées' : $request_number . ' Facture réalisée' }})
+                    </div>
+                    <div class="mr-2">
                         <x-form.input-search wire:model.live.debounce.500ms="q" />
                     </div>
                     <div class="mr-2">
@@ -17,6 +20,15 @@
                         <x-form.input type='date' wire:model.live='end_date' :error="'end_date'" />
                     </div>
                 </div>
+                @can('finance-view')
+                    @if (!$listConsultationRequest->isEmpty())
+                        <div class="ml-2">
+                            <a class="btn  btn-info btn-sm" target="_blank"
+                                href="{{ route('consultation.request.period.print', [$selectedIndex, $start_date, $end_date]) }}"><i
+                                    class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
+                        </div>
+                    @endif
+                @endcan
             </div>
             <div class="d-flex justify-content-center pb-2">
                 <x-widget.loading-circular-md />
@@ -24,17 +36,6 @@
             @if ($listConsultationRequest->isEmpty())
                 <x-errors.data-empty />
             @else
-                <div class="d-flex justify-content-between align-content-center ">
-                    <div class="h5 text-secondary">
-                        ({{ $request_number > 1 ? $request_number . ' Factures réalisées' : $request_number . ' Facture réalisée' }})
-                    </div>
-
-                    <div class="ml-2">
-                        <a class="btn  btn-info btn-sm" target="_blank"
-                            href="{{ route('consultation.request.period.print', [$selectedIndex, $start_date, $end_date]) }}"><i
-                                class="fa fa-file-pdf" aria-hidden="true"></i> Mes factures</a>
-                    </div>
-                </div>
                 <table class="table table-striped table-sm">
                     <thead class="bg-primary">
                         <tr class="cursor-hand">
@@ -115,15 +116,18 @@
                                     {{ $consultationRequest->is_finished == true ? 'Terminé' : 'En cours' }}
                                 </td>
                                 <td
-                                    class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}"">
+                                    class="text-center {{ $consultationRequest->is_printed == true ? 'bg-success' : '' }}">
                                     @if ($consultationRequest->is_printed == true)
                                         Cloturé
+                                        <x-navigation.link-icon
+                                            href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
+                                            :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
                                     @else
                                         @if (Auth::user()->roles->pluck('name')->contains('PHARMA'))
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('NURSE'))
                                             <x-form.icon-button :icon="'fa fa-user-plus '"
                                                 wire:click="openVitalSignForm({{ $consultationRequest }})"
                                                 class="btn-sm btn-info " />
@@ -137,7 +141,7 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('DOCTOR'))
                                             <x-navigation.link-icon
                                                 href="{{ route('dr.consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-stethoscope'" class="btn btn-sm  btn-success " />
@@ -149,17 +153,19 @@
                                                 data-target="#edit-consultation-request"
                                                 wire:click="edit({{ $consultationRequest }})"
                                                 class="btn-sm btn-info " />
-                                            <x-form.icon-button :icon="'fa fa-eye '"
-                                                wire:click="openDetailConsultationModal({{ $consultationRequest }})"
-                                                class="btn-sm btn-primary " />
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-notes-medical'" class="btn btn-sm  btn-success " />
                                             <x-navigation.link-icon
                                                 href="{{ route('consultation.request.private.invoice', $consultationRequest->id) }}"
-                                                wire:navigate :icon="'fa fa-print'" class="btn btn-sm  btn-secondary" />
+                                                :icon="'fa fa-print'" class="btn btn-sm   btn-secondary" />
+                                            <x-form.icon-button :icon="'fa fa-trash '"
+                                                wire:confirm='Est-vous sur de supprimer'
+                                                wire:click="delete({{ $consultationRequest }})"
+                                                class="btn-sm btn-danger " />
                                         @endif
                                     @endif
+
                                 </td>
                             </tr>
                         @endforeach
