@@ -39,6 +39,11 @@ class ListConsultationRequestByMonth extends Component
         $this->dispatch('monthSelected', $val);
     }
 
+    public function updatedYear($val)
+    {
+        $this->dispatch('yearSelected', $val);
+    }
+
     /**
      * getCurrencyName
      * Get currency name

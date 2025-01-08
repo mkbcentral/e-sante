@@ -11,6 +11,7 @@ class AmountConsultationRequestByMonthWidget extends Component
 {
     protected $listeners = [
         'monthSelected' => 'getMonth',
+        'yearSelected' => 'getYear',
         'selectedIndex' => 'getSelectedIndex',
         'isByDate' => 'getIsDate',
         'isByMonth' => 'getIsMonth',
@@ -33,6 +34,17 @@ class AmountConsultationRequestByMonthWidget extends Component
     public function getMonth($month)
     {
         $this->month_name = $month;
+        $this->isByDate = false;
+        $this->isByPeriod = false;
+    }
+    /**
+     * Get Month
+     * @param string $month
+     * @return void
+     */
+    public function getYear($year)
+    {
+        $this->year = $year;
         $this->isByDate = false;
         $this->isByPeriod = false;
     }

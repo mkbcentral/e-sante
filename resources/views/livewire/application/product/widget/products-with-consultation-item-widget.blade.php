@@ -30,14 +30,12 @@
                             @endif
 
                         </td>
-                        @can('finance-view')
-                            <td class="text-right">
-                                {{ app_format_number($product->price, 1) }}
-                            </td>
-                            <td class="text-right">
-                                {{ app_format_number($product->price * $product->pivot->qty, 1) }}
-                            </td>
-                        @endcan
+                        <td class="text-right">
+                            {{ app_format_number($product->price, 1) }}
+                        </td>
+                        <td class="text-right">
+                            {{ app_format_number($product->price * $product->pivot->qty, 1) }}
+                        </td>
                         <td class="text-center">
                             @if ($consultationRequest->is_printed == false)
                                 <x-form.edit-button-icon

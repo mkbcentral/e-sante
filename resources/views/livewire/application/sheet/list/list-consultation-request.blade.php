@@ -23,7 +23,7 @@
                         ({{ $listConsultationRequest->count() > 1
                             ? $request_number .
                                 ' Factures
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       réalisées'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               réalisées'
                             : $request_number . ' Facture réalisée' }})
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                                             <x-form.icon-button :icon="'fas fa-capsules'"
                                                 wire:click="openPrescriptionMedicalModal({{ $consultationRequest }})"
                                                 class="btn-primary btn-sm" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Nurse'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('NURSE'))
                                             <x-form.icon-button :icon="'fa fa-user-plus '"
                                                 wire:click="openVitalSignForm({{ $consultationRequest }})"
                                                 class="btn-sm btn-info " />
@@ -131,7 +131,7 @@
                                             <x-navigation.link-icon
                                                 href="{{ route('labo.subscriber', $consultationRequest) }}"
                                                 wire:navigate :icon="'fa fa-microscope'" class="btn btn-sm  btn-secondary" />
-                                        @elseif(Auth::user()->roles->pluck('name')->contains('Doctor'))
+                                        @elseif(Auth::user()->roles->pluck('name')->contains('DOCTOR'))
                                             <x-navigation.link-icon
                                                 href="{{ route('dr.consultation.consult.patient', $consultationRequest->id) }}"
                                                 wire:navigate :icon="'fas fa-stethoscope'" class="btn btn-sm  btn-success " />
