@@ -90,9 +90,9 @@ class OutpatientBillPrinterController extends Controller
         return $pdf->stream();
     }
 
-    public function pridntAllConsultationRequestByMonth($subscriptionId, $month)
+    public function pridntAllConsultationRequestByMonth($subscriptionId, $month, $year)
     {
-        $year = date('Y');
+
         $categories = CategoryTarif::all();
         $currency = 'CDF';
         $consultationRequests = ConsultationRequest::query()
@@ -115,7 +115,6 @@ class OutpatientBillPrinterController extends Controller
         string $startDate,
         string $endDate,
     ) {
-        $year = date('Y');
         $categories = CategoryTarif::all();
         $currency = 'CDF';
         $consultationRequests = ConsultationRequest::query()
@@ -129,7 +128,6 @@ class OutpatientBillPrinterController extends Controller
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereBetween('consultation_requests.created_at', [$startDate, $endDate])
-            ->whereYear('consultation_requests.created_at', $year)
             ->orderBy('consultation_requests.request_number', 'ASC')
             ->get();
         $pdf = App::make('dompdf.wrapper');
