@@ -36,12 +36,12 @@ class ConsultationRequestPrinterController extends Controller
         $consultationRequests = ConsultationRequest::query()
             ->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
             ->where('consultation_sheets.subscription_id', $subscriptionId)
-            ->orderBy('consultation_requests.created_at', 'ASC')
             ->select('consultation_requests.*')
             ->with(['consultationSheet.subscription'])
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->whereMonth('consultation_requests.created_at', $month)
             ->whereYear('consultation_requests.created_at', $year)
+            ->orderBy('consultation_requests.request_number', 'asc')
             ->get();
         $pdf = App::make('dompdf.wrapper');
 
