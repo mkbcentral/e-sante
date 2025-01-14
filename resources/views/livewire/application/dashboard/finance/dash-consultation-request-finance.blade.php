@@ -14,7 +14,7 @@
             @if (!$subscriptions->isEmpty())
                 <div class="row mt-2">
                     @foreach ($subscriptions as $subscription)
-                        @if ($subscription->getAmountUSDBySubscription($month, $year) != 0)
+                        @if ($subscription->getAmountUSDBySubscription($month, $year, null, 'USD') != 0)
                             <div class="col-12 col-sm-6 col-md-6">
                                 <a wire:navigate
                                     href="{{ route('finance.rapport.by.subscription', [$subscription, $month, $year]) }}">
@@ -24,7 +24,7 @@
                                             <span class="info-box-text text-bold h4">{{ $subscription->name }}</span>
                                             <span class="info-box-number h3">
                                                 USD
-                                                {{ app_format_number($subscription->getAmountUSDBySubscription($month, $year), 1) }}
+                                                {{ app_format_number($subscription->getAmountUSDBySubscription($month, $year, null, 'USD'), 1) }}
                                             </span>
                                         </div>
                                     </div>

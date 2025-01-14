@@ -37,20 +37,18 @@ class GetOutpatientRepository
      * @param mixed $month
      * @return mixed
      */
-    public static function getOutpatientPatientByMonth(string $month): mixed
+    public static function getOutpatientPatientByMonth(string $month, $year): mixed
     {
-
+        $filters = [
+            'month' => $month,
+            'year' => $year
+        ];
         return  Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX) ||
             Auth::user()->roles->pluck('name')->contains(RoleType::EMERGENCY) ?
-            OutpatientBill::orderBy('created_at', 'DESC')
-            ->whereMonth('created_at', $month)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
+            OutpatientBill::filter($filters)
+            ->where('user_id', Auth::id())
             ->paginate(10) :
-            OutpatientBill::orderBy('created_at', 'DESC')
-            ->whereMonth('created_at', $month)
-            ->where('is_validated', true)
-            ->with(['otherOutpatientBill', 'currency', 'detailOutpatientBill', 'tarifs', 'consultation', 'rate', 'user'])
-            ->paginate(10);
+            OutpatientBill::filter($filters)->paginate(10);
     }
 
     /**

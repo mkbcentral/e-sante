@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Enums\RoleType;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Source;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\Facades\Auth;
 
 class ListConsultationRequestByPeriod extends Component
 {
@@ -27,6 +31,16 @@ class ListConsultationRequestByPeriod extends Component
     #[Url(as: 'sortBy')]
     public $sortBy = 'consultation_requests.created_at';
     #[Url(as: 'sortAsc')]
+
+    public function updatedStartDate($val)
+    {
+        $this->dispatch('startDateSelected', $val);
+    }
+    public function updatedEndDate($val)
+    {
+        $this->dispatch('endDateSelected', $val);
+    }
+
     public $sortAsc = true;
 
     /**
@@ -101,15 +115,12 @@ class ListConsultationRequestByPeriod extends Component
         $this->dispatch('selectedConsultationRequest', $consultationRequest);
         $this->dispatch('open-edit-consultation');
     }
-
     public  function mount(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;
     }
-
     /**
-     * Render component
-     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     * @return ViewContract
      */
     public function render()
     {
@@ -122,12 +133,15 @@ class ListConsultationRequestByPeriod extends Component
                 20,
                 $this->start_date,
                 $this->end_date,
-
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+                null
             ),
             'request_number' => GetConsultationRequestRepository::getCountConsultationRequestBetweenDate(
                 $this->selectedIndex,
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
                 $this->start_date,
-                $this->end_date
+                $this->end_date,
+                true
             )
         ]);
     }

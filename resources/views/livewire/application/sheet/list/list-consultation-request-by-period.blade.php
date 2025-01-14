@@ -176,7 +176,6 @@
                     {{ $listConsultationRequest->links('livewire::bootstrap') }}</div>
             @endif
         </div>
-
     </div>
     @push('js')
         <script type="module">

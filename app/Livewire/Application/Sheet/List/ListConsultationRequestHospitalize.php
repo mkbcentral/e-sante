@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Enums\RoleType;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Source;
 use App\Repositories\Product\Get\GetConsultationRequestProductAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
@@ -150,7 +152,7 @@ class ListConsultationRequestHospitalize extends Component
     {
         return view('livewire.application.sheet.list.list-consultation-request-hospitalize', [
             'listConsultationRequest' =>
-            GetConsultationRequestRepository::getConsultationRequestHospitalized(
+            GetConsultationRequestRepository::getConsultationRequestByMonth(
                 $this->selectedIndex,
                 $this->q,
                 $this->sortBy,
@@ -158,14 +160,34 @@ class ListConsultationRequestHospitalize extends Component
                 20,
                 $this->month_name,
                 $this->year,
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+                true
             ),
-            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
+            'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+                $this->selectedIndex,
+                $this->month_name,
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+                $this->year,
+                true
+            ),
+            'total_usd' =>
+            GetConsultationRequestRepository::getRequestHospitalizedToBordereauMonthAmount(
                 $this->selectedIndex,
                 $this->month_name,
                 $this->year,
+                'USD',
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
             ),
-            'total_cdf' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
-            'total_usd' => GetConsultationRequestionAmountRepository::getTotalHospitalize($this->month_name, $this->year, $this->selectedIndex, 'USD'),
+            'total_cdf' =>
+            GetConsultationRequestRepository::getRequestHospitalizedToBordereauMonthAmount(
+                $this->selectedIndex,
+                $this->month_name,
+                $this->year,
+                'CDF',
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+            ),
             'total_product_amount_cdf' => GetConsultationRequestProductAmountRepository::getProductAmountHospitalize($this->month_name, $this->year, $this->selectedIndex, 'CDF'),
             'total_product_amount_usd' => GetConsultationRequestProductAmountRepository::getProductAmountHospitalize($this->month_name, $this->year, $this->selectedIndex, 'USD')
         ]);

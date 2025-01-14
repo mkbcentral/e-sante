@@ -36,7 +36,7 @@ class OutpatientBillPrinterController extends Controller
     public function printRapportByDateOutpatientBill($date, $date_versement)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
-        $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau();
+        $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau($date);
         $total_cdf = GetOutpatientRepository::getTotalBillByDate($date, 'CDF');
         $total_usd = GetOutpatientRepository::getTotalBillByDate($date, 'USD');
         $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();

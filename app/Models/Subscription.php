@@ -21,7 +21,16 @@ class Subscription extends Model
         return $this->hasMany(ConsultationSheet::class);
     }
 
-    public function getAmountUSDBySubscription($month,$year):int|float{
-        return GetConsultationRequestionAmountRepository::getTotalByMonthUSD($month,$year,$this->id);
+    public function getAmountUSDBySubscription($month, $year, $is_hopitalize, $currency): int|float
+    {
+        return GetConsultationRequestionAmountRepository::getTotalByMonth(
+            $this->id,
+            null,
+            null,
+            $is_hopitalize,
+            $month,
+            $year,
+            $currency,
+        );
     }
 }

@@ -84,6 +84,11 @@
                         'month' => $month,
                         'year' => $year,
                     ])
+                    @livewire('application.dashboard.finance.dash-consultation-request-finance-private-hospilize', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
                 </div>
                 <div class="col-md-6">
                     @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [

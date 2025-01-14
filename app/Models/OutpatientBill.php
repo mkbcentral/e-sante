@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,11 +12,18 @@ use Illuminate\Notifications\Notifiable;
 
 class OutpatientBill extends Model
 {
-    use HasFactory,Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
-        'bill_number', 'client_name', 'is_validated', 'is_printed',
-        'consultation_id', 'user_id', 'hospital_id', 'rate_id', 'currency_id'
+        'bill_number',
+        'client_name',
+        'is_validated',
+        'is_printed',
+        'consultation_id',
+        'user_id',
+        'hospital_id',
+        'rate_id',
+        'currency_id'
     ];
 
     public function receivesBroadcastNotificationsOn(): string
@@ -105,12 +113,12 @@ class OutpatientBill extends Model
     /* Get the other outpatient bill in USD */
     public function getOtherOutpatientBillPriceUSD(): int|float
     {
-        return $this->otherOutpatientBill !=null? $this->otherOutpatientBill->amount:0;
+        return $this->otherOutpatientBill != null ? $this->otherOutpatientBill->amount : 0;
     }
     /* Get the other outpatient bill in CDF */
     public function getOtherOutpatientBillPriceCDF(): int|float
     {
-        return $this->otherOutpatientBill != null ? $this->otherOutpatientBill->amount * $this->rate->rate:0;
+        return $this->otherOutpatientBill != null ? $this->otherOutpatientBill->amount * $this->rate->rate : 0;
     }
     /* Get the total bill in USD */
     public function getTotalOutpatientBillUSD(): int|float
@@ -119,7 +127,7 @@ class OutpatientBill extends Model
         foreach ($this->tarifs as $tarif) {
             $total += $tarif->price_private * $tarif->pivot->qty;
         }
-        return $this->getConsultationPriceUSD() + $total+$this->getOtherOutpatientBillPriceUSD();
+        return $this->getConsultationPriceUSD() + $total + $this->getOtherOutpatientBillPriceUSD();
     }
     /**
      * Get the total bill in CDF
@@ -132,11 +140,28 @@ class OutpatientBill extends Model
         foreach ($this->tarifs as $tarif) {
             $total += ($tarif->price_private * $tarif->pivot->qty) * $this->rate->rate;
         }
-        return $this->getConsultationPriceCDF() + $total +$this->getOtherOutpatientBillPriceCDF();
+        return $this->getConsultationPriceCDF() + $total + $this->getOtherOutpatientBillPriceCDF();
     }
 
     public function getBillNumberAttribute($value): string
     {
-        return 'A-' . $value.'-PS';
+        return 'A-' . $value . '-PS';
+    }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query->orderBy('created_at', 'DESC')
+            ->whereMonth('created_at', $filters['month'])
+            ->whereYear('created_at', $filters['year'])
+            ->where('is_validated', true)
+            ->with([
+                'otherOutpatientBill',
+                'currency',
+                'detailOutpatientBill',
+                'tarifs',
+                'consultation',
+                'rate',
+                'user'
+            ]);
     }
 }

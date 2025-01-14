@@ -84,8 +84,8 @@
     @if (!$consultationRequests->isEmpty())
         <div>
             @php
-                $amount_cdf = 0;
-                $amount_usd = 0;
+                $total_cons_cdf = 0;
+                $total_cons_usd = 0;
             @endphp
             <div class="text-center"><img src="{{ public_path('entete.png') }}" alt="Heder Image"></div>
             <div class="text-right"><span>Fait à Lubumbashi, Le {{ $dateToMorrow }}</span></div>
@@ -141,6 +141,20 @@
 
                             </td>
                         </tr>
+                        @php
+                            if ($consultationRequest->currency != null) {
+                                if ($consultationRequest->currency->name == 'USD') {
+                                    $total_cons_usd += $consultationRequest->getTotalInvoiceUSD();
+                                } else {
+                                    $total_cons_cdf += $consultationRequest->getTotalInvoiceCDF();
+                                }
+                            } else {
+                                if ($consultationRequest->consultationRequestCurrency) {
+                                    $total_cons_usd += $consultationRequest->consultationRequestCurrency->amount_usd;
+                                    $total_cons_cdf += $consultationRequest->consultationRequestCurrency->amount_cdf;
+                                }
+                            }
+                        @endphp
                     @endforeach
                     <tr class="text-uppercase text-bold h4">
                         <td colspan="4" class="text-right">Total</td>

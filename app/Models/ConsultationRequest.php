@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\RoleType;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationRequest extends Model
 {
@@ -260,10 +263,15 @@ class ConsultationRequest extends Model
                 $total += $tarif->price_private * $tarif->pivot->qty * $this->rate->rate;
             }
         }
-        $net_to_paid = $this->consultation->is_consultation_paid == false ?
-            ($this->getConsultationPriceCDF() + $total) +
-            $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF() :
-            $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF();
+        if (Auth::user()->roles->pluck('name')->contains(RoleType::PHARMA)) {
+            $net_to_paid = $this->getTotalProductCDF();
+        } else {
+            $net_to_paid = $this->consultation->is_consultation_paid == false ?
+                ($this->getConsultationPriceCDF() + $total) +
+                $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF() :
+                $total + $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF();
+        }
+
 
         return $net_to_paid;
     }
@@ -282,11 +290,17 @@ class ConsultationRequest extends Model
                 $total += $tarif->price_private * $tarif->pivot->qty;
             }
         }
-        $net_to_paid
-            = $this->consultation->is_consultation_paid == false ?
-            ($this->getConsultationPriceUSD() + $total) +
-            $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD() :
-            $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD();
+        # code...
+        if (Auth::user()->roles->pluck('name')->contains(RoleType::PHARMA)) {
+            $net_to_paid
+                = $this->getTotalProductUSD();
+        } else {
+            $net_to_paid
+                = $this->consultation->is_consultation_paid == false ?
+                ($this->getConsultationPriceUSD() + $total) +
+                $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD() :
+                $total + $this->getTotalProductUSD() + $this->getHospitalizationAmountUSD() + $this->getNursingAmountUSD();
+        }
         return $net_to_paid;
     }
 
@@ -323,7 +337,7 @@ class ConsultationRequest extends Model
     public function getBgStatus(): string
     {
         $bg = '';
-        if (auth()->user()->roles->pluck('name')->contains('Admin')) {
+        if (auth()->user()->roles->pluck('name')->contains(RoleType::ADMIN)) {
             $bg = $this->getTotalInvoiceUSD() == $this->getConsultationPriceUSD()
                 ? 'bg-danger'
                 : '';
@@ -392,13 +406,13 @@ class ConsultationRequest extends Model
             ->selectRaw(
                 $currency == 1 ?
                     'SUM(
-                    (tarifs.price_private * consultation_request_tarif.qty) + 
+                    (tarifs.price_private * consultation_request_tarif.qty) +
                     (consultation_request_nersings.amount * consultation_request_nersings.number)+
                     (hospitalizations.price_private * consultation_request_hospitalizations.number_of_day)+
                     (products.price * consultation_request_product.qty/rates.rate)
                 ) as total_amount' :
                     'SUM(
-                    ((tarifs.price_private * consultation_request_tarif.qty) + 
+                    ((tarifs.price_private * consultation_request_tarif.qty) +
                     (consultation_request_nersings.amount * consultation_request_nersings.number)+
                     (hospitalizations.price_private * consultation_request_hospitalizations.number_of_day)
                     *rates.rate)+
@@ -406,5 +420,37 @@ class ConsultationRequest extends Model
                 ) as total_amount'
 
             );
+    }
+
+    public function scopeReusable(Builder $query, array $filters): mixed
+    {
+        return $query->join('consultation_sheets', 'consultation_sheets.id', 'consultation_requests.consultation_sheet_id')
+            ->join('subscriptions', 'subscriptions.id', 'consultation_sheets.subscription_id')
+            ->where('consultation_sheets.subscription_id', $filters['id_subscription'])
+            ->when($filters['q'], function ($q, $val) {
+                return $q->where('consultation_sheets.name', 'like', '%' . $val . '%')
+                    ->orWhere('consultation_sheets.number_sheet', 'like', '%' . $val . '%');
+            })
+            ->selectRaw('consultation_requests.*,subscriptions.name as subscription_name')
+            ->with(
+                [
+                    'consultation',
+                    'rate',
+                    'consultationSheet.subscription',
+                    'consultationRequestNursings',
+                    'consultationRequestHospitalizations',
+                    'consultationRequestHospitalizations.hospitalizationRoom',
+                    'tarifs',
+                    'products'
+                ]
+            )
+
+            ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
+            ->when($filters['source_id'], function ($q, $val) {
+                return $q->where('consultation_sheets.source_id', operator: $val);
+            })
+            ->when($filters['is_hospitalized'], function ($q, $val) {
+                return $q->where('consultation_requests.is_hospitalized', $val);
+            });
     }
 }

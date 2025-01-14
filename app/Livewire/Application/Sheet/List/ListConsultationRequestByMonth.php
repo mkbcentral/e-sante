@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Enums\RoleType;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Source;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use App\Repositories\Sheet\Get\ManageConsultationRequestRepository;
 use Illuminate\Support\Facades\App;
@@ -15,7 +17,6 @@ use Livewire\WithPagination;
 class ListConsultationRequestByMonth extends Component
 {
     use WithPagination;
-
     protected $listeners = [
         'selectedIndex' => 'getSelectedIndex',
         'listSheetRefreshed' => '$refresh',
@@ -206,43 +207,25 @@ class ListConsultationRequestByMonth extends Component
     public function render()
     {
         $this->checkIsClosin();
-        if (
-            Auth::user()->roles->pluck('name')->contains('AG') ||
-            Auth::user()->roles->pluck('name')->contains('ADMIN') ||
-            Auth::user()->roles->pluck('name')->contains('LABO')
-        ) {
-            $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByMonthAllSource(
-                $this->selectedIndex,
-                $this->q,
-                $this->sortBy,
-                $this->sortAsc,
-                20,
-                $this->month_name,
-                $this->year,
-            );
-            $request_number = GetConsultationRequestRepository::getCountConsultationRequestByMonthAllSource(
-                $this->selectedIndex,
-                $this->month_name,
-                $this->year,
-            );
-        } else {
-            $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByMonth(
-                $this->selectedIndex,
-                $this->q,
-                $this->sortBy,
-                $this->sortAsc,
-                20,
-                $this->month_name,
-                $this->year,
-                Auth::user()->id
-            );
-            $request_number = GetConsultationRequestRepository::getCountConsultationRequestByMonth(
-                $this->selectedIndex,
-                $this->month_name,
-                $this->year,
-                Auth::user()->id
-            );
-        }
+        $listConsultationRequest = GetConsultationRequestRepository::getConsultationRequestByMonth(
+            $this->selectedIndex,
+            $this->q,
+            $this->sortBy,
+            $this->sortAsc,
+            20,
+            $this->month_name,
+            $this->year,
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+            is_hospitalized: null,
+
+        );
+        $request_number = GetConsultationRequestRepository::getCountConsultationRequestByMonth(
+            $this->selectedIndex,
+            $this->month_name,
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+            $this->year,
+            false
+        );
         return view('livewire.application.sheet.list.list-consultation-request-by-month', [
             'listConsultationRequest' => $listConsultationRequest,
             'request_number' => $request_number,

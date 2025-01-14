@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Application\Sheet\List;
 
+use App\Enums\RoleType;
 use App\Models\ConsultationRequest;
 use App\Models\Currency;
+use App\Models\Source;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -32,22 +35,16 @@ class ListConsultationRequest extends Component
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
 
-    /**
-     * getCurrencyName
-     * Get currency name
-     * @param  mixed $currency
-     * @return void
-     */
+    public function updatedDateFilter($date)
+    {
+        $this->dispatch('dateSelected', $date);
+    }
+
     public function getCurrencyName(string $currency): void
     {
         $this->currencyName = $currency;
     }
 
-    /**
-     * Open detail consultation model view
-     * emit consultationRequest listner to load data after modal detail opened
-     * @return void
-     */
     public function openDetailConsultationModal(ConsultationRequest $consultationRequest): void
     {
         $this->dispatch('open-details-consultation');
@@ -65,33 +62,17 @@ class ListConsultationRequest extends Component
         $this->dispatch('consultationRequest', $consultationRequest);
     }
 
-    /**
-     * Get Consultation Sheet if listener emitted in parent veiew
-     * @param int $selectedIndex
-     * @return void
-     */
     public function getSelectedIndex(int $selectedIndex): void
     {
         $this->selectedIndex = $selectedIndex;
         $this->resetPage();
     }
 
-    /**
-     * Open vital sign modal
-     * @param ConsultationRequest $consultationRequest
-     * @return void
-     */
     public  function openVitalSignForm(ConsultationRequest $consultationRequest): void
     {
         $this->dispatch('open-vital-sign-form');
         $this->dispatch('consultationRequest', $consultationRequest);
     }
-
-    /**
-     * Sort data (ASC or DESC)
-     * @param $value
-     * @return void
-     */
     public function sortSheet($value): void
     {
         if ($value == $this->sortBy) {
@@ -126,10 +107,13 @@ class ListConsultationRequest extends Component
                 $this->sortBy,
                 $this->sortAsc,
                 20,
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+                null,
                 $this->date_filter,
             ),
             'request_number' => GetConsultationRequestRepository::getCountConsultationRequestByDate(
                 $this->selectedIndex,
+                Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
                 $this->date_filter,
             )
         ]);

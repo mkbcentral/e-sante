@@ -70,9 +70,9 @@ class CategoryTarif extends Model
         $tarif = Tarif::find($idTarif);
         $price = 0;
         if ($consultationRequest->consultationSheet->subscription->is_subscriber) {
-            $price=
+            $price =
 
-            ($tarif->subscriber_price * $qty) * $consultationRequest->rate->rate;
+                ($tarif->subscriber_price * $qty) * $consultationRequest->rate->rate;
         } else {
             $price = ($tarif->price_private * $qty) * $consultationRequest->rate->rate;
         }

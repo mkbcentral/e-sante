@@ -2,8 +2,12 @@
 
 namespace App\Livewire\Application\Finance\Billing\List;
 
+use App\Models\ConsultationRequest;
+use App\Models\Hospital;
 use App\Models\OutpatientBill;
+use App\Models\Source;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
+use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use Carbon\Carbon;
 use Exception;
 use Livewire\Component;
@@ -14,63 +18,40 @@ class ListOutpatientBillByMonth extends Component
     use WithPagination;
     protected $listeners = [
         'currencyName' => 'getCurrencyName',
-        'refreshListBill' => '$refresh'
+        'refreshListBill' => '$refresh',
+        'dateSelected' => 'getDate',
+        'monthSelected' => 'getMonth',
+        'yearSelected' => 'getYear',
     ];
     public string $month, $date, $date_versement, $year;
     public bool $isByDate = true;
 
-    public function updatedDate($val): void
+    public function getDate($date)
     {
-        $this->date = $val;
+        $this->date = $date;
         $this->isByDate = true;
     }
-
-    public function updatedMonth($val): void
+    public function getMonth($month)
     {
-        $this->month = $val;
+        $this->month = $month;
         $this->isByDate = false;
     }
-    /**
-     * edit
-     * Select OutpatientBill to edit
-     * @param  mixed $outpatientBill
-     * @return void
-     */
-    public function edit(?OutpatientBill $outpatientBill): void
+    public function getYear($year)
     {
-        $this->dispatch('outpatientSelected', $outpatientBill);
-        $this->dispatch('outpatientBillToEdit', $outpatientBill);
-        $this->dispatch('close-list-outpatient-bill-by-date-modal');
+        $this->year = $year;
     }
-    /**
-     * delete
-     * Delete OutpatientBill
-     * @param  mixed $outpatientBill
-     * @return void
-     */
-    public function delete(?OutpatientBill $outpatientBill)
+    public function mount($date, $month, $year): void
     {
-        try {
-            $outpatientBill->delete();
-            $this->dispatch('updated', ['message' => 'Action bien réalisée']);
-        } catch (Exception $ex) {
-            $this->dispatch('error', ['message' => $ex->getMessage()]);
-        }
-    }
-
-    public function mount(): void
-    {
-        $this->month = date('m');
-        $this->date = date('Y-m-d');
-        $this->year = date('Y');
-        $this->date_versement = Carbon::tomorrow()->format('Y-m-d');
+        $this->date = $date;
+        $this->month = $month;
+        $this->year = $year;
     }
     public function render()
     {
         return view('livewire.application.finance.billing.list.list-outpatient-bill-by-month', [
             'listBill' => $this->isByDate ?
                 GetOutpatientRepository::getOutpatientPatientByDate($this->date) :
-                GetOutpatientRepository::getOutpatientPatientByMonth($this->month),
+                GetOutpatientRepository::getOutpatientPatientByMonth($this->month, $this->year),
             'tota_cdf' =>  $this->isByDate ?
                 GetOutpatientRepository::getTotalBillByDate($this->date, 'CDF') :
                 GetOutpatientRepository::getTotalBillByMonth($this->month, $this->year, 'CDF'),
@@ -80,6 +61,7 @@ class ListOutpatientBillByMonth extends Component
             'counter_by_month' => $this->isByDate ?
                 GetOutpatientRepository::getCountOfOutpatientBillByDate($this->date) :
                 GetOutpatientRepository::getCountOfOutpatientBillByMonth($this->month),
+
         ]);
     }
 }
