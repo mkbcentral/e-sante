@@ -11,7 +11,6 @@
                         N° IMPOT A2029032E
                     </td>
                     <td class="text-start" style="text-align: justify">
-                        <b>Invoice</b> #: {{ $outpatientBill->bill_number }}<br />
                         <b>Client</b>: {{ $outpatientBill->client_name }} <br>
                         <b>Cash-ID</b>:{{ Auth::user()->name }} <br>
                         <b>At:</b> {{ $outpatientBill->created_at->format('d-m-Y H:i:s') }}<br />
@@ -21,7 +20,8 @@
             </table>
             <table>
                 <tr style="border: none;">
-                    <td class="text-center h4" style="border-top: none; border-bottom: none;">Réçu</td>
+                    <td class="text-center h4" style="border-top: none; border-bottom: none;">Réçu N°
+                        {{ $outpatientBill->bill_number }}</td>
                 </tr>
             </table>
             <table class="">

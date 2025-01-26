@@ -46,7 +46,9 @@
                                     </td>
                                     <td class="text-right">
                                         @if ($consultationRequest->currency != null)
-                                            {{ $consultationRequest->currency->name == 'USD' ? app_format_number($consultationRequest->getTotalProductUSD(), 1) : '-' }}
+                                            {{ $consultationRequest->currency->name == 'USD'
+                                                ? app_format_number($consultationRequest->getTotalInvoiceUSD(), 1)
+                                                : '-' }}
                                         @else
                                             {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_usd, 1) }}
                                         @endif
@@ -54,7 +56,9 @@
                                     </td>
                                     <td class="text-right">
                                         @if ($consultationRequest->currency != null)
-                                            {{ $consultationRequest->currency->name == 'CDF' ? app_format_number($consultationRequest->getTotalProductCDF(), 1) : '-' }}
+                                            {{ $consultationRequest->currency->name == 'CDF'
+                                                ? app_format_number($consultationRequest->getTotalInvoiceCDF(), 1)
+                                                : '-' }}
                                         @else
                                             {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_cdf, 1) }}
                                         @endif

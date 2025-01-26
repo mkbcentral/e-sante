@@ -1,7 +1,8 @@
 <div>
     <div data-select2-id="4">
         @props(['error'])
-        <select {{ $attributes }} class="form-control select2 @error($error) is-invalid @enderror"
+        <select {{ $attributes }} class="form-control select2
+         @error($error) is-invalid @enderror"
             data-select2-id="4">
             <option value="">Choisir</option>
             @foreach ($listConsultation as $consultation)

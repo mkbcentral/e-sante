@@ -89,6 +89,11 @@
                         'month' => $month,
                         'year' => $year,
                     ])
+                    @livewire('application.dashboard.product.dash-invoice-product', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
                 </div>
                 <div class="col-md-6">
                     @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [
@@ -166,6 +171,25 @@
             </div>
         @endcan
         @can('labo-actions')
+            <div class="row">
+                <div class="col-md-6">
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
+                </div>
+                <div class="col-md-6">
+
+                    @livewire('application.dashboard.frequentation.dash-consultation-request-hospitalized', [
+                        'date' => $date,
+                        'month' => $month,
+                        'year' => $year,
+                    ])
+                </div>
+            </div>
+        @endcan
+        @can('deposit-pharma')
             <div class="row">
                 <div class="col-md-6">
                     @livewire('application.dashboard.frequentation.dash-consultation-request-frequentation', [

@@ -17,7 +17,7 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('consultation.hospitalize') }}" wire:navigate class="small-box-footer">Voir
+                    <a href="{{ route('bill.outpatient.rapport') }}" wire:navigate class="small-box-footer">Voir
                         détails
                         <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
@@ -32,7 +32,11 @@
                                 {{ app_format_number($tota_usd, 1) }}
                             </span>
                         </div>
+
                     </div>
+                    <a href="{{ route('bill.outpatient.rapport') }}" wire:navigate class="small-box-footer">Voir
+                        détails
+                        <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>

@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Application\Print\Finance;
 
+use App\Enums\RoleType;
 use App\Http\Controllers\Controller;
 use App\Models\CategoryTarif;
 use App\Models\ConsultationRequest;
 use App\Models\Hospital;
 use App\Models\OutpatientBill;
+use App\Models\Source;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use DateTime;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class OutpatientBillPrinterController extends Controller
 {
@@ -36,11 +39,16 @@ class OutpatientBillPrinterController extends Controller
     public function printRapportByDateOutpatientBill($date, $date_versement)
     {
         $listBill = GetOutpatientRepository::getOutpatientPatientByDate($date);
-        $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau($date);
+        $consultationRequests = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau(
+            1,
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
+            $date,
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id()
+        );
         $total_cdf = GetOutpatientRepository::getTotalBillByDate($date, 'CDF');
         $total_usd = GetOutpatientRepository::getTotalBillByDate($date, 'USD');
-        $total_cons_usd = GetConsultationRequestionAmountRepository::getTotalHospitalizeUSD();
-        $total_cons_cdf = GetConsultationRequestionAmountRepository::getTotalHospitalizeCDF();
+        $total_cons_usd = GetOutpatientRepository::getTotalBillByDate($date, 'USD');
+        $total_cons_cdf = GetOutpatientRepository::getTotalBillByDate($date, 'CDF');
         $dateToMorrow = (new DateTime($date_versement))->format('d/m/Y');
 
         $pdf = App::make('dompdf.wrapper');
@@ -61,7 +69,7 @@ class OutpatientBillPrinterController extends Controller
 
     public function printRapportByMonthOutpatientBill($month)
     {
-        $listBill = GetOutpatientRepository::getOutpatientPatientByMonth($month);
+        $listBill = GetOutpatientRepository::getOutpatientPatientByMonth($month, '2025');
         $total_cdf = GetOutpatientRepository::getTotalBillByMonth($month, '2025', 'CDF');
         $total_usd = GetOutpatientRepository::getTotalBillByMonth($month, '2025 ', 'USD');
         $pdf = App::make('dompdf.wrapper');

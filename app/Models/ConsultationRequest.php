@@ -265,7 +265,11 @@ class ConsultationRequest extends Model
         }
         if (Auth::user()->roles->pluck('name')->contains(RoleType::PHARMA)) {
             $net_to_paid = $this->getTotalProductCDF();
-        } else {
+        } else if (
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_RECIPES)
+        ) {
             $net_to_paid = $this->consultation->is_consultation_paid == false ?
                 ($this->getConsultationPriceCDF() + $total) +
                 $this->getTotalProductCDF() + $this->getHospitalizationAmountCDF() + $this->getNursingAmountCDF() :
@@ -294,7 +298,11 @@ class ConsultationRequest extends Model
         if (Auth::user()->roles->pluck('name')->contains(RoleType::PHARMA)) {
             $net_to_paid
                 = $this->getTotalProductUSD();
-        } else {
+        } else if (
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_RECIPES)
+        ) {
             $net_to_paid
                 = $this->consultation->is_consultation_paid == false ?
                 ($this->getConsultationPriceUSD() + $total) +
@@ -444,7 +452,6 @@ class ConsultationRequest extends Model
                     'products'
                 ]
             )
-
             ->where('consultation_sheets.hospital_id', Hospital::DEFAULT_HOSPITAL())
             ->when($filters['source_id'], function ($q, $val) {
                 return $q->where('consultation_sheets.source_id', operator: $val);

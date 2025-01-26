@@ -21,7 +21,7 @@ class PriceList extends Component
     public $sortBy = 'name';
     #[Url(as: 'sortAsc')]
     public $sortAsc = true;
-    public $type_data= 'all';
+    public $type_data = 'all';
 
     public array $rows = [
         ['label' => 'Tout', 'value' => 'all'],
@@ -58,6 +58,8 @@ class PriceList extends Component
      * Render component
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
+
+    public function mount(): void {}
     public function render()
     {
         return view('livewire.application.tarification.price-list', [

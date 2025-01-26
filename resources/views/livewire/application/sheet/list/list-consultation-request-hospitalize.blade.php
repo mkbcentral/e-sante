@@ -77,9 +77,13 @@
                             </th>
                             <th class="text-center">GENGER</th>
                             <th class="text-center">AGE</th>
-                            @can('finance-hospitalize')
+                            @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                    Auth::user()->roles->pluck('name')->contains('AG') ||
+                                    Auth::user()->roles->pluck('name')->contains('ADMIN') ||
+                                    Auth::user()->roles->pluck('name')->contains('MONEY_BOX'))
                                 <th class="text-right">MONTANT</th>
-                            @endcan
+                            @endif
+
                             <th class="text-center">SUSCRIPTION</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">Actions</th>
@@ -137,9 +141,15 @@
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->gender }}</td>
                                 <td class="text-center">{{ $consultationRequest->consultationSheet->getPatientAge() }}
                                 </td>
-                                <td class="text-right">
-                                    {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) }} Fc
-                                </td>
+                                @if (Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                                        Auth::user()->roles->pluck('name')->contains('AG') ||
+                                        Auth::user()->roles->pluck('name')->contains('ADMIN') ||
+                                        Auth::user()->roles->pluck('name')->contains('MONEY_BOX'))
+                                    <td class="text-right">
+                                        {{ app_format_number($consultationRequest->getTotalInvoiceCDF(), 1) }} Fc
+                                    </td>
+                                @endif
+
 
                                 <td class="text-center text-bold text-uppercase">
                                     {{ $consultationRequest->consultationSheet->subscription->name }}</td>

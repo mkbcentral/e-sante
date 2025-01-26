@@ -9,13 +9,13 @@
                 <div class="card-body">
                     <div class="form-group">
                         <x-form.label value="{{ __('Nom du client') }}" />
-                        <x-form.input type='text' wire:keydown.enter='handlerSubmit' wire:model.blur='client_name'
+                        <x-form.input type='text' wire:keydown.enter='handlerSubmit' wire:model='client_name'
                             :error="'client_name'" />
                         <x-errors.validation-error value='client_name' />
                     </div>
                     <div class="form-group">
                         <x-form.label value="{{ __('Type consultation') }}" />
-                        <x-widget.list-consultation-widget wire:model.blur='consultation_id' :error="'consultation_id'" />
+                        <x-widget.list-consultation-widget wire:model='consultation_id' :error="'consultation_id'" />
                         <x-errors.validation-error value='consultation_id' />
                     </div>
                     <div class="form-group">
@@ -34,7 +34,7 @@
                     @if ($outpatientBill)
                         <div class="form-group">
                             <x-form.label value="{{ __('Date création') }}" />
-                            <x-form.input type='date' wire:keydown.enter='handlerSubmit' wire:model.blur='created_at'
+                            <x-form.input type='date' wire:keydown.enter='handlerSubmit' wire:model='created_at'
                                 :error="'created_at'" />
                             <x-errors.validation-error value='created_at' />
                         </div>

@@ -54,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('pharma-actions', function () {
             return Auth::user()->roles()->pluck('name')->contains(RoleType::PHARMA);
         });
+        Gate::define('deposit-pharma', function () {
+            return Auth::user()->roles()->pluck('name')->contains(RoleType::DEPOSIT_PHARMA);
+        });
         Gate::define('labo-actions', function () {
             return Auth::user()->roles()->pluck('name')->contains(RoleType::LABO);
         });

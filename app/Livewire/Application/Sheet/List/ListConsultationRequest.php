@@ -115,6 +115,7 @@ class ListConsultationRequest extends Component
                 $this->selectedIndex,
                 Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
                 $this->date_filter,
+                null
             )
         ]);
     }

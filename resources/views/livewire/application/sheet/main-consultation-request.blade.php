@@ -27,7 +27,18 @@
                         <x-others.btn-change-consulation wire:click='makeIsByPeriod' isSelected='{{ $isByPeriod }}'
                             label='Périodique' />
                     </div>
-                    @livewire('application.finance.widget.amount-consultation-request-by-month-widget', ['selectedIndex' => $selectedIndex, 'isByDate' => $isByDate, 'isByMonth' => $isByMonth, 'isByPeriod' => $isByPeriod])
+                    @if (Auth::user()->roles->pluck('name')->contains('ADMIN') ||
+                            Auth::user()->roles->pluck('name')->contains('AG') ||
+                            Auth::user()->roles->pluck('name')->contains('PHARMA') ||
+                            Auth::user()->roles->pluck('name')->contains('FINANCE'))
+                        @livewire('application.finance.widget.amount-consultation-request-by-month-widget', [
+                            'selectedIndex' => $selectedIndex,
+                            'isByDate' => $isByDate,
+                            'isByMonth' => $isByMonth,
+                            'isByPeriod' => $isByPeriod,
+                        ])
+                    @endif
+
                 </div>
                 <div class="d-flex justify-content-center pb-2">
                     <x-widget.loading-circular-md />

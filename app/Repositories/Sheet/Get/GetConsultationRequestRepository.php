@@ -222,7 +222,7 @@ class GetConsultationRequestRepository
         $consultationRequests = ConsultationRequest::query()
             ->reusable($filters)
             ->where('perceived_by', Auth::id())
-            ->where('consultation_requests.is_finished', true)
+            ->where('consultation_requests.is_paid', true)
             ->whereDate('consultation_requests.paid_at', $date)
             ->get();
         return self::loop($consultationRequests, $currency);
@@ -334,7 +334,12 @@ class GetConsultationRequestRepository
                 if ($currency == 'USD') {
                     $total += $consultationRequest->getTotalInvoiceUSD();
                 } else {
+                    $total = 0;
+                }
+                if ($currency == 'CDF') {
                     $total += $consultationRequest->getTotalInvoiceCDF();
+                } else {
+                    $total = 0;
                 }
             } else {
                 if ($currency == 'USD') {

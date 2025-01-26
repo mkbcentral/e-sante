@@ -47,16 +47,17 @@ class HospitalizationPrivateRepport extends Component
             'listHospitalize' => $this->isByDate == true ?
                 GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereau(
                     1,
-                    null,
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
                     $this->date,
-                    null
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+
                 ) :
                 GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereauMonth(
                     1,
                     $this->month,
                     $this->year,
-                    null,
-                    null
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
                 ),
             'total_usd' => $this->isByDate == true ?
                 GetConsultationRequestRepository::getRequestHospitalizedToBordereauDateAmount(
@@ -64,16 +65,16 @@ class HospitalizationPrivateRepport extends Component
                     $this->date,
                     $this->year,
                     'USD',
-                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
-                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    user_id: Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    source_id: Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
                 ) :
                 GetConsultationRequestRepository::getRequestHospitalizedToBordereauMonthAmount(
                     1,
                     $this->month,
                     $this->year,
                     'USD',
-                    null,
-                    null
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
                 ),
             'total_cdf' => $this->isByDate == true ?
                 GetConsultationRequestRepository::getRequestHospitalizedToBordereauDateAmount(
@@ -81,16 +82,16 @@ class HospitalizationPrivateRepport extends Component
                     $this->date,
                     $this->year,
                     'CDF',
-                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE(),
                     Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
                 ) :
                 GetConsultationRequestRepository::getRequestHospitalizedToBordereauMonthAmount(
                     1,
                     $this->month,
                     $this->year,
                     'CDF',
-                    null,
-                    null
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+                    Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
                 )
         ]);
     }
