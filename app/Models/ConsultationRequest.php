@@ -268,6 +268,7 @@ class ConsultationRequest extends Model
         } else if (
             Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ||
             Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX) ||
             Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_RECIPES)
         ) {
             $net_to_paid = $this->consultation->is_consultation_paid == false ?
@@ -301,6 +302,7 @@ class ConsultationRequest extends Model
         } else if (
             Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ||
             Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE) ||
+            Auth::user()->roles->pluck('name')->contains(RoleType::MONEY_BOX) ||
             Auth::user()->roles->pluck('name')->contains(RoleType::FINANCE_RECIPES)
         ) {
             $net_to_paid
