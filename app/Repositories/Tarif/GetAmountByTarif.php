@@ -80,6 +80,7 @@ class GetAmountByTarif
         $amount = 0;
         $outpatientBills = OutpatientBill::orderBy('created_at', 'DESC')
             ->whereMonth('created_at', $month)
+            ->whereYear('created_at', 2025)
             ->where('is_validated', true)
             ->get();
         $category = CategoryTarif::find($categoryId);
@@ -100,6 +101,7 @@ class GetAmountByTarif
     private static function getCollectionData($month, $year, $idSubscription): Collection
     {
         return ConsultationRequest::whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', $year)
             ->join(
                 'consultation_sheets',
                 'consultation_sheets.id',
