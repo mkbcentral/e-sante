@@ -120,10 +120,14 @@
                     <td colspan="4" class="text-right">
                         <b class="h4">
                             Total:
-                            {{ app_format_number($currency == 'USD' ? $outpatientBill->getTotalOutpatientBillUSD() : $outpatientBill->getTotalOutpatientBillCDF(), 1) . ' Fc' }}
+                            {{ app_format_number($outpatientBill->getTotalOutpatientBillCDF(), 1) . ' Fc' }}
+                        </b><br>
+                        <b class="h4">
+                            {{ app_format_number($outpatientBill->getTotalOutpatientBillUSD(), 1) . ' $' }}
                         </b>
                     </td>
                 </tr>
+
             </table>
             <table>
                 <tr>

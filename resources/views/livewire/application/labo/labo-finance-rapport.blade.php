@@ -26,7 +26,8 @@
                                     @php
                                         $amount = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonth(
                                             $month['number'],
-                                            $subscription->id,
+                                            2025,
+                                            1,
                                             1,
                                         );
                                     @endphp
@@ -42,8 +43,8 @@
                                 @php
                                     $n1 = App\Repositories\Tarif\GetAmountByTarif::getAmountByTarifByMonthHospitalizePrivate(
                                         $month['number'],
+                                        2025,
                                         1,
-                                        1
                                     );
                                     $n2 = App\Repositories\Tarif\GetAmountByTarif::getAmountoutpatientByMonth(
                                         $month['number'],
