@@ -344,9 +344,9 @@ class GetConsultationRequestRepository
                 }
             } else {
                 if ($currency == 'USD') {
-                    $total += $consultationRequest->consultationRequestCurrency->amount_usd;
+                    $total += $consultationRequest->consultationRequestCurrency->amount_usd ?? 0;
                 } else {
-                    $total += $consultationRequest->consultationRequestCurrency->amount_cdf;
+                    $total += $consultationRequest->consultationRequestCurrency->amount_cdf ?? 0;
                 }
             }
         }
