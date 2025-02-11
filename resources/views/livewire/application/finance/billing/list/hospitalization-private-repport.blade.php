@@ -60,7 +60,7 @@
                                                 ? app_format_number($consultationRequest->getTotalInvoiceCDF(), 1)
                                                 : '-' }}
                                         @else
-                                            {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_cdf, 1) }}
+                                            {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_cdf ?? 0, 1) }}
                                         @endif
                                     </td>
                                 </tr>
