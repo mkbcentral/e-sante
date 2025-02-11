@@ -50,7 +50,7 @@
                                                 ? app_format_number($consultationRequest->getTotalInvoiceUSD(), 1)
                                                 : '-' }}
                                         @else
-                                            {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_usd, 1) }}
+                                            {{ app_format_number($consultationRequest->consultationRequestCurrency->amount_usd ?? 0, 1) }}
                                         @endif
 
                                     </td>
