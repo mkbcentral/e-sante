@@ -2,9 +2,7 @@
 
 namespace App\Livewire\Application\Sheet\Form;
 
-use App\Events\OutpatientBillEvent;
 use App\Models\ConsultationSheet;
-use App\Repositories\OutpatientBill\CreateOutpatientBillRepository;
 use App\Repositories\Sheet\Creation\CreateNewConsultationRequestRepository;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -32,11 +30,12 @@ class NewConsultationRequest extends Component
      */
     public function store(): void
     {
-
         $this->validate();
-
         try {
-            if (CreateNewConsultationRequestRepository::checkExistingConsultationRequestInMonth($this->consultationSheet->id) != null) {
+            $exist = CreateNewConsultationRequestRepository::checkExistingConsultationRequestInMonth(
+                $this->consultationSheet->id
+            );
+            if ($exist) {
                 $this->dispatch('error', ['message' => "Le patient" . $this->consultationSheet->name . " a déjà une consultation pour ce mois"]);
             } else {
                 CreateNewConsultationRequestRepository::create([
@@ -45,16 +44,6 @@ class NewConsultationRequest extends Component
                     'consultation_id' => $this->consultation_id,
                     'has_a_shipping_ticket' => $this->has_a_shipping_ticket
                 ]);
-                if ($this->consultationSheet->subscription->is_private == true) {
-                    $inpusoutpatientBill['client_name'] = $this->consultationSheet->name;
-                    $inpusoutpatientBill['consultation_id'] = $this->consultation_id;
-                    $inpusoutpatientBill['consultation_sheet_id'] = $this->consultationSheet->id;
-                    $inpusoutpatientBill['currency_id'] = null;
-                    $outpatientBill =  CreateOutpatientBillRepository::create($inpusoutpatientBill);
-                    //event(new  OutpatientBillEvent($outpatientBill));
-                    $this->dispatch('outpatientBillRefreshedMainView');
-                }
-
                 $this->dispatch('added', ['message' => 'Action bien réalisée']);
             }
             $this->dispatch('close-request-form');
