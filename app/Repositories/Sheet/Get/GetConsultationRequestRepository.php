@@ -251,6 +251,7 @@ class GetConsultationRequestRepository
                 return $q->where('perceived_by', $val);
             })
             ->where('consultation_requests.is_finished', true)
+            ->where('consultation_requests.is_paid', true)
             ->where('consultation_requests.is_hospitalized', true)
             ->get();
     }

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Application\Dashboard;
 
+use App\Http\Controllers\Report\Finance\OutpatientFinanceReportController;
+use App\Repositories\OutpatientBill\ReportOutpatientRepository;
 use Livewire\Component;
 
 class MainDashboard extends Component
@@ -28,6 +30,8 @@ class MainDashboard extends Component
     {
         $this->date = date('Y-m-d');
         $this->year = date('Y');
+        //$data = ReportOutpatientRepository::getOuPatientBillSynthesisByMonth('01', '2025');
+        //dd($data);
     }
     public function render()
     {

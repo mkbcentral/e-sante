@@ -22,8 +22,6 @@ class LaboMonthlyReleases extends Component
         $subscription = Subscription::find($value);
         $this->subscriptionName = $subscription->name;
     }
-
-
     public function mount()
     {
         $this->month_name = date('m');

@@ -48,7 +48,7 @@ class GetOutpatientRepository
             OutpatientBill::filter($filters)
             ->where('user_id', Auth::id())
             ->paginate(10) :
-            OutpatientBill::filter($filters)->paginate(10);
+            OutpatientBill::filter($filters)->paginate(1000);
     }
 
     /**
@@ -69,7 +69,7 @@ class GetOutpatientRepository
     }
 
     /**
-     * getTotalBillByDate 
+     * getTotalBillByDate
      * @param mixed $date
      * @return int|float
      */

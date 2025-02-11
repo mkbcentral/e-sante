@@ -72,6 +72,7 @@ class MonthlyReleaseRepository
                 }
             )
             ->whereMonth('consultation_requests.created_at', $month)
+            ->whereYear('consultation_requests.created_at', 2025)
             ->where('consultation_request_tarif.tarif_id', $tarif_id)
             ->count();
     }
@@ -144,6 +145,7 @@ class MonthlyReleaseRepository
                 'outpatient_bill_tarif.outpatient_bill_id',
             )
             ->whereMonth('outpatient_bills.created_at', $month)
+            ->whereYear('outpatient_bills.created_at', 2025)
             ->where('outpatient_bill_tarif.tarif_id', $tarif_id)
             ->count();
     }

@@ -150,7 +150,7 @@ class OutpatientBill extends Model
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query->orderBy('created_at', 'DESC')
+        return $query->orderBy('created_at', 'Asc')
             ->whereMonth('created_at', $filters['month'])
             ->whereYear('created_at', $filters['year'])
             ->where('is_validated', true)

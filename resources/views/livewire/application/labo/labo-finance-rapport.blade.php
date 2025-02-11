@@ -50,9 +50,6 @@
                                     $n2 = App\Repositories\Tarif\GetAmountByTarif::getAmountoutpatientByMonth(
                                         $month['number'],
                                         1,
-                                        2025,
-                                        1,
-                                        1,
                                     );
                                     $amount = $n1 + $n2;
                                 @endphp

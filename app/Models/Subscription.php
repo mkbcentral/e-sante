@@ -10,7 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Subscription extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'is_private', 'is_subscriber', 'is_personnel', 'source_id', 'hospital_id'];
+    protected $fillable = [
+        'name',
+        'is_private',
+        'is_subscriber',
+        'is_personnel',
+        'source_id',
+        'hospital_id'
+    ];
     /**
      * Get all of the consultationSheets for the Subscription
      *

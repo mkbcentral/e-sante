@@ -10,6 +10,7 @@ use App\Models\Hospital;
 use App\Models\OutpatientBill;
 use App\Models\Source;
 use App\Repositories\OutpatientBill\GetOutpatientRepository;
+use App\Repositories\OutpatientBill\ReportOutpatientRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestionAmountRepository;
 use App\Repositories\Sheet\Get\GetConsultationRequestRepository;
 use DateTime;
@@ -72,9 +73,10 @@ class OutpatientBillPrinterController extends Controller
         $listBill = GetOutpatientRepository::getOutpatientPatientByMonth($month, '2025');
         $total_cdf = GetOutpatientRepository::getTotalBillByMonth($month, '2025', 'CDF');
         $total_usd = GetOutpatientRepository::getTotalBillByMonth($month, '2025 ', 'USD');
+        $synthesis = ReportOutpatientRepository::getOuPatientBillSynthesisByMonth($month, '2025');
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('prints.finance.bill.print-repport-outpatient-by-month', compact(
-            ['listBill', 'month', 'total_cdf', 'total_usd']
+            ['listBill', 'month', 'total_cdf', 'total_usd', 'synthesis']
         ));
         return $pdf->stream();
     }
@@ -143,6 +145,23 @@ class OutpatientBillPrinterController extends Controller
             'prints.requtests.print-consultation-request-private-invoice-all',
             compact(['consultationRequests', 'categories', 'currency'])
         );
+        return $pdf->stream();
+    }
+
+    public function printHospitalizePrivateByMonth($month)
+    {
+        $listHospitalize = GetConsultationRequestRepository::getConsultationRequestHospitalizedToBordereauMonth(
+            1,
+            $month,
+            2025,
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Auth::id(),
+            Auth::user()->roles->pluck('name')->contains(RoleType::ADMIN) ? null : Source::DEFAULT_SOURCE()
+        );
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('prints.finance.bill.print-repport-hosp-private-by-month', compact(
+            ['listHospitalize', 'month']
+        ))->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
 }

@@ -45,6 +45,15 @@
                                     <a class="dropdown-item" target="_blanck"
                                         href="{{ route('rapport.date.outPatientBill.print', [$date, $date_versement]) }}"><i
                                             class="fas fa-file-pdf"></i> Bordereau de versement</a>
+                                    @if ($month != '')
+                                        <a class="dropdown-item" target="_blanck"
+                                            href="{{ route('rapport.month.outPatientBill.print', [$month]) }}"><i
+                                                class="fas fa-file-pdf"></i> Rapport amb mensuel</a>
+                                        <a class="dropdown-item" target="_blanck"
+                                            href="{{ route('rapport.month.hosp.private.print', [$month]) }}"><i
+                                                class="fas fa-file-pdf"></i> Rapport hosp mensuel</a>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
